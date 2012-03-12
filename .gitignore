@@ -1,2 +1,11 @@
+# Project
+bin/**
+
+# Package and class files
 *.class
-bin/
+*.jar
+*.war
+*.ear
+
+# Trash
+*.DS_Store
