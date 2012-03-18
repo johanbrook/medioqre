@@ -1,0 +1,47 @@
+/**
+*	Position.java
+*
+*	@author Johan
+*/
+
+package model;
+
+public class Position {
+	
+	private final int x;
+	private final int y;
+	
+	public Position(final int x, final int y) {
+		this.x = x;
+		this.y = y;
+	}
+	
+	public Position(final Position p) {
+		this.x = p.x;
+		this.y = p.y;
+	}
+	
+	public int getX(){
+		return this.x;
+	}
+	
+	public int getY(){
+		return this.y;
+	}
+	
+	
+	@Override
+	public boolean equals(Object o){
+		if(this == o){
+			return true;
+		}
+		
+		if(o == null || getClass() != o.getClass()){
+			return false;
+		}
+		
+		Position other = (Position) o;
+		return this.x == other.x && this.y == other.y;
+	}
+	
+}
