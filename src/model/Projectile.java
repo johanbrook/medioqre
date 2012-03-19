@@ -6,33 +6,22 @@
 
 package model;
 
-import constants.WeaponType;
+import model.weapon.IWeapon;
 
 public class Projectile {
 	
-	private WeaponType type;
+	private IWeapon owner;
 	
-	public Projectile(WeaponType type){
-		this.type = type;
+	public Projectile(IWeapon owner){
+		this.owner = owner;
 	}
 	
-	public WeaponType getType(){
-		return this.type;
+	public IWeapon getOwner(){
+		return this.owner;
 	}
 	
 	public int getDamage(){
-		return this.type.getDamage();
-	}
-	
-	@Override
-	public boolean equals(Object o){
-		if(this == o)
-			return true;
-		if(o == null || getClass() != o.getClass())
-			return false;
-		
-		Projectile other = (Projectile) o;
-		return this.getType() == other.getType();
+		return this.owner.getDamage();
 	}
 }
 
