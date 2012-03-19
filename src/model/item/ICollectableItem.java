@@ -4,7 +4,7 @@
 *	@author Johan
 */
 
-package model.items;
+package model.item;
 
 import model.CollidableObject;
 import model.Position;

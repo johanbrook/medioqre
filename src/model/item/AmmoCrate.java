@@ -4,14 +4,14 @@
 *	@author Johan
 */
 
-package model.items;
+package model.item;
 
 import java.awt.Dimension;
 
-import constants.WeaponType;
 
 import model.CollidableObject;
 import model.Position;
+import model.weapon.WeaponType;
 
 public class AmmoCrate extends CollidableObject implements ICollectableItem {
 

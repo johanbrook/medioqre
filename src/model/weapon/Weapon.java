@@ -4,9 +4,8 @@
 *	@author Johan
 */
 
-package model;
+package model.weapon;
 
-import constants.WeaponType;
 
 public class Weapon {
 	

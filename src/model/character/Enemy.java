@@ -4,7 +4,7 @@
 *	@author Johan
 */
 
-package model.characters;
+package model.character;
 
 public class Enemy extends Character {
 

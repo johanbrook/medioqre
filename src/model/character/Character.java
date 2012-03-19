@@ -5,7 +5,7 @@
 */
 
 
-package model.characters;
+package model.character;
 
 import model.Entity;
 
