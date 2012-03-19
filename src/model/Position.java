@@ -8,10 +8,10 @@ package model;
 
 public class Position {
 	
-	private final int x;
-	private final int y;
+	private final double x;
+	private final double y;
 	
-	public Position(final int x, final int y) {
+	public Position(final double x, final double y) {
 		this.x = x;
 		this.y = y;
 	}
@@ -21,11 +21,11 @@ public class Position {
 		this.y = p.y;
 	}
 	
-	public int getX(){
+	public double getX(){
 		return this.x;
 	}
 	
-	public int getY(){
+	public double getY(){
 		return this.y;
 	}
 	

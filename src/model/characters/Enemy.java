@@ -6,15 +6,11 @@
 
 package model.characters;
 
-import java.awt.Dimension;
-
-import model.Position;
-
 public class Enemy extends Character {
 
 	
-	public Enemy() {
-		super();
+	public Enemy(int movementSpeed) {
+		super(movementSpeed);
 	}
 
 	@Override

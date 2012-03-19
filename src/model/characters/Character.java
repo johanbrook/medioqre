@@ -4,6 +4,7 @@
 *	@author Johan
 */
 
+
 package model.characters;
 
 import model.Entity;
@@ -12,9 +13,8 @@ public abstract class Character extends Entity {
 
 	private int health;
 	
-	protected int movementSpeed;
-	
-	public Character() {
+	public Character(int movementSpeed) {
+		super(movementSpeed);
 		this.health = 100;
 	}
 	

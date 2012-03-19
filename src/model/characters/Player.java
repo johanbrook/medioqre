@@ -19,14 +19,15 @@ public class Player extends Character {
 	private Weapon currentWeapon;
 	private java.util.List<Weapon> weapons;
 	
-	public Player(){
+	public Player(int movementSpeed){
+		super(movementSpeed);
+		
 		this.weapons = new ArrayList<Weapon>();
 		this.weapons.add(new Weapon(WeaponType.RIFLE));
 		this.weapons.add(new Weapon(WeaponType.GRENADE));
 		this.weapons.add(new Weapon(WeaponType.SWORD));
 		this.weapons.add(new Weapon(WeaponType.PORTALGUN));
 		
-		this.movementSpeed = 60;
 		setCurrentWeapon(WeaponType.RIFLE);
 	}
 	

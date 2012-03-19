@@ -21,7 +21,7 @@ public class TestPlayer {
 	
 	@Before
 	public void setUp() throws Exception {
-		this.player = new Player();
+		this.player = new Player(10);
 	}
 	
 	@Test

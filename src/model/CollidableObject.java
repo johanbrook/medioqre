@@ -35,4 +35,10 @@ public abstract class CollidableObject {
 	public java.awt.Dimension getCollisionBox(){
 		return this.collisionBox;
 	}
+	
+	public boolean isColliding(CollidableObject obj){
+		//@todo Implement this
+		
+		return false;
+	}
 }

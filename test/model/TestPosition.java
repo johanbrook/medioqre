@@ -22,8 +22,8 @@ public class TestPosition {
 	
 	@Test
 	public void testPosition() {
-		assertEquals(this.position.getX(), 1);
-		assertEquals(this.position.getY(), 3);
+		assertEquals(this.position.getX(), 1, 0.1);
+		assertEquals(this.position.getY(), 3, 0.1);
 	}
 	
 	@Test

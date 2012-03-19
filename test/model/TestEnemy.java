@@ -18,12 +18,12 @@ public class TestEnemy {
 	
 	@Before
 	public void setUp() throws Exception {
-		this.enemy = new Enemy();
+		this.enemy = new Enemy(10);
 	}
 
 	@Test
 	public void testAttackEnemy() {
-		Player player = new Player();
+		Player player = new Player(10);
 		this.enemy.attack(player);
 		
 		assertEquals(70, player.getHealth());
