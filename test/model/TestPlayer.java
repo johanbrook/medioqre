@@ -8,12 +8,14 @@ package model;
 
 import static org.junit.Assert.*;
 
-import model.characters.Player;
+import model.character.Player;
+import model.weapon.*;
+import model.weapon.WeaponBelt.WeaponTypes;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import constants.WeaponType;
+
 
 public class TestPlayer {
 
@@ -30,15 +32,8 @@ public class TestPlayer {
 	}
 	
 	@Test
-	public void testCreateProjectile(){
-		Projectile p = new Projectile(WeaponType.RIFLE);
-		
-		assertEquals(p, this.player.fireWeapon());
-	}
-	
-	@Test
 	public void testOutOfAmmo(){
-		this.player.setCurrentWeapon(WeaponType.GRENADE);
+		this.player.setCurrentWeapon(WeaponTypes.GRENADE);
 		this.player.fireWeapon();
 		this.player.fireWeapon();
 		this.player.fireWeapon();
@@ -49,8 +44,8 @@ public class TestPlayer {
 	
 	@Test
 	public void testSetCurrentWeapon(){
-		Weapon w = new Weapon(WeaponType.RIFLE);
-		this.player.setCurrentWeapon(WeaponType.RIFLE);
+		IWeapon w = new Sword();
+		this.player.setCurrentWeapon(WeaponTypes.SWORD);
 		
 		assertEquals(w, this.player.getCurrentWeapon());
 	}

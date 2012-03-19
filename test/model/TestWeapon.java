@@ -8,24 +8,26 @@ package model;
 
 import static org.junit.Assert.*;
 
+import model.weapon.*;
+
 import org.junit.Before;
 import org.junit.Test;
 
-import constants.WeaponType;
+
 
 public class TestWeapon {
 
-	private Weapon rifle;
-	private Weapon grenade;
-	private Weapon sword;
-	private Weapon portal;
+	private IWeapon rifle;
+	private IWeapon grenade;
+	private IWeapon sword;
+	private IWeapon portal;
 	
 	@Before
 	public void setUp() throws Exception {
-		this.rifle = new Weapon(WeaponType.RIFLE);
-		this.grenade = new Weapon(WeaponType.GRENADE);
-		this.sword = new Weapon(WeaponType.SWORD);
-		this.portal = new Weapon(WeaponType.SWORD);
+		this.rifle = new MachineGun();
+		this.grenade = new Grenade();
+		this.sword = new Sword();
+		this.portal = new PortalGun();
 	}
 
 	@Test

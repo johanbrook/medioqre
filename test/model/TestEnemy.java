@@ -7,7 +7,7 @@
 package model;
 
 import static org.junit.Assert.*;
-import model.characters.*;
+import model.character.*;
 
 import org.junit.Before;
 import org.junit.Test;
