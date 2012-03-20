@@ -43,6 +43,11 @@ public class Player extends Character {
 		
 		return (this.currentWeapon.fire()) ? new Projectile(this.currentWeapon) : null;
 	}
+	
+	@Override
+	public int getCurrentWeaponDamage() {
+		return this.currentWeapon.getDamage();
+	}
 
 	@Override
 	public void attack(Character target) {

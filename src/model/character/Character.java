@@ -29,6 +29,8 @@ public abstract class Character extends Entity {
 		return this.health;
 	}
 	
+	public abstract int getCurrentWeaponDamage();
+	
 	public abstract void attack(Character target);
 
 }

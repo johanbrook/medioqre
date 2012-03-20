@@ -30,21 +30,21 @@ public abstract class Entity extends CollidableObject {
 	public void move(double dt) {
 		Position currPos = getPosition();
 		
-		double dx = currPos.getX() + (dt*this.movementSpeed);
-		double dy = currPos.getY() + (dt*this.movementSpeed);
+		double x = currPos.getX() + (dt*this.movementSpeed);
+		double y = currPos.getY() + (dt*this.movementSpeed);
 		
 		switch(this.direction) {
 		case NORTH:
-			setPosition(currPos.getX(), dy);
+			setPosition(currPos.getX(), y);
 			break;
 		case SOUTH:
-			setPosition(currPos.getX(), -dy);
+			setPosition(currPos.getX(), -y);
 			break;
 		case WEST:
-			setPosition(-dx, currPos.getY());
+			setPosition(-x, currPos.getY());
 			break;
 		case EAST:
-			setPosition(currPos.getX(), dy);
+			setPosition(currPos.getX(), y);
 		}
 	}
 	
