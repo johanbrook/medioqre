@@ -19,7 +19,15 @@ As a help, the player has a couple of neat things:
 - A couple of really hurtful grenades
 - A Portal Gun!
 
-- **Why Java?**
+## Related projects
+
+Supporting code.
+
+- [Barber's rendering engine tests](https://github.com/JBarberU/RenderingTest)
+- [Toolkit](https://github.com/JBarberU/Medioqre-ToolKit-V2)
+- [Johan's "Medioqre GitHub Notifier"](https://github.com/johanbrook/github-facebook-hook)
+
+### Why Java?
 Since it's a language all of the group members know, and there are lots of resources for 2D games written in Java.
 
 ### We are
