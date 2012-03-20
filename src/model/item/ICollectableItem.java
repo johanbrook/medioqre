@@ -6,8 +6,6 @@
 
 package model.item;
 
-import model.CollidableObject;
-import model.Position;
 
 public interface ICollectableItem {
 		

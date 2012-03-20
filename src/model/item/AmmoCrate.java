@@ -7,28 +7,25 @@
 package model.item;
 
 import java.awt.Dimension;
-
-
 import model.CollidableObject;
 import model.Position;
-import model.weapon.WeaponType;
+import model.weapon.IWeapon;
 
 public class AmmoCrate extends CollidableObject implements ICollectableItem {
 
-	private WeaponType ammoType;
+	private IWeapon type;
 	private double amount;
 	
-	public AmmoCrate(Dimension collBox, Position pos, Position offset, WeaponType type, double amount) {
+	public AmmoCrate(Dimension collBox, Position pos, Position offset, IWeapon type, double amount) {
 		super(collBox, pos, offset);
 		
-		this.ammoType = type;
+		this.type = type;
 		this.amount = amount;
 	}
 
 	@Override
 	public void pickedUpBy(Character source) {
 		// TODO Auto-generated method stub
-
 	}
 
 }
