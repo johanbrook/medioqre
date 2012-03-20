@@ -32,6 +32,10 @@ public abstract class CollidableObject {
 		this.position = pos;
 	}
 	
+	public void setPosition(double x, double y) {
+		this.position = new Position(x, y);
+	}
+	
 	public java.awt.Dimension getCollisionBox(){
 		return this.collisionBox;
 	}

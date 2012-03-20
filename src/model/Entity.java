@@ -16,6 +16,7 @@ public abstract class Entity extends CollidableObject {
 	//@todo Temp constructor
 	public Entity(int movementSpeed) {
 		this.movementSpeed = movementSpeed;
+		this.direction = Direction.ORIGIN;
 	}
 	
 	public Entity(java.awt.Dimension box, Position position, Position offset, int movementSpeed){
@@ -25,12 +26,26 @@ public abstract class Entity extends CollidableObject {
 	}
 	
 	
-	public void moveTo(Position pos){
-		moveTo(pos.getX(), pos.getY());
-	}
-	
-	public void moveTo(double x, double y){
+	// 0 < dt < 1
+	public void move(double dt) {
+		Position currPos = getPosition();
 		
+		double dx = currPos.getX() + (dt*this.movementSpeed);
+		double dy = currPos.getY() + (dt*this.movementSpeed);
+		
+		switch(this.direction) {
+		case NORTH:
+			setPosition(currPos.getX(), dy);
+			break;
+		case SOUTH:
+			setPosition(currPos.getX(), -dy);
+			break;
+		case WEST:
+			setPosition(-dx, currPos.getY());
+			break;
+		case EAST:
+			setPosition(currPos.getX(), dy);
+		}
 	}
 	
 	public void setDirection(Direction dir) {
