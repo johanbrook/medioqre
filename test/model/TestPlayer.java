@@ -10,7 +10,6 @@ import static org.junit.Assert.*;
 
 import model.character.Player;
 import model.weapon.*;
-import model.weapon.WeaponBelt.WeaponTypes;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -33,7 +32,7 @@ public class TestPlayer {
 	
 	@Test
 	public void testOutOfAmmo(){
-		this.player.setCurrentWeapon(WeaponTypes.GRENADE);
+		this.player.setCurrentWeapon(Grenade.class);
 		this.player.fireWeapon();
 		this.player.fireWeapon();
 		this.player.fireWeapon();
@@ -45,7 +44,7 @@ public class TestPlayer {
 	@Test
 	public void testSetCurrentWeapon(){
 		IWeapon w = new Sword();
-		this.player.setCurrentWeapon(WeaponTypes.SWORD);
+		this.player.setCurrentWeapon(Sword.class);
 		
 		assertEquals(w, this.player.getCurrentWeapon());
 	}

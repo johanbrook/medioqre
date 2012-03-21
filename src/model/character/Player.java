@@ -9,13 +9,11 @@ package model.character;
 
 import model.Projectile;
 import model.weapon.*;
-import model.weapon.WeaponBelt.WeaponTypes;
 
 
 public class Player extends Character {
 	
 	private IWeapon currentWeapon;
-	private int currentWeaponSlot = WeaponTypes.MACHINEGUN.getIndex();
 	private WeaponBelt belt;
 	
 	
@@ -24,14 +22,15 @@ public class Player extends Character {
 		
 		this.belt = new WeaponBelt();
 		
-		setCurrentWeapon(currentWeaponSlot);
+		setCurrentWeapon(MachineGun.class);
 	}
 	
 	public void setCurrentWeapon(int slot) {
 		this.currentWeapon = this.belt.getWeapon(slot);
 	}
 	
-	public void setCurrentWeapon(WeaponTypes type) {
+	
+	public void setCurrentWeapon(Class<? extends IWeapon> type) {
 		this.currentWeapon = this.belt.getWeapon(type);
 	}
 	

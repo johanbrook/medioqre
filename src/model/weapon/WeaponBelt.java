@@ -14,19 +14,6 @@ import java.util.List;
 public class WeaponBelt {
 	private List<IWeapon> weapons;
 	
-	public enum WeaponTypes {
-		MACHINEGUN(0), SWORD(1), GRENADE(2), PORTALGUN(3);
-		
-		private int index;
-		WeaponTypes(int i) {
-			this.index = i;
-		}
-		
-		public int getIndex() {
-			return this.index;
-		}
-	}
-	
 	public WeaponBelt() {
 		IWeapon[] temp = {new MachineGun(), new Sword(), new Grenade(), new PortalGun()};
 		
@@ -45,9 +32,16 @@ public class WeaponBelt {
 		return this.weapons.get(slot);
 	}
 	
-	
-	public IWeapon getWeapon(WeaponTypes type) {
-		return this.getWeapon(type.getIndex());
+	public IWeapon getWeapon(Class<? extends IWeapon> type) {
+		
+		for(IWeapon w : this.weapons) {
+			if(w.getClass() == type) {
+				return w;
+			}
+		}
+		
+		return null;
 	}
+	
 	
 }

@@ -12,7 +12,6 @@ import model.character.*;
 import model.character.Character;
 import model.weapon.IWeapon;
 import model.weapon.Sword;
-import model.weapon.WeaponBelt.WeaponTypes;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -31,7 +30,7 @@ public class TestCharacterAttacks {
 	@Test
 	public void testPlayerAttacksWithSword() {
 		IWeapon sword = new Sword();
-		this.player.setCurrentWeapon(WeaponTypes.SWORD);
+		this.player.setCurrentWeapon(Sword.class);
 		this.player.attack(enemy);
 		
 		assertEquals(100 - sword.getDamage(), this.enemy.getHealth());
