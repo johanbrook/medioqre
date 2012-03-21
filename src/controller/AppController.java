@@ -10,6 +10,10 @@ import gui.ViewController;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import constants.Direction;
 
@@ -23,12 +27,23 @@ public class AppController implements KeyListener {
 	private ViewController view;
 	
 	private boolean[] keys;
+	private Set<Integer> lkeys;
+	
+	private Map<Integer, Direction> keyMap;
 	
 	
 	public AppController(){
 		this.view = new ViewController(this, 400, 300);
 		this.game = new GameModel();
 		this.keys = new boolean[526];
+		
+		this.lkeys = new HashSet<Integer>();
+		
+		this.keyMap = new HashMap<Integer, Direction>();
+		this.keyMap.put(KeyEvent.VK_W, Direction.NORTH);
+		this.keyMap.put(KeyEvent.VK_A, Direction.WEST);
+		this.keyMap.put(KeyEvent.VK_S, Direction.SOUTH);
+		this.keyMap.put(KeyEvent.VK_D, Direction.EAST);
 		
 		this.game.addObserver(this.view);
 	}
@@ -41,60 +56,52 @@ public class AppController implements KeyListener {
 		
 		this.game.pressedState(isKeyPressed);
 		
-		if(checkKey(KeyEvent.VK_W) && checkKey(KeyEvent.VK_A)) {
-			this.game.updateDirection(Direction.NORTH_WEST);
+		if(this.lkeys.size() > 1) {
+			
+			if(checkKey(KeyEvent.VK_W) && checkKey(KeyEvent.VK_A)) {
+				this.game.updateDirection(Direction.NORTH_WEST);
+			}
+			
+			else if(checkKey(KeyEvent.VK_W) && checkKey(KeyEvent.VK_D)) {
+				this.game.updateDirection(Direction.NORTH_EAST);
+			}
+			
+			else if(checkKey(KeyEvent.VK_A) && checkKey(KeyEvent.VK_S)) {
+				this.game.updateDirection(Direction.SOUTH_WEST);
+			}
+			
+			else if(checkKey(KeyEvent.VK_S) && checkKey(KeyEvent.VK_D)) {
+				this.game.updateDirection(Direction.SOUTH_EAST);
+			}
+			
 		}
-		
-		else if(checkKey(KeyEvent.VK_W) && checkKey(KeyEvent.VK_D)) {
-			this.game.updateDirection(Direction.NORTH_EAST);
-		}
-		
-		else if(checkKey(KeyEvent.VK_A) && checkKey(KeyEvent.VK_S)) {
-			this.game.updateDirection(Direction.SOUTH_WEST);
-		}
-		
-		else if(checkKey(KeyEvent.VK_S) && checkKey(KeyEvent.VK_D)) {
-			this.game.updateDirection(Direction.SOUTH_EAST);
-		}
-		
-		
-		else if(checkKey(KeyEvent.VK_A)) {
-			this.game.updateDirection(Direction.WEST);
-		}
-		
-		else if(checkKey(KeyEvent.VK_W)) {
-			this.game.updateDirection(Direction.NORTH);
-		}
-		
-		else if(checkKey(KeyEvent.VK_S)) {
-			this.game.updateDirection(Direction.SOUTH);
-		}
-		
-		else if(checkKey(KeyEvent.VK_D)) {
-			this.game.updateDirection(Direction.EAST);
+		else {
+			// One single key is pressed
+			this.game.updateDirection(this.keyMap.get(evt.getKeyCode()));
 		}
 		
 	}
 	
 	private boolean checkKey(int i) {
-		if(this.keys.length > i)
-			return this.keys[i];
-		
-		return false;
+
+		return this.lkeys.contains(i);
 	}
 	
 	
 	@Override
 	public void keyPressed(KeyEvent e) {
 		
-		this.keys[e.getKeyCode()] = true;
+		this.lkeys.add(e.getKeyCode());
+		System.out.println(this.lkeys);
+		
 		sendKeyAction(e, true);
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		this.keys[e.getKeyCode()] = false;
-		sendKeyAction(e, false);
+		
+		this.lkeys.remove(e.getKeyCode());
+		sendKeyAction(e, !this.lkeys.isEmpty());
 	}
 
 	@Override

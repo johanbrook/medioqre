@@ -1,11 +1,11 @@
-/**
-*	Direction.java
-*
-*	@author Johan
-*/
-
 package constants;
 
+/**
+ * An enum describing directions.
+ * 
+ * @author Johan
+ *
+ */
 public enum Direction {
 	NORTH(0, 1), EAST(1,0), SOUTH(0,-1), WEST(-1, 0),
 	NORTH_EAST(0.7071, 0.7071), SOUTH_EAST(0.7071, -0.7071),
