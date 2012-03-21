@@ -13,4 +13,8 @@ public class Actor {
 	public Position getPosition() {
 		return this.position;
 	}
+	
+	public void setPosition(Position pos) {
+		this.position = pos;
+	}
 }

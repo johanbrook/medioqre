@@ -13,6 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
 import model.Position;
+
 public class ViewController implements Runnable, PropertyChangeListener {
 
 	
