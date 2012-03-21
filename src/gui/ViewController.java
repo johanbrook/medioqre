@@ -16,12 +16,6 @@ import model.Position;
 
 public class ViewController implements Runnable, PropertyChangeListener {
 
-	
-	public static void main(String[] args){
-		new ViewController(null, 1280, 760);
-		
-	}
-
 	// FPS
 	private final int FPS = 60;
 
