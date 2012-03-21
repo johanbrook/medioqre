@@ -6,8 +6,12 @@
 
 package controller;
 
+import gui.ViewController;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+
+import constants.Direction;
 
 import model.GameModel;
 
@@ -16,62 +20,59 @@ public class AppController implements KeyListener {
 	public static final int GAME_SPEED = 10;
 	
 	private GameModel game;
+	private ViewController view;
+	
 	private boolean[] keys;
 	private boolean isKeyPressed = false;
 	
+	
 	public AppController(){
+		this.view = new ViewController(this, 600, 300);
 		this.game = new GameModel();
 		this.keys = new boolean[526];
+		
+		this.game.addObserver(this.view);
 	}
 	
 	public static void main(String[] args) {
-		javax.swing.JFrame f = new javax.swing.JFrame();
-		f.setPreferredSize(new java.awt.Dimension(200,200));
-		f.addKeyListener(new AppController());
-		f.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
-		
-		f.pack();
-		f.setVisible(true);
+		new AppController();
 	}
 
 	private void sendKeyAction(KeyEvent evt){
 		
 		if(checkKey(KeyEvent.VK_W) && checkKey(KeyEvent.VK_A)) {
-			System.out.println("W + A");
+			this.game.updateDirection(Direction.NORTH_WEST);
 		}
 		
 		else if(checkKey(KeyEvent.VK_W) && checkKey(KeyEvent.VK_D)) {
-			System.out.println("W + D");
+			this.game.updateDirection(Direction.NORTH_EAST);
 		}
 		
 		else if(checkKey(KeyEvent.VK_A) && checkKey(KeyEvent.VK_S)) {
-			System.out.println("A + S");
+			this.game.updateDirection(Direction.SOUTH_WEST);
 		}
 		
 		else if(checkKey(KeyEvent.VK_S) && checkKey(KeyEvent.VK_D)) {
-			System.out.println("S + D");
+			this.game.updateDirection(Direction.SOUTH_EAST);
 		}
 		
+		
 		else if(checkKey(KeyEvent.VK_A)) {
-			System.out.println("A");
+			this.game.updateDirection(Direction.WEST);
 		}
 		
 		else if(checkKey(KeyEvent.VK_W)) {
-			System.out.println("W");
+			this.game.updateDirection(Direction.NORTH);
 		}
 		
 		else if(checkKey(KeyEvent.VK_S)) {
-			System.out.println("S");
+			this.game.updateDirection(Direction.SOUTH);
 		}
 		
 		else if(checkKey(KeyEvent.VK_D)) {
-			System.out.println("D");
+			this.game.updateDirection(Direction.EAST);
 		}
 		
-		if(this.isKeyPressed)
-			System.out.println("Pressed");
-		else
-			System.out.println("Released");
 	}
 	
 	private boolean checkKey(int i) {
@@ -101,6 +102,7 @@ public class AppController implements KeyListener {
 	public void keyTyped(KeyEvent e) {
 		
 	}
+
 	
 	
 }

@@ -27,4 +27,5 @@ public enum Direction {
 	public double getYRatio(){
 		return this.yratio;
 	}
+
 }

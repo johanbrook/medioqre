@@ -6,16 +6,19 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
 import model.Position;
+public class ViewController implements Runnable, PropertyChangeListener {
 
-public class ViewController implements Runnable {
-
-	public static void main(String[] args) {
+	
+	public static void main(String[] args){
 		new ViewController(null, 1280, 760);
+		
 	}
 
 	// FPS
@@ -43,6 +46,7 @@ public class ViewController implements Runnable {
 		frame.setIgnoreRepaint(true);
 		frame.add(canvas);
 		frame.setVisible(true);
+		frame.addKeyListener(l);
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 		// Setup the canvas and frame
@@ -89,5 +93,10 @@ public class ViewController implements Runnable {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		System.out.println(evt.getPropertyName() + " " + evt.getNewValue());
 	}
 }

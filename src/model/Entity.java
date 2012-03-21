@@ -54,6 +54,9 @@ public abstract class Entity extends CollidableObject {
 		}
 	}
 	
+	public Direction getDirection() {
+		return this.direction;
+	}
 	
 	public void destroy(){
 		//@todo Should the model destroy itself?
