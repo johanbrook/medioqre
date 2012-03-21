@@ -25,12 +25,23 @@ public class GameModel implements IObservable {
 		this.isPlayerMoving = false;
 	}
 	
-	public void pressedState(boolean state) {
+	/**
+	 * Tell the player to move or not.
+	 * 
+	 * @param state True if the player should move, otherwise false
+	 */
+	public void setPlayerMoving(boolean state) {
 		boolean old = this.isPlayerMoving;
 		this.isPlayerMoving = state;
 		this.pcs.firePropertyChange("isPlayerMoving", old, this.isPlayerMoving);
 	}
 	
+	/**
+	 * Updates the player's direction.
+	 * 
+	 * @param dir The direction
+	 * @see Direction
+	 */
 	public void updateDirection(Direction dir) {
 		Direction oldDir = this.player.getDirection();
 		this.player.setDirection(dir);

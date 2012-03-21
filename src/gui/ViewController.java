@@ -25,7 +25,7 @@ public class ViewController implements Runnable, PropertyChangeListener {
 	private BufferStrategy bufferStrategy;
 	private Actor player;
 
-	public ViewController(KeyListener l, int screenWidth, int screenHeight) {
+	public ViewController(KeyListener listener, int screenWidth, int screenHeight) {
 		SCREEN_WIDTH = screenWidth;
 		SCREEN_HEIGHT = screenHeight;
 
@@ -41,7 +41,7 @@ public class ViewController implements Runnable, PropertyChangeListener {
 		frame.setIgnoreRepaint(true);
 		frame.add(canvas);
 		frame.setVisible(true);
-		frame.addKeyListener(l);
+		frame.addKeyListener(listener);
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 		// Setup the canvas and frame
