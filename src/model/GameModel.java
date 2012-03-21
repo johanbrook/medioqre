@@ -6,6 +6,7 @@ import java.beans.PropertyChangeSupport;
 import model.character.*;
 import model.character.Character;
 import constants.Direction;
+import controller.IObservable;
 
 /**
  * Model for a game.
@@ -13,7 +14,7 @@ import constants.Direction;
  * @author Johan
  *
  */
-public class GameModel {
+public class GameModel implements IObservable {
 	
 	private Character player;
 	private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
@@ -29,8 +30,21 @@ public class GameModel {
 	}
 	
 	
+	@Override
 	public void addObserver(PropertyChangeListener listener) {
 		this.pcs.addPropertyChangeListener(listener);
+	}
+
+	@Override
+	public void removeObservers() {
+		for(PropertyChangeListener l : this.pcs.getPropertyChangeListeners()) {
+			this.pcs.removePropertyChangeListener(l);
+		}
+	}
+
+	@Override
+	public void removeObserver(PropertyChangeListener listener) {
+		this.pcs.removePropertyChangeListener(listener);
 	}
 	
 }
