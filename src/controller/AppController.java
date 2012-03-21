@@ -23,11 +23,10 @@ public class AppController implements KeyListener {
 	private ViewController view;
 	
 	private boolean[] keys;
-	private boolean isKeyPressed = false;
 	
 	
 	public AppController(){
-		this.view = new ViewController(this, 600, 300);
+		this.view = new ViewController(this, 400, 300);
 		this.game = new GameModel();
 		this.keys = new boolean[526];
 		
@@ -38,7 +37,9 @@ public class AppController implements KeyListener {
 		new AppController();
 	}
 
-	private void sendKeyAction(KeyEvent evt){
+	private void sendKeyAction(KeyEvent evt, boolean isKeyPressed){
+		
+		this.game.pressedState(isKeyPressed);
 		
 		if(checkKey(KeyEvent.VK_W) && checkKey(KeyEvent.VK_A)) {
 			this.game.updateDirection(Direction.NORTH_WEST);
@@ -87,15 +88,13 @@ public class AppController implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		
 		this.keys[e.getKeyCode()] = true;
-		this.isKeyPressed = true;
-		sendKeyAction(e);
+		sendKeyAction(e, true);
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 		this.keys[e.getKeyCode()] = false;
-		this.isKeyPressed = false;
-		sendKeyAction(e);
+		sendKeyAction(e, false);
 	}
 
 	@Override
