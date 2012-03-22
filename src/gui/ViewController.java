@@ -23,10 +23,7 @@ import model.Position;
  * @author Barber
  *
  */
-public class ViewController implements Runnable, PropertyChangeListener {
-
-	// FPS
-	private final int FPS = 60;
+public class ViewController implements PropertyChangeListener {
 
 	// Screen
 	private final int SCREEN_WIDTH;
@@ -58,10 +55,6 @@ public class ViewController implements Runnable, PropertyChangeListener {
 		this.bufferStrategy = canvas.getBufferStrategy();
 		frame.pack();
 		frame.setLocationRelativeTo(null);
-
-		// Starting runLoop
-		Thread t = new Thread(this);
-		t.start();
 	}
 
 	private void initScene() {
@@ -69,7 +62,7 @@ public class ViewController implements Runnable, PropertyChangeListener {
 				SCREEN_HEIGHT / 2));
 	}
 
-	private void render() {
+	public void render(double dt) {
 		do {
 			do {
 				Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
@@ -77,9 +70,7 @@ public class ViewController implements Runnable, PropertyChangeListener {
 				// Drawing
 				g.setColor(Color.RED);
 				g.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-//				g.setColor(Color.GREEN);
-//				g.fillRect((int) player.getPosition().getX(), (int) player
-//						.getPosition().getY(), 32, 64);
+			
 				if (player.getCurrentImage() != null) {
 					g.drawImage(player.getCurrentImage(), (int) player.getPosition().getX(), (int) player.getPosition().getY(), player.getCurrentImage().getWidth(), player.getCurrentImage().getHeight(), null);
 				} else 
@@ -90,19 +81,7 @@ public class ViewController implements Runnable, PropertyChangeListener {
 			bufferStrategy.show();
 		} while (bufferStrategy.contentsLost());
 	}
-
-	@Override
-	public void run() {
-		while (!Thread.interrupted()) {
-			try {
-				Thread.sleep(1000 / FPS);
-				render();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
+	
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		player.setDirection((Direction) evt.getNewValue());

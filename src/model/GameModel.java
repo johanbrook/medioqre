@@ -23,6 +23,13 @@ public class GameModel implements IObservable {
 		this.player = new Player(10);
 	}
 	
+	/**
+	 * Updates the game model.
+	 * @param dt The time since the last update.
+	 */
+	public void update(double dt) {
+		// Nothing implemented here yet.
+	}
 	
 	/**
 	 * Updates the player's direction.
