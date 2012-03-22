@@ -33,7 +33,7 @@ public class AppController implements Runnable{
 			try {
 				Thread.sleep(1000/FPS);
 				double dt = 0;
-				game.update(double dt);
+				game.update(dt);
 				view.render(dt);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
