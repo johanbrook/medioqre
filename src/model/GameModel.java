@@ -43,7 +43,7 @@ public class GameModel implements IObservable {
 	}
 
 	@Override
-	public void removeObservers() {
+	public void removeAllObservers() {
 		for(PropertyChangeListener l : this.pcs.getPropertyChangeListeners()) {
 			this.pcs.removePropertyChangeListener(l);
 		}
