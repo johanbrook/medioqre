@@ -41,8 +41,8 @@ public class TestCharacterMove {
 		this.player.move(DELTA);
 		this.enemy.move(DELTA);
 		
-		assertEquals(new Position(0, DELTA*10), this.player.getPosition());
-		assertEquals(new Position(0, DELTA*7), this.enemy.getPosition());
+		assertEquals(new Position(0, -DELTA*10), this.player.getPosition());
+		assertEquals(new Position(0, -DELTA*7), this.enemy.getPosition());
 	}
 	
 	@Test
@@ -50,7 +50,7 @@ public class TestCharacterMove {
 		this.player.setDirection(constants.Direction.SOUTH);
 		this.player.move(DELTA);
 		
-		assertEquals(new Position(0,-1.0), this.player.getPosition());
+		assertEquals(new Position(0,1.0), this.player.getPosition());
 	}
 
 }
