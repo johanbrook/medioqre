@@ -24,9 +24,4 @@ public class AppController {
 		this.game.addObserver(this.view);
 	}
 	
-	public static void main(String[] args) {
-		new AppController();
-	}
-	
-	
 }
