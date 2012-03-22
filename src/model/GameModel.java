@@ -17,24 +17,12 @@ import controller.IObservable;
 public class GameModel implements IObservable {
 	
 	private Character player;
-	private boolean isPlayerMoving;
 	private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	
 	public GameModel() {
 		this.player = new Player(10);
-		this.isPlayerMoving = false;
 	}
 	
-	/**
-	 * Tell the player to move or not.
-	 * 
-	 * @param state True if the player should move, otherwise false
-	 */
-	public void setPlayerMoving(boolean state) {
-		boolean old = this.isPlayerMoving;
-		this.isPlayerMoving = state;
-		this.pcs.firePropertyChange("isPlayerMoving", old, this.isPlayerMoving);
-	}
 	
 	/**
 	 * Updates the player's direction.

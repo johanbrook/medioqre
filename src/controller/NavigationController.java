@@ -35,7 +35,11 @@ public class NavigationController implements KeyListener {
 	
 	private void sendKeyAction(KeyEvent evt, boolean pressedState) {
 		
-		this.game.setPlayerMoving(pressedState);
+		
+		if(!pressedState) {
+			this.game.updateDirection(Direction.ORIGIN);
+			return;
+		}
 		
 		if(this.keys.size() > 1) {
 			// Multiple keys are pressed
@@ -59,6 +63,7 @@ public class NavigationController implements KeyListener {
 			// One single key is pressed - map directly to the direction
 			this.game.updateDirection(this.keyMap.get(evt.getKeyCode()));
 		}
+		
 	}
 	
 	private boolean checkKey(int i) {
@@ -69,16 +74,20 @@ public class NavigationController implements KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent evt) {
-		this.keys.add(evt.getKeyCode());
-		
-		sendKeyAction(evt, true);
+		if(this.keyMap.containsKey(evt.getKeyCode())){
+			this.keys.add(evt.getKeyCode());
+			
+			sendKeyAction(evt, true);
+		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent evt) {
-		this.keys.remove(evt.getKeyCode());
+		if(this.keyMap.containsKey(evt.getKeyCode())){
+			this.keys.remove(evt.getKeyCode());
 		
-		sendKeyAction(evt, !this.keys.isEmpty());
+			sendKeyAction(evt, !this.keys.isEmpty());
+		}
 		
 	}
 
