@@ -21,7 +21,7 @@ public interface IObservable {
 	/**
 	 * Remove all observers.
 	 */
-	public void removeObservers();
+	public void removeAllObservers();
 	
 	/**
 	 * Remove a specifik observer.
