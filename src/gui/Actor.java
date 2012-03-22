@@ -23,10 +23,10 @@ public class Actor {
 		
 		animationFrames = new BufferedImage[4];
 		try {
-			animationFrames[0] = ImageIO.read(new File("/Users/Barber/Documents/workspace/medioqre/rec/images/sprites/frank/frank_left.png"));
-			animationFrames[1] = ImageIO.read(new File("/Users/Barber/Documents/workspace/medioqre/rec/images/sprites/frank/frank_right.png"));
-			animationFrames[2] = ImageIO.read(new File("/Users/Barber/Documents/workspace/medioqre/rec/images/sprites/frank/frank_up.png"));
-			animationFrames[3] = ImageIO.read(new File("/Users/Barber/Documents/workspace/medioqre/rec/images/sprites/frank/frank_down.png"));
+			animationFrames[0] = ImageIO.read(new File("rec/images/sprites/frank/frank_left.png"));
+			animationFrames[1] = ImageIO.read(new File("rec/images/sprites/frank/frank_right.png"));
+			animationFrames[2] = ImageIO.read(new File("rec/images/sprites/frank/frank_up.png"));
+			animationFrames[3] = ImageIO.read(new File("rec/images/sprites/frank/frank_down.png"));
 		
 			currentFrame = animationFrames[3];
 			
