@@ -18,7 +18,7 @@ public class TestEnemy {
 	
 	@Before
 	public void setUp() throws Exception {
-		this.enemy = new Enemy(10);
+		this.enemy = new Enemy(10, 30);
 	}
 
 	@Test

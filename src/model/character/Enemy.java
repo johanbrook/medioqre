@@ -13,10 +13,10 @@ public class Enemy extends Character {
 	
 	private IWeapon melee;
 	
-	public Enemy(int movementSpeed) {
+	public Enemy(int movementSpeed, int damage) {
 		super(movementSpeed);
 		
-		this.melee = new Melee(30);
+		this.melee = new Melee(damage);
 	}
 
 	@Override

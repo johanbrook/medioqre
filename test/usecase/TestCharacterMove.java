@@ -25,7 +25,7 @@ public class TestCharacterMove {
 	@Before
 	public void setUp() throws Exception {
 		this.player = new Player(10);
-		this.enemy = new Enemy(7);
+		this.enemy = new Enemy(7, 30);
 	}
 
 	
