@@ -1,5 +1,6 @@
 package gui;
 
+
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -22,30 +23,26 @@ public class Actor {
 		
 		animationFrames = new BufferedImage[4];
 		try {
-			animationFrames[0] = ImageIO.read(new File("rec/images/sprites/frank/frank_left.png"));
-			animationFrames[1] = ImageIO.read(new File("rec/images/sprites/frank/frank_right.png"));
-			animationFrames[2] = ImageIO.read(new File("rec/images/sprites/frank/frank_up.png"));
-			animationFrames[3] = ImageIO.read(new File("rec/images/sprites/frank/frank_down.png"));
+			animationFrames[0] = ImageIO.read(new File("/Users/Barber/Documents/workspace/medioqre/rec/images/sprites/frank/frank_left.png"));
+			animationFrames[1] = ImageIO.read(new File("/Users/Barber/Documents/workspace/medioqre/rec/images/sprites/frank/frank_right.png"));
+			animationFrames[2] = ImageIO.read(new File("/Users/Barber/Documents/workspace/medioqre/rec/images/sprites/frank/frank_up.png"));
+			animationFrames[3] = ImageIO.read(new File("/Users/Barber/Documents/workspace/medioqre/rec/images/sprites/frank/frank_down.png"));
+		
+			currentFrame = animationFrames[3];
+			
+			for (BufferedImage i : animationFrames) {
+				System.out.println(i.toString());
+			}
+		
+			
 			System.out.println("In here!");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		animationFrames[0] = new BufferedImage(32, 64, BufferedImage.TYPE_INT_ARGB);
-		animationFrames[0].getGraphics().setColor(Color.BLUE);
-		animationFrames[0].getGraphics().fillRect(0, 0, 32, 64);
-		animationFrames[1] = new BufferedImage(32, 64, BufferedImage.TYPE_INT_ARGB);
-		animationFrames[1].getGraphics().setColor(Color.GREEN);
-		animationFrames[1].getGraphics().fillRect(0, 0, 32, 64);
-		animationFrames[2] = new BufferedImage(32, 64, BufferedImage.TYPE_INT_ARGB);
-		animationFrames[2].getGraphics().setColor(Color.RED);
-		animationFrames[2].getGraphics().fillRect(0, 0, 32, 64);
-		animationFrames[3] = new BufferedImage(32, 64, BufferedImage.TYPE_INT_ARGB);
-		animationFrames[3].getGraphics().setColor(Color.YELLOW);
-		animationFrames[3].getGraphics().fillRect(0, 0, 32, 64);
-		
-		currentFrame = animationFrames[3];
 	}
 
+	
+	
 	public BufferedImage getCurrentImage() {
 		return currentFrame;
 	}
