@@ -6,7 +6,7 @@
 
 **Frank the Tank** is an eight week project where we're building a 2D game from the ground up. That is: no graphics libraries or frameworks – we're writing all the rendering code ourselves. 
 
-The goal is to create a simple game yet with stunning gameplay and beautiful retro pixel graphics. Know Mojang's Catacomb Snatch? Well, there you go.
+The goal is to create a simple game yet with stunning gameplay and beautiful retro pixel graphics. Know Mojang's Catacomb Snatch? If you are – well, there you go.
 
 ## Game play
 
@@ -19,18 +19,21 @@ As a help, the player has a couple of neat things:
 - A couple of really hurtful grenades
 - A Portal Gun!
 
+## Documents
+
+For relevant course related documents, please check the [docs](https://github.com/johanbrook/medioqre/tree/master/docs) directory.
+
 ## Related projects
 
 Supporting code.
 
 - [Barber's rendering engine tests](https://github.com/JBarberU/RenderingTest)
-- [Toolkit](https://github.com/JBarberU/Medioqre-ToolKit-V2)
+- [Barber's toolkit](https://github.com/JBarberU/Medioqre-ToolKit-V2)
+- [Jesper's implementation of the AStar algorithm](https://github.com/Pungsnigel/AStar)
+- [Chris's Audio Engine for the game](https://github.com/chrisnordqvist/FrankAudioEngine)
 - [Johan's "Medioqre GitHub Notifier"](https://github.com/johanbrook/github-facebook-hook)
 
-### Why Java?
-Since it's a language all of the group members know, and there are lots of resources for 2D games written in Java.
-
-### We are
+## We are
 
 - [John Barbero Unenge](http://github.com/JBarberU)
 - [Chris Nordqvist](http://github.com/chrisnordqvist)
