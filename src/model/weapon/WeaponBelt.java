@@ -45,10 +45,11 @@ public class WeaponBelt {
 	/**
 	 * Get the weapon in the belt from a certain slot.
 	 * 
-	 * @param slot The slot
+	 * @param slot The slot where the weapon is (0 < slot < size())
 	 * @return The weapon on that slot
+	 * @throws IndexOutOfBoundsException If no weapon exists in this slot
 	 */
-	public IWeapon getWeapon(int slot) {
+	public IWeapon getWeapon(int slot) throws IndexOutOfBoundsException {
 		return this.weapons.get(slot);
 	}
 	
@@ -68,6 +69,5 @@ public class WeaponBelt {
 		
 		return null;
 	}
-	
 	
 }
