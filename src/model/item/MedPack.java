@@ -6,14 +6,14 @@
 
 package model.item;
 
-import java.awt.Dimension;
+import java.awt.Rectangle;
 
 import model.CollidableObject;
 import model.Position;
 
 public class MedPack extends CollidableObject implements ICollectableItem {
 
-	public MedPack(Dimension collBox, Position pos, Position offset) {
+	public MedPack(Rectangle collBox, Position pos, Position offset) {
 		super(collBox, pos, offset);
 		// TODO Auto-generated constructor stub
 	}

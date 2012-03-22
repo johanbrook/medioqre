@@ -6,7 +6,8 @@
 
 package model.item;
 
-import java.awt.Dimension;
+import java.awt.Rectangle;
+
 import model.CollidableObject;
 import model.Position;
 import model.weapon.IWeapon;
@@ -16,7 +17,7 @@ public class AmmoCrate extends CollidableObject implements ICollectableItem {
 	private IWeapon type;
 	private double amount;
 	
-	public AmmoCrate(Dimension collBox, Position pos, Position offset, IWeapon type, double amount) {
+	public AmmoCrate(Rectangle collBox, Position pos, Position offset, IWeapon type, double amount) {
 		super(collBox, pos, offset);
 		
 		this.type = type;

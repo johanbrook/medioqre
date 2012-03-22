@@ -1,5 +1,7 @@
 package model;
 
+import java.awt.Rectangle;
+
 /**
  * The collidable object super class
  * 
@@ -8,16 +10,20 @@ package model;
  */
 public abstract class CollidableObject {
 	
-	private java.awt.Dimension collisionBox;
+	private Rectangle collisionBox;
 	private Position position;
 	private Position offset;
 	
 	// Temp constructor
 	public CollidableObject(){
-		this(new java.awt.Dimension(1,1), new Position(0,0), new Position(0,0));
+		this(new Rectangle(), new Position(0,0));
 	}
 	
-	public CollidableObject(java.awt.Dimension collBox, Position position, Position offset){
+	public CollidableObject(Rectangle collisionBox, Position offset) {
+		this(collisionBox, new Position(collisionBox.getX(), collisionBox.getY()), offset);
+	}
+	
+	public CollidableObject(Rectangle collBox, Position position, Position offset){
 		this.collisionBox = collBox;
 		this.position = position;
 		this.offset = offset;
@@ -40,6 +46,8 @@ public abstract class CollidableObject {
 	 */
 	public void setPosition(Position pos){
 		this.position = pos;
+		this.collisionBox.x = (int)pos.getX();
+		this.collisionBox.y = (int)pos.getY();
 	}
 	
 	/**
@@ -49,7 +57,12 @@ public abstract class CollidableObject {
 	 * @param y The Y coordinate
 	 */
 	public void setPosition(double x, double y) {
+		
+		//@todo Need to refactor: we shouldn't keep track of both
+		// the collision box's position and our own.
 		this.position = new Position(x, y);
+		this.collisionBox.x = (int)x;
+		this.collisionBox.y = (int)y;
 	}
 	
 	
@@ -58,13 +71,12 @@ public abstract class CollidableObject {
 	 * 
 	 * @return The collision box
 	 */
-	public java.awt.Dimension getCollisionBox(){
+	public Rectangle getCollisionBox(){
 		return this.collisionBox;
 	}
 	
 	public boolean isColliding(CollidableObject obj){
-		//@todo Implement this
 		
-		return false;
+		return this.collisionBox.intersects(obj.getCollisionBox());
 	}
 }

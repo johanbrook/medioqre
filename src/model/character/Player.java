@@ -16,6 +16,9 @@ public class Player extends Character {
 	private IWeapon currentWeapon;
 	private WeaponBelt belt;
 	
+	public Player() {
+		this(10);
+	}
 	
 	public Player(int movementSpeed){
 		super(movementSpeed);

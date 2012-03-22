@@ -7,6 +7,8 @@
 
 package model.character;
 
+import java.awt.Rectangle;
+
 import model.Entity;
 
 public abstract class Character extends Entity {
@@ -14,7 +16,12 @@ public abstract class Character extends Entity {
 	private int health;
 	
 	public Character(int movementSpeed) {
-		super(movementSpeed);
+		//@todo Fix this. Just scaffolding code
+		this(movementSpeed, new Rectangle(0, 0, 10, 10));
+	}
+	
+	public Character(int movementSpeed, Rectangle box) {
+		super(movementSpeed, box);
 		this.health = 100;
 	}
 	
