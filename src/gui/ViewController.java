@@ -12,8 +12,17 @@ import java.beans.PropertyChangeListener;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
+import constants.Direction;
+
 import model.Position;
 
+
+/**
+ * A GUI-Interface in BASIC so we can track the IP-address.
+ * 
+ * @author Barber
+ *
+ */
 public class ViewController implements Runnable, PropertyChangeListener {
 
 	// FPS
@@ -68,10 +77,14 @@ public class ViewController implements Runnable, PropertyChangeListener {
 				// Drawing
 				g.setColor(Color.RED);
 				g.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-				g.setColor(Color.GREEN);
-				g.fillRect((int) player.getPosition().getX(), (int) player
-						.getPosition().getY(), 32, 64);
-
+//				g.setColor(Color.GREEN);
+//				g.fillRect((int) player.getPosition().getX(), (int) player
+//						.getPosition().getY(), 32, 64);
+				if (player.getCurrentImage() != null) {
+					g.drawImage(player.getCurrentImage(), (int) player.getPosition().getX(), (int) player.getPosition().getY(), player.getCurrentImage().getWidth(), player.getCurrentImage().getHeight(), null);
+				} else 
+					System.out.println("Playerimage is null!");
+				
 				g.dispose();
 			} while (bufferStrategy.contentsRestored());
 			bufferStrategy.show();
@@ -92,6 +105,7 @@ public class ViewController implements Runnable, PropertyChangeListener {
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
+		player.setDirection((Direction) evt.getNewValue());
 		System.out.println(evt.getPropertyName() + " " + evt.getNewValue());
 	}
 }
