@@ -6,11 +6,16 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
+
+import barber.graphics.bitmap.Bitmap;
+import barber.graphics.bitmap.BitmapTool;
 
 import constants.Direction;
 
@@ -30,11 +35,19 @@ public class ViewController implements PropertyChangeListener {
 	private final int SCREEN_HEIGHT;
 	private BufferStrategy bufferStrategy;
 	private Actor player;
+	private Bitmap screen;
+	private BufferedImage screenImage;
 
 	public ViewController(KeyListener listener, int screenWidth, int screenHeight) {
 		SCREEN_WIDTH = screenWidth;
 		SCREEN_HEIGHT = screenHeight;
 
+		screenImage = new BufferedImage(SCREEN_WIDTH, SCREEN_HEIGHT, BufferedImage.TYPE_INT_ARGB);
+		
+		screen = new Bitmap(SCREEN_WIDTH, SCREEN_HEIGHT);
+		screen.pixels = BitmapTool.getARGBarrayFromDataBuffer(screenImage.getRaster().getDataBuffer(), SCREEN_WIDTH, SCREEN_HEIGHT);
+		screen.clear(0xff0000ff);
+		
 		initScene();
 
 		// Creating the frame
@@ -67,14 +80,14 @@ public class ViewController implements PropertyChangeListener {
 			do {
 				Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
 
-				// Drawing
-				g.setColor(Color.RED);
-				g.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-			
-				if (player.getCurrentImage() != null) {
-					g.drawImage(player.getCurrentImage(), (int) player.getPosition().getX(), (int) player.getPosition().getY(), player.getCurrentImage().getWidth(), player.getCurrentImage().getHeight(), null);
+				screen.clear(0xffff00ff);
+				
+				if (player.getCurrentFrame() != null) {
+					screen.blit(player.getCurrentFrame(), (int) player.getPosition().getX(), (int) player.getPosition().getY());
 				} else 
 					System.out.println("Playerimage is null!");
+
+				g.drawImage(screenImage, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, null);
 				
 				g.dispose();
 			} while (bufferStrategy.contentsRestored());

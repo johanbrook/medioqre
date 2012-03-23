@@ -3,10 +3,14 @@ package gui;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+
+import barber.graphics.bitmap.Bitmap;
+import barber.graphics.bitmap.BitmapTool;
 
 import constants.Direction;
 
@@ -15,27 +19,34 @@ import model.Position;
 public class Actor {
 
 	private Position position;
-	private BufferedImage[] animationFrames;
-	private BufferedImage currentFrame;
+	private Bitmap[] animationFrames;
+	private Bitmap currentFrame;
 	
 	public Actor(Position startingPosition) {
 		this.position = new Position(startingPosition);
 		
-		animationFrames = new BufferedImage[4];
+		animationFrames = new Bitmap[4];
 		try {
-			animationFrames[0] = ImageIO.read(new File("rec/images/sprites/frank/frank_left.png"));
-			animationFrames[1] = ImageIO.read(new File("rec/images/sprites/frank/frank_right.png"));
-			animationFrames[2] = ImageIO.read(new File("rec/images/sprites/frank/frank_up.png"));
-			animationFrames[3] = ImageIO.read(new File("rec/images/sprites/frank/frank_down.png"));
-		
+			BufferedImage img0 = ImageIO.read(new File("rec/images/sprites/frank/frank_left.png"));
+			animationFrames[0] = new Bitmap(img0.getWidth(), img0.getHeight());
+			animationFrames[0].pixels = BitmapTool.getARGBarrayFromDataBuffer(img0.getRaster().getDataBuffer(), img0.getWidth(), img0.getHeight());
+			
+			BufferedImage img1 = ImageIO.read(new File("rec/images/sprites/frank/frank_right.png"));
+			animationFrames[1] = new Bitmap(img1.getWidth(), img1.getHeight());
+			animationFrames[1].pixels = BitmapTool.getARGBarrayFromDataBuffer(img1.getRaster().getDataBuffer(), img1.getWidth(), img1.getHeight());
+			
+			BufferedImage img2 = ImageIO.read(new File("rec/images/sprites/frank/frank_up.png"));
+			animationFrames[2] = new Bitmap(img2.getWidth(), img2.getHeight());
+			animationFrames[2].pixels = BitmapTool.getARGBarrayFromDataBuffer(img2.getRaster().getDataBuffer(), img2.getWidth(), img2.getHeight());
+			
+			BufferedImage img3 = ImageIO.read(new File("rec/images/sprites/frank/frank_down.png"));
+//			BufferedImage img3 = ImageIO.read(new File("rec/images/test/t1.png"));
+			animationFrames[3] = new Bitmap(img3.getWidth(), img3.getHeight());
+			animationFrames[3].pixels = BitmapTool.getARGBarrayFromDataBuffer(img3.getRaster().getDataBuffer(), img3.getWidth(), img3.getHeight());
+			
+			
+			
 			currentFrame = animationFrames[3];
-			
-			for (BufferedImage i : animationFrames) {
-				System.out.println(i.toString());
-			}
-		
-			
-			System.out.println("In here!");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -43,7 +54,7 @@ public class Actor {
 
 	
 	
-	public BufferedImage getCurrentImage() {
+	public Bitmap getCurrentFrame() {
 		return currentFrame;
 	}
 	
