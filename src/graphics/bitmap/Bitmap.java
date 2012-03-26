@@ -1,4 +1,4 @@
-package barber.graphics.bitmap;
+package graphics.bitmap;
 
 import java.awt.Color;
 import java.util.Arrays;

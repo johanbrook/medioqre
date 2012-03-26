@@ -1,6 +1,9 @@
 package gui;
 
 
+import graphics.bitmap.Bitmap;
+import graphics.bitmap.BitmapTool;
+
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
@@ -9,8 +12,6 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import barber.graphics.bitmap.Bitmap;
-import barber.graphics.bitmap.BitmapTool;
 
 import constants.Direction;
 
@@ -43,8 +44,6 @@ public class Actor {
 //			BufferedImage img3 = ImageIO.read(new File("rec/images/test/t1.png"));
 			animationFrames[3] = new Bitmap(img3.getWidth(), img3.getHeight());
 			animationFrames[3].pixels = BitmapTool.getARGBarrayFromDataBuffer(img3.getRaster().getDataBuffer(), img3.getWidth(), img3.getHeight());
-			
-			
 			
 			currentFrame = animationFrames[3];
 		} catch (IOException e) {

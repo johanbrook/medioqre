@@ -1,4 +1,4 @@
-package barber.graphics.bitmap;
+package graphics.bitmap;
 
 import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferByte;
