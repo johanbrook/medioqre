@@ -33,4 +33,8 @@ public enum EventBus {
 			handler.onEvent(event);
 		}
 	}
+	
+	public List<IEventHandler> getHandlers() {
+		return this.handlers;
+	}
 }
