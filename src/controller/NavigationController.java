@@ -61,9 +61,9 @@ public class NavigationController implements KeyListener {
 		}
 		else {
 			// One single key is pressed - map directly to the direction
-			this.game.updateDirection(this.keyMap.get(evt.getKeyCode()));
+			Object[] arr = this.keys.toArray();
+			this.game.updateDirection(this.keyMap.get(arr[0]));
 		}
-		
 	}
 	
 	private boolean checkKey(int i) {
@@ -85,7 +85,7 @@ public class NavigationController implements KeyListener {
 	public void keyReleased(KeyEvent evt) {
 		if(this.keyMap.containsKey(evt.getKeyCode())){
 			this.keys.remove(evt.getKeyCode());
-		
+			
 			sendKeyAction(evt, !this.keys.isEmpty());
 		}
 		
