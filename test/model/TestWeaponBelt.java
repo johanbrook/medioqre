@@ -81,19 +81,16 @@ public class TestWeaponBelt {
 
 		@Override
 		public boolean fire() {
-			// TODO Auto-generated method stub
 			return false;
 		}
 
 		@Override
 		public int getAmmo() {
-			// TODO Auto-generated method stub
 			return 0;
 		}
 
 		@Override
 		public int getDamage() {
-			// TODO Auto-generated method stub
 			return 0;
 		}
 		

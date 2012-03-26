@@ -10,19 +10,16 @@ public class PortalGun implements IWeapon {
 
 	@Override
 	public boolean fire() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	public int getAmmo() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public int getDamage() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 	
