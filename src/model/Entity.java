@@ -54,20 +54,31 @@ public abstract class Entity extends CollidableObject {
 		
 		EventBus.INSTANCE.publish(new Event(Property.DID_MOVE, this));
 		
-		//System.out.println("x: "+x +" y: "+y + " dt: "+dt);
+	}
+	
+	public void stop(Direction lastDir) {
+		this.movementSpeed = 0;
+		
+		if(this.direction != lastDir)	
+			EventBus.INSTANCE.publish(new Event(Property.DID_STOP, this));
 	}
 	
 	public void setDirection(Direction dir) {
 		if (this.direction != dir) {
 			this.direction = dir;
+			EventBus.INSTANCE.publish(new Event(Property.CHANGED_DIRECTION, this));
 		}
-		
-		EventBus.INSTANCE.publish(new Event(Property.CHANGED_DIRECTION, this));
 	}
 	
 	public Direction getDirection() {
 		return this.direction;
 	}
+	
+	
+	public boolean isMoving() {
+		return this.movementSpeed > 0;
+	}
+
 	
 	public void destroy(){
 		//@todo Should the model destroy itself?
