@@ -52,15 +52,14 @@ public abstract class Entity extends CollidableObject {
 			setPosition(x, currPos.getY());
 		}
 		
-		EventBus.INSTANCE.publish(new Event(Property.DID_MOVE, this));
+		//EventBus.INSTANCE.publish(new Event(Property.DID_MOVE, this));
 		
 	}
 	
-	public void stop(Direction lastDir) {
+	public void stop() {
 		this.movementSpeed = 0;
 		
-		if(this.direction != lastDir)	
-			EventBus.INSTANCE.publish(new Event(Property.DID_STOP, this));
+		EventBus.INSTANCE.publish(new Event(Property.DID_STOP, this));
 	}
 	
 	public void setDirection(Direction dir) {
