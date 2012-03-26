@@ -29,12 +29,21 @@ public class AppController implements Runnable{
 
 	@Override
 	public void run() {
+		long lastLoopTime = System.nanoTime();
+		final long optimalTime = 1000000000 / FPS;
+		
 		while(!Thread.interrupted()) {
+			long now = System.nanoTime();
+			long updateLength = now - lastLoopTime;
+			lastLoopTime = now;
+			
+			double dt = updateLength / ((double) optimalTime);
+			
+			game.update(dt);
+			view.render(dt);
+			
 			try {
 				Thread.sleep(1000/FPS);
-				double dt = 0;
-				game.update(dt);
-				view.render(dt);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

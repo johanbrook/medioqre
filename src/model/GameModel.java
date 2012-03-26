@@ -29,6 +29,7 @@ public class GameModel implements IObservable {
 	 */
 	public void update(double dt) {
 		// Nothing implemented here yet.
+		this.player.move(dt);
 	}
 	
 	/**

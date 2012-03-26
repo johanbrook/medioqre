@@ -48,6 +48,8 @@ public abstract class Entity extends CollidableObject {
 		case EAST:
 			setPosition(x, currPos.getY());
 		}
+		
+		//System.out.println("x: "+x +" y: "+y + " dt: "+dt);
 	}
 	
 	public void setDirection(Direction dir) {
