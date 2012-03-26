@@ -11,6 +11,7 @@ import static org.junit.Assert.*;
 import model.character.Player;
 import model.weapon.Sword;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -47,6 +48,27 @@ public class TestEventBus {
 	public void testSource() {
 		Player p = (Player) this.handler.getEvent().getValue();
 		assertEquals(this.publisher, p);
+	}
+	
+	
+	@Test
+	public void testRemoveHandlers() {
+		EventBus.INSTANCE.remove(this.handler);
+		
+		assertTrue(EventBus.INSTANCE.getHandlers().isEmpty());
+	}
+	
+	
+	@Test
+	public void testRemoveHandler() {
+		EventBus.INSTANCE.remove(this.handler);
+		
+		assertFalse(EventBus.INSTANCE.getHandlers().contains(this.handler));
+	}
+	
+	@After
+	public void cleanup() {
+		EventBus.INSTANCE.removeAll();
 	}
 	
 	private class Subscriber implements IEventHandler {
