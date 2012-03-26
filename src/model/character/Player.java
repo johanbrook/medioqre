@@ -7,6 +7,9 @@
 package model.character;
 
 
+import event.Event;
+import event.Event.Property;
+import event.EventBus;
 import model.Projectile;
 import model.weapon.*;
 
@@ -30,11 +33,13 @@ public class Player extends Character {
 	
 	public void setCurrentWeapon(int slot) {
 		this.currentWeapon = this.belt.getWeapon(slot);
+		EventBus.INSTANCE.publish(new Event(Property.CHANGED_WEAPON, this));
 	}
 	
 	
 	public void setCurrentWeapon(Class<? extends IWeapon> type) {
 		this.currentWeapon = this.belt.getWeapon(type);
+		EventBus.INSTANCE.publish(new Event(Property.CHANGED_WEAPON, this));
 	}
 	
 	public IWeapon getCurrentWeapon(){
@@ -55,5 +60,6 @@ public class Player extends Character {
 	public void attack(Character target) {
 		//@todo Still not sure of the flow here
 		this.fireWeapon();
+		EventBus.INSTANCE.publish(new Event(Property.DID_ATTACK, this));
 	}
 }

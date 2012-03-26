@@ -8,8 +8,6 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
@@ -18,7 +16,10 @@ import barber.graphics.bitmap.Bitmap;
 import barber.graphics.bitmap.BitmapTool;
 
 import constants.Direction;
+import event.Event;
+import event.IEventHandler;
 
+import model.Entity;
 import model.Position;
 
 
@@ -28,7 +29,7 @@ import model.Position;
  * @author Barber
  *
  */
-public class ViewController implements PropertyChangeListener {
+public class ViewController implements IEventHandler {
 
 	// Screen
 	private final int SCREEN_WIDTH;
@@ -94,10 +95,12 @@ public class ViewController implements PropertyChangeListener {
 			bufferStrategy.show();
 		} while (bufferStrategy.contentsLost());
 	}
-	
+
+
 	@Override
-	public void propertyChange(PropertyChangeEvent evt) {
-		player.setDirection((Direction) evt.getNewValue());
-		System.out.println(evt.getPropertyName() + " " + evt.getNewValue());
+	public void onEvent(Event evt) {
+		Entity p = (Entity) evt.getValue();
+		player.setDirection(p.getDirection());
+		System.out.println(evt.getProperty() + " " + evt.getValue());
 	}
 }

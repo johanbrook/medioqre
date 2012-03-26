@@ -9,6 +9,10 @@ package model.character;
 
 import java.awt.Rectangle;
 
+import event.Event;
+import event.EventBus;
+import event.Event.Property;
+
 import model.Entity;
 
 public abstract class Character extends Entity {
@@ -29,6 +33,8 @@ public abstract class Character extends Entity {
 		this.health -= dmg;
 		if(this.health <= 0)
 			this.destroy();
+		
+		EventBus.INSTANCE.publish(new Event(Property.WAS_DAMAGED, this));
 	}
 	
 	

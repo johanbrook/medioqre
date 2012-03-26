@@ -6,6 +6,9 @@
 
 package model.character;
 
+import event.Event;
+import event.EventBus;
+import event.Event.Property;
 import model.weapon.IWeapon;
 import model.weapon.Melee;
 
@@ -22,6 +25,7 @@ public class Enemy extends Character {
 	@Override
 	public void attack(Character target) {
 		target.takeDamage(this.melee.getDamage());
+		EventBus.INSTANCE.publish(new Event(Property.DID_ATTACK, this));
 	}
 	
 	@Override

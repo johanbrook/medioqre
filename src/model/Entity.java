@@ -7,6 +7,9 @@
 package model;
 
 import constants.Direction;
+import event.Event;
+import event.EventBus;
+import event.Event.Property;
 
 public abstract class Entity extends CollidableObject {
 	
@@ -49,6 +52,8 @@ public abstract class Entity extends CollidableObject {
 			setPosition(x, currPos.getY());
 		}
 		
+		EventBus.INSTANCE.publish(new Event(Property.DID_MOVE, this));
+		
 		//System.out.println("x: "+x +" y: "+y + " dt: "+dt);
 	}
 	
@@ -56,6 +61,8 @@ public abstract class Entity extends CollidableObject {
 		if (this.direction != dir) {
 			this.direction = dir;
 		}
+		
+		EventBus.INSTANCE.publish(new Event(Property.CHANGED_DIRECTION, this));
 	}
 	
 	public Direction getDirection() {
@@ -64,10 +71,8 @@ public abstract class Entity extends CollidableObject {
 	
 	public void destroy(){
 		//@todo Should the model destroy itself?
+		EventBus.INSTANCE.publish(new Event(Property.WAS_DESTROYED, this));
 	}
 	
-	public void addObserver(){
-		
-	}
 	
 }

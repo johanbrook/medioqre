@@ -6,6 +6,7 @@
 
 package controller;
 
+import event.EventBus;
 import gui.ViewController;
 import model.GameModel;
 
@@ -21,7 +22,7 @@ public class AppController implements Runnable{
 		this.game = new GameModel();
 		this.view = new ViewController(new NavigationController(this.game), 400, 300);
 		
-		this.game.addObserver(this.view);
+		EventBus.INSTANCE.register(this.view);
 		Thread t = new Thread(this);
 		t.start();
 	}
