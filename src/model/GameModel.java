@@ -13,9 +13,11 @@ import constants.Direction;
 public class GameModel {
 	
 	private Character player;
+	private Direction lastPlayerDirection;
 	
 	public GameModel() {
 		this.player = new Player(10);
+		this.lastPlayerDirection = this.player.getDirection();
 	}
 	
 	/**
@@ -34,7 +36,12 @@ public class GameModel {
 	 * @see Direction
 	 */
 	public void updateDirection(Direction dir) {
+		this.lastPlayerDirection = dir;
 		this.player.setDirection(dir);
+	}
+	
+	public void stopPlayer(){
+		this.player.stop(this.lastPlayerDirection);
 	}
 	
 	
