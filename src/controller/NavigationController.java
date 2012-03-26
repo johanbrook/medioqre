@@ -33,11 +33,11 @@ public class NavigationController implements KeyListener {
 	}
 	
 	
-	private void sendKeyAction(KeyEvent evt, boolean pressedState) {
+	private void sendKeyAction(KeyEvent evt, boolean keyIsPressed) {
 		
 		
-		if(!pressedState) {
-			this.game.updateDirection(Direction.ORIGIN);
+		if(!keyIsPressed) {
+			this.game.stopPlayer();
 			return;
 		}
 		
