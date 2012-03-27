@@ -1,6 +1,9 @@
 package gui.tilemap;
 
+import java.awt.Rectangle;
 import java.io.IOException;
+
+import model.Position;
 
 /**
  * A class used for the visual representation of the gameworld.
@@ -17,6 +20,9 @@ public class TileMap {
 	 */
 	public TileMap(String mapURL) throws IOException {
 		TileMapIO.getTileMatrixFromImg(mapURL);
+	}
+	public Tile[] getVisibleTiles(Rectangle screenRect) {
+		return null;
 	}
 	
 }
