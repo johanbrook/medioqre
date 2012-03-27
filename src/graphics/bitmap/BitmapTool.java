@@ -3,11 +3,14 @@ package graphics.bitmap;
 import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferByte;
 import java.awt.image.DataBufferInt;
+import java.awt.image.Raster;
 
 public class BitmapTool {
 
-	public static int[] getARGBarrayFromDataBuffer(DataBuffer buffer, int imageWidth, int imageHeight)
+	public static int[] getARGBarrayFromDataBuffer(Raster raster, int imageWidth, int imageHeight)
 	{
+		DataBuffer buffer = raster.getDataBuffer();
+		
 		if (buffer.getClass() == DataBufferByte.class) {
 			System.out.println("Getting pixels from DataBufferByte");
 			
