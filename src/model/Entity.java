@@ -34,23 +34,17 @@ public abstract class Entity extends CollidableObject {
 		
 		// Upper left corner is origin
 		
-		double x = currPos.getX() + (dt*this.movementSpeed);
-		double y = currPos.getY() + (dt*this.movementSpeed);
-		
-		//@todo Move in the other four directions
-		switch(this.direction) {
-		case NORTH:
-			setPosition(currPos.getX(), -y);
-			break;
-		case SOUTH:
-			setPosition(currPos.getX(), y);
-			break;
-		case WEST:
-			setPosition(-x, currPos.getY());
-			break;
-		case EAST:
-			setPosition(x, currPos.getY());
+		if(isMoving()){
+			double x = this.direction.getXRatio() * this.movementSpeed * dt;		
+			double y = this.direction.getYRatio() * this.movementSpeed * dt;
+			
+			this.setPosition(currPos.getX() + x, currPos.getY() + y);
+			
+//			System.out.println("xratio:\t"+this.direction.getXRatio() +",\tyratio:\t"+this.direction.getYRatio());
+//			System.out.println("x:\t"+x +",\ty:\t"+y + ",\tdt:\t"+dt);
+			System.out.println("x:\t"+(int)getPosition().getX() + ",\ty:\t"+(int)getPosition().getY());
 		}
+		
 		
 		//EventBus.INSTANCE.publish(new Event(Property.DID_MOVE, this));
 		
@@ -63,6 +57,8 @@ public abstract class Entity extends CollidableObject {
 	}
 	
 	public void setDirection(Direction dir) {
+		this.movementSpeed = 5;
+		
 		if (this.direction != dir) {
 			this.direction = dir;
 			EventBus.INSTANCE.publish(new Event(Property.CHANGED_DIRECTION, this));

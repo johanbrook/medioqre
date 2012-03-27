@@ -43,6 +43,7 @@ public class NavigationController implements KeyListener {
 	
 	private void sendKeyAction(KeyEvent evt, boolean keyIsPressed) {
 		
+		
 		if(this.isQuick){
 			
 			if(this.cachedKeys.contains(KeyEvent.VK_W) && this.cachedKeys.contains(KeyEvent.VK_A)) {
@@ -59,6 +60,11 @@ public class NavigationController implements KeyListener {
 			}
 			
 			this.isQuick = false;
+			
+			if(!keyIsPressed) {
+				this.game.stopPlayer();
+			}
+			
 			return;
 		}
 		
@@ -66,8 +72,6 @@ public class NavigationController implements KeyListener {
 			this.game.stopPlayer();
 			return;
 		}
-		
-		
 		
 		
 		if(this.keys.size() > 1) {
