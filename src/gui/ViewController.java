@@ -37,7 +37,7 @@ public class ViewController implements IEventHandler {
 	private final int SCREEN_HEIGHT;
 	private BufferStrategy bufferStrategy;
 	private Actor player;
-	private Screen screen;
+	private Bitmap screen;
 	private BufferedImage screenImage;
 
 	public ViewController(KeyListener listener, int screenWidth, int screenHeight) {
@@ -46,7 +46,7 @@ public class ViewController implements IEventHandler {
 
 		screenImage = new BufferedImage(SCREEN_WIDTH, SCREEN_HEIGHT, BufferedImage.TYPE_INT_ARGB);
 		
-		screen = new Screen(SCREEN_WIDTH, SCREEN_HEIGHT,BitmapTool.getARGBarrayFromDataBuffer(screenImage.getRaster().getDataBuffer(), SCREEN_WIDTH, SCREEN_HEIGHT));
+		screen = new Bitmap(SCREEN_WIDTH, SCREEN_HEIGHT,BitmapTool.getARGBarrayFromDataBuffer(screenImage.getRaster().getDataBuffer(), SCREEN_WIDTH, SCREEN_HEIGHT));
 		
 		initScene();
 
@@ -86,7 +86,7 @@ public class ViewController implements IEventHandler {
 					screen.blit(player.getCurrentFrame(), (int) player.getPosition().getX(), (int) player.getPosition().getY());
 				} else 
 					System.out.println("Playerimage is null!");
-
+				
 				g.drawImage(screenImage, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, null);
 				
 				g.dispose();
