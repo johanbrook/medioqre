@@ -45,11 +45,14 @@ public class TestCollidableObject {
 	public void testCharacterCollision() {
 		Character player = new Player();
 		player.setDirection(Direction.EAST);
-		player.move(1.5);
+		player.move(1.0);
 		player.setDirection(Direction.SOUTH);
 		player.move(1.0);
 		
-		this.obj.setPosition(15, 10);
+		this.obj.setPosition(15, -10);
+		
+		System.out.println(this.obj.getPosition());
+		System.out.println(player.getPosition());
 		
 		assertTrue(this.obj.isColliding(player));
 	}

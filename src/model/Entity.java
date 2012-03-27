@@ -14,6 +14,7 @@ import event.Event.Property;
 public abstract class Entity extends CollidableObject {
 	
 	private int movementSpeed;
+	private boolean isMoving;
 	private Direction direction;
 	
 	//@todo Temp constructor
@@ -25,13 +26,19 @@ public abstract class Entity extends CollidableObject {
 		super(box, offset);
 		this.movementSpeed = movementSpeed;
 		this.direction = Direction.ORIGIN;
+		this.isMoving = false;
 	}
 	
 	
-	// 0 < dt < 1
+	/**
+	 * Move in a certain direction.
+	 * 
+	 * @param dt Delta time
+	 * @see setDirection()
+	 */
 	public void move(double dt) {
 		Position currPos = getPosition();
-		
+
 		// Upper left corner is origin
 		
 		if(isMoving()){
@@ -40,9 +47,7 @@ public abstract class Entity extends CollidableObject {
 			
 			this.setPosition(currPos.getX() + x, currPos.getY() + y);
 			
-//			System.out.println("xratio:\t"+this.direction.getXRatio() +",\tyratio:\t"+this.direction.getYRatio());
-//			System.out.println("x:\t"+x +",\ty:\t"+y + ",\tdt:\t"+dt);
-			System.out.println("x:\t"+(int)getPosition().getX() + ",\ty:\t"+(int)getPosition().getY());
+			System.out.println("x:\t"+getPosition().getX() + ",\ty:\t"+getPosition().getY());
 		}
 		
 		
@@ -51,13 +56,13 @@ public abstract class Entity extends CollidableObject {
 	}
 	
 	public void stop() {
-		this.movementSpeed = 0;
+		this.isMoving = false;
 		
 		EventBus.INSTANCE.publish(new Event(Property.DID_STOP, this));
 	}
 	
 	public void setDirection(Direction dir) {
-		this.movementSpeed = 5;
+		this.isMoving = true;
 		
 		if (this.direction != dir) {
 			this.direction = dir;
@@ -71,7 +76,7 @@ public abstract class Entity extends CollidableObject {
 	
 	
 	public boolean isMoving() {
-		return this.movementSpeed > 0;
+		return this.isMoving;
 	}
 
 	
