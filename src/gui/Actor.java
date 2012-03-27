@@ -41,15 +41,9 @@ public class Actor {
 			animationFrames[2].pixels = BitmapTool.getARGBarrayFromDataBuffer(img2.getRaster(), img2.getWidth(), img2.getHeight());
 			
 			BufferedImage img3 = ImageIO.read(new File("rec/images/sprites/frank/tank_down.png"));
-//			BufferedImage img3 = ImageIO.read(new File("rec/images/test/t1.png"));
 			animationFrames[3] = new Bitmap(img3.getWidth(), img3.getHeight());
 			animationFrames[3].pixels = BitmapTool.getARGBarrayFromDataBuffer(img3.getRaster(), img3.getWidth(), img3.getHeight());
 			
-			
-//			animationFrames[0].clear(0xffff0000);
-//			animationFrames[1].clear(0xff00ff00);
-//			animationFrames[2].clear(0xff0000ff);
-//			animationFrames[3].clear(0xff00ffff);
 			
 			currentFrame = animationFrames[3];
 		} catch (IOException e) {
