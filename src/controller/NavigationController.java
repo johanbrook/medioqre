@@ -21,9 +21,17 @@ public class NavigationController implements KeyListener {
 	private Map<Integer, Direction> keyMap;
 	private GameModel game;
 	
+	private boolean isQuick = false;
+	private Set<Integer> cachedKeys;
+	
+	private long start;
+	private final double EPSILON = 0.2;
+	
 	public NavigationController(GameModel game) {
 		this.keys = new HashSet<Integer>();
 		this.keyMap = new HashMap<Integer, Direction>();
+		this.cachedKeys = new HashSet<Integer>();
+		
 		this.game = game;
 		
 		this.keyMap.put(KeyEvent.VK_W, Direction.NORTH);
@@ -35,11 +43,32 @@ public class NavigationController implements KeyListener {
 	
 	private void sendKeyAction(KeyEvent evt, boolean keyIsPressed) {
 		
+		if(this.isQuick){
+			
+			if(this.cachedKeys.contains(KeyEvent.VK_W) && this.cachedKeys.contains(KeyEvent.VK_A)) {
+				this.game.updateDirection(Direction.NORTH_WEST);
+			}
+			else if(this.cachedKeys.contains(KeyEvent.VK_W) && this.cachedKeys.contains(KeyEvent.VK_D)) {
+				this.game.updateDirection(Direction.NORTH_EAST);
+			}
+			else if(this.cachedKeys.contains(KeyEvent.VK_S) && this.cachedKeys.contains(KeyEvent.VK_A)) {
+				this.game.updateDirection(Direction.SOUTH_WEST);
+			}
+			else if(this.cachedKeys.contains(KeyEvent.VK_S) && this.cachedKeys.contains(KeyEvent.VK_D)) {
+				this.game.updateDirection(Direction.SOUTH_EAST);
+			}
+			
+			this.isQuick = false;
+			return;
+		}
 		
-		if(!keyIsPressed) {
+		else if(!keyIsPressed) {
 			this.game.stopPlayer();
 			return;
 		}
+		
+		
+		
 		
 		if(this.keys.size() > 1) {
 			// Multiple keys are pressed
@@ -64,6 +93,7 @@ public class NavigationController implements KeyListener {
 			Object[] arr = this.keys.toArray();
 			this.game.updateDirection(this.keyMap.get(arr[0]));
 		}
+		
 	}
 	
 	private boolean checkKey(int i) {
@@ -77,14 +107,26 @@ public class NavigationController implements KeyListener {
 		if(this.keyMap.containsKey(evt.getKeyCode())){
 			this.keys.add(evt.getKeyCode());
 			
+			this.cachedKeys.clear();
 			sendKeyAction(evt, true);
+			
 		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent evt) {
 		if(this.keyMap.containsKey(evt.getKeyCode())){
+			
+			if(this.keys.size() == 1 && this.cachedKeys.size() > 0) {
+				double seconds = ((System.nanoTime() - start) / 10E8);
+				this.isQuick = seconds < EPSILON;
+			}
+			else if(this.keys.size() == 2) {
+				this.start = System.nanoTime();
+			}
+			this.cachedKeys.add(evt.getKeyCode());
 			this.keys.remove(evt.getKeyCode());
+			
 			
 			sendKeyAction(evt, !this.keys.isEmpty());
 		}
