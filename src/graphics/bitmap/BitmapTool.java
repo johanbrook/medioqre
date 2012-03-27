@@ -1,4 +1,4 @@
-package barber.graphics.bitmap;
+package graphics.bitmap;
 
 import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferByte;
@@ -18,9 +18,9 @@ public class BitmapTool {
 				System.out.println("Image has alpha");
 				for (int i = 0; i < pixels.length; i++) {
 					int a = 0xff000000 & (data[i * 4] << 24);
-					int r = 0x00ff0000 & (data[i * 4 + 1] << 16);
+					int r = 0x00ff0000 & (data[i * 4 + 3] << 16);
 					int g = 0x0000ff00 & (data[i * 4 + 2] << 8);
-					int b = 0x000000ff & (data[i * 4 + 3] << 0);
+					int b = 0x000000ff & (data[i * 4 + 1]);
 					pixels[i] = (a | r | g | b);
 				}
 			} else if (data.length == pixels.length * 3) {
@@ -30,6 +30,7 @@ public class BitmapTool {
 					int r = 0x00ff0000 & (data[i * 3 + 0] << 16);
 					int g = 0x0000ff00 & (data[i * 3 + 1] << 8);
 					int b = 0x000000ff & (data[i * 3 + 2] << 0);
+					
 					pixels[i] = (a | r | g | b);
 				}
 			} else {

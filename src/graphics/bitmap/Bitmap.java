@@ -1,4 +1,4 @@
-package barber.graphics.bitmap;
+package graphics.bitmap;
 
 import java.awt.Color;
 import java.util.Arrays;
@@ -192,21 +192,21 @@ public class Bitmap {
 						currentPixel = bitmapPixels[h * bitmap.width + w];
 
 						if (((0xff000000 & currentPixel)) == 0xff000000) {
-							System.out.print("p");
+//							System.out.print("p");
 							pixels[(h + y) * width + (w + x)] = currentPixel;
 						} else if (((0xff000000 & currentPixel) >> 24) != 0) {
-							System.out.print("m");
+//							System.out.print("m");
 							pixels[(h + y) * width + (w + x)] = mergePixels(
 									pixels[(h + y) * width + (w + x)],
 									currentPixel);
 						} else {
 							
-							System.out.print(((0xff000000 & currentPixel) >> 24));
+//							System.out.print(((0xff000000 & currentPixel) >> 24));
 						}
 					}
 				}
 			}
-			System.out.print("\n");
+//			System.out.print("\n");
 		}
 	}
 

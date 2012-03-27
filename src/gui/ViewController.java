@@ -1,5 +1,8 @@
 package gui;
 
+import graphics.bitmap.Bitmap;
+import graphics.bitmap.BitmapTool;
+
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -12,8 +15,6 @@ import java.awt.image.DataBufferInt;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-import barber.graphics.bitmap.Bitmap;
-import barber.graphics.bitmap.BitmapTool;
 
 import constants.Direction;
 import event.Event;
