@@ -7,9 +7,7 @@ import graphics.bitmap.Bitmap;
  * @author Barber
  *
  */
-public class Tile {
-
-	private Bitmap bitmap;
+public class Tile extends Bitmap{
 	
 	/**
 	 * Creates a Tile.
@@ -18,13 +16,13 @@ public class Tile {
 	 * @param pixels The pixels of the tile.
 	 */
 	public Tile(int width, int height, int[] pixels) {
-		this.bitmap = new Bitmap(width, height, pixels);
+		super(width, height, pixels);
 	}
 	/**
 	 * Creates a Tile from an existing Bitmap.
 	 * @param bitmap The Bitmap to use.
 	 */
 	public Tile(Bitmap bitmap) {
-		this.bitmap = bitmap;
+		super(bitmap.getWidth(), bitmap.getHeight(), bitmap.getPixels());
 	}
 }

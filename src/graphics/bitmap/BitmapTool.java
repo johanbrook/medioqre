@@ -30,9 +30,9 @@ public class BitmapTool {
 				System.out.println("Image doesn't have alpha");
 				for (int i = 0; i < pixels.length; i++) {
 					int a = 0xff000000;
-					int r = 0x00ff0000 & (data[i * 3 + 0] << 16);
+					int r = 0x00ff0000 & (data[i * 3 + 2] << 16);
 					int g = 0x0000ff00 & (data[i * 3 + 1] << 8);
-					int b = 0x000000ff & (data[i * 3 + 2] << 0);
+					int b = 0x000000ff & (data[i * 3 + 0] << 0);
 					
 					pixels[i] = (a | r | g | b);
 				}

@@ -38,7 +38,7 @@ public class TileMapIO {
 	 * @return An two dimensional int array containing the ARGB for each pixel.
 	 * @throws IOException Thrown if the file can't be found.
 	 */
-	public static int[][] getTileMatrixFromImg(String imageURL) throws IOException {
+	public static int[][] getPixelMatrixFromImg(String imageURL) throws IOException {
 		BufferedImage image = ImageIO.read(new File(imageURL));
 		int w = image.getWidth();
 		int h = image.getHeight();
@@ -52,5 +52,4 @@ public class TileMapIO {
 		}
 		return tileMatrix;
 	}
-	
 }

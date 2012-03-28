@@ -1,5 +1,7 @@
 package gui.tilemap;
 
+import graphics.bitmap.Bitmap;
+
 import java.awt.Rectangle;
 import java.io.IOException;
 
@@ -12,6 +14,8 @@ import model.Position;
  */
 public class TileMap {
 
+	private Tile[][] tiles;
+	
 	/**
 	 * Creates a TileMap from the given file located at the given URL.
 	 * 
@@ -19,10 +23,21 @@ public class TileMap {
 	 * @throws IOException Thrown if the map-file can't be found.
 	 */
 	public TileMap(String mapURL) throws IOException {
-		TileMapIO.getTileMatrixFromImg(mapURL);
+		int[][] p = TileMapIO.getPixelMatrixFromImg(mapURL);
+		this.tiles = new Tile[p.length][p[0].length];
+		for (int x = 0; x < p.length; x++) {
+			for (int y = 0; y < p[x].length; y++) {
+				this.tiles[x][y] = TileLoader.loadTile("rec/images/tiles/"+Integer.toHexString(p[x][y])+".png");
+			}
+			System.out.print("\n");
+		}
 	}
-	public Tile[] getVisibleTiles(Rectangle screenRect) {
-		return null;
+	public void blitVisibleTilesToBitmap(Bitmap bitmap, Rectangle screenRect) {
+		for (int x = 0; x < tiles.length; x++) {
+			for (int y = 0; y < tiles[x].length; y++) {
+				bitmap.blit(tiles[x][y], x*tiles[x][y].getWidth(), y*tiles[x][y].getHeight());
+			}
+		}
 	}
 	
 }
