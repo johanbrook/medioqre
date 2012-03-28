@@ -90,7 +90,8 @@ public class ViewController implements IEventHandler {
 			do {
 				Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
 
-				screen.clear(0xffffaaff);
+				screen.clear(0xff000000);
+				
 				gameMap.blitVisibleTilesToBitmap(screen, new Rectangle((int)player.getPosition().getX(), (int)player.getPosition().getY(), SCREEN_WIDTH, SCREEN_HEIGHT));
 				
 				if (player.getCurrentFrame() != null) {

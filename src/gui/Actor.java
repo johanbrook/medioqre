@@ -28,19 +28,19 @@ public class Actor {
 		
 		animationFrames = new Bitmap[4];
 		try {
-			BufferedImage img0 = ImageIO.read(new File("rec/images/sprites/frank/tank_left.png"));
+			BufferedImage img0 = ImageIO.read(new File("rec/images/sprites/frank/frank_left.png"));
 			animationFrames[0] = new Bitmap(img0.getWidth(), img0.getHeight());
 			animationFrames[0].pixels = BitmapTool.getARGBarrayFromDataBuffer(img0.getRaster(), img0.getWidth(), img0.getHeight());
 			
-			BufferedImage img1 = ImageIO.read(new File("rec/images/sprites/frank/tank_right.png"));
+			BufferedImage img1 = ImageIO.read(new File("rec/images/sprites/frank/frank_right.png"));
 			animationFrames[1] = new Bitmap(img1.getWidth(), img1.getHeight());
 			animationFrames[1].pixels = BitmapTool.getARGBarrayFromDataBuffer(img1.getRaster(), img1.getWidth(), img1.getHeight());
 			
-			BufferedImage img2 = ImageIO.read(new File("rec/images/sprites/frank/tank_up.png"));
+			BufferedImage img2 = ImageIO.read(new File("rec/images/sprites/frank/frank_up.png"));
 			animationFrames[2] = new Bitmap(img2.getWidth(), img2.getHeight());
 			animationFrames[2].pixels = BitmapTool.getARGBarrayFromDataBuffer(img2.getRaster(), img2.getWidth(), img2.getHeight());
 			
-			BufferedImage img3 = ImageIO.read(new File("rec/images/sprites/frank/tank_down.png"));
+			BufferedImage img3 = ImageIO.read(new File("rec/images/sprites/frank/frank_down.png"));
 			animationFrames[3] = new Bitmap(img3.getWidth(), img3.getHeight());
 			animationFrames[3].pixels = BitmapTool.getARGBarrayFromDataBuffer(img3.getRaster(), img3.getWidth(), img3.getHeight());
 			

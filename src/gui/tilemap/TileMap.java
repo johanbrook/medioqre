@@ -37,8 +37,8 @@ public class TileMap {
 	}
 	public void blitVisibleTilesToBitmap(Bitmap bitmap, Rectangle screenRect) {
 		
-		int xOffs = (int) ((double) screenRect.x % (double) tiles[0][0].getWidth());
-		int yOffs = (int) ((double) screenRect.y % (double) tiles[0][0].getHeight());
+		double xOffs = (int) ((double) screenRect.x % (double) tiles[0][0].getWidth());
+		double yOffs = (int) ((double) screenRect.y % (double) tiles[0][0].getHeight());
 		int xTile = (int) ((double) screenRect.x / (double) tiles[0][0].getWidth());
 		int yTile = (int) ((double) screenRect.y / (double) tiles[0][0].getHeight());
 		
@@ -48,10 +48,11 @@ public class TileMap {
 		for (int x = -1; x < (screenRect.width / tiles[0][0].getWidth()) + 2; x++) {
 			for (int y = -1; y < (screenRect.height / tiles[0][0].getHeight()) + 2; y++) {
 				if (x+xTile >= tiles.length || x+xTile < 0 || y+yTile >= tiles[0].length || y+yTile < 0) {
-					bitmap.blit(outsideTile, x*outsideTile.getWidth()-xOffs, y*outsideTile.getHeight()-yOffs);
-					System.out.println("In here");
+					bitmap.blit(outsideTile, (int)((double)x * (double)outsideTile.getWidth() - xOffs), (int)((double)y * (double)outsideTile.getHeight() 
+							- yOffs));
 				} else {
-					bitmap.blit(tiles[x+xTile][y+yTile], (x*tiles[x+xTile][y+yTile].getWidth())-xOffs, (y*tiles[x+xTile][y+yTile].getHeight())-yOffs);
+					bitmap.blit(tiles[x + xTile][y + yTile], (int)(((double)x * (double)tiles[x + xTile][y + yTile].getWidth()) 
+							- xOffs), (int) (((double)y * (double)tiles[x + xTile][y + yTile].getHeight()) - yOffs));
 				}
 			}
 		}
