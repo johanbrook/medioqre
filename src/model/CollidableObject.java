@@ -17,6 +17,17 @@ public abstract class CollidableObject {
 	private int yoffset;
 
 	
+	/**
+	 * A collidable object with a collision box, size, and offsets for the 
+	 * collision box.
+	 * 
+	 * The object will get its position from <code>collBox's</code> position.
+	 * 
+	 * @param collBox The collision box
+	 * @param size The size of the model
+	 * @param xoffset The X offset of the collision box
+	 * @param yoffset The Y offset of the collision box
+	 */
 	public CollidableObject(Rectangle collBox, Dimension size, int xoffset, int yoffset){
 		this.collisionBox = collBox;
 		this.size = size;

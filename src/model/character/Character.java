@@ -1,10 +1,3 @@
-/**
-*	Character.java
-*
-*	@author Johan
-*/
-
-
 package model.character;
 
 import java.awt.Dimension;
@@ -16,16 +9,42 @@ import event.Event.Property;
 
 import model.Entity;
 
+
+/**
+*	Character.
+*
+*	A character in the game. Could be a player, enemy, etc.
+*
+*	@author Johan
+*/
 public abstract class Character extends Entity {
 
 	private int health;
 	
-	
+	/**
+	 * A game character with 100 health points.
+	 * 
+	 * @param movementSpeed
+	 * @param collBox
+	 * @param size
+	 * @param xoffset
+	 * @param yoffset
+	 */
 	public Character(int movementSpeed, Rectangle collBox, Dimension size, int xoffset, int yoffset) {
 		super(collBox, size, xoffset, yoffset, movementSpeed);
 		this.health = 100;
 	}
 	
+	
+	/**
+	 * Call this method to hurt the character with a certain amount
+	 * of damage.
+	 * 
+	 * If the character's health points goes below 0, <code>destroy()</code>
+	 * will be called and the entity is killed.
+	 * 
+	 * @param dmg The damage
+	 */
 	public void takeDamage(int dmg){
 		this.health -= dmg;
 		EventBus.INSTANCE.publish(new Event(Property.WAS_DAMAGED, this));
@@ -34,13 +53,27 @@ public abstract class Character extends Entity {
 		
 	}
 	
-	
+	/**
+	 * Get the character's health
+	 * 
+	 * @return The health
+	 */
 	public int getHealth() {
 		return this.health;
 	}
 	
+	/**
+	 * Get the character's current weapon's inflicted damage.
+	 * 
+	 * @return The damage
+	 */
 	public abstract int getCurrentWeaponDamage();
 	
+	/**
+	 * Tell the character to attack a target (another Character)
+	 * 
+	 * @param target The target to attack
+	 */
 	public abstract void attack(Character target);
 
 }
