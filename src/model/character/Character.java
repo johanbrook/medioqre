@@ -31,10 +31,10 @@ public abstract class Character extends Entity {
 	
 	public void takeDamage(int dmg){
 		this.health -= dmg;
+		EventBus.INSTANCE.publish(new Event(Property.WAS_DAMAGED, this));
 		if(this.health <= 0)
 			this.destroy();
 		
-		EventBus.INSTANCE.publish(new Event(Property.WAS_DAMAGED, this));
 	}
 	
 	

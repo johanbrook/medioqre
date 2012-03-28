@@ -37,20 +37,17 @@ public abstract class Entity extends CollidableObject {
 	 * @see setDirection()
 	 */
 	public void move(double dt) {
-		Position currPos = getPosition();
-
 		// Upper left corner is origin
 		
 		if(isMoving()){
+			Position currPos = getPosition();
+			EventBus.INSTANCE.publish(new Event(Property.DID_MOVE, this));
 			double x = this.direction.getXRatio() * this.movementSpeed * dt;		
 			double y = this.direction.getYRatio() * this.movementSpeed * dt;
 			
 			this.setPosition(currPos.getX() + x, currPos.getY() + y);
-			
 		}
 		
-		
-		EventBus.INSTANCE.publish(new Event(Property.DID_MOVE, this));
 		
 	}
 	
