@@ -15,6 +15,7 @@ import model.Position;
 public class TileMap {
 
 	private Tile[][] tiles;
+	private Tile outsideTile;
 	
 	/**
 	 * Creates a TileMap from the given file located at the given URL.
@@ -23,6 +24,8 @@ public class TileMap {
 	 * @throws IOException Thrown if the map-file can't be found.
 	 */
 	public TileMap(String mapURL) throws IOException {
+		outsideTile = TileLoader.loadTile("rec/images/tiles/ffff0000.png");
+		
 		int[][] p = TileMapIO.getPixelMatrixFromImg(mapURL);
 		this.tiles = new Tile[p.length][p[0].length];
 		for (int x = 0; x < p.length; x++) {
@@ -42,9 +45,14 @@ public class TileMap {
 		
 		
 		
-		for (int x = 0; x < screenRect.width / tiles[0][0].getWidth(); x++) {
-			for (int y = 0; y < screenRect.height / tiles[0][0].getHeight(); y++) {
-				bitmap.blit(tiles[x+xTile][y+yTile], x*tiles[x+xTile][y+yTile].getWidth(), y*tiles[x+xTile][y+yTile].getHeight());
+		for (int x = -1; x < (screenRect.width / tiles[0][0].getWidth()) + 2; x++) {
+			for (int y = -1; y < (screenRect.height / tiles[0][0].getHeight()) + 2; y++) {
+				if (x+xTile >= tiles.length || x+xTile < 0 || y+yTile >= tiles[0].length || y+yTile < 0) {
+					bitmap.blit(outsideTile, x*outsideTile.getWidth()-xOffs, y*outsideTile.getHeight()-yOffs);
+					System.out.println("In here");
+				} else {
+					bitmap.blit(tiles[x+xTile][y+yTile], (x*tiles[x+xTile][y+yTile].getWidth())-xOffs, (y*tiles[x+xTile][y+yTile].getHeight())-yOffs);
+				}
 			}
 		}
 	}

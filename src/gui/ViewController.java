@@ -94,7 +94,7 @@ public class ViewController implements IEventHandler {
 				gameMap.blitVisibleTilesToBitmap(screen, new Rectangle((int)player.getPosition().getX(), (int)player.getPosition().getY(), SCREEN_WIDTH, SCREEN_HEIGHT));
 				
 				if (player.getCurrentFrame() != null) {
-					screen.blit(player.getCurrentFrame(), (int) player.getPosition().getX(), (int) player.getPosition().getY());
+					screen.blit(player.getCurrentFrame(), SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 				} else 
 					System.out.println("Playerimage is null!");
 				
