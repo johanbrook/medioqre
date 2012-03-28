@@ -71,6 +71,14 @@ public abstract class Entity extends CollidableObject {
 		return this.isMoving;
 	}
 
+	/**
+	 * The movement speed of the entity.
+	 * 
+	 * @return The movement speed
+	 */
+	public int getMovementSpeed() {
+		return this.movementSpeed;
+	}
 	
 	public void destroy(){
 		//@todo Should the model destroy itself?
