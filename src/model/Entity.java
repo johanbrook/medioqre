@@ -47,11 +47,10 @@ public abstract class Entity extends CollidableObject {
 			
 			this.setPosition(currPos.getX() + x, currPos.getY() + y);
 			
-			System.out.println("x:\t"+getPosition().getX() + ",\ty:\t"+getPosition().getY());
 		}
 		
 		
-		//EventBus.INSTANCE.publish(new Event(Property.DID_MOVE, this));
+		EventBus.INSTANCE.publish(new Event(Property.DID_MOVE, this));
 		
 	}
 	

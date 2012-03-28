@@ -49,10 +49,7 @@ public class TestCollidableObject {
 		player.setDirection(Direction.SOUTH);
 		player.move(1.0);
 		
-		this.obj.setPosition(15, -10);
-		
-		System.out.println(this.obj.getPosition());
-		System.out.println(player.getPosition());
+		this.obj.setPosition(15, 10);
 		
 		assertTrue(this.obj.isColliding(player));
 	}

@@ -20,7 +20,7 @@ public class TestCharacterMove {
 
 	private Character player;
 	private Character enemy;
-	private final double DELTA = 0.1;
+	private final double DELTA = 1.0;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -45,12 +45,13 @@ public class TestCharacterMove {
 		assertEquals(new Position(0, -DELTA*7), this.enemy.getPosition());
 	}
 	
+	
 	@Test
 	public void testMoveSouth() {
 		this.player.setDirection(constants.Direction.SOUTH);
 		this.player.move(DELTA);
 		
-		assertEquals(new Position(0,1.0), this.player.getPosition());
+		assertEquals(new Position(0,10.0), this.player.getPosition());
 	}
 
 }
