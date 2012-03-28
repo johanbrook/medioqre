@@ -30,26 +30,20 @@ public class Actor {
 		try {
 			BufferedImage img0 = ImageIO.read(new File("rec/images/sprites/frank/tank_left.png"));
 			animationFrames[0] = new Bitmap(img0.getWidth(), img0.getHeight());
-			animationFrames[0].pixels = BitmapTool.getARGBarrayFromDataBuffer(img0.getRaster().getDataBuffer(), img0.getWidth(), img0.getHeight());
+			animationFrames[0].pixels = BitmapTool.getARGBarrayFromDataBuffer(img0.getRaster(), img0.getWidth(), img0.getHeight());
 			
 			BufferedImage img1 = ImageIO.read(new File("rec/images/sprites/frank/tank_right.png"));
 			animationFrames[1] = new Bitmap(img1.getWidth(), img1.getHeight());
-			animationFrames[1].pixels = BitmapTool.getARGBarrayFromDataBuffer(img1.getRaster().getDataBuffer(), img1.getWidth(), img1.getHeight());
+			animationFrames[1].pixels = BitmapTool.getARGBarrayFromDataBuffer(img1.getRaster(), img1.getWidth(), img1.getHeight());
 			
 			BufferedImage img2 = ImageIO.read(new File("rec/images/sprites/frank/tank_up.png"));
 			animationFrames[2] = new Bitmap(img2.getWidth(), img2.getHeight());
-			animationFrames[2].pixels = BitmapTool.getARGBarrayFromDataBuffer(img2.getRaster().getDataBuffer(), img2.getWidth(), img2.getHeight());
+			animationFrames[2].pixels = BitmapTool.getARGBarrayFromDataBuffer(img2.getRaster(), img2.getWidth(), img2.getHeight());
 			
 			BufferedImage img3 = ImageIO.read(new File("rec/images/sprites/frank/tank_down.png"));
-//			BufferedImage img3 = ImageIO.read(new File("rec/images/test/t1.png"));
 			animationFrames[3] = new Bitmap(img3.getWidth(), img3.getHeight());
-			animationFrames[3].pixels = BitmapTool.getARGBarrayFromDataBuffer(img3.getRaster().getDataBuffer(), img3.getWidth(), img3.getHeight());
+			animationFrames[3].pixels = BitmapTool.getARGBarrayFromDataBuffer(img3.getRaster(), img3.getWidth(), img3.getHeight());
 			
-			
-//			animationFrames[0].clear(0xffff0000);
-//			animationFrames[1].clear(0xff00ff00);
-//			animationFrames[2].clear(0xff0000ff);
-//			animationFrames[3].clear(0xff00ffff);
 			
 			currentFrame = animationFrames[3];
 		} catch (IOException e) {

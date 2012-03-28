@@ -2,15 +2,19 @@ package gui;
 
 import graphics.bitmap.Bitmap;
 import graphics.bitmap.BitmapTool;
+import gui.tilemap.TileMap;
+import gui.tilemap.TileMapIO;
 
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
+import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
@@ -37,6 +41,7 @@ public class ViewController implements IEventHandler {
 	private final int SCREEN_HEIGHT;
 	private BufferStrategy bufferStrategy;
 	private Actor player;
+	private TileMap gameMap;
 	private Bitmap screen;
 	private BufferedImage screenImage;
 
@@ -46,9 +51,7 @@ public class ViewController implements IEventHandler {
 
 		screenImage = new BufferedImage(SCREEN_WIDTH, SCREEN_HEIGHT, BufferedImage.TYPE_INT_ARGB);
 		
-		screen = new Bitmap(SCREEN_WIDTH, SCREEN_HEIGHT);
-		screen.pixels = BitmapTool.getARGBarrayFromDataBuffer(screenImage.getRaster().getDataBuffer(), SCREEN_WIDTH, SCREEN_HEIGHT);
-		screen.clear(0xff0000ff);
+		screen = new Bitmap(SCREEN_WIDTH, SCREEN_HEIGHT,BitmapTool.getARGBarrayFromDataBuffer(screenImage.getRaster(), SCREEN_WIDTH, SCREEN_HEIGHT));
 		
 		initScene();
 
@@ -75,6 +78,11 @@ public class ViewController implements IEventHandler {
 	private void initScene() {
 		this.player = new Actor(new Position(SCREEN_WIDTH / 2,
 				SCREEN_HEIGHT / 2));
+		try {
+			this.gameMap = new TileMap("rec/images/levels/l1.bmp");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void render(double dt) {
@@ -82,13 +90,14 @@ public class ViewController implements IEventHandler {
 			do {
 				Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
 
-				screen.clear(0xffff00ff);
+				screen.clear(0xffffaaff);
+				gameMap.blitVisibleTilesToBitmap(screen, new Rectangle((int)player.getPosition().getX(), (int)player.getPosition().getY(), SCREEN_WIDTH, SCREEN_HEIGHT));
 				
 				if (player.getCurrentFrame() != null) {
 					screen.blit(player.getCurrentFrame(), (int) player.getPosition().getX(), (int) player.getPosition().getY());
 				} else 
 					System.out.println("Playerimage is null!");
-
+				
 				g.drawImage(screenImage, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, null);
 				
 				g.dispose();
@@ -102,6 +111,7 @@ public class ViewController implements IEventHandler {
 	public void onEvent(Event evt) {
 		Entity p = (Entity) evt.getValue();
 		player.setDirection(p.getDirection());
+		player.setPosition(p.getPosition());
 		System.out.println(evt.getProperty() + " " + p.getDirection());
 	}
 }
