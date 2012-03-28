@@ -111,6 +111,7 @@ public class ViewController implements IEventHandler {
 	public void onEvent(Event evt) {
 		Entity p = (Entity) evt.getValue();
 		player.setDirection(p.getDirection());
+		player.setPosition(p.getPosition());
 		System.out.println(evt.getProperty() + " " + p.getDirection());
 	}
 }

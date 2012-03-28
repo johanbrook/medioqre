@@ -33,9 +33,18 @@ public class TileMap {
 		}
 	}
 	public void blitVisibleTilesToBitmap(Bitmap bitmap, Rectangle screenRect) {
-		for (int x = 0; x < tiles.length; x++) {
-			for (int y = 0; y < tiles[x].length; y++) {
-				bitmap.blit(tiles[x][y], x*tiles[x][y].getWidth(), y*tiles[x][y].getHeight());
+		
+		int xOffs = (int) ((double) screenRect.x % (double) tiles[0][0].getWidth());
+		int yOffs = (int) ((double) screenRect.y % (double) tiles[0][0].getHeight());
+		int xTile = (int) ((double) screenRect.x / (double) tiles[0][0].getWidth());
+		int yTile = (int) ((double) screenRect.y / (double) tiles[0][0].getHeight());
+		
+		
+		
+		
+		for (int x = 0; x < screenRect.width / tiles[0][0].getWidth(); x++) {
+			for (int y = 0; y < screenRect.height / tiles[0][0].getHeight(); y++) {
+				bitmap.blit(tiles[x+xTile][y+yTile], x*tiles[x+xTile][y+yTile].getWidth(), y*tiles[x+xTile][y+yTile].getHeight());
 			}
 		}
 	}
