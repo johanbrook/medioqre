@@ -8,6 +8,9 @@ package usecase;
 
 import static org.junit.Assert.*;
 
+import java.awt.Dimension;
+import java.awt.Rectangle;
+
 import model.character.*;
 import model.character.Character;
 import model.weapon.IWeapon;
@@ -23,8 +26,8 @@ public class TestCharacterAttacks {
 	
 	@Before
 	public void setUp() throws Exception {
-		this.player =  new Player(10);
-		this.enemy = new Enemy(10, 30);
+		this.player =  new Player();
+		this.enemy = new Enemy(10, 30, new Rectangle(), new Dimension(), 0, 0);
 	}
 
 	@Test

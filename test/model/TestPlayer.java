@@ -22,7 +22,7 @@ public class TestPlayer {
 	
 	@Before
 	public void setUp() throws Exception {
-		this.player = new Player(10);
+		this.player = new Player();
 	}
 	
 	@Test

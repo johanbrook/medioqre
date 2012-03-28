@@ -8,6 +8,9 @@ package usecase;
 
 import static org.junit.Assert.*;
 
+import java.awt.Dimension;
+import java.awt.Rectangle;
+
 import model.character.*;
 import model.character.Character;
 import model.Position;
@@ -24,8 +27,8 @@ public class TestCharacterMove {
 	
 	@Before
 	public void setUp() throws Exception {
-		this.player = new Player(10);
-		this.enemy = new Enemy(7, 30);
+		this.player = new Player();
+		this.enemy = new Enemy(7, 30, new Rectangle(), new Dimension(), 0, 0);
 	}
 
 	
@@ -34,6 +37,7 @@ public class TestCharacterMove {
 		assertEquals(new Position(0,0), this.player.getPosition());
 	}
 	
+
 	@Test
 	public void testMoveNorth() {
 		this.player.setDirection(constants.Direction.NORTH);
@@ -41,8 +45,8 @@ public class TestCharacterMove {
 		this.player.move(DELTA);
 		this.enemy.move(DELTA);
 		
-		assertEquals(new Position(0, -DELTA*10), this.player.getPosition());
-		assertEquals(new Position(0, -DELTA*7), this.enemy.getPosition());
+		assertEquals(new Position(0, (int)-DELTA*10), this.player.getPosition());
+		assertEquals(new Position(0, (int)-DELTA*7), this.enemy.getPosition());
 	}
 	
 	
@@ -51,7 +55,6 @@ public class TestCharacterMove {
 		this.player.setDirection(constants.Direction.SOUTH);
 		this.player.move(DELTA);
 		
-		assertEquals(new Position(0,10.0), this.player.getPosition());
+		assertEquals(new Position(0,10), this.player.getPosition());
 	}
-
 }

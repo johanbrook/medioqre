@@ -7,6 +7,9 @@
 package model.character;
 
 
+import java.awt.Dimension;
+import java.awt.Rectangle;
+
 import event.Event;
 import event.Event.Property;
 import event.EventBus;
@@ -19,12 +22,8 @@ public class Player extends Character {
 	private IWeapon currentWeapon;
 	private WeaponBelt belt;
 	
-	public Player() {
-		this(10);
-	}
-	
-	public Player(int movementSpeed){
-		super(movementSpeed);
+	public Player(){
+		super(10, new Rectangle(10, 10), new Dimension(20,20), 0, 0);
 		
 		this.belt = new WeaponBelt();
 		

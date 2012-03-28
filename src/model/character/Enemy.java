@@ -6,6 +6,9 @@
 
 package model.character;
 
+import java.awt.Dimension;
+import java.awt.Rectangle;
+
 import event.Event;
 import event.EventBus;
 import event.Event.Property;
@@ -16,9 +19,8 @@ public class Enemy extends Character {
 	
 	private IWeapon melee;
 	
-	public Enemy(int movementSpeed, int damage) {
-		super(movementSpeed);
-		
+	public Enemy(int movementSpeed, int damage, Rectangle collBox, Dimension size, int xoffset, int yoffset) {
+		super(movementSpeed, collBox, size, xoffset, yoffset);
 		this.melee = new Melee(damage);
 	}
 

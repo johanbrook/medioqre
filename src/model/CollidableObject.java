@@ -1,5 +1,6 @@
 package model;
 
+import java.awt.Dimension;
 import java.awt.Rectangle;
 
 /**
@@ -11,22 +12,26 @@ import java.awt.Rectangle;
 public abstract class CollidableObject {
 	
 	private Rectangle collisionBox;
-	private Position position;
-	private Position offset;
+	private Dimension size;
+	private int xoffset;
+	private int yoffset;
+
 	
-	// Temp constructor
-	public CollidableObject(){
-		this(new Rectangle(), new Position(0,0));
-	}
-	
-	public CollidableObject(Rectangle collisionBox, Position offset) {
-		this(collisionBox, new Position(collisionBox.getX(), collisionBox.getY()), offset);
-	}
-	
-	public CollidableObject(Rectangle collBox, Position position, Position offset){
+	public CollidableObject(Rectangle collBox, Dimension size, int xoffset, int yoffset){
 		this.collisionBox = collBox;
-		this.position = position;
-		this.offset = offset;
+		this.size = size;
+		this.xoffset = xoffset;
+		this.yoffset = yoffset;
+	}
+	
+	
+	/**
+	 * Get the size of this object.
+	 * 
+	 * @return The size
+	 */
+	public Dimension getSize() {
+		return this.size;
 	}
 	
 	
@@ -36,7 +41,11 @@ public abstract class CollidableObject {
 	 * @return The position
 	 */
 	public Position getPosition(){
-		return this.position;
+		
+		int x = this.collisionBox.x - xoffset;
+		int y = this.collisionBox.y - yoffset;
+		
+		return new Position(x, y);
 	}
 	
 	/**
@@ -45,9 +54,9 @@ public abstract class CollidableObject {
 	 * @param pos The position
 	 */
 	public void setPosition(Position pos){
-		this.position = pos;
-		this.collisionBox.x = (int)pos.getX();
-		this.collisionBox.y = (int)pos.getY();
+
+		this.collisionBox.x = pos.getX() + this.xoffset;
+		this.collisionBox.y = pos.getY() + this.yoffset;
 	}
 	
 	/**
@@ -56,13 +65,10 @@ public abstract class CollidableObject {
 	 * @param x The X coordinate
 	 * @param y The Y coordinate
 	 */
-	public void setPosition(double x, double y) {
+	public void setPosition(int x, int y) {
 		
-		//@todo Need to refactor: we shouldn't keep track of both
-		// the collision box's position and our own.
-		this.position = new Position(x, y);
-		this.collisionBox.x = (int)x;
-		this.collisionBox.y = (int)y;
+		this.collisionBox.x = x + this.xoffset;
+		this.collisionBox.y = y + this.yoffset;
 	}
 	
 	

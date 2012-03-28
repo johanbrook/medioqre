@@ -8,7 +8,6 @@ package model;
 
 import static org.junit.Assert.*;
 
-import java.awt.Rectangle;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -25,20 +24,23 @@ public class TestCollidableObject {
 	
 	@Before
 	public void setUp() throws Exception {
-		Rectangle collisionBox = new Rectangle(10, 10, 10, 10);
-		this.obj = new Wall(collisionBox, new Position(0, 0));
+		this.obj = new Wall(0, 0);
 	}
 
 	@Test
 	public void testIsColliding() {
-		Rectangle collidingRect1 = new Rectangle(15, 5, 10, 10);
-		Rectangle collidingRect2 = new Rectangle(0, 0, 100, 100);
 		
-		CollidableObject collidingObject1 = new Wall(collidingRect1, new Position(0,0));
-		CollidableObject collidingObject2 = new Wall(collidingRect2, new Position(0,0));
+		CollidableObject collidingObject1 = new Wall(0,0);
+		CollidableObject collidingObject2 = new Wall(9,9);
 		
 		assertTrue(this.obj.isColliding(collidingObject1));
 		assertTrue(this.obj.isColliding(collidingObject2));
+	}
+	
+	@Test
+	public void testIsNotColliding() {
+		CollidableObject safeObject = new Wall(0,0);
+		
 	}
 	
 	@Test

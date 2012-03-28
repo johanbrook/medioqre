@@ -7,6 +7,7 @@
 
 package model.character;
 
+import java.awt.Dimension;
 import java.awt.Rectangle;
 
 import event.Event;
@@ -19,13 +20,9 @@ public abstract class Character extends Entity {
 
 	private int health;
 	
-	public Character(int movementSpeed) {
-		//@todo Fix this. Just scaffolding code
-		this(movementSpeed, new Rectangle(0, 0, 10, 10));
-	}
 	
-	public Character(int movementSpeed, Rectangle box) {
-		super(movementSpeed, box);
+	public Character(int movementSpeed, Rectangle collBox, Dimension size, int xoffset, int yoffset) {
+		super(collBox, size, xoffset, yoffset, movementSpeed);
 		this.health = 100;
 	}
 	

@@ -17,13 +17,9 @@ public abstract class Entity extends CollidableObject {
 	private boolean isMoving;
 	private Direction direction;
 	
-	//@todo Temp constructor
-	public Entity(int movementSpeed, java.awt.Rectangle box) {
-		this(box, new Position(0,0), movementSpeed);
-	}
 	
-	public Entity(java.awt.Rectangle box, Position offset, int movementSpeed){
-		super(box, offset);
+	public Entity(java.awt.Rectangle box, java.awt.Dimension size, int xoffset, int yoffset, int movementSpeed){
+		super(box, size, xoffset, yoffset);
 		this.movementSpeed = movementSpeed;
 		this.direction = Direction.ORIGIN;
 		this.isMoving = false;
@@ -42,8 +38,8 @@ public abstract class Entity extends CollidableObject {
 		if(isMoving()){
 			Position currPos = getPosition();
 			EventBus.INSTANCE.publish(new Event(Property.DID_MOVE, this));
-			double x = this.direction.getXRatio() * this.movementSpeed * dt;		
-			double y = this.direction.getYRatio() * this.movementSpeed * dt;
+			int x = (int) (this.direction.getXRatio() * (double) this.movementSpeed * dt);		
+			int y = (int) (this.direction.getYRatio() * (double) this.movementSpeed * dt);
 			
 			this.setPosition(currPos.getX() + x, currPos.getY() + y);
 		}

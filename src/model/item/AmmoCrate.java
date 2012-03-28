@@ -6,19 +6,19 @@
 
 package model.item;
 
+import java.awt.Dimension;
 import java.awt.Rectangle;
 
 import model.CollidableObject;
-import model.Position;
 import model.weapon.IWeapon;
 
 public class AmmoCrate extends CollidableObject implements ICollectableItem {
 
 	private IWeapon type;
-	private double amount;
+	private int amount;
 	
-	public AmmoCrate(Rectangle collBox, Position pos, Position offset, IWeapon type, double amount) {
-		super(collBox, pos, offset);
+	public AmmoCrate(Rectangle collBox, Dimension size, int xoffset, int yoffset, IWeapon type, int amount) {
+		super(collBox, size, xoffset, yoffset);
 		
 		this.type = type;
 		this.amount = amount;
@@ -26,7 +26,7 @@ public class AmmoCrate extends CollidableObject implements ICollectableItem {
 
 	@Override
 	public void pickedUpBy(Character source) {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub. Do stuff with amount/type
 	}
 
 }

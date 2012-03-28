@@ -15,7 +15,7 @@ public class GameModel {
 	private Character player;
 	
 	public GameModel() {
-		this.player = new Player(10);
+		this.player = new Player();
 	}
 	
 	/**
