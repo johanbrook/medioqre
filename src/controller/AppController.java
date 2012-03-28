@@ -27,7 +27,6 @@ public class AppController implements Runnable{
 		t.start();
 	}
 
-
 	// FPS-Meter
 	private int currentFPS;
 	

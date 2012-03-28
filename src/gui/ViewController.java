@@ -19,6 +19,8 @@ import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
+import tools.TimerTool;
+
 
 import constants.Direction;
 import event.Event;
@@ -89,17 +91,21 @@ public class ViewController implements IEventHandler {
 		do {
 			do {
 				Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
-
-				screen.clear(0xff000000);
 				
+				TimerTool.start("BlitVisible");
 				gameMap.blitVisibleTilesToBitmap(screen, new Rectangle((int)player.getPosition().getX(), (int)player.getPosition().getY(), SCREEN_WIDTH, SCREEN_HEIGHT));
+				TimerTool.stop();
 				
+				TimerTool.start("Player");
 				if (player.getCurrentFrame() != null) {
 					screen.blit(player.getCurrentFrame(), SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 				} else 
 					System.out.println("Playerimage is null!");
+				TimerTool.stop();
 				
+				TimerTool.start("Draw image");
 				g.drawImage(screenImage, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, null);
+				TimerTool.stop();
 				
 				g.dispose();
 			} while (bufferStrategy.contentsRestored());
