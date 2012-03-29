@@ -19,6 +19,8 @@ import javax.swing.WindowConstants;
 
 
 import tools.GraphicalFPSMeter;
+import tools.Logger;
+import tools.TimerTool;
 
 
 import event.Event;
@@ -98,23 +100,23 @@ public class ViewController implements IEventHandler {
 			do {
 				Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
 				
-//				TimerTool.start("BlitVisible");
+				TimerTool.start("BlitVisible");
 				gameMap.blitVisibleTilesToBitmap(screen, 
 						new Rectangle(player.getPosition().x, player.getPosition().y, 
 						SCREEN_WIDTH, SCREEN_HEIGHT));
 				
-//				TimerTool.stop();
+				TimerTool.stop();
 				
-//				TimerTool.start("Player");
+				TimerTool.start("Player");
 				if (player.getCurrentFrame() != null) {
 					screen.blit(player.getCurrentFrame(), SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 				} else 
-					System.out.println("Playerimage is null!");
-//				TimerTool.stop();
+					Logger.log("Playerimage is null!");
+				TimerTool.stop();
 				
-//				TimerTool.start("Draw image");
+				TimerTool.start("Draw image");
 				g.drawImage(screenImage, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, null);
-//				TimerTool.stop();
+				TimerTool.stop();
 				
 				this.fpsmeter.tick(g);
 				
@@ -130,6 +132,6 @@ public class ViewController implements IEventHandler {
 		Entity p = (Entity) evt.getValue();
 		player.setDirection(p.getDirection());
 		player.setPosition(p.getPosition());
-		System.out.println(evt.getProperty() + " " + p.getDirection());
+		Logger.log(evt.getProperty() + " " + p.getDirection());
 	}
 }

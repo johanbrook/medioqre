@@ -32,7 +32,6 @@ public class TileMap {
 			for (int y = 0; y < p[x].length; y++) {
 				this.tiles[x][y] = TileLoader.loadTile("rec/images/tiles/"+Integer.toHexString(p[x][y])+".png");
 			}
-			System.out.print("\n");
 		}
 	}
 	public void blitVisibleTilesToBitmap(Bitmap bitmap, Rectangle screenRect) {

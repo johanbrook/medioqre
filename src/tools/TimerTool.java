@@ -11,7 +11,7 @@ public class TimerTool {
 	}
 	public static void stop() {
 		long dt = System.nanoTime() - startTime;
-		System.out.println(label + ": " + dt / 1000000 + "ms ");
+		Logger.log(label + ": " + dt / 1000000 + "ms ");
 	}
 	
 }

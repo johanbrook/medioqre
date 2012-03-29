@@ -5,6 +5,8 @@ import java.awt.image.DataBufferByte;
 import java.awt.image.DataBufferInt;
 import java.awt.image.Raster;
 
+import tools.Logger;
+
 public class BitmapTool {
 
 	public static int[] getARGBarrayFromDataBuffer(Raster raster, int imageWidth, int imageHeight)
@@ -12,13 +14,13 @@ public class BitmapTool {
 		DataBuffer buffer = raster.getDataBuffer();
 		
 		if (buffer.getClass() == DataBufferByte.class) {
-			System.out.println("Getting pixels from DataBufferByte");
+			Logger.log("Getting pixels from DataBufferByte");
 			
 			int[] pixels = new int[imageWidth * imageHeight];
 			byte[] data = ((DataBufferByte) buffer).getData();
 			
 			if (data.length == pixels.length * 4) {
-				System.out.println("Image has alpha");
+				Logger.log("Image has alpha");
 				for (int i = 0; i < pixels.length; i++) {
 					int a = 0xff000000 & (data[i * 4] << 24);
 					int r = 0x00ff0000 & (data[i * 4 + 3] << 16);
@@ -27,7 +29,7 @@ public class BitmapTool {
 					pixels[i] = (a | r | g | b);
 				}
 			} else if (data.length == pixels.length * 3) {
-				System.out.println("Image doesn't have alpha");
+				Logger.log("Image doesn't have alpha");
 				for (int i = 0; i < pixels.length; i++) {
 					int a = 0xff000000;
 					int r = 0x00ff0000 & (data[i * 3 + 2] << 16);
@@ -41,7 +43,7 @@ public class BitmapTool {
 			}
 			return pixels;
 		} else if (buffer.getClass() == DataBufferInt.class) {
-			System.out.println("Getting pixels from DataBufferInt");
+			Logger.log("Getting pixels from DataBufferInt");
 			return ((DataBufferInt) buffer).getData();
 		}
 		return null;
