@@ -16,6 +16,10 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		
+		if(args.length > 0 && args[0].equalsIgnoreCase("--logging"))
+			tools.Logger.setLogginEnabled(true);
+		
 		new AppController();
 	}
 }
