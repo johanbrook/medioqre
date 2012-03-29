@@ -39,8 +39,9 @@ public class TestCollidableObject {
 	
 	@Test
 	public void testIsNotColliding() {
-		CollidableObject safeObject = new Wall(0,0);
+		CollidableObject safeObject = new Wall(20,20);
 		
+		assertFalse(this.obj.isColliding(safeObject));
 	}
 	
 	@Test
