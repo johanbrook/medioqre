@@ -81,7 +81,7 @@ public class ViewController implements IEventHandler {
 		this.player = new Actor(new Position(SCREEN_WIDTH / 2,
 				SCREEN_HEIGHT / 2));
 		try {
-			this.gameMap = new TileMap("rec/images/levels/l1.bmp");
+			this.gameMap = new TileMap("rec/images/levels/l3.bmp");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

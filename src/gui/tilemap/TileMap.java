@@ -40,10 +40,7 @@ public class TileMap {
 		double xOffs = (int) ((double) screenRect.x % (double) tiles[0][0].getWidth());
 		double yOffs = (int) ((double) screenRect.y % (double) tiles[0][0].getHeight());
 		int xTile = (int) ((double) screenRect.x / (double) tiles[0][0].getWidth());
-		int yTile = (int) ((double) screenRect.y / (double) tiles[0][0].getHeight());
-		
-		
-		
+		int yTile = (int) ((double) screenRect.y / (double) tiles[0][0].getHeight());	
 		
 		for (int x = -1; x < (screenRect.width / tiles[0][0].getWidth()) + 2; x++) {
 			for (int y = -1; y < (screenRect.height / tiles[0][0].getHeight()) + 2; y++) {
