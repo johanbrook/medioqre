@@ -84,7 +84,6 @@ public class Actor {
 	
 	
 	public Bitmap getCurrentFrame() {
-		System.out.println("Get frame.");
 		return currentFrame;
 	}
 	

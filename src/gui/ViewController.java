@@ -17,8 +17,8 @@ import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
+
 import tools.GraphicalFPSMeter;
-import tools.TimerTool;
 
 
 import event.Event;
@@ -43,7 +43,7 @@ public class ViewController implements IEventHandler {
 	private TileMap gameMap;
 	private Bitmap screen;
 	private BufferedImage screenImage;
-	
+		
 	private GraphicalFPSMeter fpsmeter;
 
 	public ViewController(KeyListener listener, int screenWidth, int screenHeight) {
@@ -66,11 +66,15 @@ public class ViewController implements IEventHandler {
 		// Creating the frame
 		JFrame frame = new JFrame("Frank The Tank");
 		frame.setIgnoreRepaint(true);
-		frame.add(canvas);
-		frame.setVisible(true);
-		frame.addKeyListener(listener);
+		canvas.setFocusable(true);
+		canvas.requestFocusInWindow();
+		canvas.addKeyListener(listener);
+		
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
+		frame.add(canvas);
+		frame.setVisible(true);
+		
 		// Setup the canvas and frame
 		canvas.createBufferStrategy(2);
 		this.bufferStrategy = canvas.getBufferStrategy();
@@ -87,29 +91,30 @@ public class ViewController implements IEventHandler {
 			e.printStackTrace();
 		}
 	}
+	
 
 	public void render(double dt) {
 		do {
 			do {
 				Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
 				
-				TimerTool.start("BlitVisible");
+//				TimerTool.start("BlitVisible");
 				gameMap.blitVisibleTilesToBitmap(screen, 
 						new Rectangle(player.getPosition().x, player.getPosition().y, 
 						SCREEN_WIDTH, SCREEN_HEIGHT));
 				
-				TimerTool.stop();
+//				TimerTool.stop();
 				
-				TimerTool.start("Player");
+//				TimerTool.start("Player");
 				if (player.getCurrentFrame() != null) {
 					screen.blit(player.getCurrentFrame(), SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 				} else 
 					System.out.println("Playerimage is null!");
-				TimerTool.stop();
+//				TimerTool.stop();
 				
-				TimerTool.start("Draw image");
+//				TimerTool.start("Draw image");
 				g.drawImage(screenImage, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, null);
-				TimerTool.stop();
+//				TimerTool.stop();
 				
 				this.fpsmeter.tick(g);
 				

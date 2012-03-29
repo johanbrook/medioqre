@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
 import model.IGameModel;
 
 import constants.Direction;
@@ -44,6 +43,7 @@ public class NavigationController implements KeyListener {
 		this.keyMap.put(KeyEvent.VK_A, Direction.WEST);
 		this.keyMap.put(KeyEvent.VK_S, Direction.SOUTH);
 		this.keyMap.put(KeyEvent.VK_D, Direction.EAST);
+		
 	}
 	
 	

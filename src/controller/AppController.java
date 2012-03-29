@@ -6,6 +6,8 @@
 
 package controller;
 
+import javax.swing.JComponent;
+
 import event.EventBus;
 import gui.ViewController;
 import model.GameModel;
