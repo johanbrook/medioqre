@@ -3,19 +3,15 @@ package gui;
 import graphics.bitmap.Bitmap;
 import graphics.bitmap.BitmapTool;
 import gui.tilemap.TileMap;
-import gui.tilemap.TileMapIO;
 
 import java.awt.Canvas;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferInt;
 import java.io.IOException;
 
 import javax.swing.JFrame;
@@ -25,12 +21,10 @@ import tools.GraphicalFPSMeter;
 import tools.TimerTool;
 
 
-import constants.Direction;
 import event.Event;
 import event.IEventHandler;
 
 import model.Entity;
-import model.Position;
 
 
 /**
@@ -100,7 +94,10 @@ public class ViewController implements IEventHandler {
 				Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
 				
 				TimerTool.start("BlitVisible");
-				gameMap.blitVisibleTilesToBitmap(screen, new Rectangle((int)player.getPosition().getX(), (int)player.getPosition().getY(), SCREEN_WIDTH, SCREEN_HEIGHT));
+				gameMap.blitVisibleTilesToBitmap(screen, 
+						new Rectangle(player.getPosition().x, player.getPosition().y, 
+						SCREEN_WIDTH, SCREEN_HEIGHT));
+				
 				TimerTool.stop();
 				
 				TimerTool.start("Player");

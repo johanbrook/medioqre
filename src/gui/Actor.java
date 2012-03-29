@@ -4,10 +4,8 @@ package gui;
 import graphics.bitmap.Bitmap;
 import graphics.bitmap.BitmapTool;
 
-import java.awt.Color;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferInt;
 import java.io.File;
 import java.io.IOException;
 
@@ -16,7 +14,6 @@ import javax.imageio.ImageIO;
 
 import constants.Direction;
 
-import model.Position;
 
 public class Actor {
 
