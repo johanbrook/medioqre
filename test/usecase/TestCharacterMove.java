@@ -8,6 +8,8 @@ package usecase;
 
 import static org.junit.Assert.*;
 
+import java.awt.Point;
+
 
 import model.character.*;
 import model.character.Character;
@@ -37,7 +39,7 @@ public class TestCharacterMove {
 	
 	@Test
 	public void testMoveNull(){
-		assertEquals(new Position(0,0), this.player.getPosition());
+		assertEquals(new Point(0,0), this.player.getPosition());
 	}
 	
 
@@ -46,7 +48,7 @@ public class TestCharacterMove {
 		this.player.setDirection(constants.Direction.NORTH);
 		this.player.move(DELTA);
 		
-		assertEquals(new Position(0, -this.playerMovement), this.player.getPosition());
+		assertEquals(new Point(0, -this.playerMovement), this.player.getPosition());
 	}
 	
 	
@@ -55,7 +57,7 @@ public class TestCharacterMove {
 		this.player.setDirection(constants.Direction.SOUTH);
 		this.player.move(DELTA);
 		
-		assertEquals(new Position(0, this.playerMovement), this.player.getPosition());
+		assertEquals(new Point(0, this.playerMovement), this.player.getPosition());
 	}
 	
 	@Test
@@ -63,7 +65,7 @@ public class TestCharacterMove {
 		this.player.setDirection(constants.Direction.EAST);
 		this.player.move(DELTA);
 		
-		assertEquals(new Position(this.playerMovement,0), this.player.getPosition());
+		assertEquals(new Point(this.playerMovement,0), this.player.getPosition());
 	}
 	
 	@Test
@@ -71,7 +73,7 @@ public class TestCharacterMove {
 		this.player.setDirection(constants.Direction.WEST);
 		this.player.move(DELTA);
 		
-		assertEquals(new Position(-this.playerMovement,0), this.player.getPosition());
+		assertEquals(new Point(-this.playerMovement,0), this.player.getPosition());
 	}
 	
 	@Test
@@ -81,7 +83,7 @@ public class TestCharacterMove {
 		int xmovement = (int) (Direction.NORTH_WEST.getXRatio() * this.playerMovement);
 		int ymovement = (int) (Direction.NORTH_WEST.getYRatio() * this.playerMovement);
 		
-		assertEquals(new Position(xmovement, ymovement), this.player.getPosition());
+		assertEquals(new Point(xmovement, ymovement), this.player.getPosition());
 	}
 	
 	@Test
@@ -92,7 +94,7 @@ public class TestCharacterMove {
 		int xmovement = (int) (Direction.NORTH_EAST.getXRatio() * this.playerMovement);
 		int ymovement = (int) (Direction.NORTH_EAST.getYRatio() * this.playerMovement);
 		
-		assertEquals(new Position(xmovement, ymovement), this.player.getPosition());
+		assertEquals(new Point(xmovement, ymovement), this.player.getPosition());
 	}
 	
 	@Test
@@ -103,7 +105,7 @@ public class TestCharacterMove {
 		int xmovement = (int) (Direction.SOUTH_WEST.getXRatio() * this.playerMovement);
 		int ymovement = (int) (Direction.SOUTH_WEST.getYRatio() * this.playerMovement);
 		
-		assertEquals(new Position(xmovement, ymovement), this.player.getPosition());
+		assertEquals(new Point(xmovement, ymovement), this.player.getPosition());
 	}
 	
 	@Test
@@ -114,6 +116,6 @@ public class TestCharacterMove {
 		int xmovement = (int) (Direction.SOUTH_EAST.getXRatio() * this.playerMovement);
 		int ymovement = (int) (Direction.SOUTH_EAST.getYRatio() * this.playerMovement);
 		
-		assertEquals(new Position(xmovement, ymovement), this.player.getPosition());
+		assertEquals(new Point(xmovement, ymovement), this.player.getPosition());
 	}
 }

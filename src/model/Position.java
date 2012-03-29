@@ -1,11 +1,11 @@
-/**
-*	Position.java
-*
-*	@author Johan
-*/
-
 package model;
 
+/**
+*	Position
+*
+*	@author Johan
+*	@deprecated Using java.awt.Point instead (2012-03-29)
+*/
 public class Position {
 	
 	private final int x;

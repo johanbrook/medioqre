@@ -10,6 +10,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
@@ -84,7 +85,7 @@ public class ViewController implements IEventHandler {
 	}
 
 	private void initScene() {
-		this.player = new Actor(new Position(SCREEN_WIDTH / 2,
+		this.player = new Actor(new Point(SCREEN_WIDTH / 2,
 				SCREEN_HEIGHT / 2));
 		try {
 			this.gameMap = new TileMap("rec/images/levels/l3.bmp");

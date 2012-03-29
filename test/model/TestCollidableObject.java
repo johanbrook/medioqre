@@ -46,12 +46,14 @@ public class TestCollidableObject {
 	@Test
 	public void testCharacterCollision() {
 		Character player = new Player();
+		int playerSpeed = player.getMovementSpeed();
+		
 		player.setDirection(Direction.EAST);
 		player.move(1.0);
 		player.setDirection(Direction.SOUTH);
 		player.move(1.0);
 		
-		this.obj.setPosition(15, 10);
+		this.obj.setPosition(1*playerSpeed, 1*playerSpeed);
 		
 		assertTrue(this.obj.isColliding(player));
 	}

@@ -5,6 +5,7 @@ import graphics.bitmap.Bitmap;
 import graphics.bitmap.BitmapTool;
 
 import java.awt.Color;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.io.File;
@@ -19,12 +20,12 @@ import model.Position;
 
 public class Actor {
 
-	private Position position;
+	private Point position;
 	private Bitmap[] animationFrames;
 	private Bitmap currentFrame;
 	
-	public Actor(Position startingPosition) {
-		this.position = new Position(startingPosition);
+	public Actor(Point startingPosition) {
+		this.position = new Point(startingPosition);
 		
 		animationFrames = new Bitmap[8];
 		try {
@@ -91,7 +92,7 @@ public class Actor {
 	}
 	
 	
-	public Position getPosition() {
+	public Point getPosition() {
 		return this.position;
 	}
 	public void setDirection(Direction direction)
@@ -124,7 +125,7 @@ public class Actor {
 		}
 	}
 	
-	public void setPosition(Position pos) {
+	public void setPosition(Point pos) {
 		this.position = pos;
 	}
 }

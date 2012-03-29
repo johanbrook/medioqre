@@ -1,6 +1,7 @@
 package model;
 
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.Rectangle;
 
 /**
@@ -51,12 +52,12 @@ public abstract class CollidableObject {
 	 * 
 	 * @return The position
 	 */
-	public Position getPosition(){
+	public Point getPosition(){
 		
 		int x = this.collisionBox.x - xoffset;
 		int y = this.collisionBox.y - yoffset;
 		
-		return new Position(x, y);
+		return new Point(x, y);
 	}
 	
 	/**
@@ -64,10 +65,10 @@ public abstract class CollidableObject {
 	 * 
 	 * @param pos The position
 	 */
-	public void setPosition(Position pos){
+	public void setPosition(Point pos){
 
-		this.collisionBox.x = pos.getX() + this.xoffset;
-		this.collisionBox.y = pos.getY() + this.yoffset;
+		this.collisionBox.x = pos.x + this.xoffset;
+		this.collisionBox.y = pos.y + this.yoffset;
 	}
 	
 	/**
@@ -79,7 +80,7 @@ public abstract class CollidableObject {
 	public void setPosition(int x, int y) {
 		
 		this.collisionBox.x = x + this.xoffset;
-		this.collisionBox.y = y + this.yoffset;
+		this.collisionBox.y = y + this.yoffset;		
 	}
 	
 	

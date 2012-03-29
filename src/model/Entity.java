@@ -1,5 +1,7 @@
 package model;
 
+import java.awt.Point;
+
 import constants.Direction;
 import event.Event;
 import event.EventBus;
@@ -46,14 +48,12 @@ public abstract class Entity extends CollidableObject {
 		// Upper left corner is origin
 		
 		if(isMoving()){
-			Position currPos = getPosition();
+			Point currPos = getPosition();
 			EventBus.INSTANCE.publish(new Event(Property.DID_MOVE, this));
 			int x = (int) (this.direction.getXRatio() * (double) this.movementSpeed * dt);		
 			int y = (int) (this.direction.getYRatio() * (double) this.movementSpeed * dt);
-			
-			System.out.println(this.movementSpeed + "\t" + dt);
-			
-			this.setPosition(currPos.getX() + x, currPos.getY() + y);
+						
+			this.setPosition(currPos.x + x, currPos.y + y);
 		}
 		
 	}
