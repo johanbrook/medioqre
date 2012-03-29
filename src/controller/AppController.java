@@ -13,6 +13,7 @@ import model.GameModel;
 public class AppController implements Runnable{
 	
 	public static final int FPS = 300;
+	private static final double DELTA_RATIO = 10E7;
 	
 	private GameModel game;
 	private ViewController view;
@@ -27,37 +28,21 @@ public class AppController implements Runnable{
 		t.start();
 	}
 
-	// FPS-Meter
-	private int currentFPS;
 	
 	@Override
 	public void run() {
 		long lastLoopTime = System.nanoTime();
-		final long optimalTime = 1000000000 / FPS;
-		long timeThisSecond = 0;
-		int framesThisSecond = 0;
-		currentFPS = 0;
 		
 		while(!Thread.interrupted()) {
 			long now = System.nanoTime();
 			long updateLength = now - lastLoopTime;
 			lastLoopTime = now;
 			
-			double dt = (double) updateLength / 20000000.0;
+			double dt = (double) updateLength / DELTA_RATIO;
 			
 			game.update(dt);
 			view.render(dt);
 			
-			if (timeThisSecond > 1000000000) {
-				this.currentFPS = framesThisSecond;
-				timeThisSecond = 0;
-				framesThisSecond = 0;
-				
-				System.out.println("FPS: "+this.currentFPS);
-			} else {
-				framesThisSecond++;
-				timeThisSecond += updateLength;
-			}
 			
 			try {
 				Thread.sleep(1000/FPS);

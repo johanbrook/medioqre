@@ -51,6 +51,8 @@ public abstract class Entity extends CollidableObject {
 			int x = (int) (this.direction.getXRatio() * (double) this.movementSpeed * dt);		
 			int y = (int) (this.direction.getYRatio() * (double) this.movementSpeed * dt);
 			
+			System.out.println(this.movementSpeed + "\t" + dt);
+			
 			this.setPosition(currPos.getX() + x, currPos.getY() + y);
 		}
 		

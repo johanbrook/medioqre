@@ -23,7 +23,7 @@ public class Player extends Character {
 	private WeaponBelt belt;
 	
 	public Player(){
-		super(10, new Rectangle(10, 10), new Dimension(20,20), 0, 0);
+		super(30, new Rectangle(10, 10), new Dimension(20,20), 0, 0);
 		
 		this.belt = new WeaponBelt();
 		
