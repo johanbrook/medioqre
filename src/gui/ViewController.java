@@ -8,6 +8,7 @@ import gui.tilemap.TileMapIO;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.KeyListener;
@@ -19,6 +20,7 @@ import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
+import tools.GraphicalFPSMeter;
 import tools.TimerTool;
 
 
@@ -46,6 +48,8 @@ public class ViewController implements IEventHandler {
 	private TileMap gameMap;
 	private Bitmap screen;
 	private BufferedImage screenImage;
+	
+	private GraphicalFPSMeter fpsmeter;
 
 	public ViewController(KeyListener listener, int screenWidth, int screenHeight) {
 		SCREEN_WIDTH = screenWidth;
@@ -54,6 +58,8 @@ public class ViewController implements IEventHandler {
 		screenImage = new BufferedImage(SCREEN_WIDTH, SCREEN_HEIGHT, BufferedImage.TYPE_INT_ARGB);
 		
 		screen = new Bitmap(SCREEN_WIDTH, SCREEN_HEIGHT,BitmapTool.getARGBarrayFromDataBuffer(screenImage.getRaster(), SCREEN_WIDTH, SCREEN_HEIGHT));
+		
+		this.fpsmeter = new GraphicalFPSMeter();
 		
 		initScene();
 
@@ -106,6 +112,8 @@ public class ViewController implements IEventHandler {
 				TimerTool.start("Draw image");
 				g.drawImage(screenImage, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, null);
 				TimerTool.stop();
+				
+				this.fpsmeter.tick(g);
 				
 				g.dispose();
 			} while (bufferStrategy.contentsRestored());
