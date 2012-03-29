@@ -9,13 +9,14 @@ package controller;
 import event.EventBus;
 import gui.ViewController;
 import model.GameModel;
+import model.IGameModel;
 
 public class AppController implements Runnable{
 	
 	public static final int FPS = 300;
 	private static final double DELTA_RATIO = 10E7;
 	
-	private GameModel game;
+	private IGameModel game;
 	private ViewController view;
 
 	

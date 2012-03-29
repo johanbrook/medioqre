@@ -10,7 +10,7 @@ import constants.Direction;
  * @author Johan
  *
  */
-public class GameModel {
+public class GameModel implements IGameModel {
 	
 	private Character player;
 	
@@ -23,7 +23,7 @@ public class GameModel {
 	 * @param dt The time since the last update.
 	 */
 	public void update(double dt) {
-		// Nothing implemented here yet.
+
 		this.player.move(dt);
 	}
 	

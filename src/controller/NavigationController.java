@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import model.GameModel;
+import model.IGameModel;
 
 import constants.Direction;
 
@@ -19,7 +19,7 @@ public class NavigationController implements KeyListener {
 	
 	private Set<Integer> keys;
 	private Map<Integer, Direction> keyMap;
-	private GameModel game;
+	private IGameModel game;
 	
 	private boolean isQuick = false;
 	private Set<Integer> cachedKeys;
@@ -27,7 +27,13 @@ public class NavigationController implements KeyListener {
 	private long start;
 	private final double EPSILON = 0.2;
 	
-	public NavigationController(GameModel game) {
+	/**
+	 * Create a new NavigationController, which controls a
+	 * <code>GameModel</code>.
+	 * 
+	 * @param game A game model
+	 */
+	public NavigationController(IGameModel game) {
 		this.keys = new HashSet<Integer>();
 		this.keyMap = new HashMap<Integer, Direction>();
 		this.cachedKeys = new HashSet<Integer>();
