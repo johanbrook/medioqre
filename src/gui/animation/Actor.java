@@ -37,30 +37,31 @@ public class Actor {
 	{
 		switch(direction) {
 		case NORTH :
-			currentAnimation = animations[0];
+			currentAnimation = animations[4];
 			break;
 		case NORTH_EAST :
-			currentAnimation = animations[0];
+			currentAnimation = animations[5];
 			break;
 		case EAST :
-			currentAnimation = animations[0];
+			currentAnimation = animations[6];
 			break;
 		case SOUTH_EAST :
-			currentAnimation = animations[0];
+			currentAnimation = animations[7];
 			break;
 		case SOUTH :
 			currentAnimation = animations[0];
 			break;
 		case SOUTH_WEST :
-			currentAnimation = animations[0];
+			currentAnimation = animations[1];
 			break;
 		case WEST :
-			currentAnimation = animations[0];
+			currentAnimation = animations[2];
 			break;
 		case NORTH_WEST :
-			currentAnimation = animations[0];
+			currentAnimation = animations[3];
 			break;
 		}
+		System.out.println(currentAnimation.getName());
 	}
 	
 	public void update(double dt)

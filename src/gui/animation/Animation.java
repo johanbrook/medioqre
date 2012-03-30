@@ -20,12 +20,11 @@ public class Animation {
 	
 	public void updateAnimation(double dt)
 	{
-		this.timePassed += dt;
+		this.timePassed += (dt / 10);
 		if (this.timePassed>duration) timePassed = 0;
 	}
 	public Bitmap getCurrentFrame() {
 		this.currentFrame = frames[(int)(timePassed / (duration / frames.length))];
-		System.out.println("In Animation: "+timePassed);
 		return this.currentFrame;
 	}
 	public String getName()

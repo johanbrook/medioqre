@@ -56,13 +56,14 @@ public class ResourceManager {
 						JSONArray jsAnimations = jsObj.getJSONArray("animations");
 						Animation[] animations = new Animation[jsAnimations.length()];
 						
-						String name;
-						double duration;
 						for (int j = 0; j < jsAnimations.length(); j++) {
-							name = jsAnimations.getJSONObject(i).getString("name");
-							duration = jsAnimations.getJSONObject(i).getDouble("duration");
+							String name;
+							double duration;
 							
-							JSONArray jsFrames = jsAnimations.getJSONObject(i).getJSONArray("frames"); 
+							name = jsAnimations.getJSONObject(j).getString("name");
+							duration = jsAnimations.getJSONObject(j).getDouble("duration");
+							
+							JSONArray jsFrames = jsAnimations.getJSONObject(j).getJSONArray("frames"); 
 							
 							Bitmap[] frames = new Bitmap[jsFrames.length()];
 							
@@ -74,9 +75,9 @@ public class ResourceManager {
 								y = jsFrames.getJSONObject(k).getInt("y");
 								
 								frames[k] = spriteSheet.getSubImage(x, y, width, height);
-								
-								System.out.println("Loading: "+frames[k].pixels);
 							}
+							System.out.println("New animation: "+j);
+							System.out.println("Animation name: "+name);
 							animations[j] = new Animation(name, duration, frames);
 						}
 						actors[i] = new Actor(new Point(0,0), animations);
