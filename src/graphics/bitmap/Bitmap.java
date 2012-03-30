@@ -210,6 +210,19 @@ public class Bitmap {
 		}
 	}
 
+	public Bitmap getSubImage(int x, int y, int width, int height)
+	{
+		Bitmap bitmap = new Bitmap(width, height);
+		
+		for (int h = 0; h < height; h++) {
+			for (int w = 0; w < width; w++) {
+				bitmap.pixels[h * bitmap.width + w] = this.pixels[(h + y) * this.width + (w + x)];
+			}
+		}
+		
+		return bitmap;
+	}
+	
 	public int mergePixels(int backgroundPixel, int foregroundPixel) {
 		int a1 = 0xff000000 & backgroundPixel;
 		int r1 = 0x00ff0000 & backgroundPixel;

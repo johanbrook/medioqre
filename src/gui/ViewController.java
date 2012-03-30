@@ -2,6 +2,7 @@ package gui;
 
 import graphics.bitmap.Bitmap;
 import graphics.bitmap.BitmapTool;
+import gui.animation.Actor;
 import gui.tilemap.TileMap;
 import gui.tilemap.TileMapIO;
 
@@ -20,6 +21,8 @@ import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
+
+import json.test.ResourceManager;
 
 import tools.GraphicalFPSMeter;
 import tools.TimerTool;
@@ -85,8 +88,7 @@ public class ViewController implements IEventHandler {
 	}
 
 	private void initScene() {
-		this.player = new Actor(new Point(SCREEN_WIDTH / 2,
-				SCREEN_HEIGHT / 2));
+		this.player = ResourceManager.loadActors()[0];
 		try {
 			this.gameMap = new TileMap("res/images/levels/l2.bmp");
 		} catch (IOException e) {
@@ -105,6 +107,7 @@ public class ViewController implements IEventHandler {
 				
 				TimerTool.start("Player");
 				if (player.getCurrentFrame() != null) {
+					player.update(dt);
 					screen.blit(player.getCurrentFrame(), SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 				} else 
 					System.out.println("Playerimage is null!");

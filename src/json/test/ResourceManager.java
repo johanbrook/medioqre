@@ -1,7 +1,19 @@
 package json.test;
 
+import graphics.bitmap.Bitmap;
+import graphics.bitmap.BitmapTool;
+import gui.animation.Actor;
+import gui.animation.Animation;
+
+import java.awt.Point;
+import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.WritableRaster;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+
+import javax.imageio.ImageIO;
 
 import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
@@ -19,7 +31,11 @@ public class ResourceManager {
 
 	public ResourceManager()
 	{
-		InputStream inputStream = this.getClass().getResourceAsStream("/animations/frank_animation.txt");
+		loadActors();
+	}
+	public static Actor[] loadActors()
+	{
+		InputStream inputStream = ResourceManager.class.getResourceAsStream("/animations/frank_animation.js");
 		String inputString = null;
 		JSONObject jFather = null;
 		try {
@@ -27,31 +43,54 @@ public class ResourceManager {
 			
 			try {
 				jFather = new JSONObject(inputString);
+				try {			
+					JSONArray jsonArray = jFather.getJSONArray("actors");
+					Actor[] actors = new Actor[jsonArray.length()];
+					
+					BufferedImage bi = null;
+					for (int i = 0; i < jsonArray.length(); i++) {
+						JSONObject jsObj = jsonArray.getJSONObject(i);
+						bi = ImageIO.read(new File(jsObj.getString("image-src")));
+						Bitmap spriteSheet = new Bitmap(bi.getWidth(), bi.getHeight(), BitmapTool.getARGBarrayFromDataBuffer(bi.getData(), bi.getWidth(), bi.getHeight()));
+						
+						JSONArray jsAnimations = jsObj.getJSONArray("animations");
+						Animation[] animations = new Animation[jsAnimations.length()];
+						
+						String name;
+						double duration;
+						for (int j = 0; j < jsAnimations.length(); j++) {
+							name = jsAnimations.getJSONObject(i).getString("name");
+							duration = jsAnimations.getJSONObject(i).getDouble("duration");
+							
+							JSONArray jsFrames = jsAnimations.getJSONObject(i).getJSONArray("frames"); 
+							
+							Bitmap[] frames = new Bitmap[jsFrames.length()];
+							
+							for (int k = 0; k < frames.length; k++) {	
+								int width, height, x, y;
+								width = jsFrames.getJSONObject(k).getInt("width");
+								height = jsFrames.getJSONObject(k).getInt("height");
+								x = jsFrames.getJSONObject(k).getInt("x");
+								y = jsFrames.getJSONObject(k).getInt("y");
+								
+								frames[k] = spriteSheet.getSubImage(x, y, width, height);
+								
+								System.out.println("Loading: "+frames[k].pixels);
+							}
+							animations[j] = new Animation(name, duration, frames);
+						}
+						actors[i] = new Actor(new Point(0,0), animations);
+					}
+					return actors;
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} 
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-
-		try {
-			System.out.println(jFather);
-			
-			JSONArray jsonArray = jFather.getJSONObject("frank").getJSONArray("moveLeft");
-			
-			for (int i = 0; i < jsonArray.length(); i++) {
-				System.out.println(((JSONObject)jsonArray.get(i)).getInt("x"));
-			}
-			
-//			System.out.println("InputStream: "+);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
+		return null;
 	}
-
 }
