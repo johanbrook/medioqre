@@ -20,8 +20,8 @@ public class AmmoCrate extends CollidableObject implements ICollectableItem {
 
 	private int amount;
 	
-	public AmmoCrate(Rectangle collBox, Dimension size, int xoffset, int yoffset, int amount) {
-		super(collBox, size, xoffset, yoffset);
+	public AmmoCrate(int amount) {
+		super(new Rectangle(10, 10), new Dimension(10, 10), 0, 0);
 		
 		this.amount = amount;
 	}
