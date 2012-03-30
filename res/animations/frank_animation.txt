@@ -1,0 +1,7 @@
+{
+	frank : {
+		image-src : 
+		moveLeft
+	
+	}
+}

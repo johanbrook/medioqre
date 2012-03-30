@@ -4,14 +4,17 @@ public class TimerTool {
 
 	private static String label;
 	private static long startTime;
-	
-	public static void start(String probeName) {
+
+	public static void start(String probeName)
+	{
 		label = probeName;
 		startTime = System.nanoTime();
 	}
-	public static void stop() {
+
+	public static void stop()
+	{
 		long dt = System.nanoTime() - startTime;
 		System.out.println(label + ": " + dt / 1000000 + "ms ");
 	}
-	
+
 }
