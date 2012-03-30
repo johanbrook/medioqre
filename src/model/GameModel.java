@@ -8,6 +8,7 @@ import model.character.Character;
 import model.character.Enemy;
 import model.character.Player;
 import constants.Direction;
+import controller.AI.AIController;
 
 /**
  * Model for a game.
@@ -19,10 +20,12 @@ public class GameModel implements IGameModel {
 
 	private Character player;
 	private ArrayList<Enemy> enemies;
+	private AIController ai;
 
 	public GameModel() {
 		this.player = new Player();
 		this.enemies = new ArrayList <Enemy>();
+		//this.ai = new AIController();
 		initEnemies();
 	}
 
@@ -32,7 +35,6 @@ public class GameModel implements IGameModel {
 	private void initEnemies() {
 		for (int i = 0; i < 5; i++){
 			this.enemies.add(new Enemy(5,  30, new Rectangle (5,5),  new Dimension (5,5),  5,  5));
-			this.enemies.get(i).setDirection(Direction.WEST);
 		}
 
 
@@ -43,11 +45,12 @@ public class GameModel implements IGameModel {
 	 * @param dt The time since the last update.
 	 */
 	public void update(double dt) {
-		this.player.move(dt);
 		
+		this.player.move(dt);
 		for (int i = 0; i < this.enemies.size(); i++){
 			this.enemies.get(i).move(dt);
-			System.out.println("Enemy nr " + i + "has X-value: " + this.enemies.get(i).getPosition().x);
+			System.out.println("Enemy " + i + " has X-value: " + this.enemies.get(i).getPosition().x
+								+ " and Y-value: " + this.enemies.get(i).getPosition().y);
 		}
 	}
 
