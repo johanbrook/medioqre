@@ -68,7 +68,6 @@ public class AIController {
 		if (path.size() >= 2){
 			int dx = (int) Math.signum(path.get(path.size()-2).getX()-path.get(path.size()-1).getX());
 			int dy = (int) Math.signum(path.get(path.size()-2).getY()-path.get(path.size()-1).getY());
-			
 			switch (dx){
 			case -1:
 				if(dy == -1){
