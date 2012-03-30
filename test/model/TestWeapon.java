@@ -17,35 +17,57 @@ import org.junit.Test;
 
 public class TestWeapon {
 
-	private IWeapon rifle;
-	private IWeapon grenade;
-	private IWeapon sword;
-	private IWeapon portal;
+	private AbstractWeapon machineGun;
+	private AbstractWeapon grenade;
+	private AbstractWeapon sword;
+	private AbstractWeapon melee;
+	private AbstractWeapon portal;
 	
 	@Before
 	public void setUp() throws Exception {
-		this.rifle = new MachineGun();
+		this.machineGun = new MachineGun();
 		this.grenade = new Grenade();
 		this.sword = new Sword();
-		this.portal = new PortalGun();
-	}
-
-	@Test
-	public void testFire() {
-		assertTrue(this.rifle.fire());
-		assertTrue(this.grenade.fire());
-		assertTrue(this.sword.fire());
-		assertTrue(this.portal.fire());
+		this.melee = new Melee();
 	}
 	
 	@Test
-	public void testGrenade(){
+	public void addAmmo() {
+		int initialAmmo = this.machineGun.getCurrentAmmo();
+		this.machineGun.addAmmo(10);
+		
+		assertEquals(initialAmmo + 10, this.machineGun.getCurrentAmmo());
+	}
+
+	@Test
+	public void testMachineGun() {
+		assertNotNull(this.machineGun.fire());
+	}
+	
+	@Test
+	public void testSword() {
+		assertNotNull(this.sword.fire());
+	}
+	
+	@Test
+	public void testGrenade() {
+		assertNotNull(this.grenade.fire());
+	}
+	
+	@Test
+	public void testMelee() {
+		assertNotNull(this.melee.fire());
+	}
+	
+	@Test
+	public void testAmmo(){
+		this.grenade.fire();
 		this.grenade.fire();
 		this.grenade.fire();
 		this.grenade.fire();
 		
-		assertFalse(this.grenade.fire());
-		assertTrue(this.grenade.getAmmo() == 0);
+		assertNull(this.grenade.fire());
+		assertTrue(this.grenade.getCurrentAmmo() == 0);
 	}
 	
 

@@ -6,31 +6,17 @@
 
 package model.weapon;
 
-public class MachineGun implements IWeapon {
+import model.weapon.Projectile.Range;
 
-	private int ammo;
-	private int damagePerAttack;
+public class MachineGun extends AbstractWeapon {
+
+	private final static int INITIAL_AMMO = 300;
+	private final static int DAMAGE = 10;
 	
 	public MachineGun(){
-		this.ammo = 300;
-		this.damagePerAttack = 10;
+		super(INITIAL_AMMO, new Projectile(DAMAGE, Range.FAR_RANGE));
 	}
 	
-	@Override
-	public boolean fire() {
-		ammo--;
-		return ammo != 0;
-	}
-
-	@Override
-	public int getAmmo() {
-		return this.ammo;
-	}
-
-	@Override
-	public int getDamage() {
-		return this.damagePerAttack;
-	}
 
 	public boolean equals(Object o) {
 		if(o == null || getClass() != o.getClass())

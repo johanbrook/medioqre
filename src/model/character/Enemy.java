@@ -12,28 +12,26 @@ import java.awt.Rectangle;
 import event.Event;
 import event.EventBus;
 import event.Event.Property;
-import model.weapon.IWeapon;
+import model.weapon.AbstractWeapon;
 import model.weapon.Melee;
+import model.weapon.Projectile;
 
 public class Enemy extends Character {
 	
-	private IWeapon melee;
+	private AbstractWeapon melee;
 	
 	public Enemy(int movementSpeed, int damage, Rectangle collBox, Dimension size, int xoffset, int yoffset) {
 		super(movementSpeed, collBox, size, xoffset, yoffset);
-		this.melee = new Melee(damage);
+		this.melee = new Melee();
 	}
 
 	@Override
-	public void attack(Character target) {
-		target.takeDamage(this.melee.getDamage());
+	public Projectile attack() {
 		EventBus.INSTANCE.publish(new Event(Property.DID_ATTACK, this));
+		
+		return this.melee.fire();
 	}
 	
-	@Override
-	public int getCurrentWeaponDamage() {
-		return this.melee.getDamage();
-	}
 	
 	
 }

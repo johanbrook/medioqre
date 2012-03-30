@@ -6,28 +6,22 @@
 
 package model.weapon;
 
-public class Sword implements IWeapon {
+import model.weapon.Projectile.Range;
 
-	@Override
-	public boolean fire() {
-		return true;
-	}
+public class Sword extends AbstractWeapon {
 
-	@Override
-	public int getAmmo() {
-		return -1;
-	}
-
-	@Override
-	public int getDamage() {
-		return 0;
-	}
+	private final static int INITIAL_AMMO = -1;
+	private final static int DAMAGE = 10;
 	
-	
+	public Sword() {
+		super(INITIAL_AMMO, new Projectile(DAMAGE, Range.SHORT_RANGE));
+	}
+
 	public boolean equals(Object o) {
 		if(o == null || getClass() != o.getClass())
 			return false;
 		
 		return true;
 	}
+
 }

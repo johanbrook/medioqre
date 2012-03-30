@@ -8,6 +8,7 @@ import event.EventBus;
 import event.Event.Property;
 
 import model.Entity;
+import model.weapon.Projectile;
 
 
 /**
@@ -33,6 +34,7 @@ public abstract class Character extends Entity {
 	public Character(int movementSpeed, Rectangle collBox, Dimension size, int xoffset, int yoffset) {
 		super(collBox, size, xoffset, yoffset, movementSpeed);
 		this.health = 100;
+		
 	}
 	
 	
@@ -62,18 +64,19 @@ public abstract class Character extends Entity {
 		return this.health;
 	}
 	
-	/**
-	 * Get the character's current weapon's inflicted damage.
-	 * 
-	 * @return The damage
-	 */
-	public abstract int getCurrentWeaponDamage();
+	public void addHealth(int amount) {
+		setHealth(getHealth() + amount);
+	}
+	
+	public void setHealth(int amount) {
+		this.health = amount;
+	}
 	
 	/**
 	 * Tell the character to attack a target (another Character)
 	 * 
 	 * @param target The target to attack
 	 */
-	public abstract void attack(Character target);
+	public abstract Projectile attack();
 
 }

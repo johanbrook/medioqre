@@ -6,30 +6,15 @@
 
 package model.weapon;
 
-public class Grenade implements IWeapon {
+import model.weapon.Projectile.Range;
 
-	private int numberOfGrandes;
-	private int damagePerGrenade;
+public class Grenade extends AbstractWeapon {
+
+	private final static int INITIAL_AMMO = 4;
+	private final static int DAMAGE = 10;
 	
 	public Grenade() {
-		this.numberOfGrandes = 4;
-		this.damagePerGrenade = 90;
-	}
-	
-	@Override
-	public boolean fire() {
-		this.numberOfGrandes--;
-		return this.numberOfGrandes != 0;
-	}
-
-	@Override
-	public int getAmmo() {
-		return this.numberOfGrandes;
-	}
-
-	@Override
-	public int getDamage() {
-		return this.damagePerGrenade;
+		super(INITIAL_AMMO, new Projectile(DAMAGE, Range.SHORT_RANGE));
 	}
 
 	public boolean equals(Object o) {

@@ -6,35 +6,22 @@
 
 package model.weapon;
 
-public class Melee implements IWeapon {
+import model.weapon.Projectile.Range;
 
-	private int damagePerAttack;
+public class Melee extends AbstractWeapon {
 	
-	public Melee(int dmg) {
-		this.damagePerAttack = dmg;
-	}
+	private final static int INITIAL_AMMO = -1;
+	private final static int DAMAGE = 10;
 	
-	@Override
-	public boolean fire() {
-		return true;
+	public Melee() {
+		super(INITIAL_AMMO, new Projectile(DAMAGE, Range.SHORT_RANGE));
 	}
 
-	@Override
-	public int getAmmo() {
-		return -1;
-	}
-
-	@Override
-	public int getDamage() {
-		return this.damagePerAttack;
-	}
-	
-	
 	public boolean equals(Object o) {
 		if(o == null || getClass() != o.getClass())
 			return false;
 		
 		return true;
 	}
-	
+
 }

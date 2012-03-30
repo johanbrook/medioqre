@@ -6,8 +6,10 @@
 
 package model.item;
 
+import model.character.Player;
+
 
 public interface ICollectableItem {
 		
-	public void pickedUpBy(Character source);
+	public void pickedUpBy(Player source);
 }
