@@ -78,8 +78,6 @@ public class AStarTile {
 	}
 
 	
-
-	
 	public void setG(double g) {
 		if (this.h > 0) {
 			this.g = g;

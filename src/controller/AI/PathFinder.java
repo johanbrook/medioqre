@@ -3,7 +3,11 @@ package controller.AI;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Class capable of finding a path between different spots on a gameboard of tiles. Keeps a logic representation of that gameboard.
+ * @author jesperpersson
+ *
+ */
 public class PathFinder {
 
 	private List<AStarTile> openList;
@@ -14,6 +18,7 @@ public class PathFinder {
 	private int columns;
 	private int rows;
 
+	
 	public PathFinder( int rows, int columns) {
 		this.columns = columns;
 		this.rows = rows;
@@ -48,7 +53,6 @@ public class PathFinder {
 		for (int i = 0; i < rows; i++) {
 			for (int l = 0; l < columns; l++) {
 				logicList[i][l].setH(stop);
-
 			}
 			openList = new ArrayList<AStarTile>();
 			ArrayList<AStarTile> path = new ArrayList<AStarTile>();
@@ -80,7 +84,6 @@ public class PathFinder {
 		}
 		clear();
 		return null;
-
 	}
 
 	private List<Point> convertPath(ArrayList<AStarTile> path) {
@@ -229,7 +232,6 @@ public class PathFinder {
 		for (int i = 0; i < openList.size(); i++) {
 			openList.remove(i);
 		}
-		System.out.println("Size: " + openList.size());
 	}
 
 

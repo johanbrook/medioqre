@@ -25,7 +25,8 @@ public class GameModel implements IGameModel {
 	public GameModel() {
 		this.player = new Player();
 		this.enemies = new ArrayList <Enemy>();
-		//this.ai = new AIController();
+		//TODO Need to access size, both in pixels and in rows/columns, where size is the width/height of each tile.
+		//this.ai = new AIController(rows, columns, width, height);
 		initEnemies();
 	}
 
