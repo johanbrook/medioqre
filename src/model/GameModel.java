@@ -43,7 +43,7 @@ public class GameModel implements IGameModel {
 	 * @param dt The time since the last update.
 	 */
 	public void update(double dt) {
-		this.ai.updateAI(this.player.getPosition());
+		//this.ai.updateAI(this.player.getPosition());
 		
 		this.player.move(dt);
 		
