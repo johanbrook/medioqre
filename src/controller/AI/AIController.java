@@ -38,7 +38,7 @@ public class AIController {
 		if (enemies.size() > 0){
 			for (int i = 0; i < enemies.size(); i++){
 				List <Point> path = pathfinder.getPath(calculateTile(enemies.get(i).getPosition()), calculateTile(playerPos));
-				if (path != null){
+				if (path != null ){
 					//Update direction of the zombie
 					enemies.get(i).setDirection(calculateDirection(path));
 				}
@@ -64,12 +64,44 @@ public class AIController {
 	}
 	
 	public Direction calculateDirection(List <Point> path){
-		//TODO fix this shit up (get that direction yo)
+		//If path is long enough to calculate.
+		if (path.size() >= 2){
+			int dx = (int) Math.signum(path.get(path.size()-2).getX()-path.get(path.size()-1).getX());
+			int dy = (int) Math.signum(path.get(path.size()-2).getY()-path.get(path.size()-1).getY());
+			
+			switch (dx){
+			case -1:
+				if(dy == -1){
+					return Direction.NORTH_EAST;
+				}
+				else if(dy == 0){
+					return Direction.EAST;
+				}
+				else{
+					return Direction.SOUTH_EAST;
+				}
+			case 0:
+				if (dy == -1){
+					return Direction.NORTH;
+				}else {
+					return Direction.SOUTH;
+				}
+			case 1:
+				if (dy == -1){
+					return Direction.NORTH_WEST;
+				}
+				else if (dy == 0){
+					return Direction.WEST;
+				}else {
+					return Direction.SOUTH_WEST;
+				}
+			}
+
+		}
 		return null;
 	}
 	
 	public Point calculateTile(Point point){
-		
 		return new Point(point.x/this.width, point.y/this.height);
 	}
 	
