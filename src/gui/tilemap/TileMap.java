@@ -5,8 +5,6 @@ import graphics.bitmap.Bitmap;
 import java.awt.Rectangle;
 import java.io.IOException;
 
-import model.Position;
-
 /**
  * A class used for the visual representation of the gameworld.
  * @author Barber
@@ -24,13 +22,13 @@ public class TileMap {
 	 * @throws IOException Thrown if the map-file can't be found.
 	 */
 	public TileMap(String mapURL) throws IOException {
-		outsideTile = TileLoader.loadTile("rec/images/tiles/ffff0000.png");
+		outsideTile = TileLoader.loadTile("res/images/tiles/ffff0000.png");
 		
 		int[][] p = TileMapIO.getPixelMatrixFromImg(mapURL);
 		this.tiles = new Tile[p.length][p[0].length];
 		for (int x = 0; x < p.length; x++) {
 			for (int y = 0; y < p[x].length; y++) {
-				this.tiles[x][y] = TileLoader.loadTile("rec/images/tiles/"+Integer.toHexString(p[x][y])+".png");
+				this.tiles[x][y] = TileLoader.loadTile("res/images/tiles/"+Integer.toHexString(p[x][y])+".png");
 			}
 		}
 	}

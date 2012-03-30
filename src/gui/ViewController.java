@@ -2,27 +2,34 @@ package gui;
 
 import graphics.bitmap.Bitmap;
 import graphics.bitmap.BitmapTool;
+import gui.animation.Actor;
 import gui.tilemap.TileMap;
+import gui.tilemap.TileMapIO;
 
 import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
 import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
+import json.test.ResourceManager;
 
 import tools.GraphicalFPSMeter;
 import tools.Logger;
 import tools.TimerTool;
 
 
+import constants.Direction;
 import event.Event;
 import event.IEventHandler;
 
@@ -85,15 +92,13 @@ public class ViewController implements IEventHandler {
 	}
 
 	private void initScene() {
-		this.player = new Actor(new Point(SCREEN_WIDTH / 2,
-				SCREEN_HEIGHT / 2));
+		this.player = ResourceManager.loadActors()[0];
 		try {
-			this.gameMap = new TileMap("rec/images/levels/l3.bmp");
+			this.gameMap = new TileMap("res/images/levels/l2.bmp");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
 
 	public void render(double dt) {
 		do {
@@ -109,6 +114,7 @@ public class ViewController implements IEventHandler {
 				
 				TimerTool.start("Player");
 				if (player.getCurrentFrame() != null) {
+					player.update(dt);
 					screen.blit(player.getCurrentFrame(), SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 				} else 
 					Logger.log("Playerimage is null!");
