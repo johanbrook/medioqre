@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.commons.io.IOUtils;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONStringer;
@@ -18,7 +19,7 @@ public class ResourceManager {
 
 	public ResourceManager()
 	{
-		InputStream inputStream = this.getClass().getResourceAsStream("/gamedata/player.txt");
+		InputStream inputStream = this.getClass().getResourceAsStream("/animations/frank_animation.txt");
 		String inputString = null;
 		JSONObject jFather = null;
 		try {
@@ -37,7 +38,14 @@ public class ResourceManager {
 
 		try {
 			System.out.println(jFather);
-			System.out.println("InputStream: "+jFather.getJSONObject("player").getInt("mvspeed"));
+			
+			JSONArray jsonArray = jFather.getJSONObject("frank").getJSONArray("moveLeft");
+			
+			for (int i = 0; i < jsonArray.length(); i++) {
+				System.out.println(((JSONObject)jsonArray.get(i)).getInt("x"));
+			}
+			
+//			System.out.println("InputStream: "+);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
