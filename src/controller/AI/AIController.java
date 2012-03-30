@@ -1,8 +1,16 @@
 package controller.AI;
 
+import java.awt.Point;
 import java.util.List;
+
 import model.character.Enemy;
 
+/**
+ * Class for controlling a list of enemies. Using a PathFinder (implementation of the A*-algorithm), the AIController is able to calculate
+ * the most accurate path between a enemy and the player. 
+ * @author jesperpersson
+ *
+ */
 public class AIController {
 	
 	private List <Enemy> enemies;
@@ -14,7 +22,7 @@ public class AIController {
 		this.pathfinder = new PathFinder(rows, columns);
 		}
 	
-	public void updateAI(){
+	public void updateAI(Point playerPos){
 		
 	}
 	

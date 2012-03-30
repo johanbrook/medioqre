@@ -36,8 +36,6 @@ public class GameModel implements IGameModel {
 		for (int i = 0; i < 5; i++){
 			this.enemies.add(new Enemy(5,  30, new Rectangle (5,5),  new Dimension (5,5),  5,  5));
 		}
-
-
 	}
 
 	/**
@@ -45,8 +43,10 @@ public class GameModel implements IGameModel {
 	 * @param dt The time since the last update.
 	 */
 	public void update(double dt) {
+		this.ai.updateAI(this.player.getPosition());
 		
 		this.player.move(dt);
+		
 		for (int i = 0; i < this.enemies.size(); i++){
 			this.enemies.get(i).move(dt);
 			System.out.println("Enemy " + i + " has X-value: " + this.enemies.get(i).getPosition().x
