@@ -36,6 +36,7 @@ public class GameModel implements IGameModel {
 	private void initEnemies() {
 		for (int i = 0; i < 5; i++){
 			this.enemies.add(new Enemy(5,  30, new Rectangle (5,5),  new Dimension (5,5),  5,  5));
+			//this.ai.addEnemy(enemies.get(i));
 		}
 	}
 
