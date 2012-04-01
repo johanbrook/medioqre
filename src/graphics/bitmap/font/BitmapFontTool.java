@@ -48,7 +48,7 @@ public class BitmapFontTool {
 			this.imgURL = rootObj.getString("image-src");
 			
 			JSONArray chars = rootObj.getJSONArray("characters");
-			BufferedImage bImg = ImageIO.read(new File("res/bitmapfonts/"+string+".png"));
+			BufferedImage bImg = ImageIO.read(new File("res/bitmapfonts/"+this.imgURL));
 			Bitmap charsBitmap = new Bitmap(bImg.getWidth(), bImg.getHeight(),
 					BitmapTool.getARGBarrayFromDataBuffer(bImg.getData(), bImg.getWidth(), bImg.getHeight()));
 			

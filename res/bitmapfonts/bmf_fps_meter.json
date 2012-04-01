@@ -1,6 +1,6 @@
 {
 	"name" : "fps-meter",
-	"image-src" : "res/bitmapfonts/fps_meter.png",
+	"image-src" : "bmf_fps_meter_v2.png",
 	"characters" : [
 		{
 			"letter" : "f",

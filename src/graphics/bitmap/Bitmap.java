@@ -191,22 +191,19 @@ public class Bitmap {
 					else if (w + x >= 0) {
 						currentPixel = bitmapPixels[h * bitmap.width + w];
 
-						if (((0xff000000 & currentPixel)) == 0xff000000) {
-							//System.out.print("p");
+						int alpha = (currentPixel >> 24) & 0xff;
+		
+						if (alpha == 0xff) {
 							pixels[(h + y) * width + (w + x)] = currentPixel;
-						} else if (((0xff000000 & currentPixel) >> 24) != 0) {
-							//System.out.print("m");
-							pixels[(h + y) * width + (w + x)] = mergePixels(
-									pixels[(h + y) * width + (w + x)],
-									currentPixel);
-						} else {
-							
-							//System.out.print(((0xff000000 & currentPixel) >> 24));
+						} 
+						else if (alpha != 0x00) {
+//							pixels[(h + y) * width + (w + x)] = mergePixels(
+//									pixels[(h + y) * width + (w + x)],
+//									currentPixel);
 						}
 					}
 				}
 			}
-			//System.out.print("\n");
 		}
 	}
 

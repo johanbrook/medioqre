@@ -13,8 +13,15 @@ public class TimerTool {
 
 	public static void stop()
 	{
-		long dt = System.nanoTime() - startTime;
-		System.out.println(label + ": " + dt / 1000000 + "ms ");
+		System.out.println(stopToString());
+	}
+	public static String stopToString()
+	{
+		return (label + ": " + stopToTimeDiff() + "ms ");
+	}
+	public static long stopToTimeDiff() 
+	{
+		return (System.nanoTime() - startTime) / 1000000;
 	}
 
 }
