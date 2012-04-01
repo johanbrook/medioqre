@@ -2,6 +2,7 @@ package gui;
 
 import graphics.bitmap.Bitmap;
 import graphics.bitmap.BitmapTool;
+import graphics.bitmap.font.BitmapFont;
 import gui.animation.Actor;
 import gui.tilemap.TileMap;
 
@@ -42,6 +43,7 @@ public class ViewController implements IEventHandler {
 	private Actor player;
 	private TileMap gameMap;
 	private Bitmap screen;
+	private BitmapFont fpsBitmap;
 	private BufferedImage screenImage;
 	
 	private GraphicalFPSMeter fpsmeter;
@@ -104,11 +106,14 @@ public class ViewController implements IEventHandler {
 					System.out.println("Playerimage is null!");
 				TimerTool.stop();
 				
+				this.fpsmeter.tick();
+				String fpsStr = "fps: " + this.fpsmeter.currentFPS;
+				fpsBitmap = new BitmapFont(fpsStr);
+				screen.blit(fpsBitmap.getBitmap(), 5, 5);
+				
 				TimerTool.start("Draw image");
 				g.drawImage(screenImage, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, null);
 				TimerTool.stop();
-				
-				this.fpsmeter.tick(g);
 				
 				g.dispose();
 			} while (bufferStrategy.contentsRestored());
