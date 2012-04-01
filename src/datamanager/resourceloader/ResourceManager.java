@@ -1,4 +1,4 @@
-package json.test;
+package datamanager.resourceloader;
 
 import graphics.bitmap.Bitmap;
 import graphics.bitmap.BitmapTool;
@@ -7,11 +7,11 @@ import gui.animation.Animation;
 
 import java.awt.Point;
 import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
-import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javax.imageio.ImageIO;
 
@@ -19,8 +19,6 @@ import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONStringer;
-import org.json.JSONTokener;
 
 public class ResourceManager {
 
@@ -35,7 +33,7 @@ public class ResourceManager {
 	}
 	public static Actor[] loadActors()
 	{
-		InputStream inputStream = ResourceManager.class.getResourceAsStream("/animations/frank_animation.js");
+		InputStream inputStream = ResourceManager.class.getResourceAsStream("/animations/frank_animation.json");
 		String inputString = null;
 		JSONObject jFather = null;
 		try {
@@ -54,7 +52,7 @@ public class ResourceManager {
 						Bitmap spriteSheet = new Bitmap(bi.getWidth(), bi.getHeight(), BitmapTool.getARGBarrayFromDataBuffer(bi.getData(), bi.getWidth(), bi.getHeight()));
 						
 						JSONArray jsAnimations = jsObj.getJSONArray("animations");
-						Animation[] animations = new Animation[jsAnimations.length()];
+						Map<String, Animation> animations = new TreeMap<String, Animation>();
 						
 						for (int j = 0; j < jsAnimations.length(); j++) {
 							String name;
@@ -78,7 +76,7 @@ public class ResourceManager {
 							}
 							System.out.println("New animation: "+j);
 							System.out.println("Animation name: "+name);
-							animations[j] = new Animation(name, duration, frames);
+							animations.put(name, new Animation(name, duration, frames));
 						}
 						actors[i] = new Actor(new Point(0,0), animations);
 					}

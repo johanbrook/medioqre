@@ -4,37 +4,28 @@ import graphics.bitmap.Bitmap;
 import graphics.bitmap.BitmapTool;
 import gui.animation.Actor;
 import gui.tilemap.TileMap;
-import gui.tilemap.TileMapIO;
 
 import java.awt.Canvas;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferInt;
 import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-import json.test.ResourceManager;
+import datamanager.resourceloader.ResourceManager;
 
 import tools.GraphicalFPSMeter;
 import tools.TimerTool;
 
-
-import constants.Direction;
 import event.Event;
 import event.IEventHandler;
 
 import model.Entity;
-import model.Position;
-
 
 /**
  * A GUI-Interface in BASIC so we can track the IP-address.
@@ -128,9 +119,16 @@ public class ViewController implements IEventHandler {
 
 	@Override
 	public void onEvent(Event evt) {
-		Entity p = (Entity) evt.getValue();
-		player.setDirection(p.getDirection());
-		player.setPosition(p.getPosition());
-		System.out.println(evt.getProperty() + " " + p.getDirection());
+		if (evt.getProperty() == Event.Property.DID_MOVE) {
+			Entity p = (Entity) evt.getValue();
+			player.setDirection(p.getDirection(), true);
+			player.setPosition(p.getPosition());
+			System.out.println(evt.getProperty() + " " + p.getDirection());
+		} else if (evt.getProperty() == Event.Property.DID_STOP) {
+			Entity p = (Entity) evt.getValue();
+			player.setDirection(p.getDirection(), false);
+			player.setPosition(p.getPosition());
+			System.out.println(evt.getProperty() + " " + p.getDirection());
+		}
 	}
 }

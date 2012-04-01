@@ -1,64 +1,58 @@
 package gui.animation;
 
 import graphics.bitmap.Bitmap;
-import graphics.bitmap.BitmapTool;
-
 import java.awt.Point;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
-import json.test.ResourceManager;
+import java.util.Map;
 
 import constants.Direction;
 
 public class Actor {
 
 	private Point position;
-	private Animation[] animations;
+	private Map<String, Animation> animations;
 	private Animation currentAnimation;
 	
-	public Actor(Point startingPosition, Animation[] animations) {
+	public Actor(Point startingPosition, Map<String, Animation> animations) {
 		this.position = new Point(startingPosition);
 		this.animations = animations;
-		this.currentAnimation = animations[0];
+		this.currentAnimation = null;
 	}
 	
 	public Bitmap getCurrentFrame() {
+		if (currentAnimation == null) return null;
+		
 		return currentAnimation.getCurrentFrame();
 	}
 	
 	public Point getPosition() {
 		return this.position;
 	}
-	public void setDirection(Direction direction)
+	public void setDirection(Direction direction, boolean isMoving)
 	{
 		switch(direction) {
 		case NORTH :
-			currentAnimation = animations[4];
+			currentAnimation = isMoving ? animations.get("moveNorth") : animations.get("standNorth");
 			break;
 		case NORTH_EAST :
-			currentAnimation = animations[5];
+			currentAnimation = isMoving ? animations.get("moveNorthEast") : animations.get("standNorthEast");
 			break;
 		case EAST :
-			currentAnimation = animations[6];
+			currentAnimation = isMoving ? animations.get("moveEast") : animations.get("standEast");
 			break;
 		case SOUTH_EAST :
-			currentAnimation = animations[7];
+			currentAnimation = isMoving ? animations.get("moveSouthEast") : animations.get("standSouthEast");
 			break;
 		case SOUTH :
-			currentAnimation = animations[0];
+			currentAnimation = isMoving ? animations.get("moveSouth") : animations.get("standSouth");
 			break;
 		case SOUTH_WEST :
-			currentAnimation = animations[1];
+			currentAnimation = isMoving ? animations.get("moveSouthWest") : animations.get("standSouthWest");
 			break;
 		case WEST :
-			currentAnimation = animations[2];
+			currentAnimation = isMoving ? animations.get("moveWest") : animations.get("standWest");
 			break;
 		case NORTH_WEST :
-			currentAnimation = animations[3];
+			currentAnimation = isMoving ? animations.get("moveNorthWest") : animations.get("standNorthWest");
 			break;
 		}
 		System.out.println(currentAnimation.getName());
