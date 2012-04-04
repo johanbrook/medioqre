@@ -23,7 +23,7 @@ public class AppController implements Runnable{
 	
 	public AppController(){
 		this.game = new GameModel();
-		this.view = new ViewController(new NavigationController(this.game), 1280, 768);
+		this.view = new ViewController(new NavigationController(this.game), 20*32, 12*32);
 		
 		EventBus.INSTANCE.register(this.view);
 		Thread t = new Thread(this);

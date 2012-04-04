@@ -1,0 +1,111 @@
+{
+	"name" : "fps-meter",
+	"image-src" : "bmf_fps_meter_v2.png",
+	"characters" : [
+		{
+			"letter" : "f",
+			"x" : 0,
+			"y" : 0,
+			"width" : 16,
+			"height" : 16
+		},
+		{
+			"letter" : "p",
+			"x" : 16,
+			"y" : 0,
+			"width" : 16,
+			"height" : 16
+		},
+		{
+			"letter" : "s",
+			"x" : 32,
+			"y" : 0,
+			"width" : 16,
+			"height" : 16
+		},
+		{
+			"letter" : ":",
+			"x" : 48,
+			"y" : 0,
+			"width" : 16,
+			"height" : 16
+		},
+		{
+			"letter" : " ",
+			"x" : 64,
+			"y" : 0,
+			"width" : 16,
+			"height" : 16
+		},
+		{
+			"letter" : "0",
+			"x" : 80,
+			"y" : 0,
+			"width" : 16,
+			"height" : 16
+		},
+		{
+			"letter" : "1",
+			"x" : 96,
+			"y" : 0,
+			"width" : 16,
+			"height" : 16
+		},
+		{
+			"letter" : "2",
+			"x" : 112,
+			"y" : 0,
+			"width" : 16,
+			"height" : 16
+		},
+		{
+			"letter" : "3",
+			"x" : 0,
+			"y" : 16,
+			"width" : 16,
+			"height" : 16
+		},
+		{
+			"letter" : "4",
+			"x" : 16,
+			"y" : 16,
+			"width" : 16,
+			"height" : 16
+		},
+		{
+			"letter" : "5",
+			"x" : 32,
+			"y" : 16,
+			"width" : 16,
+			"height" : 16
+		},
+		{
+			"letter" : "6",
+			"x" : 48,
+			"y" : 16,
+			"width" : 16,
+			"height" : 16
+		},
+		{
+			"letter" : "7",
+			"x" : 64,
+			"y" : 16,
+			"width" : 16,
+			"height" : 16
+		},
+		{
+			"letter" : "8",
+			"x" : 80,
+			"y" : 16,
+			"width" : 16,
+			"height" : 16
+		},
+		{
+			"letter" : "9",
+			"x" : 96,
+			"y" : 16,
+			"width" : 16,
+			"height" : 16
+		}
+	]
+}

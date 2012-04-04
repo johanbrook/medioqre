@@ -79,8 +79,14 @@ public class GraphicalFPSMeter {
 			this.currentFPS = framesThisSecond;
 			framesThisSecond = 0;
 			timeThisSecond = 0;
+<<<<<<< HEAD
 			if (shouldLogFPS) Logger.log(this.label+": "+this.currentFPS);
 			
+=======
+			if (shouldLogFPS)
+				System.out.println(this.label + ": " + this.currentFPS);
+
+>>>>>>> graphics-tweak
 		} else {
 			timeThisSecond += dt;
 			framesThisSecond++;

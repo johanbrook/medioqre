@@ -12,6 +12,8 @@ import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javax.imageio.ImageIO;
 
@@ -54,7 +56,7 @@ public class ResourceManager {
 						Bitmap spriteSheet = new Bitmap(bi.getWidth(), bi.getHeight(), BitmapTool.getARGBarrayFromDataBuffer(bi.getData(), bi.getWidth(), bi.getHeight()));
 						
 						JSONArray jsAnimations = jsObj.getJSONArray("animations");
-						Animation[] animations = new Animation[jsAnimations.length()];
+						Map<String, Animation> animations = new TreeMap<String,Animation>();
 						
 						for (int j = 0; j < jsAnimations.length(); j++) {
 							String name;
@@ -78,7 +80,7 @@ public class ResourceManager {
 							}
 							System.out.println("New animation: "+j);
 							System.out.println("Animation name: "+name);
-							animations[j] = new Animation(name, duration, frames);
+							animations.put(name, new Animation(name, duration, frames));
 						}
 						actors[i] = new Actor(new Point(0,0), animations);
 					}

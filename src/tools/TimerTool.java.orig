@@ -13,6 +13,11 @@ public class TimerTool {
 
 	public static void stop()
 	{
+<<<<<<< HEAD
+		long dt = System.nanoTime() - startTime;
+		Logger.log(label + ": " + dt / 1000000 + "ms ");
+	}
+=======
 		System.out.println(stopToString());
 	}
 	public static String stopToString()
@@ -23,5 +28,6 @@ public class TimerTool {
 	{
 		return (System.nanoTime() - startTime) / 1000000;
 	}
+>>>>>>> graphics-tweak
 
 }

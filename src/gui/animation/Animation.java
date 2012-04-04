@@ -31,4 +31,9 @@ public class Animation {
 	{
 		return this.name;
 	}
+	public Animation clone()
+	{
+		Animation newAnimation = new Animation(this.name, this.duration, this.frames);
+		return newAnimation;
+	}
 }
