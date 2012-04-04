@@ -46,6 +46,7 @@ public class ViewController implements IEventHandler {
 	private final int SCREEN_WIDTH;
 	private final int SCREEN_HEIGHT;
 	private BufferStrategy bufferStrategy;
+	private Canvas canvas;
 	private Actor player;
 	private Actor[] enemies;
 	private TileMap gameMap;
@@ -84,6 +85,7 @@ public class ViewController implements IEventHandler {
 		// Setup the canvas and frame
 		canvas.createBufferStrategy(2);
 		this.bufferStrategy = canvas.getBufferStrategy();
+		this.canvas = canvas;
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 	}
@@ -162,7 +164,7 @@ public class ViewController implements IEventHandler {
 				fpsBitmap.setText("fps: " + this.fpsmeter.currentFPS);
 				screen.blit(fpsBitmap.getBitmap(), 5, 5);
 					
-				g.drawImage(screenImage, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, null);
+				g.drawImage(screenImage, 0, 0, this.canvas.getWidth(), this.canvas.getHeight(), null);
 				
 				g.dispose();
 			} while (bufferStrategy.contentsRestored());

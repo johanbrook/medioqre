@@ -35,7 +35,7 @@ public class ResourceManager {
 	public static Actor[] loadActors()
 	{
 		InputStream inputStream = ResourceManager.class
-				.getResourceAsStream("/animations/frank_animation.json");
+				.getResourceAsStream("/animations/frank_animation_s.json");
 		String inputString = null;
 		JSONObject jFather = null;
 		try {
