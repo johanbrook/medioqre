@@ -3,6 +3,8 @@ package model.character;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 
+import constants.Direction;
+
 import event.Event;
 import event.EventBus;
 import event.Event.Property;
@@ -34,7 +36,7 @@ public abstract class Character extends Entity {
 	public Character(int movementSpeed, Rectangle collBox, Dimension size, int xoffset, int yoffset) {
 		super(collBox, size, xoffset, yoffset, movementSpeed);
 		this.health = 100;
-		
+		this.setDirection(Direction.SOUTH);
 	}
 	
 	
