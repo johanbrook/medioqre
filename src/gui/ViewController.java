@@ -180,15 +180,15 @@ public class ViewController implements IEventHandler {
 
 	@Override
 	public void onEvent(Event evt) {
+		Entity p = (Entity) evt.getValue();
+		if (this.player.getEntity() == null) {
+			this.player.setEntity(p);
+		}
 		if (evt.getProperty() == Event.Property.DID_MOVE) {
-			Entity p = (Entity) evt.getValue();
 			player.setDirection(p.getDirection(), true);
-			player.setPosition(p.getPosition());
 			System.out.println(evt.getProperty() + " " + p.getDirection());
 		} else if (evt.getProperty() == Event.Property.DID_STOP) {
-			Entity p = (Entity) evt.getValue();
 			player.setDirection(p.getDirection(), false);
-			player.setPosition(p.getPosition());
 			System.out.println(evt.getProperty() + " " + p.getDirection());
 		}
 	}

@@ -5,6 +5,9 @@ import java.awt.Point;
 import java.util.Map;
 import java.util.TreeMap;
 
+import model.Entity;
+import model.Position;
+
 import constants.Direction;
 
 public class Actor {
@@ -12,6 +15,7 @@ public class Actor {
 	private Point position;
 	private Map<String, Animation> animations;
 	private Animation currentAnimation;
+	private Entity entity;
 
 	public Actor clone()
 	{
@@ -21,17 +25,26 @@ public class Actor {
 			newAnimations.put(s, this.animations.get(s).clone());
 		}
 		
-		Actor newActor = new Actor(new Point(this.position.x, this.position.y), newAnimations);
+		Actor newActor = new Actor(this.entity, newAnimations);
 		return newActor;
 	}
 
-	public Actor(Point startingPosition, Map<String, Animation> animations)
+	public Actor(Entity e, Map<String, Animation> animations)
 	{
-		this.position = new Point(startingPosition);
+		this.entity = e;
 		this.animations = animations;
 		this.currentAnimation = null;
 	}
-
+	
+	public void setEntity(Entity e)
+	{
+		this.entity = e;
+	}
+	public Entity getEntity()
+	{
+		return this.entity;
+	}
+	
 	public Bitmap getCurrentFrame()
 	{
 		if (currentAnimation == null)
@@ -42,7 +55,8 @@ public class Actor {
 
 	public Point getPosition()
 	{
-		return this.position;
+		if (this.entity != null) return this.entity.getPosition();
+		else return new Point(0,0);
 	}
 
 	public void setDirection(Direction direction, boolean isMoving)
@@ -87,10 +101,5 @@ public class Actor {
 	public void update(double dt)
 	{
 		currentAnimation.updateAnimation(dt);
-	}
-
-	public void setPosition(Point pos)
-	{
-		this.position = pos;
 	}
 }
