@@ -40,17 +40,17 @@ public class GameModel implements IGameModel {
 	private void initEntities() {
 		this.player = new Player();
 		
-		this.enemies = new Enemy[2];
+		this.enemies = new Enemy[10];
 		this.enemies[0] = new Enemy(10, 10, 100, 100);
 		this.enemies[1] = new Enemy(10, 10, 200, 100);
-//		this.enemies[2] = new Enemy(10, 10, 300, 100);
-//		this.enemies[3] = new Enemy(10, 10, 400, 100);
-//		this.enemies[4] = new Enemy(10, 10, 500, 100);
-//		this.enemies[5] = new Enemy(10, 10, 600, 100);
-//		this.enemies[6] = new Enemy(10, 10, 700, 100);
-//		this.enemies[7] = new Enemy(10, 10, 800, 100);
-//		this.enemies[8] = new Enemy(10, 10, 900, 100);
-//		this.enemies[9] = new Enemy(10, 10, 1000, 100);
+		this.enemies[2] = new Enemy(10, 10, 300, 100);
+		this.enemies[3] = new Enemy(10, 10, 400, 100);
+		this.enemies[4] = new Enemy(10, 10, 500, 100);
+		this.enemies[5] = new Enemy(10, 10, 600, 100);
+		this.enemies[6] = new Enemy(10, 10, 700, 100);
+		this.enemies[7] = new Enemy(10, 10, 800, 100);
+		this.enemies[8] = new Enemy(10, 10, 900, 100);
+		this.enemies[9] = new Enemy(10, 10, 1000, 100);
 //		
 //		this.enemies[0].setDirection(Direction.SOUTH);
 //		this.enemies[1].setDirection(Direction.SOUTH);

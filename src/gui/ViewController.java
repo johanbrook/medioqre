@@ -136,16 +136,15 @@ public class ViewController implements IEventHandler {
 				}
 
 				if (this.enemies != null) {
-					for (int i = 0; i < this.enemies.size(); i++) {
-						if (this.enemies.get(i) != null) {
-							this.enemies.get(i).update(dt);
-							if (this.enemies.get(i).getCurrentFrame() != null) {
-								screen.blit(this.enemies.get(i)
-										.getCurrentFrame(),
-										this.enemies.get(i).getPosition().x
+					for (Actor eActor : this.enemies.values()) {
+						if (eActor != null) {
+							eActor.update(dt);
+							if (eActor.getCurrentFrame() != null) {
+								screen.blit(eActor.getCurrentFrame(),
+										eActor.getPosition().x
 												- this.player.getPosition().x
 												+ SCREEN_WIDTH / 2,
-										this.enemies.get(i).getPosition().y
+										eActor.getPosition().y
 												- this.player.getPosition().y
 												+ SCREEN_HEIGHT / 2);
 							}
@@ -190,7 +189,10 @@ public class ViewController implements IEventHandler {
 				for (Entity e : entities) {
 					Actor newA = pActor.clone();
 					newA.setEntity(e);
-					this.enemies.put(e, newA);
+					if (e instanceof Enemy)	{
+						System.out.println("Actor enemy");	
+						this.enemies.put(e, newA);
+						}
 					if (e instanceof Player)
 						this.player = newA;
 				}
@@ -200,6 +202,9 @@ public class ViewController implements IEventHandler {
 		if (evt.getValue() instanceof Entity) {
 			Entity p = (Entity) evt.getValue();
 
+			Actor a = this.enemies.get(p);
+			if (a != null) System.out.println(a.getCurrentFrame());
+			
 			if (p instanceof model.character.Player) {
 				if (this.player == null)
 					return;
