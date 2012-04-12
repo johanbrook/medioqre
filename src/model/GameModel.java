@@ -23,7 +23,7 @@ import event.EventBus;
 public class GameModel implements IGameModel {
 	
 	private Character player;
-	private Character enemy;
+	private Enemy[] enemies;
 	private Random rand = new Random();
 	
 	private List<Entity> entities;
@@ -42,12 +42,27 @@ public class GameModel implements IGameModel {
 	private void initEntities() {
 		this.player = new Player();
 		
-		this.entities.add(this.player);
-		this.entities.add(new Enemy(20, 10, 100, 100));
-		this.entities.add(new Enemy(20, 10, 200, 200));
+		this.enemies = new Enemy[2];
+		this.enemies[0] = new Enemy(10, 10, 100, 100);
+		this.enemies[1] = new Enemy(10, 10, 200, 100);
+//		this.enemies[2] = new Enemy(10, 10, 300, 100);
+//		this.enemies[3] = new Enemy(10, 10, 400, 100);
+//		this.enemies[4] = new Enemy(10, 10, 500, 100);
+//		this.enemies[5] = new Enemy(10, 10, 600, 100);
+//		this.enemies[6] = new Enemy(10, 10, 700, 100);
+//		this.enemies[7] = new Enemy(10, 10, 800, 100);
+//		this.enemies[8] = new Enemy(10, 10, 900, 100);
+//		this.enemies[9] = new Enemy(10, 10, 1000, 100);
+//		
+//		this.enemies[0].setDirection(Direction.SOUTH);
+//		this.enemies[1].setDirection(Direction.SOUTH);
+//		this.enemies[2].setDirection(Direction.SOUTH);
+//		this.enemies[3].setDirection(Direction.SOUTH);
+//		this.enemies[4].setDirection(Direction.SOUTH);
 		
-
-		EventBus.INSTANCE.publish(new Event(Event.Property.INIT_MODEL, this));
+		this.entities.add(this.player);
+		for (int i = 0; i < this.enemies.length; i++) 
+			this.entities.add(this.enemies[i]);
 	}
 	
 	/**
@@ -55,8 +70,8 @@ public class GameModel implements IGameModel {
 	 * @param dt The time since the last update.
 	 */
 	public void update(double dt) {
-
 		
+		for (int i = 0; i < this.enemies.length; i++) {
 		if (rand.nextInt((int)(100)) == 0) {
 			int r = rand.nextInt(8);
 			Direction d = Direction.ORIGIN;
@@ -86,8 +101,9 @@ public class GameModel implements IGameModel {
 				d = Direction.WEST;
 				break;
 			}
-			this.enemy.setDirection(d);
+			this.enemies[i].setDirection(d);
 		}
+	}
 		
 		
 		for(int i = 0; i < this.entities.size(); i++) {
@@ -98,6 +114,7 @@ public class GameModel implements IGameModel {
 				
 				if(!t.isColliding(w) && t != w) {
 					t.move(dt);
+					
 				}
 			
 			}

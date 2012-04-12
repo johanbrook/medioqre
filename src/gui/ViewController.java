@@ -16,7 +16,12 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.IdentityHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.TreeMap;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
@@ -31,9 +36,12 @@ import tools.Logger;
 import tools.TimerTool;
 
 import event.Event;
+import event.EventBus;
 import event.IEventHandler;
+import event.Event.Property;
 
 import model.Entity;
+import model.GameModel;
 import model.character.Enemy;
 import model.character.Player;
 
@@ -51,7 +59,7 @@ public class ViewController implements IEventHandler {
 	private BufferStrategy bufferStrategy;
 	private Canvas canvas;
 	private Actor player;
-	private Actor[] enemies;
+	private Map<Entity, Actor> enemies;
 	private TileMap gameMap;
 	private Bitmap screen;
 	private BitmapFont fpsBitmap;
@@ -62,6 +70,8 @@ public class ViewController implements IEventHandler {
 	public ViewController(KeyListener listener, int screenWidth,
 			int screenHeight)
 	{
+		EventBus.INSTANCE.register(this);
+
 		SCREEN_WIDTH = screenWidth;
 		SCREEN_HEIGHT = screenHeight;
 
@@ -104,46 +114,6 @@ public class ViewController implements IEventHandler {
 
 	private void initScene()
 	{
-		this.player = ResourceManager.loadActors()[0];
-		this.enemies = new Actor[1];
-		this.enemies[0] = this.player.clone();
-
-		// int num = 10000;
-		// this.enemies = new Actor[num];
-		// Random r = new Random();
-		// for (int i = 0; i < num; i++) {
-		// this.enemies[i] = player.clone();
-		// int rand = r.nextInt(8);
-		// Direction d = Direction.SOUTH;
-		// switch (rand) {
-		// case 0 :
-		// d = Direction.SOUTH;
-		// break;
-		// case 1 :
-		// d = Direction.SOUTH_EAST;
-		// break;
-		// case 2 :
-		// d = Direction.SOUTH_WEST;
-		// break;
-		// case 3 :
-		// d = Direction.NORTH;
-		// break;
-		// case 4 :
-		// d = Direction.NORTH_EAST;
-		// break;
-		// case 5 :
-		// d = Direction.NORTH_WEST;
-		// break;
-		// case 6 :
-		// d = Direction.WEST;
-		// break;
-		// case 7 :
-		// d = Direction.EAST;
-		// break;
-		// }
-		// this.enemies[i].setDirection(d, true);
-		// }
-
 		try {
 			this.gameMap = new TileMap("res/images/levels/l2.bmp");
 		} catch (IOException e) {
@@ -157,46 +127,41 @@ public class ViewController implements IEventHandler {
 			do {
 				Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
 
-				gameMap.blitVisibleTilesToBitmap(screen, new Rectangle(
-						(int) player.getPosition().getX() - SCREEN_WIDTH / 2,
-						(int) player.getPosition().getY() - SCREEN_HEIGHT / 2,
-						SCREEN_WIDTH, SCREEN_HEIGHT));
+				if (this.player != null) {
+					gameMap.blitVisibleTilesToBitmap(screen, new Rectangle(
+							(int) player.getPosition().getX() - SCREEN_WIDTH
+									/ 2, (int) player.getPosition().getY()
+									- SCREEN_HEIGHT / 2, SCREEN_WIDTH,
+							SCREEN_HEIGHT));
+				}
 
-				// TimerTool.start("DrawEnemies");
-				// if (this.enemies != null) {
-				// for (int i = 0; i < this.enemies.length; i++) {
-				// if (this.enemies[i].getCurrentFrame() != null) {
-				// this.enemies[i].update(dt);
-				// screen.blit(this.enemies[i].getCurrentFrame(), (i/10)*32,
-				// 20+(i%10)*64);
-				// }
-				// }
-				// }
-				// TimerTool.stop();
 				if (this.enemies != null) {
-					for (int i = 0; i < this.enemies.length; i++) {
-						if (this.enemies[i] != null)
-							this.enemies[i].update(dt);
-						if (this.enemies[i].getCurrentFrame() != null) {
-							screen.blit(this.enemies[i].getCurrentFrame(),
-									this.enemies[i].getPosition().x
-											- this.player.getPosition().x
-											+ SCREEN_WIDTH / 2,
-									this.enemies[i].getPosition().y
-											- this.player.getPosition().y
-											+ SCREEN_HEIGHT / 2);
+					for (int i = 0; i < this.enemies.size(); i++) {
+						if (this.enemies.get(i) != null) {
+							this.enemies.get(i).update(dt);
+							if (this.enemies.get(i).getCurrentFrame() != null) {
+								screen.blit(this.enemies.get(i)
+										.getCurrentFrame(),
+										this.enemies.get(i).getPosition().x
+												- this.player.getPosition().x
+												+ SCREEN_WIDTH / 2,
+										this.enemies.get(i).getPosition().y
+												- this.player.getPosition().y
+												+ SCREEN_HEIGHT / 2);
+							}
 						}
 					}
 				}
 
 				if (player != null) {
 					player.update(dt);
+
+					if (player.getCurrentFrame() != null) {
+						screen.blit(player.getCurrentFrame(), SCREEN_WIDTH / 2,
+								SCREEN_HEIGHT / 2);
+					} else
+						System.out.println("Playerimage is null!");
 				}
-				if (player.getCurrentFrame() != null) {
-					screen.blit(player.getCurrentFrame(), SCREEN_WIDTH / 2,
-							SCREEN_HEIGHT / 2);
-				} else
-					System.out.println("Playerimage is null!");
 
 				fpsmeter.tick();
 				fpsBitmap.setText("fps: " + this.fpsmeter.currentFPS);
@@ -214,35 +179,48 @@ public class ViewController implements IEventHandler {
 	@Override
 	public void onEvent(Event evt)
 	{
-		Entity p = (Entity) evt.getValue();
 
-		System.out.println(p.getClass() + ": "
-				+ (p instanceof model.character.Player));
-
-		if (p instanceof model.character.Player) {
-			if (this.player.getEntity() == null) {
-				this.player.setEntity(p);
-			}
-			if (evt.getProperty() == Event.Property.DID_MOVE) {
-				player.startMoving();
-				System.out.println(evt.getProperty() + " " + p.getDirection());
-			} else if (evt.getProperty() == Event.Property.DID_STOP) {
-				player.stopMoving();
-				System.out.println(evt.getProperty() + " " + p.getDirection());
-			}
-		}
-		if (p instanceof model.character.Enemy) {
-			if (this.enemies[0].getEntity() == null) {
-				this.enemies[0].setEntity(p);
-			}
-			if (evt.getProperty() == Event.Property.DID_MOVE) {
-				enemies[0].startMoving();
-				System.out.println(evt.getProperty() + " " + p.getDirection());
-			} else if (evt.getProperty() == Event.Property.DID_STOP) {
-				enemies[0].stopMoving();
-				System.out.println(evt.getProperty() + " " + p.getDirection());
+		if (evt.getProperty() == Event.Property.INIT_MODEL) {
+			System.out.println("Run");
+			if (evt.getValue() instanceof GameModel) {
+				this.enemies = new IdentityHashMap<Entity, Actor>();
+				List<Entity> entities = ((GameModel) evt.getValue())
+						.getEntities();
+				Actor pActor = ResourceManager.loadActors()[0];
+				for (Entity e : entities) {
+					Actor newA = pActor.clone();
+					newA.setEntity(e);
+					this.enemies.put(e, newA);
+					if (e instanceof Player)
+						this.player = newA;
+				}
 			}
 		}
 
+		if (evt.getValue() instanceof Entity) {
+			Entity p = (Entity) evt.getValue();
+
+			if (p instanceof model.character.Player) {
+				if (this.player == null)
+					return;
+				if (evt.getProperty() == Event.Property.DID_MOVE) {
+					player.startMoving();
+				} else if (evt.getProperty() == Event.Property.DID_STOP) {
+					player.stopMoving();
+				}
+			}
+			if (p instanceof model.character.Enemy) {
+				if (this.enemies == null)
+					return;
+				if (this.enemies.get(p) == null)
+					return;
+				if (evt.getProperty() == Event.Property.DID_MOVE) {
+					enemies.get(p).startMoving();
+				} else if (evt.getProperty() == Event.Property.DID_STOP) {
+					enemies.get(p).stopMoving();
+				}
+			}
+
+		}
 	}
 }
