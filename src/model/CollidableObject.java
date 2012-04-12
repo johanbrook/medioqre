@@ -88,6 +88,15 @@ public abstract class CollidableObject {
 	}
 	
 	
+	public int getOffsetX() {
+		return this.xoffset;
+	}
+	
+	public int getOffsetY() {
+		return this.yoffset;
+	}
+	
+	
 	/**
 	 * Get the collision box of the object.
 	 * 
