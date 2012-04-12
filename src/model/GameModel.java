@@ -11,6 +11,8 @@ import tools.Logger;
 import model.character.*;
 import model.character.Character;
 import constants.Direction;
+import event.Event;
+import event.EventBus;
 
 /**
  * Model for a game.
@@ -25,11 +27,9 @@ public class GameModel implements IGameModel {
 	private Random rand = new Random();
 	
 	private List<Entity> entities;
-	private List<Enemy> enemies;
 	
 	public GameModel() {
 		this.entities = new ArrayList<Entity>();
-		this.enemies = new ArrayList<Enemy>();
 		
 		initEntities();
 	}
@@ -41,12 +41,13 @@ public class GameModel implements IGameModel {
 	
 	private void initEntities() {
 		this.player = new Player();
-		this.enemy = new Enemy(20, 10);
-		this.enemy.setPosition(100, 100);
-		this.enemy.setDirection(Direction.NORTH);
 		
 		this.entities.add(this.player);
-		this.entities.add(this.enemy);
+		this.entities.add(new Enemy(20, 10, 100, 100));
+		this.entities.add(new Enemy(20, 10, 200, 200));
+		
+
+		EventBus.INSTANCE.publish(new Event(Event.Property.INIT_MODEL, this));
 	}
 	
 	/**
@@ -95,16 +96,8 @@ public class GameModel implements IGameModel {
 			for(int j = 0; j < this.entities.size(); j++) {
 				Entity w = this.entities.get(j);
 				
-				if(t != w) {
-					System.out.println("T: "+t.getPosition());
-					System.out.println("W: "+w.getPosition());
-					
-					if(!t.isColliding(w)) {
-						t.move(dt);
-					}
-					else {
-						System.out.println("** COLLISION **");
-					}
+				if(!t.isColliding(w) && t != w) {
+					t.move(dt);
 				}
 			
 			}
@@ -126,5 +119,9 @@ public class GameModel implements IGameModel {
 		this.player.stop();
 	}
 	
+	
+	public List<Entity> getEntities() {
+		return this.entities;
+	}
 	
 }

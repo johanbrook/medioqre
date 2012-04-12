@@ -105,7 +105,6 @@ public class Actor {
 					: animations.get("standNorthWest");
 			break;
 		}
-		System.out.println(currentAnimation.getName());
 	}
 
 	public void update(double dt)
