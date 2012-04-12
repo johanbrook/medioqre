@@ -41,10 +41,10 @@ import model.character.Player;
  * A GUI-Interface in BASIC so we can track the IP-address.
  * 
  * @author Barber
- *
+ * 
  */
 public class ViewController implements IEventHandler {
-	
+
 	// Screen
 	private final int SCREEN_WIDTH;
 	private final int SCREEN_HEIGHT;
@@ -56,20 +56,25 @@ public class ViewController implements IEventHandler {
 	private Bitmap screen;
 	private BitmapFont fpsBitmap;
 	private BufferedImage screenImage;
-		
+
 	private GraphicalFPSMeter fpsmeter;
 
-	public ViewController(KeyListener listener, int screenWidth, int screenHeight) {
+	public ViewController(KeyListener listener, int screenWidth,
+			int screenHeight)
+	{
 		SCREEN_WIDTH = screenWidth;
 		SCREEN_HEIGHT = screenHeight;
 
-		screenImage = new BufferedImage(SCREEN_WIDTH, SCREEN_HEIGHT, BufferedImage.TYPE_INT_ARGB);
-		
-		screen = new Bitmap(SCREEN_WIDTH, SCREEN_HEIGHT,BitmapTool.getARGBarrayFromDataBuffer(screenImage.getRaster(), SCREEN_WIDTH, SCREEN_HEIGHT));
-		
+		screenImage = new BufferedImage(SCREEN_WIDTH, SCREEN_HEIGHT,
+				BufferedImage.TYPE_INT_ARGB);
+
+		screen = new Bitmap(SCREEN_WIDTH, SCREEN_HEIGHT,
+				BitmapTool.getARGBarrayFromDataBuffer(screenImage.getRaster(),
+						SCREEN_WIDTH, SCREEN_HEIGHT));
+
 		this.fpsmeter = new GraphicalFPSMeter();
 		this.fpsBitmap = new BitmapFont("");
-		
+
 		initScene();
 
 		// Creating the frame
@@ -83,12 +88,12 @@ public class ViewController implements IEventHandler {
 		canvas.setFocusable(true);
 		canvas.requestFocusInWindow();
 		canvas.addKeyListener(listener);
-		
+
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 		frame.add(canvas);
 		frame.setVisible(true);
-		
+
 		// Setup the canvas and frame
 		canvas.createBufferStrategy(2);
 		this.bufferStrategy = canvas.getBufferStrategy();
@@ -97,47 +102,48 @@ public class ViewController implements IEventHandler {
 		frame.setLocationRelativeTo(null);
 	}
 
-	private void initScene() {
+	private void initScene()
+	{
 		this.player = ResourceManager.loadActors()[0];
 		this.enemies = new Actor[1];
 		this.enemies[0] = this.player.clone();
-		
-//		int num = 10000;
-//		this.enemies = new Actor[num];
-//		Random r = new Random();
-//		for (int i = 0; i < num; i++) {
-//			this.enemies[i] = player.clone();
-//			int rand = r.nextInt(8);
-//			Direction d = Direction.SOUTH;
-//			switch (rand) {
-//			case 0 : 
-//				d = Direction.SOUTH;
-//			break;
-//			case 1 : 
-//				d = Direction.SOUTH_EAST;
-//			break;
-//			case 2 : 
-//				d = Direction.SOUTH_WEST;
-//			break;
-//			case 3 : 
-//				d = Direction.NORTH;
-//			break;
-//			case 4 : 
-//				d = Direction.NORTH_EAST;
-//			break;
-//			case 5 : 
-//				d = Direction.NORTH_WEST;
-//			break;
-//			case 6 : 
-//				d = Direction.WEST;
-//			break;
-//			case 7 : 
-//				d = Direction.EAST;
-//			break;
-//			}
-//			this.enemies[i].setDirection(d, true);
-//		}
-		
+
+		// int num = 10000;
+		// this.enemies = new Actor[num];
+		// Random r = new Random();
+		// for (int i = 0; i < num; i++) {
+		// this.enemies[i] = player.clone();
+		// int rand = r.nextInt(8);
+		// Direction d = Direction.SOUTH;
+		// switch (rand) {
+		// case 0 :
+		// d = Direction.SOUTH;
+		// break;
+		// case 1 :
+		// d = Direction.SOUTH_EAST;
+		// break;
+		// case 2 :
+		// d = Direction.SOUTH_WEST;
+		// break;
+		// case 3 :
+		// d = Direction.NORTH;
+		// break;
+		// case 4 :
+		// d = Direction.NORTH_EAST;
+		// break;
+		// case 5 :
+		// d = Direction.NORTH_WEST;
+		// break;
+		// case 6 :
+		// d = Direction.WEST;
+		// break;
+		// case 7 :
+		// d = Direction.EAST;
+		// break;
+		// }
+		// this.enemies[i].setDirection(d, true);
+		// }
+
 		try {
 			this.gameMap = new TileMap("res/images/levels/l2.bmp");
 		} catch (IOException e) {
@@ -145,59 +151,74 @@ public class ViewController implements IEventHandler {
 		}
 	}
 
-	public void render(double dt) {
+	public void render(double dt)
+	{
 		do {
 			do {
 				Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
-				
-				gameMap.blitVisibleTilesToBitmap(screen, new Rectangle((int)player.getPosition().getX(), (int)player.getPosition().getY(), SCREEN_WIDTH, SCREEN_HEIGHT));
-				
-//				TimerTool.start("DrawEnemies");
-//				if (this.enemies != null) {
-//					for (int i = 0; i < this.enemies.length; i++) {
-//						if (this.enemies[i].getCurrentFrame() != null) {
-//							this.enemies[i].update(dt);
-//							screen.blit(this.enemies[i].getCurrentFrame(), (i/10)*32, 20+(i%10)*64);
-//						}
-//					}
-//				}
-//				TimerTool.stop();
+
+				gameMap.blitVisibleTilesToBitmap(screen, new Rectangle(
+						(int) player.getPosition().getX() - SCREEN_WIDTH / 2,
+						(int) player.getPosition().getY() - SCREEN_HEIGHT / 2,
+						SCREEN_WIDTH, SCREEN_HEIGHT));
+
+				// TimerTool.start("DrawEnemies");
+				// if (this.enemies != null) {
+				// for (int i = 0; i < this.enemies.length; i++) {
+				// if (this.enemies[i].getCurrentFrame() != null) {
+				// this.enemies[i].update(dt);
+				// screen.blit(this.enemies[i].getCurrentFrame(), (i/10)*32,
+				// 20+(i%10)*64);
+				// }
+				// }
+				// }
+				// TimerTool.stop();
 				if (this.enemies != null) {
 					for (int i = 0; i < this.enemies.length; i++) {
-						if (this.enemies[i] != null) this.enemies[i].update(dt);
+						if (this.enemies[i] != null)
+							this.enemies[i].update(dt);
 						if (this.enemies[i].getCurrentFrame() != null) {
-							screen.blit(this.enemies[i].getCurrentFrame(), this.enemies[i].getPosition().x-this.player.getPosition().x, this.enemies[i].getPosition().y-this.player.getPosition().y);
+							screen.blit(this.enemies[i].getCurrentFrame(),
+									this.enemies[i].getPosition().x
+											- this.player.getPosition().x
+											+ SCREEN_WIDTH / 2,
+									this.enemies[i].getPosition().y
+											- this.player.getPosition().y
+											+ SCREEN_HEIGHT / 2);
 						}
 					}
 				}
-				
+
 				if (player != null) {
 					player.update(dt);
 				}
-				if (player.getCurrentFrame() != null) {			
-					screen.blit(player.getCurrentFrame(), SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
-				} else 
+				if (player.getCurrentFrame() != null) {
+					screen.blit(player.getCurrentFrame(), SCREEN_WIDTH / 2,
+							SCREEN_HEIGHT / 2);
+				} else
 					System.out.println("Playerimage is null!");
-				
+
 				fpsmeter.tick();
 				fpsBitmap.setText("fps: " + this.fpsmeter.currentFPS);
 				screen.blit(fpsBitmap.getBitmap(), 5, 5);
-					
-				g.drawImage(screenImage, 0, 0, this.canvas.getWidth(), this.canvas.getHeight(), null);
-				
+
+				g.drawImage(screenImage, 0, 0, this.canvas.getWidth(),
+						this.canvas.getHeight(), null);
+
 				g.dispose();
 			} while (bufferStrategy.contentsRestored());
 			bufferStrategy.show();
 		} while (bufferStrategy.contentsLost());
 	}
 
-
 	@Override
-	public void onEvent(Event evt) {
+	public void onEvent(Event evt)
+	{
 		Entity p = (Entity) evt.getValue();
-		
-		System.out.println(p.getClass()+": "+(p instanceof model.character.Player));
-		
+
+		System.out.println(p.getClass() + ": "
+				+ (p instanceof model.character.Player));
+
 		if (p instanceof model.character.Player) {
 			if (this.player.getEntity() == null) {
 				this.player.setEntity(p);
@@ -222,7 +243,6 @@ public class ViewController implements IEventHandler {
 				System.out.println(evt.getProperty() + " " + p.getDirection());
 			}
 		}
-		
-		
+
 	}
 }
