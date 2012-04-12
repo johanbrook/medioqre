@@ -28,7 +28,7 @@ public abstract class Entity extends CollidableObject {
 		super(box, size, xoffset, yoffset);
 		this.movementSpeed = movementSpeed;
 		this.direction = Direction.ORIGIN;
-		this.isMoving = false;
+		this.isMoving = true;
 	}
 	
 	

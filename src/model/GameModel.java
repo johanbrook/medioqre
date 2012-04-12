@@ -9,8 +9,6 @@ import java.util.Random;
 import model.character.*;
 import model.character.Character;
 import constants.Direction;
-import event.Event;
-import event.EventBus;
 
 /**
  * Model for a game.
@@ -70,39 +68,39 @@ public class GameModel implements IGameModel {
 	public void update(double dt) {
 		
 		for (int i = 0; i < this.enemies.length; i++) {
-		if (rand.nextInt((int)(100)) == 0) {
-			int r = rand.nextInt(8);
-			Direction d = Direction.ORIGIN;
-			switch (r) {
-			case 0:
-				d = Direction.EAST;
-				break;
-			case 1:
-				d = Direction.NORTH;
-				break;
-			case 2:
-				d = Direction.NORTH_EAST;
-				break;
-			case 3:
-				d = Direction.NORTH_WEST;
-				break;
-			case 4:
-				d = Direction.SOUTH;
-				break;
-			case 5:
-				d = Direction.SOUTH_EAST;
-				break;
-			case 6:
-				d = Direction.SOUTH_WEST;
-				break;
-			case 7:
-				d = Direction.WEST;
-				break;
+			if (rand.nextInt((int)(100)) == 0) {
+				int r = rand.nextInt(8);
+				Direction d = Direction.ORIGIN;
+				switch (r) {
+				case 0:
+					d = Direction.EAST;
+					break;
+				case 1:
+					d = Direction.NORTH;
+					break;
+				case 2:
+					d = Direction.NORTH_EAST;
+					break;
+				case 3:
+					d = Direction.NORTH_WEST;
+					break;
+				case 4:
+					d = Direction.SOUTH;
+					break;
+				case 5:
+					d = Direction.SOUTH_EAST;
+					break;
+				case 6:
+					d = Direction.SOUTH_WEST;
+					break;
+				case 7:
+					d = Direction.WEST;
+					break;
+				}
+				this.enemies[i].setDirection(d);
+				this.enemies[i].start();
 			}
-			this.enemies[i].setDirection(d);
-			this.enemies[i].start();
 		}
-	}
 		
 		for(Entity t : this.entities) {
 			for(Entity w : this.entities) {
@@ -110,9 +108,7 @@ public class GameModel implements IGameModel {
 				Direction blockedDirection = t.getCollisionDirection(w);
 				Direction currentDirection = t.getDirection();
 				
-				
-				
-				if(t.isColliding(w) && t != w) {
+				if(t.isColliding(w) && t != w && blockedDirection == currentDirection) {
 					t.stop();
 				}
 			}
