@@ -1,5 +1,9 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import java.util.Random;
 
 import model.character.*;
@@ -18,11 +22,29 @@ public class GameModel implements IGameModel {
 	private Character enemy;
 	private Random rand = new Random();
 	
+	private List<Entity> entities;
+	private List<Enemy> enemies;
+	
 	public GameModel() {
+		this.entities = new ArrayList<Entity>();
+		this.enemies = new ArrayList<Enemy>();
+		
+		initEntities();
+	}
+	
+	
+	public void newWave() {
+		
+	}
+	
+	private void initEntities() {
 		this.player = new Player();
-		this.enemy = new Enemy(20, 0);
-		this.enemy.setPosition(100, 100);
-		this.enemy.setDirection(Direction.NORTH);
+		this.enemy = new Enemy(30, 10);
+		this.enemy.setPosition(0, 0);
+		this.player.setPosition(0, 0);
+		
+		this.entities.add(this.player);
+		this.entities.add(this.enemy);
 	}
 	
 	/**
@@ -30,7 +52,16 @@ public class GameModel implements IGameModel {
 	 * @param dt The time since the last update.
 	 */
 	public void update(double dt) {
-
+		
+		for(int i = 0; i < this.entities.size(); i++) {
+			Entity t = this.entities.get(i);
+			
+			for(int j = 0; j < this.entities.size(); j++) {
+				Entity w = this.entities.get(j);
+				t.getCollisionDirection(w);
+			}
+		}
+		
 		this.player.move(dt);
 		if (rand.nextInt((int)(100)) == 0) {
 			int r = rand.nextInt(8);

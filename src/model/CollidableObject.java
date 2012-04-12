@@ -3,6 +3,11 @@ package model;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
+
+import tools.Logger;
+
+import constants.Direction;
 
 /**
  * The collidable object super class
@@ -96,5 +101,19 @@ public abstract class CollidableObject {
 	public boolean isColliding(CollidableObject obj){
 		
 		return this.collisionBox.intersects(obj.getCollisionBox());
+	}
+	
+	public Direction getCollisionDirection(CollidableObject obj) {
+		
+		int pos = this.collisionBox.outcode(obj.getPosition());
+		
+		switch(pos) {
+		case Rectangle.OUT_BOTTOM: Logger.log("Bottom"); break;
+		case Rectangle.OUT_LEFT: Logger.log("Left"); break;
+		case Rectangle.OUT_TOP: Logger.log("Top"); break;
+		case Rectangle.OUT_RIGHT: Logger.log("Right"); break;
+		}
+		
+		return null;
 	}
 }
