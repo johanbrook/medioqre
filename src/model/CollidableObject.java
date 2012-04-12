@@ -3,7 +3,6 @@ package model;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.geom.Rectangle2D;
 
 import tools.Logger;
 
@@ -105,21 +104,19 @@ public abstract class CollidableObject {
 	
 	public Direction getCollisionDirection(CollidableObject obj) {
 		
-		int code = this.collisionBox.outcode(obj.getPosition());
-		
-        String s = "UNKNOWN";
+		int code = this.collisionBox.outcode(obj.getPosition());		
+        Direction d = Direction.ORIGIN;
         
         if((code & Rectangle.OUT_TOP) == Rectangle.OUT_TOP)
-            s = "TOP";
+            d = Direction.NORTH;
         if((code & Rectangle.OUT_RIGHT) == Rectangle.OUT_RIGHT)
-            s = "RIGHT";
+            d = Direction.EAST;
         if((code & Rectangle.OUT_LEFT) == Rectangle.OUT_LEFT)
-            s = "LEFT";
+            d = Direction.WEST;
         if((code & Rectangle.OUT_BOTTOM) == Rectangle.OUT_BOTTOM)
-            s = "BOTTOM";
+            d = Direction.SOUTH;
         
-        Logger.log("direction = " + s);
 		
-		return null;
+		return d;
 	}
 }

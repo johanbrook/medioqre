@@ -23,11 +23,6 @@ public abstract class Entity extends CollidableObject {
 	/**
 	 * Create a new entity.
 	 * 
-	 * @param box The collision box
-	 * @param size The model size
-	 * @param xoffset The X offset
-	 * @param yoffset The Y offset
-	 * @param movementSpeed The movement speed
 	 */
 	public Entity(java.awt.Rectangle box, java.awt.Dimension size, int xoffset, int yoffset, int movementSpeed){
 		super(box, size, xoffset, yoffset);
@@ -38,7 +33,7 @@ public abstract class Entity extends CollidableObject {
 	
 	
 	/**
-	 * Move in a certain direction.
+	 * Move in a the set direction.
 	 * 
 	 * @param dt Delta time
 	 * @pre isMoving() == true
@@ -49,17 +44,17 @@ public abstract class Entity extends CollidableObject {
 		
 		if(isMoving()){
 			Point currPos = getPosition();
-			EventBus.INSTANCE.publish(new Event(Property.DID_MOVE, this));
+			
 			int x = (int) (this.direction.getXRatio() * (double) this.movementSpeed * dt);		
 			int y = (int) (this.direction.getYRatio() * (double) this.movementSpeed * dt);
 						
 			this.setPosition(currPos.x + x, currPos.y + y);
+			EventBus.INSTANCE.publish(new Event(Property.DID_MOVE, this));
 		}
-		
 	}
 	
 	/**
-	 * Stop the entity.
+	 * Let the entity stop.
 	 * 
 	 */
 	public void stop() {
@@ -68,6 +63,15 @@ public abstract class Entity extends CollidableObject {
 		EventBus.INSTANCE.publish(new Event(Property.DID_STOP, this));
 	}
 	
+	
+	/**
+	 * Let the entity start moving.
+	 * 
+	 */
+	public void start() {
+		this.isMoving = true;		
+	}
+		
 	/**
 	 * Set a direction of the entity.
 	 * 
@@ -78,7 +82,6 @@ public abstract class Entity extends CollidableObject {
 	 * @pre getDirection() != dir
 	 */
 	public void setDirection(Direction dir) {
-		this.isMoving = true;
 		
 		if (this.direction != dir) {
 			this.direction = dir;

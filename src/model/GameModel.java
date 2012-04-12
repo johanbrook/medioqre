@@ -1,12 +1,10 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import java.util.Random;
 
-import tools.Logger;
 
 import model.character.*;
 import model.character.Character;
@@ -27,9 +25,11 @@ public class GameModel implements IGameModel {
 	private Random rand = new Random();
 	
 	private List<Entity> entities;
+	private List<Enemy> enemies;
 	
 	public GameModel() {
 		this.entities = new ArrayList<Entity>();
+		this.enemies = new ArrayList<Enemy>();
 		
 		initEntities();
 	}
@@ -41,6 +41,8 @@ public class GameModel implements IGameModel {
 	
 	private void initEntities() {
 		this.player = new Player();
+		this.enemy = new Enemy(20, 10);
+		this.enemy.setPosition(100, 100);
 		
 		this.enemies = new Enemy[2];
 		this.enemies[0] = new Enemy(10, 10, 100, 100);
@@ -106,11 +108,13 @@ public class GameModel implements IGameModel {
 	}
 		
 		
-		for(int i = 0; i < this.entities.size(); i++) {
-			Entity t = this.entities.get(i);
-			
-			for(int j = 0; j < this.entities.size(); j++) {
-				Entity w = this.entities.get(j);
+		for(Entity t : this.entities) {		
+			for(Entity w : this.entities) {
+				
+				Direction blockedDirection = t.getCollisionDirection(w);
+				Direction currentDirection = t.getDirection();
+				
+				
 				
 				if(!t.isColliding(w) && t != w) {
 					t.move(dt);
@@ -119,7 +123,6 @@ public class GameModel implements IGameModel {
 			
 			}
 		}
-		
 	}
 	
 	/**
