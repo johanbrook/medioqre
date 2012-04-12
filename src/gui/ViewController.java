@@ -64,6 +64,7 @@ public class ViewController implements IEventHandler {
 	private Bitmap screen;
 	private BitmapFont fpsBitmap;
 	private BufferedImage screenImage;
+	private Bitmap collisionBoxBox;
 
 	private GraphicalFPSMeter fpsmeter;
 
@@ -81,6 +82,9 @@ public class ViewController implements IEventHandler {
 		screen = new Bitmap(SCREEN_WIDTH, SCREEN_HEIGHT,
 				BitmapTool.getARGBarrayFromDataBuffer(screenImage.getRaster(),
 						SCREEN_WIDTH, SCREEN_HEIGHT));
+		
+		collisionBoxBox = new Bitmap(16,16);
+		collisionBoxBox.clear(0xffff99ff);
 
 		this.fpsmeter = new GraphicalFPSMeter();
 		this.fpsBitmap = new BitmapFont("");
@@ -128,11 +132,11 @@ public class ViewController implements IEventHandler {
 				Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
 
 				if (this.player != null) {
-					gameMap.blitVisibleTilesToBitmap(screen, new Rectangle(
-							(int) player.getPosition().getX() - SCREEN_WIDTH
-									/ 2, (int) player.getPosition().getY()
-									- SCREEN_HEIGHT / 2, SCREEN_WIDTH,
-							SCREEN_HEIGHT));
+					int x =	(int) player.getPosition().getX() - SCREEN_WIDTH / 2;
+					int y = (int) player.getPosition().getY() - SCREEN_HEIGHT / 2;
+					int w = SCREEN_WIDTH;
+					int h = SCREEN_HEIGHT;
+					gameMap.blitVisibleTilesToBitmap(screen, new Rectangle(x, y, w, h));
 				}
 
 				if (this.enemies != null) {
@@ -147,6 +151,10 @@ public class ViewController implements IEventHandler {
 										eActor.getPosition().y
 												- this.player.getPosition().y
 												+ SCREEN_HEIGHT / 2);
+								
+								int x =	eActor.getPosition().x - this.player.getPosition().x + SCREEN_WIDTH / 2 + eActor.getEntity().getOffsetX();
+								int y = eActor.getPosition().y - this.player.getPosition().y + SCREEN_HEIGHT / 2 + eActor.getEntity().getOffsetY();
+								screen.blit(collisionBoxBox, x, y);
 							}
 						}
 					}
@@ -158,6 +166,9 @@ public class ViewController implements IEventHandler {
 					if (player.getCurrentFrame() != null) {
 						screen.blit(player.getCurrentFrame(), SCREEN_WIDTH / 2,
 								SCREEN_HEIGHT / 2);
+						int x =	SCREEN_WIDTH / 2 + this.player.getEntity().getOffsetX();
+						int y = SCREEN_HEIGHT / 2 + this.player.getEntity().getOffsetY();
+						screen.blit(collisionBoxBox, x, y);
 					} else
 						System.out.println("Playerimage is null!");
 				}
@@ -180,7 +191,6 @@ public class ViewController implements IEventHandler {
 	{
 
 		if (evt.getProperty() == Event.Property.INIT_MODEL) {
-			System.out.println("Run");
 			if (evt.getValue() instanceof GameModel) {
 				this.enemies = new IdentityHashMap<Entity, Actor>();
 				List<Entity> entities = ((GameModel) evt.getValue())
@@ -189,8 +199,7 @@ public class ViewController implements IEventHandler {
 				for (Entity e : entities) {
 					Actor newA = pActor.clone();
 					newA.setEntity(e);
-					if (e instanceof Enemy)	{
-						System.out.println("Actor enemy");	
+					if (e instanceof Enemy)	{	
 						this.enemies.put(e, newA);
 						}
 					if (e instanceof Player)
@@ -201,9 +210,6 @@ public class ViewController implements IEventHandler {
 
 		if (evt.getValue() instanceof Entity) {
 			Entity p = (Entity) evt.getValue();
-
-			Actor a = this.enemies.get(p);
-			if (a != null) System.out.println(a.getCurrentFrame());
 			
 			if (p instanceof model.character.Player) {
 				if (this.player == null)

@@ -7,6 +7,7 @@
 package controller;
 
 
+import tools.TimerTool;
 import event.Event;
 import event.EventBus;
 import gui.ViewController;
@@ -43,9 +44,12 @@ public class AppController implements Runnable{
 			lastLoopTime = now;
 			
 			double dt = (double) updateLength / DELTA_RATIO;
-			
+			TimerTool.start("Update");
 			game.update(dt);
+			TimerTool.stop();
+			TimerTool.start("Rendering");
 			view.render(dt);
+			TimerTool.stop();
 			
 			
 			try {

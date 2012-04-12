@@ -106,6 +106,7 @@ public abstract class CollidableObject {
 		return this.collisionBox;
 	}
 	
+	
 	public boolean isColliding(CollidableObject obj){
 		
 		return this.collisionBox.intersects(obj.getCollisionBox());
