@@ -26,7 +26,7 @@ public class Enemy extends Character {
 	}
 	
 	public Enemy(int movementSpeed, int damage, int x, int y) {
-		super(movementSpeed, new Rectangle(x, y, 10, 10), new Dimension(20,20), 0, 16);
+		super(movementSpeed, new Rectangle(x, y, 16, 16), new Dimension(20,20), 0, 16);
 		this.melee = new Melee();
 	}
 

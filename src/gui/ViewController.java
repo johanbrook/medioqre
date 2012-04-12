@@ -199,7 +199,7 @@ public class ViewController implements IEventHandler {
 				for (Entity e : entities) {
 					Actor newA = pActor.clone();
 					newA.setEntity(e);
-					if (e instanceof Enemy)	{	
+					if (e instanceof Enemy)	{
 						this.enemies.put(e, newA);
 						}
 					if (e instanceof Player)

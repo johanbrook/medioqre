@@ -5,6 +5,8 @@ import java.util.List;
 
 import java.util.Random;
 
+import tools.Logger;
+
 
 import model.character.*;
 import model.character.Character;
@@ -39,7 +41,7 @@ public class GameModel implements IGameModel {
 		this.player = new Player();
 		
 		this.enemies = new Enemy[10];
-		this.enemies[0] = new Enemy(10, 10, 100, 100);
+		this.enemies[0] = new Enemy(0, 10, 100, 100);
 		this.enemies[1] = new Enemy(10, 10, 200, 100);
 		this.enemies[2] = new Enemy(10, 10, 300, 100);
 		this.enemies[3] = new Enemy(10, 10, 400, 100);
@@ -107,6 +109,9 @@ public class GameModel implements IGameModel {
 				
 				Direction blockedDirection = t.getCollisionDirection(w);
 				Direction currentDirection = t.getDirection();
+				
+				System.out.println("Blocked: "+blockedDirection);
+				System.out.println("Current: "+currentDirection);
 				
 				if(t.isColliding(w) && t != w && blockedDirection == currentDirection) {
 					t.stop();
