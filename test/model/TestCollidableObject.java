@@ -79,7 +79,7 @@ public class TestCollidableObject {
 		e.getCollisionDirection(this.obj);
 		e.setPosition(1, 0);	// East
 		e.getCollisionDirection(this.obj);
-		this.obj.setPosition(1, 3);
+		this.obj.setPosition(0, 3);
 		e.setPosition(0, 1);	// North
 		e.getCollisionDirection(this.obj);
 		e.setPosition(-1, 0);	// West
