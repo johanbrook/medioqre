@@ -25,11 +25,9 @@ public class GameModel implements IGameModel {
 	private Random rand = new Random();
 	
 	private List<Entity> entities;
-	private List<Enemy> enemies;
 	
 	public GameModel() {
 		this.entities = new ArrayList<Entity>();
-		this.enemies = new ArrayList<Enemy>();
 		
 		initEntities();
 	}
@@ -41,8 +39,6 @@ public class GameModel implements IGameModel {
 	
 	private void initEntities() {
 		this.player = new Player();
-		this.enemy = new Enemy(20, 10);
-		this.enemy.setPosition(100, 100);
 		
 		this.enemies = new Enemy[2];
 		this.enemies[0] = new Enemy(10, 10, 100, 100);
@@ -104,11 +100,11 @@ public class GameModel implements IGameModel {
 				break;
 			}
 			this.enemies[i].setDirection(d);
+			this.enemies[i].start();
 		}
 	}
 		
-		
-		for(Entity t : this.entities) {		
+		for(Entity t : this.entities) {
 			for(Entity w : this.entities) {
 				
 				Direction blockedDirection = t.getCollisionDirection(w);
@@ -116,12 +112,14 @@ public class GameModel implements IGameModel {
 				
 				
 				
-				if(!t.isColliding(w) && t != w) {
-					t.move(dt);
-					
+				if(t.isColliding(w) && t != w) {
+					t.stop();
 				}
-			
 			}
+		}
+		
+		for (Entity t : this.entities) {
+			t.move(dt);
 		}
 	}
 	
@@ -133,6 +131,7 @@ public class GameModel implements IGameModel {
 	 */
 	public void updateDirection(Direction dir) {
 		this.player.setDirection(dir);
+		this.player.start();
 	}
 	
 	public void stopPlayer(){
