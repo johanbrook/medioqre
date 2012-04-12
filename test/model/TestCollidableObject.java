@@ -26,6 +26,7 @@ import model.character.Player;
 public class TestCollidableObject {
 
 	private CollidableObject obj;
+	private Character player;
 	
 	@BeforeClass
 	public static void before() {
@@ -35,6 +36,7 @@ public class TestCollidableObject {
 	@Before
 	public void setUp() throws Exception {
 		this.obj = new Wall(0, 0);
+		this.player = new Player();	// Position = (0,0). Size = (10x10)
 	}
 
 	@Test
@@ -56,35 +58,55 @@ public class TestCollidableObject {
 	
 	@Test
 	public void testCharacterCollision() {
-		Character player = new Player();
-		int playerSpeed = player.getMovementSpeed();
+		int playerSpeed = this.player.getMovementSpeed();
 		
-		player.setDirection(Direction.EAST);
-		player.move(1.0);
-		player.setDirection(Direction.SOUTH);
-		player.move(1.0);
+		this.player.setDirection(Direction.EAST);
+		this.player.move(1.0);
+		this.player.setDirection(Direction.SOUTH);
+		this.player.move(1.0);
 		
 		this.obj.setPosition(1*playerSpeed, 1*playerSpeed);
 		
-		assertTrue(this.obj.isColliding(player));
+		assertTrue(this.obj.isColliding(this.player));
 	}
 	
 	@Test
-	public void testEntityCollisionDirection() {
+	public void testEntityCollisionDirectionFromNorth() {
+			
+		this.player.setPosition(0, 1);	// obj collides from top
+		Direction dir = this.player.getCollisionDirection(this.obj);
 		
-		Entity e = new Player();
-		assertEquals(new Point(0,0), e.getPosition());
+		assertEquals(Direction.NORTH, dir);
+	}
+	
+	@Test
+	public void testEntityCollisionDirectionFromWest() {
+		this.player.setPosition(1, 0);	// obj collides from left
+		Direction dir = this.player.getCollisionDirection(this.obj);
 		
-		e.setPosition(0, 1);	// South
-		e.getCollisionDirection(this.obj);
-		e.setPosition(1, 0);	// East
-		e.getCollisionDirection(this.obj);
-		this.obj.setPosition(0, 3);
-		e.setPosition(0, 1);	// North
-		e.getCollisionDirection(this.obj);
-		e.setPosition(-1, 0);	// West
-		e.getCollisionDirection(this.obj);
+		assertEquals(Direction.WEST, dir);
+	}
+	
+	@Test
+	public void testEntityCollisionDirectionFromEast() {
+		// Remember the obj width/height!
+		int offsetX = this.obj.getSize().width + 2;
 		
+		this.player.setPosition(-offsetX, 0);	// obj collides from left
+		Direction dir = this.player.getCollisionDirection(this.obj);
+		
+		assertEquals(Direction.EAST, dir);
+	}
+	
+	@Test
+	public void testEntityCollisionDirectionFromSouth() {
+		// Remember the obj width/height!
+		int offsetY = this.obj.getSize().height + 2;
+		
+		this.player.setPosition(0, -offsetY);	// obj collides from left
+		Direction dir = this.player.getCollisionDirection(this.obj);
+		
+		assertEquals(Direction.SOUTH, dir);
 	}
 
 }
