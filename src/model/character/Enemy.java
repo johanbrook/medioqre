@@ -20,8 +20,8 @@ public class Enemy extends Character {
 	
 	private AbstractWeapon melee;
 	
-	public Enemy(int movementSpeed, int damage, Rectangle collBox, Dimension size, int xoffset, int yoffset) {
-		super(movementSpeed, collBox, size, xoffset, yoffset);
+	public Enemy(int movementSpeed, int damage) {
+		super(movementSpeed, new Rectangle(10, 10), new Dimension(20,20), 0, 0);
 		this.melee = new Melee();
 	}
 
