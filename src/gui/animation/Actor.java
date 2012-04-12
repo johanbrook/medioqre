@@ -16,6 +16,7 @@ public class Actor {
 	private Map<String, Animation> animations;
 	private Animation currentAnimation;
 	private Entity entity;
+	private boolean isMoving;
 
 	public Actor clone()
 	{
@@ -59,7 +60,16 @@ public class Actor {
 		else return new Point(0,0);
 	}
 
-	public void setDirection(Direction direction, boolean isMoving)
+	public void startMoving()
+	{
+		this.isMoving = true;
+	}
+	public void stopMoving()
+	{
+		this.isMoving = false;
+	}
+	
+	public void setDirection(Direction direction)
 	{
 		switch (direction) {
 		case NORTH:
@@ -100,6 +110,9 @@ public class Actor {
 
 	public void update(double dt)
 	{
-		currentAnimation.updateAnimation(dt);
+		if (this.entity != null)
+			this.setDirection(this.entity.getDirection());
+		if (currentAnimation != null)
+			currentAnimation.updateAnimation(dt);
 	}
 }

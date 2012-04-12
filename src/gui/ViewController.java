@@ -34,6 +34,8 @@ import event.Event;
 import event.IEventHandler;
 
 import model.Entity;
+import model.character.Enemy;
+import model.character.Player;
 
 /**
  * A GUI-Interface in BASIC so we can track the IP-address.
@@ -97,6 +99,8 @@ public class ViewController implements IEventHandler {
 
 	private void initScene() {
 		this.player = ResourceManager.loadActors()[0];
+		this.enemies = new Actor[1];
+		this.enemies[0] = this.player.clone();
 		
 //		int num = 10000;
 //		this.enemies = new Actor[num];
@@ -158,9 +162,19 @@ public class ViewController implements IEventHandler {
 //					}
 //				}
 //				TimerTool.stop();
+				if (this.enemies != null) {
+					for (int i = 0; i < this.enemies.length; i++) {
+						if (this.enemies[i] != null) this.enemies[i].update(dt);
+						if (this.enemies[i].getCurrentFrame() != null) {
+							screen.blit(this.enemies[i].getCurrentFrame(), this.enemies[i].getPosition().x-this.player.getPosition().x, this.enemies[i].getPosition().y-this.player.getPosition().y);
+						}
+					}
+				}
 				
-				if (player.getCurrentFrame() != null) {
-					player.update(dt);			
+				if (player != null) {
+					player.update(dt);
+				}
+				if (player.getCurrentFrame() != null) {			
 					screen.blit(player.getCurrentFrame(), SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 				} else 
 					System.out.println("Playerimage is null!");
@@ -181,15 +195,34 @@ public class ViewController implements IEventHandler {
 	@Override
 	public void onEvent(Event evt) {
 		Entity p = (Entity) evt.getValue();
-		if (this.player.getEntity() == null) {
-			this.player.setEntity(p);
+		
+		System.out.println(p.getClass()+": "+(p instanceof model.character.Player));
+		
+		if (p instanceof model.character.Player) {
+			if (this.player.getEntity() == null) {
+				this.player.setEntity(p);
+			}
+			if (evt.getProperty() == Event.Property.DID_MOVE) {
+				player.startMoving();
+				System.out.println(evt.getProperty() + " " + p.getDirection());
+			} else if (evt.getProperty() == Event.Property.DID_STOP) {
+				player.stopMoving();
+				System.out.println(evt.getProperty() + " " + p.getDirection());
+			}
 		}
-		if (evt.getProperty() == Event.Property.DID_MOVE) {
-			player.setDirection(p.getDirection(), true);
-			System.out.println(evt.getProperty() + " " + p.getDirection());
-		} else if (evt.getProperty() == Event.Property.DID_STOP) {
-			player.setDirection(p.getDirection(), false);
-			System.out.println(evt.getProperty() + " " + p.getDirection());
+		if (p instanceof model.character.Enemy) {
+			if (this.enemies[0].getEntity() == null) {
+				this.enemies[0].setEntity(p);
+			}
+			if (evt.getProperty() == Event.Property.DID_MOVE) {
+				enemies[0].startMoving();
+				System.out.println(evt.getProperty() + " " + p.getDirection());
+			} else if (evt.getProperty() == Event.Property.DID_STOP) {
+				enemies[0].stopMoving();
+				System.out.println(evt.getProperty() + " " + p.getDirection());
+			}
 		}
+		
+		
 	}
 }
