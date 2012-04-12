@@ -8,9 +8,14 @@ package model;
 
 import static org.junit.Assert.*;
 
+import java.awt.Point;
+
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
+
+import tools.Logger;
 
 import constants.Direction;
 
@@ -21,6 +26,11 @@ import model.character.Player;
 public class TestCollidableObject {
 
 	private CollidableObject obj;
+	
+	@BeforeClass
+	public static void before() {
+		Logger.setLogginEnabled(true);
+	}
 	
 	@Before
 	public void setUp() throws Exception {
@@ -57,6 +67,24 @@ public class TestCollidableObject {
 		this.obj.setPosition(1*playerSpeed, 1*playerSpeed);
 		
 		assertTrue(this.obj.isColliding(player));
+	}
+	
+	@Test
+	public void testEntityCollisionDirection() {
+		
+		Entity e = new Player();
+		assertEquals(new Point(0,0), e.getPosition());
+		
+		e.setPosition(0, 1);	// South
+		e.getCollisionDirection(this.obj);
+		e.setPosition(1, 0);	// East
+		e.getCollisionDirection(this.obj);
+		this.obj.setPosition(1, 3);
+		e.setPosition(0, 1);	// North
+		e.getCollisionDirection(this.obj);
+		e.setPosition(-1, 0);	// West
+		e.getCollisionDirection(this.obj);
+		
 	}
 
 }

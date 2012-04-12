@@ -105,14 +105,20 @@ public abstract class CollidableObject {
 	
 	public Direction getCollisionDirection(CollidableObject obj) {
 		
-		int pos = this.collisionBox.outcode(obj.getPosition());
+		int code = this.collisionBox.outcode(obj.getPosition());
 		
-		switch(pos) {
-		case Rectangle.OUT_BOTTOM: Logger.log("Bottom"); break;
-		case Rectangle.OUT_LEFT: Logger.log("Left"); break;
-		case Rectangle.OUT_TOP: Logger.log("Top"); break;
-		case Rectangle.OUT_RIGHT: Logger.log("Right"); break;
-		}
+        String s = "UNKNOWN";
+        
+        if((code & Rectangle.OUT_TOP) == Rectangle.OUT_TOP)
+            s = "TOP";
+        if((code & Rectangle.OUT_RIGHT) == Rectangle.OUT_RIGHT)
+            s = "RIGHT";
+        if((code & Rectangle.OUT_LEFT) == Rectangle.OUT_LEFT)
+            s = "LEFT";
+        if((code & Rectangle.OUT_BOTTOM) == Rectangle.OUT_BOTTOM)
+            s = "BOTTOM";
+        
+        Logger.log("direction = " + s);
 		
 		return null;
 	}
