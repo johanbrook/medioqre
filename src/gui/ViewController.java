@@ -21,19 +21,19 @@ import java.util.Random;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-import constants.Direction;
-
 import datamanager.resourceloader.ResourceManager;
 
-import sun.font.FontFamily;
+import model.Entity;
+import model.character.Player;
 import tools.GraphicalFPSMeter;
 import tools.Logger;
 import tools.TimerTool;
-
 import event.Event;
 import event.IEventHandler;
+import graphics.bitmap.Bitmap;
+import graphics.bitmap.BitmapTool;
+import gui.tilemap.TileMap;
 
-import model.Entity;
 
 /**
  * A GUI-Interface in BASIC so we can track the IP-address.
@@ -54,7 +54,7 @@ public class ViewController implements IEventHandler {
 	private Bitmap screen;
 	private BitmapFont fpsBitmap;
 	private BufferedImage screenImage;
-		
+
 	private GraphicalFPSMeter fpsmeter;
 
 	public ViewController(KeyListener listener, int screenWidth, int screenHeight) {
@@ -62,9 +62,9 @@ public class ViewController implements IEventHandler {
 		SCREEN_HEIGHT = screenHeight;
 
 		screenImage = new BufferedImage(SCREEN_WIDTH, SCREEN_HEIGHT, BufferedImage.TYPE_INT_ARGB);
-		
+
 		screen = new Bitmap(SCREEN_WIDTH, SCREEN_HEIGHT,BitmapTool.getARGBarrayFromDataBuffer(screenImage.getRaster(), SCREEN_WIDTH, SCREEN_HEIGHT));
-		
+
 		this.fpsmeter = new GraphicalFPSMeter();
 		this.fpsBitmap = new BitmapFont("");
 		
@@ -81,12 +81,12 @@ public class ViewController implements IEventHandler {
 		canvas.setFocusable(true);
 		canvas.requestFocusInWindow();
 		canvas.addKeyListener(listener);
-		
+
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 		frame.add(canvas);
 		frame.setVisible(true);
-		
+
 		// Setup the canvas and frame
 		canvas.createBufferStrategy(2);
 		this.bufferStrategy = canvas.getBufferStrategy();
@@ -141,6 +141,7 @@ public class ViewController implements IEventHandler {
 		}
 	}
 
+
 	public void render(double dt) {
 		do {
 			do {
@@ -171,6 +172,9 @@ public class ViewController implements IEventHandler {
 					
 				g.drawImage(screenImage, 0, 0, this.canvas.getWidth(), this.canvas.getHeight(), null);
 				
+				Logger.log("Playerimage is null!");
+				TimerTool.stop();
+
 				g.dispose();
 			} while (bufferStrategy.contentsRestored());
 			bufferStrategy.show();
@@ -184,12 +188,12 @@ public class ViewController implements IEventHandler {
 			Entity p = (Entity) evt.getValue();
 			player.setDirection(p.getDirection(), true);
 			player.setPosition(p.getPosition());
-			System.out.println(evt.getProperty() + " " + p.getDirection());
+			Logger.log(evt.getProperty() + " " + p.getDirection());
 		} else if (evt.getProperty() == Event.Property.DID_STOP) {
 			Entity p = (Entity) evt.getValue();
 			player.setDirection(p.getDirection(), false);
 			player.setPosition(p.getPosition());
-			System.out.println(evt.getProperty() + " " + p.getDirection());
+			Logger.log(evt.getProperty() + " " + p.getDirection());
 		}
 	}
 }
