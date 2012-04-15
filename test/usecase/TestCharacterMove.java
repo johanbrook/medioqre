@@ -13,7 +13,6 @@ import java.awt.Point;
 
 import model.character.*;
 import model.character.Character;
-import model.Position;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -34,6 +33,7 @@ public class TestCharacterMove {
 		this.player = new Player();
 		int playerSpeed = this.player.getMovementSpeed();
 		this.playerMovement = (int) ((int) playerSpeed * DELTA);
+		this.player.setPosition(0, 0);
 	}
 
 	

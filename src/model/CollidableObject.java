@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+import model.character.Player;
+
 import tools.Logger;
 
 import constants.Direction;
@@ -45,6 +47,9 @@ public abstract class CollidableObject {
 		this.size = size;
 		this.xoffset = xoffset;
 		this.yoffset = yoffset;
+		
+		this.collisionBox.x += this.xoffset;
+		this.collisionBox.y += this.yoffset;
 	}
 	
 	
@@ -65,8 +70,8 @@ public abstract class CollidableObject {
 	 */
 	public Point getPosition(){
 		
-		int x = this.collisionBox.x - xoffset;
-		int y = this.collisionBox.y - yoffset;
+		int x = this.collisionBox.x - this.xoffset;
+		int y = this.collisionBox.y - this.yoffset;
 		
 		return new Point(x, y);
 	}
@@ -77,9 +82,7 @@ public abstract class CollidableObject {
 	 * @param pos The position
 	 */
 	public void setPosition(Point pos){
-
-		this.collisionBox.x = pos.x + this.xoffset;
-		this.collisionBox.y = pos.y + this.yoffset;
+		setPosition(pos.x, pos.y);
 	}
 	
 	/**
@@ -91,7 +94,7 @@ public abstract class CollidableObject {
 	public void setPosition(int x, int y) {
 		
 		this.collisionBox.x = x + this.xoffset;
-		this.collisionBox.y = y + this.yoffset;		
+		this.collisionBox.y = y + this.yoffset;
 	}
 	
 	/**
@@ -141,21 +144,44 @@ public abstract class CollidableObject {
 		return this.collisionBox.intersects(obj.getCollisionBox());
 	}
 	
-	public Direction getCollisionDirection(CollidableObject obj) {
-		
-		int code = this.collisionBox.outcode(obj.getPosition());		
+	public Direction getCollisionDirection(CollidableObject obj) {		
+		int code = this.collisionBox.outcode(obj.getCollisionBox().getLocation());		
         Direction d = Direction.ORIGIN;
         
-        if((code & Rectangle.OUT_TOP) == Rectangle.OUT_TOP)
-            d = Direction.NORTH;
-        if((code & Rectangle.OUT_RIGHT) == Rectangle.OUT_RIGHT)
-            d = Direction.EAST;
-        if((code & Rectangle.OUT_LEFT) == Rectangle.OUT_LEFT)
-            d = Direction.WEST;
-        if((code & Rectangle.OUT_BOTTOM) == Rectangle.OUT_BOTTOM)
-            d = Direction.SOUTH;
+        boolean top = false, bottom = false, right = false, left = false;
         
-		
+        
+        
+        if((code & Rectangle.OUT_TOP) == Rectangle.OUT_TOP)
+            top = true;
+        if((code & Rectangle.OUT_RIGHT) == Rectangle.OUT_RIGHT)
+            right = true;
+        if((code & Rectangle.OUT_LEFT) == Rectangle.OUT_LEFT)
+            left = true;
+        if((code & Rectangle.OUT_BOTTOM) == Rectangle.OUT_BOTTOM)
+            bottom = true;
+        
+        if(top && left)
+        	d = Direction.NORTH_WEST;
+        else if(top && right)
+        	d = Direction.NORTH_EAST;
+        else if(top)
+        	d = Direction.NORTH;
+        else if(left && bottom)
+        	d = Direction.SOUTH_WEST;
+        else if(right && bottom)
+        	d = Direction.SOUTH_EAST;
+        else if(left)
+        	d = Direction.WEST;
+        else if(right)
+        	d = Direction.EAST;
+        else if(bottom)
+        	d = Direction.SOUTH;
+        
 		return d;
+	}
+	
+	public int getCode(CollidableObject obj) {
+		return this.collisionBox.outcode(obj.getCollisionBox().getLocation());
 	}
 }

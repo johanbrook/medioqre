@@ -1,14 +1,14 @@
 package model;
 
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
 import java.util.Random;
 
-import sun.security.action.GetLongAction;
 
 import static tools.Logger.*;
-
 
 import model.character.*;
 import model.character.Character;
@@ -41,27 +41,28 @@ public class GameModel implements IGameModel {
 	private void initEntities() {
 		this.player = new Player();
 		
-		this.enemies = new Enemy[10];
+		this.enemies = new Enemy[1];
 		this.enemies[0] = new Enemy(0, 10, 100, 100);
-		this.enemies[1] = new Enemy(10, 10, 200, 100);
-		this.enemies[2] = new Enemy(10, 10, 300, 100);
-		this.enemies[3] = new Enemy(10, 10, 400, 100);
-		this.enemies[4] = new Enemy(10, 10, 500, 100);
-		this.enemies[5] = new Enemy(10, 10, 600, 100);
-		this.enemies[6] = new Enemy(10, 10, 700, 100);
-		this.enemies[7] = new Enemy(10, 10, 800, 100);
-		this.enemies[8] = new Enemy(10, 10, 900, 100);
-		this.enemies[9] = new Enemy(10, 10, 1000, 100);
+//		this.enemies[1] = new Enemy(10, 10, 200, 100);
+//		this.enemies[2] = new Enemy(10, 10, 300, 100);
+//		this.enemies[3] = new Enemy(10, 10, 400, 100);
+//		this.enemies[4] = new Enemy(10, 10, 500, 100);
+//		this.enemies[5] = new Enemy(10, 10, 600, 100);
+//		this.enemies[6] = new Enemy(10, 10, 700, 100);
+//		this.enemies[7] = new Enemy(10, 10, 800, 100);
+//		this.enemies[8] = new Enemy(10, 10, 900, 100);
+//		this.enemies[9] = new Enemy(10, 10, 1000, 100);
 //		
-//		this.enemies[0].setDirection(Direction.SOUTH);
+		this.enemies[0].setDirection(Direction.SOUTH);
 //		this.enemies[1].setDirection(Direction.SOUTH);
 //		this.enemies[2].setDirection(Direction.SOUTH);
 //		this.enemies[3].setDirection(Direction.SOUTH);
 //		this.enemies[4].setDirection(Direction.SOUTH);
 		
 		this.entities.add(this.player);
-		for (int i = 0; i < this.enemies.length; i++) 
+		for (int i = 0; i < this.enemies.length; i++) {
 			this.entities.add(this.enemies[i]);
+		}
 	}
 	
 	/**
@@ -106,22 +107,86 @@ public class GameModel implements IGameModel {
 		}
 		
 		for(Entity t : this.entities) {
+			
 			for(Entity w : this.entities) {
 				
-				Direction blockedDirection = t.getCollisionDirection(w);
-				Direction currentDirection = t.getDirection();
+				//@todo Collisions are ignored if the player moves in diagonal direction
 				
-				if(t.isColliding(w) && t != w && blockedDirection == currentDirection) {
-					log("---\nBlocked: "+blockedDirection, LOG_CONTROL);
-					log("Current: "+currentDirection, LOG_CONTROL);
+				Direction currentDirection = t.getDirection();				
+				Direction blockedDirection = t.getCollisionDirection(w);
+
+				if(t != w && t instanceof Player){
+					System.out.println("-----\nPlayer direction: "+currentDirection);
+					System.out.println("Collision direction: "+blockedDirection);
 					
+					int c = t.getCode(w);
 					
-					t.stop();
+					System.out.println("CODE: "+c);
+					System.out.println("Top: "+ ((c & Rectangle.OUT_TOP) == Rectangle.OUT_TOP));
+					System.out.println("Bottom: "+ ((c & Rectangle.OUT_BOTTOM) == Rectangle.OUT_BOTTOM));
+					System.out.println("Left: "+ ((c & Rectangle.OUT_LEFT) == Rectangle.OUT_LEFT));
+					System.out.println("Right: "+ ((c & Rectangle.OUT_RIGHT) == Rectangle.OUT_RIGHT));
+				}
+				
+				
+				// This baby is in need of a grave refactor :)
+				
+				boolean stop = false;
+				
+				if(t != w && t.isColliding(w)) {
+					
+										
+					if( (blockedDirection == Direction.NORTH_WEST ||
+						 blockedDirection == Direction.WEST)
+							&& (currentDirection == Direction.WEST || 
+								currentDirection == Direction.NORTH_WEST ||
+								currentDirection == Direction.NORTH)) {
+						
+						stop = true;
+					}
+					
+					if( (blockedDirection == Direction.NORTH_EAST ||
+						 blockedDirection == Direction.EAST) 
+							&& (currentDirection == Direction.EAST || 
+								currentDirection == Direction.NORTH_EAST ||
+								currentDirection == Direction.NORTH) ){
+								
+						stop = true;
+					}
+					
+					if( (blockedDirection == Direction.SOUTH_WEST ||
+							 blockedDirection == Direction.WEST) 
+								&& (currentDirection == Direction.WEST || 
+									currentDirection == Direction.SOUTH_WEST ||
+									currentDirection == Direction.SOUTH) ){
+						
+						
+						stop = true;
+					}
+					
+					if( (blockedDirection == Direction.SOUTH_EAST ||
+							 blockedDirection == Direction.EAST) 
+								&& (currentDirection == Direction.EAST || 
+									currentDirection == Direction.SOUTH_EAST ||
+									currentDirection == Direction.SOUTH)){
+									
+						stop = true;
+					}
+					
+					if(blockedDirection == currentDirection){
+						stop = true;
+					}
+						
+					
+					if(stop) t.stop();
 				}
 			}
 			
+			// The entity has to move *after* collision checks have been finished, 
+			// otherwise you'll be able to bug your way through other entities.
 			t.move(dt);
 		}
+
 	}
 	
 	/**

@@ -1,9 +1,3 @@
-/**
-*	TestPosition.java
-*
-*	@author Johan
-*/
-
 package model;
 
 import static org.junit.Assert.*;
@@ -11,6 +5,12 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+*	TestPosition.java
+*
+*	@author Johan
+*	@deprecated 2012-04-15
+*/
 public class TestPosition {
 
 	private Position position;
