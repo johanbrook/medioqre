@@ -112,16 +112,14 @@ public class GameModel implements IGameModel {
 				Direction currentDirection = t.getDirection();
 				
 				if(t.isColliding(w) && t != w && blockedDirection == currentDirection) {
-					log("Blocked: "+blockedDirection);
-					log("Current: "+currentDirection);
+					log("---\nBlocked: "+blockedDirection, LOG_CONTROL);
+					log("Current: "+currentDirection, LOG_CONTROL);
 					
 					
 					t.stop();
 				}
 			}
-		}
-		
-		for (Entity t : this.entities) {
+			
 			t.move(dt);
 		}
 	}

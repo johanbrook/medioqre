@@ -88,7 +88,7 @@ public class Bitmap {
 			this.pixels = pixels.clone();
 		} else {
 			Logger.log("Pixels: " + pixels.length + " WxH: "
-					+ this.width * this.height);
+					+ this.width * this.height, Logger.LOG_GUI);
 			throw new IllegalArgumentException(
 					"Pixel length does not match bitmap dimension.");
 		}

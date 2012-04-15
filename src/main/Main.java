@@ -22,7 +22,12 @@ public class Main {
 			if(args[0].equalsIgnoreCase("--logging")){
 				setLogginEnabled(true);
 				
-				addLogMode(LOG_CONTROL);
+				if(args.length > 1) {
+					setLogMode(Integer.parseInt(args[1]));
+				}
+				else {
+					setLogMode(LOG_ALL);
+				}
 			}
 		}
 		

@@ -6,10 +6,6 @@
 
 package tools;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-
 public final class Logger {
 	
 	public static final int LOG_ALL = 1;
@@ -21,7 +17,7 @@ public final class Logger {
 	private static Logger instance;
 	private static boolean logging = false;
 	
-	private static List<Integer> logModes = new LinkedList<Integer>();
+	private static int logMode = LOG_ALL;
 	
 	private Logger() {}
 	
@@ -42,24 +38,16 @@ public final class Logger {
 	 * Log a message to the stdout.
 	 * 
 	 * @param message The message
+	 * @param type The logging type
 	 * @pre isLogginEnabled() == true
 	 */
-	public static void log(Object message) {
-		log(message, getLogModes());
-	}
 	
-	public static void log(Object message, int ... modes) {
+	public static void log(Object message, int type) {
 		
-		if(isLogginEnabled()){
-			boolean temp = false;
-			for(int i = 0; i < modes.length; i++) {
-				if(logModes.contains(modes[i]) || modes[i] == LOG_ALL)	
-					temp = true;
-			}
-			
-			if(temp)
-				System.out.println(message);
+		if(logging){
+			System.out.println(message);
 		}
+		
 	}
 	
 	
@@ -85,23 +73,10 @@ public final class Logger {
 	/**
 	 * Add a log mode.
 	 * 
-	 * @param modes The logging mode
+	 * @param type The logging type
 	 */
-	public static void addLogMode(int ... modes) {
-		logModes.clear();
-		for(Integer i : modes) {
-			if(!logModes.contains(i))
-				logModes.add(i);
-		}
+	public static void setLogMode(int type) {
+		logMode = type;
 	}
 	
-	
-	public static int[] getLogModes() {
-		int[] temp = new int[logModes.size()];
-		for(int i = 0; i < logModes.size(); i++){
-			temp[i] = logModes.get(i);
-		}
-		
-		return temp;
-	}
 }
