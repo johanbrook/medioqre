@@ -81,8 +81,8 @@ public class ResourceManager {
 						frames[k] = spriteSheet
 								.getSubImage(x, y, width, height);
 					}
-					Logger.log("New animation: " + j, Logger.LOG_GUI);
-					Logger.log("Animation name: " + name, Logger.LOG_GUI);
+					System.out.println("New animation: " + j);
+					System.out.println("Animation name: " + name);
 					animations.put(name, new Animation(name, duration, frames));
 				}
 				actors[i] = new Actor(null, animations);

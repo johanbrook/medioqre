@@ -15,7 +15,7 @@ public class TimerTool {
 
 	public static void stop()
 	{
-		log(stopToString(), LOG_STATS);
+		System.out.println(stopToString());
 	}
 	public static String stopToString()
 	{

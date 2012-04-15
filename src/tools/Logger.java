@@ -42,13 +42,7 @@ public final class Logger {
 	 * @pre isLogginEnabled() == true
 	 */
 	
-	public static void log(Object message, int type) {
-		
-		if(logging){
-			System.out.println(message);
-		}
-		
-	}
+
 	
 	
 	/**

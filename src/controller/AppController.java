@@ -25,7 +25,7 @@ public class AppController implements Runnable{
 
 	
 	public AppController(){
-		log("Initializing main controller ...", LOG_ALL);
+		System.out.println("Initializing main controller ...");
 		this.game = new GameModel();
 		this.view = new ViewController(new NavigationController(this.game), 20*32, 12*32);
 		

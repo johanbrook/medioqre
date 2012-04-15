@@ -6,13 +6,11 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import model.Entity;
-import model.Position;
 
 import constants.Direction;
 
 public class Actor {
 
-	private Point position;
 	private Map<String, Animation> animations;
 	private Animation currentAnimation;
 	private Entity entity;

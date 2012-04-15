@@ -20,25 +20,17 @@ import java.util.ArrayList;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
-import java.util.TreeMap;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-import constants.Direction;
 
 import datamanager.resourceloader.ResourceManager;
-
-import sun.font.FontFamily;
 import tools.GraphicalFPSMeter;
-import tools.Logger;
-import tools.TimerTool;
 
 import event.Event;
 import event.EventBus;
 import event.IEventHandler;
-import event.Event.Property;
 
 import model.Entity;
 import model.GameModel;
@@ -170,7 +162,7 @@ public class ViewController implements IEventHandler {
 						int y = SCREEN_HEIGHT / 2 + this.player.getEntity().getOffsetY();
 						screen.blit(collisionBoxBox, x, y);
 					} else
-						Logger.log("Playerimage is null!", Logger.LOG_GUI);
+						System.out.println("Playerimage is null!");
 				}
 
 				fpsmeter.tick();

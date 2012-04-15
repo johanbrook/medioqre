@@ -87,8 +87,8 @@ public class Bitmap {
 		if (pixels.length == this.width * this.height) {
 			this.pixels = pixels.clone();
 		} else {
-			Logger.log("Pixels: " + pixels.length + " WxH: "
-					+ this.width * this.height, Logger.LOG_GUI);
+			System.out.println("Pixels: " + pixels.length + " WxH: "
+					+ this.width * this.height);
 			throw new IllegalArgumentException(
 					"Pixel length does not match bitmap dimension.");
 		}
