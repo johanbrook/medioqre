@@ -170,7 +170,7 @@ public class ViewController implements IEventHandler {
 						int y = SCREEN_HEIGHT / 2 + this.player.getEntity().getOffsetY();
 						screen.blit(collisionBoxBox, x, y);
 					} else
-						System.out.println("Playerimage is null!");
+						Logger.log("Playerimage is null!", Logger.LOG_GUI);
 				}
 
 				fpsmeter.tick();

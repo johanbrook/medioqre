@@ -1,5 +1,7 @@
 package tools;
 
+import static tools.Logger.*;
+
 public class TimerTool {
 
 	private static String label;
@@ -13,7 +15,7 @@ public class TimerTool {
 
 	public static void stop()
 	{
-		System.out.println(stopToString());
+		log(stopToString(), LOG_STATS);
 	}
 	public static String stopToString()
 	{

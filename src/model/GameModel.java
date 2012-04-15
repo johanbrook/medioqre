@@ -5,7 +5,9 @@ import java.util.List;
 
 import java.util.Random;
 
-import tools.Logger;
+import sun.security.action.GetLongAction;
+
+import static tools.Logger.*;
 
 
 import model.character.*;
@@ -28,7 +30,6 @@ public class GameModel implements IGameModel {
 	
 	public GameModel() {
 		this.entities = new ArrayList<Entity>();
-		
 		initEntities();
 	}
 	
@@ -110,10 +111,11 @@ public class GameModel implements IGameModel {
 				Direction blockedDirection = t.getCollisionDirection(w);
 				Direction currentDirection = t.getDirection();
 				
-				System.out.println("Blocked: "+blockedDirection);
-				System.out.println("Current: "+currentDirection);
-				
 				if(t.isColliding(w) && t != w && blockedDirection == currentDirection) {
+					log("Blocked: "+blockedDirection);
+					log("Current: "+currentDirection);
+					
+					
 					t.stop();
 				}
 			}

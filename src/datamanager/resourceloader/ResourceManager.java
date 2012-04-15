@@ -20,6 +20,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import tools.Logger;
+
 public class ResourceManager {
 
 	public static void main(String[] args)
@@ -79,8 +81,8 @@ public class ResourceManager {
 						frames[k] = spriteSheet
 								.getSubImage(x, y, width, height);
 					}
-					System.out.println("New animation: " + j);
-					System.out.println("Animation name: " + name);
+					Logger.log("New animation: " + j, Logger.LOG_GUI);
+					Logger.log("Animation name: " + name, Logger.LOG_GUI);
 					animations.put(name, new Animation(name, duration, frames));
 				}
 				actors[i] = new Actor(null, animations);

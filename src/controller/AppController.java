@@ -13,6 +13,7 @@ import event.EventBus;
 import gui.ViewController;
 import model.GameModel;
 import model.IGameModel;
+import static tools.Logger.*;
 
 public class AppController implements Runnable{
 	
@@ -24,6 +25,7 @@ public class AppController implements Runnable{
 
 	
 	public AppController(){
+		log("Initializing main controller ...", LOG_ALL);
 		this.game = new GameModel();
 		this.view = new ViewController(new NavigationController(this.game), 20*32, 12*32);
 		
@@ -31,6 +33,7 @@ public class AppController implements Runnable{
 		
 		Thread t = new Thread(this);
 		t.start();
+		
 	}
 
 	

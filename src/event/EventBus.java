@@ -3,6 +3,8 @@ package event;
 import java.util.ArrayList;
 import java.util.List;
 
+import tools.Logger;
+
 /**
 *	EventBus.java
 *
@@ -55,6 +57,7 @@ public enum EventBus {
 	public void publish(Event event) {
 		for(IEventHandler handler : handlers) {
 			handler.onEvent(event);
+			Logger.log(event.toString(), Logger.LOG_EVENTS);
 		}
 	}
 	
