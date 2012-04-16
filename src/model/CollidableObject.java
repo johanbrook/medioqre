@@ -184,4 +184,11 @@ public abstract class CollidableObject {
 	public int getCode(CollidableObject obj) {
 		return this.collisionBox.outcode(obj.getCollisionBox().getLocation());
 	}
+	
+	// Overrides
+	
+	@Override
+	public String toString() {
+		return "[x:"+this.getPosition().x+":y:"+this.getPosition().y+"] [w:"+this.getSize().width+":h:"+this.getSize().height+"]";
+	}
 }

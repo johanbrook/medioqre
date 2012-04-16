@@ -125,5 +125,8 @@ public abstract class Entity extends CollidableObject {
 		EventBus.INSTANCE.publish(new Event(Property.WAS_DESTROYED, this));
 	}
 	
-	
+	@Override
+	public String toString() {
+		return super.toString() + " [speed:"+this.movementSpeed+"] [moving:"+this.isMoving+"] [dir:"+this.direction+"]";
+	}
 }

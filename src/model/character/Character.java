@@ -80,5 +80,10 @@ public abstract class Character extends Entity {
 	 * @param target The target to attack
 	 */
 	public abstract Projectile attack();
-
+	
+	
+	@Override
+	public String toString() {
+		return super.toString() + " [hp:"+this.health+"]";
+	}
 }
