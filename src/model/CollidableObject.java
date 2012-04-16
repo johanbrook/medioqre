@@ -4,6 +4,10 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+import tools.Logger;
+
+import constants.Direction;
+
 /**
  * The collidable object super class
  * 
@@ -84,6 +88,15 @@ public abstract class CollidableObject {
 	}
 	
 	
+	public int getOffsetX() {
+		return this.xoffset;
+	}
+	
+	public int getOffsetY() {
+		return this.yoffset;
+	}
+	
+	
 	/**
 	 * Get the collision box of the object.
 	 * 
@@ -93,8 +106,27 @@ public abstract class CollidableObject {
 		return this.collisionBox;
 	}
 	
+	
 	public boolean isColliding(CollidableObject obj){
 		
 		return this.collisionBox.intersects(obj.getCollisionBox());
+	}
+	
+	public Direction getCollisionDirection(CollidableObject obj) {
+		
+		int code = this.collisionBox.outcode(obj.getPosition());		
+        Direction d = Direction.ORIGIN;
+        
+        if((code & Rectangle.OUT_TOP) == Rectangle.OUT_TOP)
+            d = Direction.NORTH;
+        if((code & Rectangle.OUT_RIGHT) == Rectangle.OUT_RIGHT)
+            d = Direction.EAST;
+        if((code & Rectangle.OUT_LEFT) == Rectangle.OUT_LEFT)
+            d = Direction.WEST;
+        if((code & Rectangle.OUT_BOTTOM) == Rectangle.OUT_BOTTOM)
+            d = Direction.SOUTH;
+        
+		
+		return d;
 	}
 }

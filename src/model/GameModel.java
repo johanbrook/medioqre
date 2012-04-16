@@ -1,8 +1,10 @@
 package model;
 
-import java.awt.Dimension;
-import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import tools.TimerTool;
 
 import model.character.Character;
 import model.character.Enemy;
@@ -19,25 +21,52 @@ import controller.AI.AIController;
 public class GameModel implements IGameModel {
 
 	private Character player;
-	private ArrayList<Enemy> enemies;
+	private Enemy[] enemies;
+	private Random rand = new Random();
 	private AIController ai;
 
+	private List<Entity> entities;
+
 	public GameModel() {
-		this.player = new Player();
-		this.enemies = new ArrayList <Enemy>();
-		//TODO Need to access size, both in pixels and in rows/columns, where size is the width/height of each tile.
-		//this.ai = new AIController(rows, columns, width, height);
-		initEnemies();
+		this.entities = new ArrayList<Entity>();
+		this.ai = new AIController(48, 48, 32, 32);
+
+		initEntities();
 	}
 
-	/**
-	 * Creates a number of zombies and adds them to the enemy-list
-	 */
-	private void initEnemies() {
-		for (int i = 0; i < 5; i++){
-			this.enemies.add(new Enemy(5,  30, new Rectangle (5,5),  new Dimension (5,5),  5,  5));
-			//this.ai.addEnemy(enemies.get(i));
+
+	public void newWave() {
+
+	}
+
+	private void initEntities() {
+		this.player = new Player();
+
+		this.enemies = new Enemy[10];
+		this.enemies[0] = new Enemy(10, 10, 100, 100);
+		this.enemies[1] = new Enemy(10, 10, 200, 100);
+		this.enemies[2] = new Enemy(10, 10, 300, 100);
+		this.enemies[3] = new Enemy(10, 10, 400, 100);
+		this.enemies[4] = new Enemy(10, 10, 500, 100);
+		this.enemies[5] = new Enemy(10, 10, 600, 100);
+		this.enemies[6] = new Enemy(10, 10, 700, 100);
+		this.enemies[7] = new Enemy(10, 10, 800, 100);
+		this.enemies[8] = new Enemy(10, 10, 900, 100);
+		this.enemies[9] = new Enemy(10, 10, 1000, 100);
+		for (int i=0;i<enemies.length;i++){
+			this.ai.addEnemy(this.enemies[i]);
+			this.enemies[i].start();
 		}
+		//		
+		//		this.enemies[0].setDirection(Direction.SOUTH);
+		//		this.enemies[1].setDirection(Direction.SOUTH);
+		//		this.enemies[2].setDirection(Direction.SOUTH);
+		//		this.enemies[3].setDirection(Direction.SOUTH);
+		//		this.enemies[4].setDirection(Direction.SOUTH);
+
+		this.entities.add(this.player);
+		for (int i = 0; i < this.enemies.length; i++) 
+			this.entities.add(this.enemies[i]);
 	}
 
 	/**
@@ -45,14 +74,61 @@ public class GameModel implements IGameModel {
 	 * @param dt The time since the last update.
 	 */
 	public void update(double dt) {
-		//this.ai.updateAI(this.player.getPosition());
-		
-		this.player.move(dt);
-		
-		for (int i = 0; i < this.enemies.size(); i++){
-			this.enemies.get(i).move(dt);
-			System.out.println("Enemy " + i + " has X-value: " + this.enemies.get(i).getPosition().x
-								+ " and Y-value: " + this.enemies.get(i).getPosition().y);
+		TimerTool.start("AI");
+		this.ai.updateAI(this.player.getPosition());
+		TimerTool.stop();
+		for (int i = 100; i < this.enemies.length; i++) {
+			if (rand.nextInt((int)(100)) == 0) {
+				int r = rand.nextInt(8);
+				Direction d = Direction.ORIGIN;
+				switch (r) {
+				case 0:
+					d = Direction.EAST;
+					break;
+				case 1:
+					d = Direction.NORTH;
+					break;
+				case 2:
+					d = Direction.NORTH_EAST;
+					break;
+				case 3:
+					d = Direction.NORTH_WEST;
+					break;
+				case 4:
+					d = Direction.SOUTH;
+					break;
+				case 5:
+					d = Direction.SOUTH_EAST;
+					break;
+				case 6:
+					d = Direction.SOUTH_WEST;
+					break;
+				case 7:
+					d = Direction.WEST;
+					break;
+				}
+				this.enemies[i].setDirection(d);
+				this.enemies[i].start();
+			}
+		}
+
+		for(Entity t : this.entities) {
+			for(Entity w : this.entities) {
+
+				Direction blockedDirection = t.getCollisionDirection(w);
+				Direction currentDirection = t.getDirection();
+
+				//				System.out.println("Blocked: "+blockedDirection);
+				//				System.out.println("Current: "+currentDirection);
+
+				if(t.isColliding(w) && t != w && blockedDirection == currentDirection) {
+					t.stop();
+				}
+			}
+		}
+
+		for (Entity t : this.entities) {
+			t.move(dt);
 		}
 	}
 
@@ -64,11 +140,16 @@ public class GameModel implements IGameModel {
 	 */
 	public void updateDirection(Direction dir) {
 		this.player.setDirection(dir);
+		this.player.start();
 	}
 
 	public void stopPlayer(){
 		this.player.stop();
 	}
 
+
+	public List<Entity> getEntities() {
+		return this.entities;
+	}
 
 }

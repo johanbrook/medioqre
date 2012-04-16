@@ -82,7 +82,7 @@ public class ResourceManager {
 							System.out.println("Animation name: "+name);
 							animations.put(name, new Animation(name, duration, frames));
 						}
-						actors[i] = new Actor(new Point(0,0), animations);
+						actors[i] = new Actor(null, animations);
 					}
 					return actors;
 				} catch (JSONException e) {

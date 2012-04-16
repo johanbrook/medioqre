@@ -16,58 +16,79 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.IdentityHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.TreeMap;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
+import constants.Direction;
+
 import datamanager.resourceloader.ResourceManager;
 
-import model.Entity;
-import model.character.Player;
+import sun.font.FontFamily;
 import tools.GraphicalFPSMeter;
 import tools.Logger;
 import tools.TimerTool;
-import event.Event;
-import event.IEventHandler;
-import graphics.bitmap.Bitmap;
-import graphics.bitmap.BitmapTool;
-import gui.tilemap.TileMap;
 
+import event.Event;
+import event.EventBus;
+import event.IEventHandler;
+import event.Event.Property;
+
+import model.Entity;
+import model.GameModel;
+import model.character.Enemy;
+import model.character.Player;
 
 /**
  * A GUI-Interface in BASIC so we can track the IP-address.
  * 
  * @author Barber
- *
+ * 
  */
 public class ViewController implements IEventHandler {
-	
+
 	// Screen
 	private final int SCREEN_WIDTH;
 	private final int SCREEN_HEIGHT;
 	private BufferStrategy bufferStrategy;
 	private Canvas canvas;
 	private Actor player;
-	private Actor[] enemies;
+	private Map<Entity, Actor> enemies;
 	private TileMap gameMap;
 	private Bitmap screen;
 	private BitmapFont fpsBitmap;
 	private BufferedImage screenImage;
+	private Bitmap collisionBoxBox;
 
 	private GraphicalFPSMeter fpsmeter;
 
-	public ViewController(KeyListener listener, int screenWidth, int screenHeight) {
+	public ViewController(KeyListener listener, int screenWidth,
+			int screenHeight)
+	{
+		EventBus.INSTANCE.register(this);
+
 		SCREEN_WIDTH = screenWidth;
 		SCREEN_HEIGHT = screenHeight;
 
-		screenImage = new BufferedImage(SCREEN_WIDTH, SCREEN_HEIGHT, BufferedImage.TYPE_INT_ARGB);
+		screenImage = new BufferedImage(SCREEN_WIDTH, SCREEN_HEIGHT,
+				BufferedImage.TYPE_INT_ARGB);
 
-		screen = new Bitmap(SCREEN_WIDTH, SCREEN_HEIGHT,BitmapTool.getARGBarrayFromDataBuffer(screenImage.getRaster(), SCREEN_WIDTH, SCREEN_HEIGHT));
+		screen = new Bitmap(SCREEN_WIDTH, SCREEN_HEIGHT,
+				BitmapTool.getARGBarrayFromDataBuffer(screenImage.getRaster(),
+						SCREEN_WIDTH, SCREEN_HEIGHT));
+		
+		collisionBoxBox = new Bitmap(16,16);
+		collisionBoxBox.clear(0xffff99ff);
 
 		this.fpsmeter = new GraphicalFPSMeter();
 		this.fpsBitmap = new BitmapFont("");
-		
+
 		initScene();
 
 		// Creating the frame
@@ -95,45 +116,8 @@ public class ViewController implements IEventHandler {
 		frame.setLocationRelativeTo(null);
 	}
 
-	private void initScene() {
-		this.player = ResourceManager.loadActors()[0];
-		
-//		int num = 10000;
-//		this.enemies = new Actor[num];
-//		Random r = new Random();
-//		for (int i = 0; i < num; i++) {
-//			this.enemies[i] = player.clone();
-//			int rand = r.nextInt(8);
-//			Direction d = Direction.SOUTH;
-//			switch (rand) {
-//			case 0 : 
-//				d = Direction.SOUTH;
-//			break;
-//			case 1 : 
-//				d = Direction.SOUTH_EAST;
-//			break;
-//			case 2 : 
-//				d = Direction.SOUTH_WEST;
-//			break;
-//			case 3 : 
-//				d = Direction.NORTH;
-//			break;
-//			case 4 : 
-//				d = Direction.NORTH_EAST;
-//			break;
-//			case 5 : 
-//				d = Direction.NORTH_WEST;
-//			break;
-//			case 6 : 
-//				d = Direction.WEST;
-//			break;
-//			case 7 : 
-//				d = Direction.EAST;
-//			break;
-//			}
-//			this.enemies[i].setDirection(d, true);
-//		}
-		
+	private void initScene()
+	{
 		try {
 			this.gameMap = new TileMap("res/images/levels/l2.bmp");
 		} catch (IOException e) {
@@ -141,39 +125,60 @@ public class ViewController implements IEventHandler {
 		}
 	}
 
-
-	public void render(double dt) {
+	public void render(double dt)
+	{
 		do {
 			do {
 				Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
-				
-				gameMap.blitVisibleTilesToBitmap(screen, new Rectangle((int)player.getPosition().getX(), (int)player.getPosition().getY(), SCREEN_WIDTH, SCREEN_HEIGHT));
-				
-//				TimerTool.start("DrawEnemies");
-//				if (this.enemies != null) {
-//					for (int i = 0; i < this.enemies.length; i++) {
-//						if (this.enemies[i].getCurrentFrame() != null) {
-//							this.enemies[i].update(dt);
-//							screen.blit(this.enemies[i].getCurrentFrame(), (i/10)*32, 20+(i%10)*64);
-//						}
-//					}
-//				}
-//				TimerTool.stop();
-				
-				if (player.getCurrentFrame() != null) {
-					player.update(dt);			
-					screen.blit(player.getCurrentFrame(), SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
-				} else 
-					System.out.println("Playerimage is null!");
-				
+
+				if (this.player != null) {
+					int x =	(int) player.getPosition().getX() - SCREEN_WIDTH / 2;
+					int y = (int) player.getPosition().getY() - SCREEN_HEIGHT / 2;
+					int w = SCREEN_WIDTH;
+					int h = SCREEN_HEIGHT;
+					gameMap.blitVisibleTilesToBitmap(screen, new Rectangle(x, y, w, h));
+				}
+
+				if (this.enemies != null) {
+					for (Actor eActor : this.enemies.values()) {
+						if (eActor != null) {
+							eActor.update(dt);
+							if (eActor.getCurrentFrame() != null) {
+								screen.blit(eActor.getCurrentFrame(),
+										eActor.getPosition().x
+												- this.player.getPosition().x
+												+ SCREEN_WIDTH / 2,
+										eActor.getPosition().y
+												- this.player.getPosition().y
+												+ SCREEN_HEIGHT / 2);
+								
+								int x =	eActor.getPosition().x - this.player.getPosition().x + SCREEN_WIDTH / 2 + eActor.getEntity().getOffsetX();
+								int y = eActor.getPosition().y - this.player.getPosition().y + SCREEN_HEIGHT / 2 + eActor.getEntity().getOffsetY();
+								screen.blit(collisionBoxBox, x, y);
+							}
+						}
+					}
+				}
+
+				if (player != null) {
+					player.update(dt);
+
+					if (player.getCurrentFrame() != null) {
+						screen.blit(player.getCurrentFrame(), SCREEN_WIDTH / 2,
+								SCREEN_HEIGHT / 2);
+						int x =	SCREEN_WIDTH / 2 + this.player.getEntity().getOffsetX();
+						int y = SCREEN_HEIGHT / 2 + this.player.getEntity().getOffsetY();
+						screen.blit(collisionBoxBox, x, y);
+					} else
+						System.out.println("Playerimage is null!");
+				}
+
 				fpsmeter.tick();
 				fpsBitmap.setText("fps: " + this.fpsmeter.currentFPS);
 				screen.blit(fpsBitmap.getBitmap(), 5, 5);
-					
-				g.drawImage(screenImage, 0, 0, this.canvas.getWidth(), this.canvas.getHeight(), null);
-				
-				Logger.log("Playerimage is null!");
-				TimerTool.stop();
+
+				g.drawImage(screenImage, 0, 0, this.canvas.getWidth(),
+						this.canvas.getHeight(), null);
 
 				g.dispose();
 			} while (bufferStrategy.contentsRestored());
@@ -181,19 +186,52 @@ public class ViewController implements IEventHandler {
 		} while (bufferStrategy.contentsLost());
 	}
 
-
 	@Override
-	public void onEvent(Event evt) {
-		if (evt.getProperty() == Event.Property.DID_MOVE) {
+	public void onEvent(Event evt)
+	{
+
+		if (evt.getProperty() == Event.Property.INIT_MODEL) {
+			if (evt.getValue() instanceof GameModel) {
+				this.enemies = new IdentityHashMap<Entity, Actor>();
+				List<Entity> entities = ((GameModel) evt.getValue())
+						.getEntities();
+				Actor pActor = ResourceManager.loadActors()[0];
+				for (Entity e : entities) {
+					Actor newA = pActor.clone();
+					newA.setEntity(e);
+					if (e instanceof Enemy)	{
+						this.enemies.put(e, newA);
+						}
+					if (e instanceof Player)
+						this.player = newA;
+				}
+			}
+		}
+
+		if (evt.getValue() instanceof Entity) {
 			Entity p = (Entity) evt.getValue();
-			player.setDirection(p.getDirection(), true);
-			player.setPosition(p.getPosition());
-			Logger.log(evt.getProperty() + " " + p.getDirection());
-		} else if (evt.getProperty() == Event.Property.DID_STOP) {
-			Entity p = (Entity) evt.getValue();
-			player.setDirection(p.getDirection(), false);
-			player.setPosition(p.getPosition());
-			Logger.log(evt.getProperty() + " " + p.getDirection());
+			
+			if (p instanceof model.character.Player) {
+				if (this.player == null)
+					return;
+				if (evt.getProperty() == Event.Property.DID_MOVE) {
+					player.startMoving();
+				} else if (evt.getProperty() == Event.Property.DID_STOP) {
+					player.stopMoving();
+				}
+			}
+			if (p instanceof model.character.Enemy) {
+				if (this.enemies == null)
+					return;
+				if (this.enemies.get(p) == null)
+					return;
+				if (evt.getProperty() == Event.Property.DID_MOVE) {
+					enemies.get(p).startMoving();
+				} else if (evt.getProperty() == Event.Property.DID_STOP) {
+					enemies.get(p).stopMoving();
+				}
+			}
+
 		}
 	}
 }
