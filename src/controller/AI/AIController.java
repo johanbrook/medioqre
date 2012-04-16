@@ -55,6 +55,7 @@ public class AIController {
 
 
 	private void updateEnemy(Enemy currentEnemy ){
+		currentEnemy.start();
 		Point enemyTile = calculateTile(currentEnemy.getPosition());
 		int length = (Math.abs(enemyTile.x - playerTile.x) + Math.abs(enemyTile.y
 				- playerTile.y));
@@ -63,7 +64,7 @@ public class AIController {
 			currentEnemy.setDirection(randomDir());
 		}else {
 
-			List <Point> path = pathfinder.getPath(calculateTile(currentEnemy.getPosition()), playerTile);
+			List <Point> path = pathfinder.getPath(enemyTile, playerTile);
 			if (path != null){
 				//Update direction of the enemy depending on what the current path is.
 

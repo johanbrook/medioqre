@@ -13,6 +13,7 @@ public class PathFinder {
 	private List<AStarTile> openList;
 	private AStarTile[][] logicList;
 	private AStarTile currentTile;
+	//Using a approx value of sqrt(2) for diagonalcost, in order to save time.
 	private final double DIAGONALCOST= 1.41421356;
 
 	private int columns;

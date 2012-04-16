@@ -53,7 +53,7 @@ public class GameModel implements IGameModel {
 		this.enemies[7] = new Enemy(10, 10, 800, 100);
 		this.enemies[8] = new Enemy(10, 10, 900, 100);
 		this.enemies[9] = new Enemy(10, 10, 1000, 100);
-		for (int i=0;i<enemies.length;i++){
+		for (int i=0;i<1;i++){
 			this.ai.addEnemy(this.enemies[i]);
 			this.enemies[i].start();
 		}
@@ -74,10 +74,9 @@ public class GameModel implements IGameModel {
 	 * @param dt The time since the last update.
 	 */
 	public void update(double dt) {
-		TimerTool.start("AI");
+		System.out.println("dt: " + dt);
 		this.ai.updateAI(this.player.getPosition());
-		TimerTool.stop();
-		for (int i = 100; i < this.enemies.length; i++) {
+		for (int i = 1; i < this.enemies.length; i++) {
 			if (rand.nextInt((int)(100)) == 0) {
 				int r = rand.nextInt(8);
 				Direction d = Direction.ORIGIN;
