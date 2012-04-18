@@ -37,7 +37,8 @@ public class Event {
 		DID_STOP,
 		WAS_DAMAGED,
 		DID_ATTACK,
-		PICKED_UP_ITEM;
+		PICKED_UP_ITEM,
+		INIT_MODEL;
 	}
 	
 	private final Property name;

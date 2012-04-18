@@ -8,9 +8,16 @@ package tools;
 
 public final class Logger {
 	
+	public static final int LOG_ALL = 1;
+	public static final int LOG_CONTROL = 2;
+	public static final int LOG_GUI = 3;
+	public static final int LOG_STATS = 4;
+	public static final int LOG_EVENTS = 5;
+	
 	private static Logger instance;
 	private static boolean logging = false;
 	
+	private static int logMode = LOG_ALL;
 	
 	private Logger() {}
 	
@@ -31,25 +38,11 @@ public final class Logger {
 	 * Log a message to the stdout.
 	 * 
 	 * @param message The message
+	 * @param type The logging type
 	 * @pre isLogginEnabled() == true
 	 */
-	public static void log(String message) {
-		if(logging){
-			System.out.println(message);
-		}
-	}
 	
-	
-	/**
-	 * Log a formatted message and value to the stdout.
-	 * 
-	 * @param message The formatted string
-	 * @param value The value
-	 */
-	public static void log(String message, int value) {
-		if(logging)
-			System.out.printf(message, value);
-	}
+
 	
 	
 	/**
@@ -70,4 +63,14 @@ public final class Logger {
 	public static boolean isLogginEnabled() {
 		return logging;
 	}
+	
+	/**
+	 * Add a log mode.
+	 * 
+	 * @param type The logging type
+	 */
+	public static void setLogMode(int type) {
+		logMode = type;
+	}
+	
 }

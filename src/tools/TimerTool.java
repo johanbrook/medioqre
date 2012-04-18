@@ -1,5 +1,7 @@
 package tools;
 
+import static tools.Logger.*;
+
 public class TimerTool {
 
 	private static String label;
@@ -17,11 +19,11 @@ public class TimerTool {
 	}
 	public static String stopToString()
 	{
-		return (label + ": " + stopToTimeDiff() + "ms ");
+		return (label + ": " + stopToTimeDiffNanos() / 1000 + "µs ");
 	}
-	public static long stopToTimeDiff() 
+	public static long stopToTimeDiffNanos() 
 	{
-		return (System.nanoTime() - startTime) / 1000000;
+		return (System.nanoTime() - startTime);
 	}
 
 }

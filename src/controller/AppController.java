@@ -7,10 +7,13 @@
 package controller;
 
 
+import tools.TimerTool;
+import event.Event;
 import event.EventBus;
 import gui.ViewController;
 import model.GameModel;
 import model.IGameModel;
+import static tools.Logger.*;
 
 public class AppController implements Runnable{
 	
@@ -22,12 +25,15 @@ public class AppController implements Runnable{
 
 	
 	public AppController(){
+		System.out.println("Initializing main controller ...");
 		this.game = new GameModel();
 		this.view = new ViewController(new NavigationController(this.game), 20*32, 12*32);
 		
-		EventBus.INSTANCE.register(this.view);
+		EventBus.INSTANCE.publish(new Event(Event.Property.INIT_MODEL, this.game));
+		
 		Thread t = new Thread(this);
 		t.start();
+		
 	}
 
 	
@@ -41,9 +47,12 @@ public class AppController implements Runnable{
 			lastLoopTime = now;
 			
 			double dt = (double) updateLength / DELTA_RATIO;
-			
+			TimerTool.start("Update");
 			game.update(dt);
+			TimerTool.stop();
+			TimerTool.start("Rendering");
 			view.render(dt);
+			TimerTool.stop();
 			
 			
 			try {

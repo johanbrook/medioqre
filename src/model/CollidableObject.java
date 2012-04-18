@@ -4,8 +4,21 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+import model.character.Player;
+
+import tools.Logger;
+
+import constants.Direction;
+
 /**
- * The collidable object super class
+ * The collidable object super class.
+ * 
+ * <p>Consists of a collision box, a size, and offsets. The size is the actual size of the object - picture it like
+ * the area rendered on screen, including the sprite. The collision box is the rectangular area that actually determines
+ * if the object hits another CollidableObject's collision box. You may not want the collision box to be positioned in
+ * the upper left corner of the object, so there are two properties - the vertical and horizontal offset - to offset the
+ * collision box from the corner. Thus, the object may have a collision box <u>smaller</u> than the object's size, and
+ * may not cover the whole object's area.
  * 
  * @author Johan
  *
@@ -34,6 +47,9 @@ public abstract class CollidableObject {
 		this.size = size;
 		this.xoffset = xoffset;
 		this.yoffset = yoffset;
+		
+		this.collisionBox.x += this.xoffset;
+		this.collisionBox.y += this.yoffset;
 	}
 	
 	
@@ -54,8 +70,8 @@ public abstract class CollidableObject {
 	 */
 	public Point getPosition(){
 		
-		int x = this.collisionBox.x - xoffset;
-		int y = this.collisionBox.y - yoffset;
+		int x = this.collisionBox.x - this.xoffset;
+		int y = this.collisionBox.y - this.yoffset;
 		
 		return new Point(x, y);
 	}
@@ -66,9 +82,7 @@ public abstract class CollidableObject {
 	 * @param pos The position
 	 */
 	public void setPosition(Point pos){
-
-		this.collisionBox.x = pos.x + this.xoffset;
-		this.collisionBox.y = pos.y + this.yoffset;
+		setPosition(pos.x, pos.y);
 	}
 	
 	/**
@@ -80,7 +94,31 @@ public abstract class CollidableObject {
 	public void setPosition(int x, int y) {
 		
 		this.collisionBox.x = x + this.xoffset;
-		this.collisionBox.y = y + this.yoffset;		
+		this.collisionBox.y = y + this.yoffset;
+	}
+	
+	/**
+	 * Get the horizontal offset.
+	 * 
+	 * The offset is how the collision box is positioned
+	 * relative to the upper left corner.
+	 * 
+	 * @return The X offset
+	 */
+	public int getOffsetX() {
+		return this.xoffset;
+	}
+	
+	/**
+	 * Get the vertical offset.
+	 * 
+	 * The offset is how the collision box is positioned
+	 * relative to the upper left corner.
+	 * 
+	 * @return The Y offset
+	 */
+	public int getOffsetY() {
+		return this.yoffset;
 	}
 	
 	
@@ -93,8 +131,64 @@ public abstract class CollidableObject {
 		return this.collisionBox;
 	}
 	
+	/**
+	 * Check whether this object is colliding with another CollidableObject.
+	 * 
+	 * The objects are colliding if their collision boxes intersect.
+	 * 
+	 * @param obj The specified CollidableObject
+	 * @return True if the objects are colliding, false otherwise
+	 */
 	public boolean isColliding(CollidableObject obj){
 		
 		return this.collisionBox.intersects(obj.getCollisionBox());
+	}
+	
+	public Direction getCollisionDirection(CollidableObject obj) {		
+		int code = this.collisionBox.outcode(obj.getCollisionBox().getLocation());		
+        Direction d = Direction.ORIGIN;
+        
+        boolean top = false, bottom = false, right = false, left = false;
+        
+        
+        
+        if((code & Rectangle.OUT_TOP) == Rectangle.OUT_TOP)
+            top = true;
+        if((code & Rectangle.OUT_RIGHT) == Rectangle.OUT_RIGHT)
+            right = true;
+        if((code & Rectangle.OUT_LEFT) == Rectangle.OUT_LEFT)
+            left = true;
+        if((code & Rectangle.OUT_BOTTOM) == Rectangle.OUT_BOTTOM)
+            bottom = true;
+        
+        if(top && left)
+        	d = Direction.NORTH_WEST;
+        else if(top && right)
+        	d = Direction.NORTH_EAST;
+        else if(top)
+        	d = Direction.NORTH;
+        else if(left && bottom)
+        	d = Direction.SOUTH_WEST;
+        else if(right && bottom)
+        	d = Direction.SOUTH_EAST;
+        else if(left)
+        	d = Direction.WEST;
+        else if(right)
+        	d = Direction.EAST;
+        else if(bottom)
+        	d = Direction.SOUTH;
+        
+		return d;
+	}
+	
+	public int getCode(CollidableObject obj) {
+		return this.collisionBox.outcode(obj.getCollisionBox().getLocation());
+	}
+	
+	// Overrides
+	
+	@Override
+	public String toString() {
+		return "[x:"+this.getPosition().x+":y:"+this.getPosition().y+"] [w:"+this.getSize().width+":h:"+this.getSize().height+"]";
 	}
 }

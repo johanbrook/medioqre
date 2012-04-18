@@ -3,6 +3,7 @@ package tools;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import static tools.Logger.*;
 
 /**
  * GraphicalFPSMeter
@@ -50,6 +51,7 @@ public class GraphicalFPSMeter {
 		this.timeThisSecond = 0;
 		this.framesThisSecond = 0;
 		this.currentFPS = 0;
+		
 	}
 
 	/**
@@ -79,7 +81,7 @@ public class GraphicalFPSMeter {
 			this.currentFPS = framesThisSecond;
 			framesThisSecond = 0;
 			timeThisSecond = 0;
-			if (shouldLogFPS) Logger.log(this.label+": "+this.currentFPS);
+			if (shouldLogFPS) System.out.println(this.label+": "+this.currentFPS);
 			
 		} else {
 			timeThisSecond += dt;
