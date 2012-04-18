@@ -70,9 +70,9 @@ public class PathFinder {
 						path.add(currentTile.getParent());
 						currentTile = currentTile.getParent();
 					}
-					clear();
 					for (AStarTile t : path)
 						System.out.println("G: " + t.getG());
+					clear();
 					return convertPath(path);
 
 					// The goal was not found in the openList
@@ -119,16 +119,18 @@ public class PathFinder {
 	 * will be updated, and it will be added to the open list for consideration
 	 */
 	private void updateNeighbors(List<AStarTile> currentNeighbors) {
+		
 		for (int k = 0; k < currentNeighbors.size(); k++) {
 
 			// if a tile is closed and the current paths g-value would be lower
 			// than its old g-value, we update the tiles g-value and sets it
 			// parent to
 			// currentTile
-			if (currentNeighbors.get(k).isClosed()
-					&& currentPathIsShorter(currentNeighbors.get(k))) {
+			if (currentNeighbors.get(k).isClosed() && currentPathIsShorter(currentNeighbors.get(k))) {
+				
 				currentNeighbors.get(k).setG(currentTile.isDiagonal(currentNeighbors.get(k)) ? 
 						currentTile.getG() + DIAGONALCOST : currentTile.getG() + 1);
+				
 				currentNeighbors.get(k).setParent(currentTile);
 
 				// if a tile is open and the current paths g-value would be
@@ -152,8 +154,7 @@ public class PathFinder {
 					currentNeighbors.get(k).setOpen(true);
 					openList.add(currentNeighbors.get(k));
 					currentNeighbors.get(k).setParent(currentTile);
-					currentNeighbors.get(k)
-					.setG(currentTile.isDiagonal(currentNeighbors.get(k)) ? 
+					currentNeighbors.get(k).setG(currentTile.isDiagonal(currentNeighbors.get(k)) ? 
 							currentTile.getG() + DIAGONALCOST : currentTile.getG() + 1);
 				}
 			}
@@ -163,12 +164,11 @@ public class PathFinder {
 	// Given a SmartButton, will return whether or not the current path from the
 	// start to the button is shorter than the currently recorded.
 	private boolean currentPathIsShorter(AStarTile tile) {
-		if (tile.getG() > (currentTile.isDiagonal(tile) ? currentTile.getG() + DIAGONALCOST
-				: currentTile.getG() + 1)){
-			System.out.println("TRUE");
+		if (tile.getG() > (currentTile.isDiagonal(tile) ? 
+				currentTile.getG() + DIAGONALCOST : currentTile.getG() + 1)){
 		}
-		return tile.getG() > (currentTile.isDiagonal(tile) ? currentTile.getG() + DIAGONALCOST
-				: currentTile.getG() + 1);
+		return tile.getG() > (currentTile.isDiagonal(tile) ? 
+				currentTile.getG() + DIAGONALCOST : currentTile.getG() + 1);
 	}
 
 	// Loops through gameboard and make sure every button calculates its
@@ -228,6 +228,7 @@ public class PathFinder {
 			for (int l=0;l<logicList[i].length;l++){
 				logicList[i][l].setOpen(false);
 				logicList[i][l].setClosed(false);
+				logicList[i][l].setG(0);
 			}
 		}
 		clearOpen();
