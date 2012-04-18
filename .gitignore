@@ -2,6 +2,7 @@
 ###################
 bin
 .settings
+.metadata
 
 # Compiled source #
 ###################
