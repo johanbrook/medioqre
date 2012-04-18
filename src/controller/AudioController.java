@@ -5,6 +5,8 @@ import java.net.URL;
 
 import javax.swing.JOptionPane;
 
+import audio.SoundLibrary;
+
 import model.Entity;
 import model.character.Player;
 
@@ -17,7 +19,6 @@ import paulscode.sound.SoundSystemConfig;
 import paulscode.sound.SoundSystemException;
 import paulscode.sound.codecs.CodecWav;
 import paulscode.sound.libraries.LibraryJavaSound;
-import sound.SoundLibrary;
 
 /**
  * Audio Engine
