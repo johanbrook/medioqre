@@ -29,7 +29,6 @@ public class GameModel implements IGameModel {
 	private List<Entity> entities;
 
 	public GameModel() {
-		this.entities = new ArrayList<Entity>();
 		this.ai = new AIController(48, 48, 32, 32);
 
 		initEntities();
@@ -41,20 +40,18 @@ public class GameModel implements IGameModel {
 	}
 
 	private void initEntities() {
+		this.entities = new ArrayList<Entity>();
+		
 		this.player = new Player();
-
+		this.entities.add(this.player);
+		
 		this.enemies = new Enemy[10];
 		
 		for (int i = 0; i < this.enemies.length; i++) {
-			this.enemies[i] = new Enemy(10, 10, 100, 100);
+			this.enemies[i] = new Enemy(10, 10, i, i);
 			this.ai.addEnemy(this.enemies[i]);
-		}
-
-		this.enemies[0].start();
-
-		this.entities.add(this.player);
-		for (int i = 0; i < this.enemies.length; i++) 
 			this.entities.add(this.enemies[i]);
+		}
 	}
 
 	/**
@@ -63,7 +60,8 @@ public class GameModel implements IGameModel {
 	 */
 	public void update(double dt) {
 		this.ai.updateAI(this.player.getPosition());
-		for (int i = 1; i < this.enemies.length; i++) {
+		
+		for (int i = 0; i < this.enemies.length; i++) {
 			if (rand.nextInt((int)(100)) == 0) {
 				int r = rand.nextInt(8);
 				Direction d = Direction.ORIGIN;
