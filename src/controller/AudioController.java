@@ -165,9 +165,6 @@ public class AudioController implements IEventHandler {
 	public void onEvent(Event evt) {
 
 		// Initialize
-		if (evt.getProperty() == Event.Property.INIT_MODEL){
-			playBGM();
-		}
 		
 		
 		//Entities
