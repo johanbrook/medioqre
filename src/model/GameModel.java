@@ -1,19 +1,12 @@
 package model;
 
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
-
 import java.util.Random;
-
-
-import static tools.Logger.*;
 
 import model.character.*;
 import model.character.Character;
-import model.character.Enemy;
-import model.character.Player;
 import constants.Direction;
 import controller.AI.AIController;
 
@@ -31,7 +24,6 @@ public class GameModel implements IGameModel {
 	
 	private List<Entity> entities;
 	
-	private ArrayList<Enemy> enemies;
 	private AIController ai;
 
 	public GameModel() {
@@ -46,21 +38,21 @@ public class GameModel implements IGameModel {
 	
 	private void initEntities() {
 		this.player = new Player();
-		this.enemies = new ArrayList <Enemy>();
+		this.enemies = new Enemy[5];
 		//TODO Need to access size, both in pixels and in rows/columns, where size is the width/height of each tile.
 		//this.ai = new AIController(rows, columns, width, height);
-		initEnemies();
+
+		this.entities.add(this.player);
+		
+		for (int i = 0; i < this.enemies.length; i++){
+			//this.enemies[i] = new Enemy(5,  30, new Rectangle(5,5),  new Dimension (5,5),  5,  5);
+			this.enemies[i] = new Enemy(5,  30);
+			//this.ai.addEnemy(enemies.get(i));
+			
+			this.entities.add(this.enemies[i]);
+		}		
 	}
 
-	/**
-	 * Creates a number of zombies and adds them to the enemy-list
-	 */
-	private void initEnemies() {
-		for (int i = 0; i < 5; i++){
-			this.enemies.add(new Enemy(5,  30, new Rectangle (5,5),  new Dimension (5,5),  5,  5));
-			//this.ai.addEnemy(enemies.get(i));
-		}
-	}
 
 	/**
 	 * Updates the game model.
