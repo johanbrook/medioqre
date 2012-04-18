@@ -41,9 +41,9 @@ public class GameModel implements IGameModel {
 	private void initEntities() {
 		this.player = new Player();
 		
-		this.enemies = new Enemy[1];
+		this.enemies = new Enemy[2];
 		this.enemies[0] = new Enemy(0, 10, 100, 100);
-//		this.enemies[1] = new Enemy(10, 10, 200, 100);
+		this.enemies[1] = new Enemy(10, 10, 200, 100);
 //		this.enemies[2] = new Enemy(10, 10, 300, 100);
 //		this.enemies[3] = new Enemy(10, 10, 400, 100);
 //		this.enemies[4] = new Enemy(10, 10, 500, 100);
@@ -54,7 +54,7 @@ public class GameModel implements IGameModel {
 //		this.enemies[9] = new Enemy(10, 10, 1000, 100);
 //		
 		this.enemies[0].setDirection(Direction.SOUTH);
-//		this.enemies[1].setDirection(Direction.SOUTH);
+		this.enemies[1].setDirection(Direction.SOUTH);
 //		this.enemies[2].setDirection(Direction.SOUTH);
 //		this.enemies[3].setDirection(Direction.SOUTH);
 //		this.enemies[4].setDirection(Direction.SOUTH);
@@ -112,29 +112,30 @@ public class GameModel implements IGameModel {
 				
 				//@todo Collisions are ignored if the player moves in diagonal direction
 				
-				Direction currentDirection = t.getDirection();				
-				Direction blockedDirection = t.getCollisionDirection(w);
-
-				if(t != w && t instanceof Player){
-					System.out.println("-----\nPlayer direction: "+currentDirection);
-					System.out.println("Collision direction: "+blockedDirection);
-					
-					int c = t.getCode(w);
-					
-					System.out.println("CODE: "+c);
-					System.out.println("Top: "+ ((c & Rectangle.OUT_TOP) == Rectangle.OUT_TOP));
-					System.out.println("Bottom: "+ ((c & Rectangle.OUT_BOTTOM) == Rectangle.OUT_BOTTOM));
-					System.out.println("Left: "+ ((c & Rectangle.OUT_LEFT) == Rectangle.OUT_LEFT));
-					System.out.println("Right: "+ ((c & Rectangle.OUT_RIGHT) == Rectangle.OUT_RIGHT));
-				}
-				
-				
 				// This baby is in need of a grave refactor :)
 				
 				boolean stop = false;
 				
 				if(t != w && t.isColliding(w)) {
 					
+					Direction currentDirection = t.getDirection();				
+					Direction blockedDirection = t.getCollisionDirection(w);
+
+					if(t != w && t instanceof Player){
+						System.out.println("-----\nPlayer direction: "+currentDirection);
+						System.out.println("Collision direction: "+blockedDirection);
+						
+						int c = t.getCode(w);
+						
+						System.out.println("CODE: "+c);
+						System.out.println("Top: "+ ((c & Rectangle.OUT_TOP) == Rectangle.OUT_TOP));
+						System.out.println("Bottom: "+ ((c & Rectangle.OUT_BOTTOM) == Rectangle.OUT_BOTTOM));
+						System.out.println("Left: "+ ((c & Rectangle.OUT_LEFT) == Rectangle.OUT_LEFT));
+						System.out.println("Right: "+ ((c & Rectangle.OUT_RIGHT) == Rectangle.OUT_RIGHT));
+					}
+					
+					System.out.println("----------\n"+t);
+					System.out.println(w+"\n------------");
 										
 					if( (blockedDirection == Direction.NORTH_WEST ||
 						 blockedDirection == Direction.WEST)
