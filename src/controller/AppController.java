@@ -22,12 +22,13 @@ public class AppController implements Runnable{
 	
 	private IGameModel game;
 	private ViewController view;
-
+	private AudioController audio;
 	
 	public AppController(){
 		System.out.println("Initializing main controller ...");
 		this.game = new GameModel();
 		this.view = new ViewController(new NavigationController(this.game), 20*32, 12*32);
+		this.audio = AudioController.getInstance();
 		
 		EventBus.INSTANCE.publish(new Event(Event.Property.INIT_MODEL, this.game));
 		
