@@ -53,12 +53,9 @@ public class GameModel implements IGameModel {
 		this.enemies[7] = new Enemy(10, 10, 800, 100);
 		this.enemies[8] = new Enemy(10, 10, 900, 100);
 		this.enemies[9] = new Enemy(10, 10, 1000, 100);
-		for (int i = 0; i < 10; i++){
-			this.ai.addEnemy(enemies[i]);
-			this.enemies[i].start();
-		}
-//		this.ai.addEnemy(this.enemies[0]);
-//		this.enemies[0].start();
+		
+		this.ai.addEnemy(this.enemies[0]);
+		this.enemies[0].start();
 		//		
 		//		this.enemies[0].setDirection(Direction.SOUTH);
 		//		this.enemies[1].setDirection(Direction.SOUTH);
@@ -77,7 +74,7 @@ public class GameModel implements IGameModel {
 	 */
 	public void update(double dt) {
 		this.ai.updateAI(this.player.getPosition());
-		for (int i = 10; i < this.enemies.length; i++) {
+		for (int i = 1; i < this.enemies.length; i++) {
 			if (rand.nextInt((int)(100)) == 0) {
 				int r = rand.nextInt(8);
 				Direction d = Direction.ORIGIN;
