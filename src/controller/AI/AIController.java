@@ -23,11 +23,13 @@ public class AIController {
 	private Point playerTile;
 	private int ticker;
 
+	public AIController (int rows, int columns, int width, int height) {
+		this(new ArrayList <Enemy>(), rows, columns, width, height);
+	}
 
-
-	public AIController (int rows, int columns, int width, int height){
+	public AIController (List<Enemy> enemies, int rows, int columns, int width, int height){
 		this.pathfinder = new PathFinder(rows, columns);
-		this.enemies = new ArrayList <Enemy>();
+		this.enemies = enemies;
 		this.rows = rows;
 		this.columns = columns;
 		this.width = width;
@@ -126,6 +128,15 @@ public class AIController {
 		return d;
 	}
 
+	/**
+	 * Replace the current list of enemies with a new one.
+	 * 
+	 * @param enemies A list of enemies to track
+	 */
+	public void setEnemies(List<Enemy> enemies) {
+		this.enemies = enemies;
+	}
+	
 	/**
 	 * Adds a enemy to the list of enemies the AIController keeps track of
 	 * @param enemy

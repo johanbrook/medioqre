@@ -2,10 +2,9 @@ package model;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-
-import tools.TimerTool;
 
 import model.character.Character;
 import model.character.Enemy;
@@ -24,12 +23,12 @@ public class GameModel implements IGameModel {
 	private Character player;
 	private Enemy[] enemies;
 	private Random rand = new Random();
-	private AIController ai;
+	//private AIController ai;
 
 	private List<Entity> entities;
 
 	public GameModel() {
-		this.ai = new AIController(48, 48, 32, 32);
+		//this.ai = new AIController(48, 48, 32, 32);
 
 		initEntities();
 	}
@@ -49,7 +48,6 @@ public class GameModel implements IGameModel {
 		
 		for (int i = 0; i < this.enemies.length; i++) {
 			this.enemies[i] = new Enemy(10, 10, i, i);
-			this.ai.addEnemy(this.enemies[i]);
 			this.entities.add(this.enemies[i]);
 		}
 	}
@@ -59,7 +57,6 @@ public class GameModel implements IGameModel {
 	 * @param dt The time since the last update.
 	 */
 	public void update(double dt) {
-		this.ai.updateAI(this.player.getPosition());
 		
 		for (int i = 0; i < this.enemies.length; i++) {
 			if (rand.nextInt((int)(100)) == 0) {
@@ -180,6 +177,11 @@ public class GameModel implements IGameModel {
 
 	}
 
+	
+	public Player getPlayer() {
+		return (Player) this.player;
+	}
+	
 	/**
 	 * Updates the player's direction.
 	 * 
@@ -198,6 +200,10 @@ public class GameModel implements IGameModel {
 
 	public List<Entity> getEntities() {
 		return this.entities;
+	}
+	
+	public List<Enemy> getEnemies() {
+		return (List<Enemy>) Arrays.asList(this.enemies);
 	}
 
 }
