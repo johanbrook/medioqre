@@ -30,7 +30,7 @@ import paulscode.sound.libraries.LibraryJavaSound;
 public class AudioController implements IEventHandler {
 
 	private static AudioController sharedInstance;
-	private SoundSystem soundSys;
+	private static SoundSystem soundSys;
 
 	private int bgmID = 1;
 
@@ -130,8 +130,8 @@ public class AudioController implements IEventHandler {
 
 	public void playSoundFX(String code, boolean toLoop) {
 
-		soundSys.newSource(false, code, SoundLibrary.getFXSound(code),
-				toLoop, 0, 1, 1, 1, 1);
+		soundSys.newSource(false, code, SoundLibrary.getFXSound(code), toLoop,
+				0, 1, 1, 1, 1);
 
 		soundSys.play(code);
 
@@ -166,9 +166,8 @@ public class AudioController implements IEventHandler {
 	public void onEvent(Event evt) {
 
 		// Initialize
-		
-		
-		//Entities
+
+		// Entities
 		if (evt.getValue() instanceof Entity) {
 			Entity p = (Entity) evt.getValue();
 
@@ -184,15 +183,11 @@ public class AudioController implements IEventHandler {
 				}
 			}
 		}
-		
-		
-		//Weapons
-		
-		
-		
-		//FX
-		
-		
+
+		// Weapons
+
+		// FX
+
 	}
 
 }
