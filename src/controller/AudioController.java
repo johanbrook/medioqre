@@ -8,8 +8,6 @@ import javax.swing.JOptionPane;
 import audio.SoundLibrary;
 
 import model.Entity;
-import model.character.Player;
-
 import event.Event;
 import event.EventBus;
 import event.IEventHandler;
@@ -162,6 +160,11 @@ public class AudioController implements IEventHandler {
 
 	}
 
+	public void playGunSound(Class input){
+		soundSys.quickPlay(true, SoundLibrary.getWeaponSound(input), false, 1, 1, 1, 1, 1);
+	}
+	
+	
 	@Override
 	public void onEvent(Event evt) {
 
@@ -185,7 +188,12 @@ public class AudioController implements IEventHandler {
 		}
 
 		// Weapons
-
+		if (evt.getValue() instanceof model.weapon.AbstractWeapon){
+			playGunSound(evt.getValue().getClass());
+			
+		}
+		
+		
 		// FX
 
 	}
