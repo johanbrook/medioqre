@@ -143,8 +143,6 @@ public class AIController {
 	}
 
 	public Direction calculateDirection(List <Point> path){
-		//If path is long enough to calculate.
-		//TODO If path is shorter than 2 tiles, dx and dy should still be given appropriate value, and direction changed in the same manner as before.
 		int dx = (int) Math.signum(path.get(path.size()-2).getX()-path.get(path.size()-1).getX());
 		int dy = (int) Math.signum(path.get(path.size()-2).getY()-path.get(path.size()-1).getY());
 
