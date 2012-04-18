@@ -21,6 +21,7 @@ public class AIController {
 	private int rows,columns,width, height;
 	private Point playerPos;
 	private Point playerTile;
+	private int ticker;
 
 
 
@@ -31,6 +32,7 @@ public class AIController {
 		this.columns = columns;
 		this.width = width;
 		this.height = height;
+		this.ticker = 0;
 	}
 
 	/**
@@ -38,6 +40,7 @@ public class AIController {
 	 * @param playerPos
 	 */
 	public void updateAI(Point playerPos){
+//		ticker ++;
 		playerTile = calculateTile(playerPos);
 		this.playerPos = playerPos;
 
@@ -66,6 +69,11 @@ public class AIController {
 
 			List <Point> path = pathfinder.getPath(enemyTile, playerTile);
 			if (path != null){
+//				if (ticker == 100){
+//					ticker = 0;
+//					for (Point b : path)
+//						System.out.println("Tile X: " + b.x + " Tile Y: " + b.y);
+//				}
 				//Update direction of the enemy depending on what the current path is.
 
 				//If path is longer than 2 tiles, just calculate the direction from the path
@@ -143,42 +151,34 @@ public class AIController {
 		switch (dx){
 		case 1:
 			if(dy == -1){
-				System.out.println("NORTH EAST");
 				return Direction.NORTH_EAST;
 			}
 
 			else if(dy == 0){
-				System.out.println("EAST");
 				return Direction.EAST;
 			}
 			else{
-				System.out.println("SOUTH EAST");
 				return Direction.SOUTH_EAST;
 			}
 
 		case 0:
 			if (dy == -1){
-				System.out.println("NORTH");
 				return Direction.NORTH;
 			}
 
 			else {
-				System.out.println("SOUTH");
 				return Direction.SOUTH;
 			}
 
 		case -1:
 			if (dy == -1){
-				System.out.println("NORTH WEST");
 				return Direction.NORTH_WEST;
 			}
 			else if (dy == 0){
-				System.out.println("WEST");
 				return Direction.WEST;
 			}
 
 			else {
-				System.out.println("SOUTH WEST");
 				return Direction.SOUTH_WEST;
 			}
 		}//Should never reach this point since dx will always be 1,0 or -1

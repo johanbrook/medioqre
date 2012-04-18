@@ -79,16 +79,15 @@ public class AStarTile {
 
 	
 	public void setG(double g) {
-		if (this.h > 0) {
 			this.g = g;
+			if (this.h > 0) {
 			//Updates the value of F, since F is dependent on the constant value of h and G.
 			setF();
 		}
 	}
 
 	public void setH(AStarTile stop) {
-		this.h = (Math.abs(this.row - stop.getRow()) + Math.abs(this.column
-				- stop.getColumn()));
+		this.h = (Math.abs(this.row - stop.getRow()) + Math.abs(this.column- stop.getColumn()));
 	}
 
 	public void setF() {

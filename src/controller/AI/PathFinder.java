@@ -19,7 +19,7 @@ public class PathFinder {
 	private int columns;
 	private int rows;
 
-	
+
 	public PathFinder( int rows, int columns) {
 		this.columns = columns;
 		this.rows = rows;
@@ -71,6 +71,8 @@ public class PathFinder {
 						currentTile = currentTile.getParent();
 					}
 					clear();
+					for (AStarTile t : path)
+						System.out.println("G: " + t.getG());
 					return convertPath(path);
 
 					// The goal was not found in the openList
@@ -81,7 +83,7 @@ public class PathFinder {
 					removeFromOpen(currentTile);
 				}
 			}
-			
+
 		}
 		clear();
 		return null;
@@ -133,28 +135,26 @@ public class PathFinder {
 				// lower than its old g-value, we update the tiles g-value and
 				// sets it parent to
 				// currentTile
-			} else if (currentNeighbors.get(k).isOpen()
-					&& currentPathIsShorter(currentNeighbors.get(k))) {
-				currentNeighbors
-				.get(k)
-				.setG(currentTile.isDiagonal(currentNeighbors.get(k)) ? currentTile
-						.getG() + DIAGONALCOST : currentTile.getG() + 1);
+			} else if (currentNeighbors.get(k).isOpen() && currentPathIsShorter(currentNeighbors.get(k))) {
+				currentNeighbors.get(k).setG(currentTile.isDiagonal(currentNeighbors.get(k)) ?
+						currentTile.getG() + DIAGONALCOST : currentTile.getG() + 1);
 				currentNeighbors.get(k).setParent(currentTile);
 
 				// if a tile is neither open nor closed, we add it the openList
 				// and update the open-value accordingly.
-			} else if (!currentNeighbors.get(k).isOpen()
-					&& !currentNeighbors.get(k).isClosed()) {
+			} else if (!currentNeighbors.get(k).isOpen() && !currentNeighbors.get(k).isClosed()) {
+				
 				if (currentNeighbors.get(k).isSolid()) {
 					currentNeighbors.get(k).setClosed(true);
+					
 				} else {
+					
 					currentNeighbors.get(k).setOpen(true);
 					openList.add(currentNeighbors.get(k));
 					currentNeighbors.get(k).setParent(currentTile);
 					currentNeighbors.get(k)
-					.setG(currentTile.isDiagonal(currentNeighbors
-							.get(k)) ? currentTile.getG() + DIAGONALCOST
-									: currentTile.getG() + 1);
+					.setG(currentTile.isDiagonal(currentNeighbors.get(k)) ? 
+							currentTile.getG() + DIAGONALCOST : currentTile.getG() + 1);
 				}
 			}
 		}
@@ -163,6 +163,10 @@ public class PathFinder {
 	// Given a SmartButton, will return whether or not the current path from the
 	// start to the button is shorter than the currently recorded.
 	private boolean currentPathIsShorter(AStarTile tile) {
+		if (tile.getG() > (currentTile.isDiagonal(tile) ? currentTile.getG() + DIAGONALCOST
+				: currentTile.getG() + 1)){
+			System.out.println("TRUE");
+		}
 		return tile.getG() > (currentTile.isDiagonal(tile) ? currentTile.getG() + DIAGONALCOST
 				: currentTile.getG() + 1);
 	}
