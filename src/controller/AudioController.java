@@ -216,6 +216,9 @@ public class AudioController implements IEventHandler {
 					removeZombieSounds(e);
 				}
 
+				if (evt.getProperty() == Event.Property.DID_STOP) {
+					stopZombiewalk(e);
+				}
 			}
 
 		}
@@ -240,6 +243,10 @@ public class AudioController implements IEventHandler {
 
 	}
 
+	private void stopZombiewalk(Enemy e){
+		soundSys.stop(e.hashCode() + "");
+	}
+	
 	private void removeZombieSounds(Enemy e) {
 		soundSys.removeSource(e.hashCode() + "");
 	}
