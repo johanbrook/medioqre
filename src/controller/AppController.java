@@ -33,6 +33,7 @@ public class AppController implements Runnable{
 		this.ai = new AIController(this.game.getEnemies(), 48, 48, 32, 32);
 		
 		this.audio = AudioController.getInstance();
+		this.audio.setGame(game);
 		
 		EventBus.INSTANCE.publish(new Event(Event.Property.INIT_MODEL, this.game));
 		
@@ -59,6 +60,10 @@ public class AppController implements Runnable{
 			
 			TimerTool.start("Rendering");
 			this.view.render(dt);
+			TimerTool.stop();
+			
+			TimerTool.start("Audio");
+			this.audio.update();
 			TimerTool.stop();
 			
 			
