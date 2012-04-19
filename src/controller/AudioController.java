@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 import audio.SoundLibrary;
 
 import model.Entity;
+import model.character.Player;
 import event.Event;
 import event.EventBus;
 import event.IEventHandler;
@@ -29,6 +30,9 @@ public class AudioController implements IEventHandler {
 
 	private static AudioController sharedInstance;
 	private static SoundSystem soundSys;
+	
+	private Player player;
+	
 
 	private int bgmID = 1;
 
@@ -59,6 +63,11 @@ public class AudioController implements IEventHandler {
 
 	}
 
+	public void setPlayer(Player player){
+		this.player = player;
+	}
+	
+	
 	/*
 	 * ____________BGM_____________
 	 */
@@ -202,7 +211,7 @@ public class AudioController implements IEventHandler {
 
 				if (evt.getProperty() == Event.Property.DID_MOVE) {
 
-					// TODO HŠr blir det en del problem, behšver update()....
+					
 
 				}
 			}
