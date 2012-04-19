@@ -160,7 +160,7 @@ public class AudioController implements IEventHandler {
 
 	}
 
-	public void playGunSound(Class<?> input) {
+	public void playWeaponSound(Class<?> input) {
 		soundSys.quickPlay(true, SoundLibrary.getWeaponSound(input), false, 1,
 				1, 1, 1, 1);
 	}
@@ -218,7 +218,7 @@ public class AudioController implements IEventHandler {
 
 		// Weapons
 		if (evt.getValue() instanceof model.weapon.AbstractWeapon) {
-			playGunSound(evt.getValue().getClass());
+			playWeaponSound(evt.getValue().getClass());
 
 		}
 
