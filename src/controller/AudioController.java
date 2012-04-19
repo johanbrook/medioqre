@@ -157,7 +157,7 @@ public class AudioController implements IEventHandler {
 				.getPlayer().getPosition().y, 1);
 
 		for (Enemy e : game.getEnemies()) {
-			soundSys.setPosition(e.hashCode() + "", e.getPosition().x,
+			soundSys.setPosition(soundCode(e), e.getPosition().x,
 					e.getPosition().y, 1);
 
 		}
@@ -208,7 +208,7 @@ public class AudioController implements IEventHandler {
 				Enemy e = (Enemy) evt.getValue();
 
 				if (evt.getProperty() == Event.Property.DID_MOVE
-						&& !soundSys.playing(e.hashCode() + "")) {
+						&& !soundSys.playing(soundCode(e))) {
 					playZombiewalk(e);
 				}
 
@@ -235,20 +235,20 @@ public class AudioController implements IEventHandler {
 
 	private void playZombiewalk(Enemy e) {
 
-		soundSys.newSource(true, e.hashCode() + "",
+		soundSys.newSource(true, soundCode(e),
 				SoundLibrary.getFXSound("walk"), true, 1, 1, 1,
 				SoundSystemConfig.ATTENUATION_ROLLOFF, 0.5f);
 
-		soundSys.play(e.hashCode() + "");
+		soundSys.play(soundCode(e));
 
 	}
 
 	private void stopZombiewalk(Enemy e){
-		soundSys.stop(e.hashCode() + "");
+		soundSys.stop(soundCode(e));
 	}
 	
 	private void removeZombieSounds(Enemy e) {
-		soundSys.removeSource(e.hashCode() + "");
+		soundSys.removeSource(soundCode(e));
 	}
 
 	
@@ -268,6 +268,9 @@ public class AudioController implements IEventHandler {
 		FX_VOLUME = f;
 	}
 	
+	public String soundCode(Entity e){
+		return e.hashCode() + "";
+	}
 	
 	
 }
