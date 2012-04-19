@@ -41,10 +41,10 @@ public class GameModel implements IGameModel {
 		this.player.setPosition(100, 100);
 		this.entities.add(this.player);
 		
-		this.enemies = new Enemy[2];
+		this.enemies = new Enemy[20];
 		
 		for (int i = 0; i < this.enemies.length; i++) {
-			this.enemies[i] = new Enemy(10, 10, i+10, i+10);
+			this.enemies[i] = new Enemy(10, 10, 20+i*2, 20+i*2);
 			this.entities.add(this.enemies[i]);
 		}
 	}
