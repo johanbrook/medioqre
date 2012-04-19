@@ -15,9 +15,7 @@ public class PathFinder {
 	private AStarTile currentTile;
 	//Using a approx value of sqrt(2) for diagonalcost, in order to save time.
 	private final double DIAGONALCOST= 1.41421356;
-
-	private int columns;
-	private int rows;
+	private int rows,columns;
 
 
 	public PathFinder( int rows, int columns) {
@@ -43,7 +41,7 @@ public class PathFinder {
 	 * between the two. If no path is to be found, the return will be a
 	 * null-object
 	 * 
-	 * @param start
+	 * @param Startpoint, Endpoint
 	 * @return SmartButton [][] Shortest path between Start and Stop.
 	 * @return null if no path exists between Start and Stop
 	 */
