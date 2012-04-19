@@ -160,11 +160,11 @@ public class AudioController implements IEventHandler {
 
 	}
 
-	public void playGunSound(Class input){
-		soundSys.quickPlay(true, SoundLibrary.getWeaponSound(input), false, 1, 1, 1, 1, 1);
+	public void playGunSound(Class input) {
+		soundSys.quickPlay(true, SoundLibrary.getWeaponSound(input), false, 1,
+				1, 1, 1, 1);
 	}
-	
-	
+
 	@Override
 	public void onEvent(Event evt) {
 
@@ -174,10 +174,9 @@ public class AudioController implements IEventHandler {
 		if (evt.getValue() instanceof Entity) {
 			Entity p = (Entity) evt.getValue();
 
-			
 			if (p instanceof model.character.Player) {
 
-				//Player Walking
+				// Player Walking
 				if (evt.getProperty() == Event.Property.DID_MOVE) {
 					if (!soundSys.playing("walk"))
 						playSoundFX("walk", true);
@@ -186,30 +185,33 @@ public class AudioController implements IEventHandler {
 				if (evt.getProperty() == Event.Property.DID_STOP) {
 					stopFX("walk");
 				}
-				
-				//Pickup Items
-				if (evt.getProperty() == Event.Property.PICKED_UP_ITEM){
-					//TODO Pickupljud!
+
+				// Pickup Items
+				if (evt.getProperty() == Event.Property.PICKED_UP_ITEM) {
+					// TODO Pickupljud!
 				}
-				
-				
-				
+
 			}
+
+			// Enemies
+			if (p instanceof model.character.Enemy) {
+
+				if (evt.getProperty() == Event.Property.DID_MOVE){
+					
+					//TODO HŠr blir det en del problem, behšver update()....
+					
+				}
+			}
+
 		}
 
 		// Weapons
-		if (evt.getValue() instanceof model.weapon.AbstractWeapon){
+		if (evt.getValue() instanceof model.weapon.AbstractWeapon) {
 			playGunSound(evt.getValue().getClass());
-			
+
 		}
-		
-		
+
 		// FX
-		
-		
-		
-		
-		
 
 	}
 
