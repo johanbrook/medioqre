@@ -422,6 +422,429 @@
 				}
 			
 			]
+		},
+		{
+		"name" : "zombie",
+		"image-src" : "res/images/sprites/enemies/8dirZombie.png",
+		"animations" : [
+			{
+				"name" : "moveSouth",
+				"duration" : 0.5,
+				"frames" : [
+			{
+			"x" : 0,
+			"y" : 0,
+			"width" : 16,
+			"height" : 32,
+			"xOffset" : 0,
+			"yOffset" : 0
+			},
+			{
+			"x" : 0,
+			"y" : 32,
+			"width" : 16,
+			"height" : 32,
+			"xOffset" : 0,
+			"yOffset" : 0
+			},
+			{
+			"x" : 0,
+			"y" : 64,
+			"width" : 16,
+			"height" : 32,
+			"xOffset" : 0,
+			"yOffset" : 0
+			},
+			{
+			"x" : 0,
+			"y" : 96,
+			"width" : 16,
+			"height" : 32,
+			"xOffset" : 0,
+			"yOffset" : 0
+			}
+		]
+				},
+			{
+				"name" : "standSouth",
+				"duration" : 0.5,
+				"frames" : [
+			{
+			"x" : 0,
+			"y" : 0,
+			"width" : 16,
+			"height" : 32,
+			"xOffset" : 0,
+			"yOffset" : 0
+			}
+			]
+				},
+			{
+				"name" : "moveSouthWest",
+				"duration" : 0.5,
+				"frames" : [
+			{
+			"x" : 16,
+			"y" : 0,
+			"width" : 16,
+			"height" : 32,
+			"xOffset" : 0,
+			"yOffset" : 0
+			},
+			{
+			"x" : 16,
+			"y" : 32,
+			"width" : 16,
+			"height" : 32,
+			"xOffset" : 0,
+			"yOffset" : 0
+			},
+			{
+			"x" : 16,
+			"y" : 64,
+			"width" : 16,
+			"height" : 32,
+			"xOffset" : 0,
+			"yOffset" : 0
+			},
+			{
+			"x" : 16,
+			"y" : 96,
+			"width" : 16,
+			"height" : 32,
+			"xOffset" : 0,
+			"yOffset" : 0
+			}
+		]
+				},
+			{
+				"name" : "standSouthWest",
+				"duration" : 0.5,
+				"frames" : [
+			{
+			"x" : 16,
+			"y" : 0,
+			"width" : 16,
+			"height" : 32,
+			"xOffset" : 0,
+			"yOffset" : 0
+			}
+			]
+				},
+			{
+				"name" : "moveWest",
+				"duration" : 0.5,
+				"frames" : [
+			{
+			"x" : 32,
+			"y" : 0,
+			"width" : 16,
+			"height" : 32,
+			"xOffset" : 0,
+			"yOffset" : 0
+			},
+			{
+			"x" : 32,
+			"y" : 32,
+			"width" : 16,
+			"height" : 32,
+			"xOffset" : 0,
+			"yOffset" : 0
+			},
+			{
+			"x" : 32,
+			"y" : 64,
+			"width" : 16,
+			"height" : 32,
+			"xOffset" : 0,
+			"yOffset" : 0
+			},
+			{
+			"x" : 32,
+			"y" : 96,
+			"width" : 16,
+			"height" : 32,
+			"xOffset" : 0,
+			"yOffset" : 0
+			}
+		]
+				},
+			{
+				"name" : "standWest",
+				"duration" : 0.5,
+				"frames" : [
+			{
+			"x" : 32,
+			"y" : 0,
+			"width" : 16,
+			"height" : 32,
+			"xOffset" : 0,
+			"yOffset" : 0
+			}
+			]
+				},
+			{
+				"name" : "moveNorthWest",
+				"duration" : 0.5,
+				"frames" : [
+			{
+			"x" : 48,
+			"y" : 0,
+			"width" : 16,
+			"height" : 32,
+			"xOffset" : 0,
+			"yOffset" : 0
+			},
+			{
+			"x" : 48,
+			"y" : 32,
+			"width" : 16,
+			"height" : 32,
+			"xOffset" : 0,
+			"yOffset" : 0
+			},
+			{
+			"x" : 48,
+			"y" : 64,
+			"width" : 16,
+			"height" : 32,
+			"xOffset" : 0,
+			"yOffset" : 0
+			},
+			{
+			"x" : 48,
+			"y" : 96,
+			"width" : 16,
+			"height" : 32,
+			"xOffset" : 0,
+			"yOffset" : 0
+			}
+		]
+				},
+			{
+				"name" : "standNorthWest",
+				"duration" : 0.5,
+				"frames" : [
+			{
+			"x" : 48,
+			"y" : 0,
+			"width" : 16,
+			"height" : 32,
+			"xOffset" : 0,
+			"yOffset" : 0
+			}
+			]
+				},
+			{
+				"name" : "moveNorth",
+				"duration" : 0.5,
+				"frames" : [
+			{
+			"x" : 64,
+			"y" : 0,
+			"width" : 16,
+			"height" : 32,
+			"xOffset" : 0,
+			"yOffset" : 0
+			},
+			{
+			"x" : 64,
+			"y" : 32,
+			"width" : 16,
+			"height" : 32,
+			"xOffset" : 0,
+			"yOffset" : 0
+			},
+			{
+			"x" : 64,
+			"y" : 64,
+			"width" : 16,
+			"height" : 32,
+			"xOffset" : 0,
+			"yOffset" : 0
+			},
+			{
+			"x" : 64,
+			"y" : 96,
+			"width" : 16,
+			"height" : 32,
+			"xOffset" : 0,
+			"yOffset" : 0
+			}
+		]
+				},
+				{
+				"name" : "standNorth",
+				"duration" : 0.5,
+				"frames" : [
+			{
+			"x" : 64,
+			"y" : 0,
+			"width" : 16,
+			"height" : 32,
+			"xOffset" : 0,
+			"yOffset" : 0
+			}
+			]
+				},
+			{
+				"name" : "moveNorthEast",
+				"duration" : 0.5,
+				"frames" : [
+			{
+			"x" : 80,
+			"y" : 0,
+			"width" : 16,
+			"height" : 32,
+			"xOffset" : 0,
+			"yOffset" : 0
+			},
+			{
+			"x" : 80,
+			"y" : 32,
+			"width" : 16,
+			"height" : 32,
+			"xOffset" : 0,
+			"yOffset" : 0
+			},
+			{
+			"x" : 80,
+			"y" : 64,
+			"width" : 16,
+			"height" : 32,
+			"xOffset" : 0,
+			"yOffset" : 0
+			},
+			{
+			"x" : 80,
+			"y" : 96,
+			"width" : 16,
+			"height" : 32,
+			"xOffset" : 0,
+			"yOffset" : 0
+			}
+		]
+				},
+				{
+				"name" : "standNorthEast",
+				"duration" : 0.5,
+				"frames" : [
+			{
+			"x" : 80,
+			"y" : 0,
+			"width" : 16,
+			"height" : 32,
+			"xOffset" : 0,
+			"yOffset" : 0
+			}
+			]
+				},
+			{
+				"name" : "moveEast",
+				"duration" : 0.5,
+				"frames" : [
+			{
+			"x" : 96,
+			"y" : 0,
+			"width" : 16,
+			"height" : 32,
+			"xOffset" : 0,
+			"yOffset" : 0
+			},
+			{
+			"x" : 96,
+			"y" : 32,
+			"width" : 16,
+			"height" : 32,
+			"xOffset" : 0,
+			"yOffset" : 0
+			},
+			{
+			"x" : 96,
+			"y" : 64,
+			"width" : 16,
+			"height" : 32,
+			"xOffset" : 0,
+			"yOffset" : 0
+			},
+			{
+			"x" : 96,
+			"y" : 96,
+			"width" : 16,
+			"height" : 32,
+			"xOffset" : 0,
+			"yOffset" : 0
+			}
+		]
+				},
+				{
+				"name" : "standEast",
+				"duration" : 0.5,
+				"frames" : [
+			{
+			"x" : 96,
+			"y" : 0,
+			"width" : 16,
+			"height" : 32,
+			"xOffset" : 0,
+			"yOffset" : 0
+			}
+			]
+				},
+			{
+				"name" : "moveSouthEast",
+				"duration" : 0.5,
+				"frames" : [
+			{
+			"x" : 112,
+			"y" : 0,
+			"width" : 16,
+			"height" : 32,
+			"xOffset" : 0,
+			"yOffset" : 0
+			},
+			{
+			"x" : 112,
+			"y" : 32,
+			"width" : 16,
+			"height" : 32,
+			"xOffset" : 0,
+			"yOffset" : 0
+			},
+			{
+			"x" : 112,
+			"y" : 64,
+			"width" : 16,
+			"height" : 32,
+			"xOffset" : 0,
+			"yOffset" : 0
+			},
+			{
+			"x" : 112,
+			"y" : 96,
+			"width" : 16,
+			"height" : 32,
+			"xOffset" : 0,
+			"yOffset" : 0
+			}
+		]
+				},
+				{
+				"name" : "standSouthEast",
+				"duration" : 0.5,
+				"frames" : [
+			{
+			"x" : 112,
+			"y" : 0,
+			"width" : 16,
+			"height" : 32,
+			"xOffset" : 0,
+			"yOffset" : 0
+			}
+			]
+				}
+			
+			]
 		}
 		]
 }
