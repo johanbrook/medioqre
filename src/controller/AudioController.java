@@ -8,7 +8,8 @@ import javax.swing.JOptionPane;
 import audio.SoundLibrary;
 
 import model.Entity;
-import model.character.Player;
+import model.IGameModel;
+import model.character.Enemy;
 import event.Event;
 import event.EventBus;
 import event.IEventHandler;
@@ -30,9 +31,7 @@ public class AudioController implements IEventHandler {
 
 	private static AudioController sharedInstance;
 	private static SoundSystem soundSys;
-	
-	private Player player;
-	
+	private IGameModel game;
 
 	private int bgmID = 1;
 
@@ -60,14 +59,14 @@ public class AudioController implements IEventHandler {
 
 		// Initialize Sound Engine
 		soundSys = new SoundSystem();
+		// soundSys.setListenerOrientation(1, 1, 0, 1, 1, 1);
 
 	}
 
-	public void setPlayer(Player player){
-		this.player = player;
+	public void setGame(IGameModel game) {
+		this.game = game;
 	}
-	
-	
+
 	/*
 	 * ____________BGM_____________
 	 */
@@ -100,23 +99,6 @@ public class AudioController implements IEventHandler {
 		}
 
 		this.playBGM();
-
-	}
-
-	public void decrementPitchBGM(float decrementBy) {
-
-		float newValue = soundSys.getPitch("Background Music") - decrementBy;
-		soundSys.setPitch("Background Music", newValue);
-
-		System.out.println("Pitch decreased by: " + decrementBy);
-	}
-
-	public void incrementPitchBGM(float incrementBy) {
-
-		float newValue = soundSys.getPitch("Background Music") + incrementBy;
-		soundSys.setPitch("Background Music", newValue);
-
-		System.out.println("Pitch increased by: " + incrementBy);
 
 	}
 
@@ -167,9 +149,18 @@ public class AudioController implements IEventHandler {
 
 	public void update() {
 
+		soundSys.setListenerPosition(game.getPlayer().getPosition().x, game
+				.getPlayer().getPosition().y, 100);
+
+		for (Enemy e : game.getEnemies()) {
+			soundSys.setPosition(e.hashCode() + "", e.getPosition().x,
+					e.getPosition().y, 1);
+
+		}
+
 	}
 
-	public void playGunSound(Class input) {
+	public void playGunSound(Class<?> input) {
 		soundSys.quickPlay(true, SoundLibrary.getWeaponSound(input), false, 1,
 				1, 1, 1, 1);
 	}
@@ -191,8 +182,10 @@ public class AudioController implements IEventHandler {
 			if (p instanceof model.character.Player) {
 
 				// Player Walking
-				if (evt.getProperty() == Event.Property.DID_MOVE && !soundSys.playing("walk")) {
-						playSoundFX("walk", true);
+				if (evt.getProperty() == Event.Property.DID_MOVE
+						&& !soundSys.playing("walk")) {
+					// playSoundFX("walk", true);
+
 				}
 
 				if (evt.getProperty() == Event.Property.DID_STOP) {
@@ -208,12 +201,17 @@ public class AudioController implements IEventHandler {
 
 			// Enemies
 			if (p instanceof model.character.Enemy) {
+				Enemy e = (Enemy) evt.getValue();
 
-				if (evt.getProperty() == Event.Property.DID_MOVE) {
-
-					
-
+				if (evt.getProperty() == Event.Property.DID_MOVE
+						&& !soundSys.playing(e.hashCode() + "")) {
+					playZombiewalk(e);
 				}
+
+				if (evt.getProperty() == Event.Property.WAS_DESTROYED) {
+					removeZombieSounds(e);
+				}
+
 			}
 
 		}
@@ -226,6 +224,20 @@ public class AudioController implements IEventHandler {
 
 		// FX
 
+	}
+
+	private void playZombiewalk(Enemy e) {
+
+		soundSys.newSource(true, e.hashCode() + "",
+				SoundLibrary.getFXSound("walk"), true, 1, 1, 1,
+				SoundSystemConfig.ATTENUATION_ROLLOFF, 0.5f);
+
+		soundSys.play(e.hashCode() + "");
+
+	}
+
+	private void removeZombieSounds(Enemy e) {
+		soundSys.removeSource(e.hashCode() + "");
 	}
 
 }
