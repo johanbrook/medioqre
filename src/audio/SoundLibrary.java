@@ -25,6 +25,7 @@ public class SoundLibrary {
 		Map<String, String> fx = new HashMap<String, String>();
 
 		fx.put("walk", "http://theboxofficial.com/work/move.wav");
+		fx.put("zombieWalk", "http://theboxofficial.com/work/move.wav");
 			
 			
 		return Collections.unmodifiableMap(fx);
