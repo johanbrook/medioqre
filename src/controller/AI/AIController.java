@@ -19,9 +19,7 @@ public class AIController {
 	private List <Enemy> enemies;
 	private PathFinder pathfinder;
 	private int rows,columns,width, height;
-	private Point playerPos;
-	private Point playerTile;
-	private int ticker;
+	private Point playerPos,playerTile;
 
 	public AIController (int rows, int columns, int width, int height) {
 		this(new ArrayList <Enemy>(), rows, columns, width, height);
@@ -34,7 +32,6 @@ public class AIController {
 		this.columns = columns;
 		this.width = width;
 		this.height = height;
-		this.ticker = 0;
 	}
 
 	/**
@@ -42,7 +39,6 @@ public class AIController {
 	 * @param playerPos
 	 */
 	public void updateAI(Point playerPos){
-//		ticker ++;
 		playerTile = calculateTile(playerPos);
 		this.playerPos = playerPos;
 
@@ -71,29 +67,25 @@ public class AIController {
 
 			List <Point> path = pathfinder.getPath(enemyTile, playerTile);
 			if (path != null){
-//				if (ticker == 100){
-//					ticker = 0;
-//					for (Point b : path)
-//						System.out.println("Tile X: " + b.x + " Tile Y: " + b.y);
-//				}
-				//Update direction of the enemy depending on what the current path is.
+			}
+			//Update direction of the enemy depending on what the current path is.
 
-				//If path is longer than 2 tiles, just calculate the direction from the path
-				if (path.size() >= 2){
-					currentEnemy.setDirection(calculateDirection(path));
-				}else {
+			//If path is longer than 2 tiles, just calculate the direction from the path
+			if (path.size() >= 2){
+				currentEnemy.setDirection(calculateDirection(path));
+			}else {
 
-					//If path is shorter, manually inserts enemy and player positions and walk straight towards them, they should be to close for there to
-					//be any kind of obsticle in the way.
-					path.clear();
-					path.add(playerPos);
-					path.add(currentEnemy.getPosition());
-					currentEnemy.setDirection(calculateDirection(path));
-				}
+				//If path is shorter, manually inserts enemy and player positions and walk straight towards them, they should be to close for there to
+				//be any kind of obsticle in the way.
+				path.clear();
+				path.add(playerPos);
+				path.add(currentEnemy.getPosition());
+				currentEnemy.setDirection(calculateDirection(path));
 			}
 		}
-
 	}
+
+
 
 	private Direction randomDir() {
 		Random rand = new Random();
@@ -136,7 +128,7 @@ public class AIController {
 	public void setEnemies(List<Enemy> enemies) {
 		this.enemies = enemies;
 	}
-	
+
 	/**
 	 * Adds a enemy to the list of enemies the AIController keeps track of
 	 * @param enemy
@@ -154,45 +146,46 @@ public class AIController {
 	}
 
 	public Direction calculateDirection(List <Point> path){
+		// Compare enemy position with next calculated position in path.
 		int dx = (int) Math.signum(path.get(path.size()-2).getX()-path.get(path.size()-1).getX());
 		int dy = (int) Math.signum(path.get(path.size()-2).getY()-path.get(path.size()-1).getY());
 
+		//Return direction depending on the values of dx and dy.
 		switch (dx){
 		case 1:
-			if(dy == -1){
+			if(dy == -1)
 				return Direction.NORTH_EAST;
-			}
 
-			else if(dy == 0){
+
+			else if(dy == 0)
 				return Direction.EAST;
-			}
+
 			else{
 				return Direction.SOUTH_EAST;
 			}
 
 		case 0:
-			if (dy == -1){
+			if (dy == -1)
 				return Direction.NORTH;
-			}
+
 
 			else {
 				return Direction.SOUTH;
 			}
 
 		case -1:
-			if (dy == -1){
+			if (dy == -1)
 				return Direction.NORTH_WEST;
-			}
-			else if (dy == 0){
+
+			else if (dy == 0)
 				return Direction.WEST;
-			}
+
 
 			else {
 				return Direction.SOUTH_WEST;
 			}
 		}//Should never reach this point since dx will always be 1,0 or -1
 		return null;
-
 
 	}
 
