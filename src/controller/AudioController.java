@@ -33,6 +33,10 @@ public class AudioController implements IEventHandler {
 	private static AudioController sharedInstance;
 	private static SoundSystem soundSys;
 	private IGameModel game;
+	
+	private static float BGM_VOLUME = 1;
+	private static float FX_VOLUME = 1;
+	
 
 	private int bgmID = 1;
 
@@ -240,4 +244,23 @@ public class AudioController implements IEventHandler {
 		soundSys.removeSource(e.hashCode() + "");
 	}
 
+	
+	public float getBGMVolume(){
+		return BGM_VOLUME;
+	}
+	
+	public void setVolume(float f){
+		BGM_VOLUME = f;
+	}
+	
+	public float getFXVolume(){
+		return FX_VOLUME;
+	}
+	
+	public void setFXVolume(float f){
+		FX_VOLUME = f;
+	}
+	
+	
+	
 }
