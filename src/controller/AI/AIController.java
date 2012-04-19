@@ -58,10 +58,8 @@ public class AIController {
 	private void updateEnemy(AIPlayer aiPlayer ){
 		aiPlayer.getEnemy().start();
 		Point enemyTile = calculateTile(aiPlayer.getEnemy().getPosition());
-		Point lastTile = enemyTile;
 		int length = (Math.abs(enemyTile.x - playerTile.x) + Math.abs(enemyTile.y
 				- playerTile.y));
-		Random rand = new Random();
 		//Calculates the path between enemy and player
 
 		if (aiPlayer.getCount() < length*1.5){
