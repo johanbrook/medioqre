@@ -68,6 +68,7 @@ public class PathFinder {
 						path.add(currentTile.getParent());
 						currentTile = currentTile.getParent();
 					}
+					for (AStarTile t : path)
 					clear();
 					return convertPath(path);
 

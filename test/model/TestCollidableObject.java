@@ -76,7 +76,7 @@ public class TestCollidableObject {
 	public void testEntityCollisionDirectionFromNorth() {
 			
 		this.player.setPosition(0, this.player.getSize().height + 1);	// obj collides from top
-		Direction dir = this.player.getCollisionDirection(this.obj);
+		Direction dir = this.player.getDirectionOfObject(this.obj);
 		
 		assertEquals(Direction.NORTH, dir);
 	}
@@ -85,7 +85,7 @@ public class TestCollidableObject {
 	public void testEntityCollisionDirectionFromWest() {
 		
 		this.player.setPosition(1, 0);	// obj collides from left
-		Direction dir = this.player.getCollisionDirection(this.obj);
+		Direction dir = this.player.getDirectionOfObject(this.obj);
 		
 		assertEquals(Direction.WEST, dir);
 	}
@@ -97,7 +97,7 @@ public class TestCollidableObject {
 		int totalWidth = (int) this.player.getCollisionBox().getMaxX() + 1;
 		
 		this.player.setPosition(-totalWidth, 0);	// obj collides from right
-		Direction dir = this.player.getCollisionDirection(this.obj);
+		Direction dir = this.player.getDirectionOfObject(this.obj);
 		
 		assertEquals(Direction.EAST, dir);
 	}
@@ -108,7 +108,7 @@ public class TestCollidableObject {
 		int totalHeight = this.player.getCollisionBox().height + this.player.getOffsetY() + 2;
 		
 		this.player.setPosition(0, -totalHeight);	// obj collides from bottom
-		Direction dir = this.player.getCollisionDirection(this.obj);
+		Direction dir = this.player.getDirectionOfObject(this.obj);
 		
 		assertEquals(Direction.SOUTH, dir);
 	}

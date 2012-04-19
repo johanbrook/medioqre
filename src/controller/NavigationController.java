@@ -19,7 +19,6 @@ public class NavigationController implements KeyListener {
 	
 	private Set<Integer> keys;
 	private Map<Integer, Direction> keyMap;
-	private IGameModel game;
 	
 	private Player player;
 	

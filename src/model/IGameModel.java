@@ -20,13 +20,6 @@ public interface IGameModel {
 	 */
 	public void update(double delta);
 	
-	
-	/**
-	 * Stop the player
-	 * 
-	 */
-	public void stopPlayer();
-	
 	/**
 	 * Get the player
 	 * 

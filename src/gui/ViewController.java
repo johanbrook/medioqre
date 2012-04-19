@@ -63,6 +63,8 @@ public class ViewController implements IEventHandler {
 	private BitmapFont fpsBitmap;
 	private BufferedImage screenImage;
 	private Bitmap collisionBoxBox;
+	
+	private Bitmap actorLocation;
 
 	private GraphicalFPSMeter fpsmeter;
 
@@ -86,6 +88,8 @@ public class ViewController implements IEventHandler {
 
 		this.fpsmeter = new GraphicalFPSMeter();
 		this.fpsBitmap = new BitmapFont("");
+		this.actorLocation = new Bitmap(2, 2);
+		this.actorLocation.clear(Color.RED);
 
 		initScene();
 
@@ -153,6 +157,7 @@ public class ViewController implements IEventHandler {
 								int x =	eActor.getPosition().x - this.player.getPosition().x + SCREEN_WIDTH / 2 + eActor.getEntity().getOffsetX();
 								int y = eActor.getPosition().y - this.player.getPosition().y + SCREEN_HEIGHT / 2 + eActor.getEntity().getOffsetY();
 								screen.blit(collisionBoxBox, x, y);
+								screen.blit(actorLocation, x, y);
 							}
 						}
 					}
@@ -167,6 +172,8 @@ public class ViewController implements IEventHandler {
 						int x =	SCREEN_WIDTH / 2 + this.player.getEntity().getOffsetX();
 						int y = SCREEN_HEIGHT / 2 + this.player.getEntity().getOffsetY();
 						screen.blit(collisionBoxBox, x, y);
+						screen.blit(actorLocation, x, y);
+						
 					} else
 						System.out.println("Playerimage is null!");
 				}
