@@ -124,10 +124,6 @@ public class AudioController implements IEventHandler {
 
 		soundSys.play(code);
 
-		// soundSys.quickPlay(true, SoundLibrary.getWeaponSound(code), toLoop,
-		// 0,
-		// 1, 1, 1, 2);
-
 	}
 
 	public void stopFX(String code) {
@@ -152,6 +148,9 @@ public class AudioController implements IEventHandler {
 		soundSys.setListenerPosition(game.getPlayer().getPosition().x, game
 				.getPlayer().getPosition().y, 100);
 
+		soundSys.setPosition("walk", game.getPlayer().getPosition().x, game
+				.getPlayer().getPosition().y, 1);
+
 		for (Enemy e : game.getEnemies()) {
 			soundSys.setPosition(e.hashCode() + "", e.getPosition().x,
 					e.getPosition().y, 1);
@@ -162,7 +161,7 @@ public class AudioController implements IEventHandler {
 
 	public void playWeaponSound(Class<?> input) {
 		soundSys.quickPlay(true, SoundLibrary.getWeaponSound(input), false, 1,
-				1, 1, 1, 1);
+				1, 1, 1, 0);
 	}
 
 	@Override
@@ -184,7 +183,7 @@ public class AudioController implements IEventHandler {
 				// Player Walking
 				if (evt.getProperty() == Event.Property.DID_MOVE
 						&& !soundSys.playing("walk")) {
-					// playSoundFX("walk", true);
+					playSoundFX("walk", true);
 
 				}
 
