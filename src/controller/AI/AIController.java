@@ -55,148 +55,154 @@ public class AIController {
 	}
 
 
-
-	private void updateEnemy(AIPlayer currentEnemy ){
-		currentEnemy.getEnemy().start();
-		Point enemyTile = calculateTile(currentEnemy.getEnemy().getPosition());
+	private void updateEnemy(AIPlayer aiPlayer ){
+		aiPlayer.getEnemy().start();
+		Point enemyTile = calculateTile(aiPlayer.getEnemy().getPosition());
+		Point lastTile = enemyTile;
 		int length = (Math.abs(enemyTile.x - playerTile.x) + Math.abs(enemyTile.y
 				- playerTile.y));
+		Random rand = new Random();
 		//Calculates the path between enemy and player
-		if(length > 15 ){
-			currentEnemy.updateEnemy(randomDir());
-		}else {
 
-			currentEnemy.setPath(pathfinder.getPath(enemyTile, playerTile));
-			if (currentEnemy.getPath() != null){
+		if (aiPlayer.getCount() < length*1.5){
+			aiPlayer.updateCount();
+			
+		}else{
+			aiPlayer.resetCount();
 
-				//Update direction of the enemy depending on what the current path is.
+				aiPlayer.setPath(pathfinder.getPath(enemyTile, playerTile));
+				if (aiPlayer.getPath() != null){
 
-				//If path is longer than 2 tiles, just calculate the direction from the path
-				if (currentEnemy.getPath().size() >= 2){
-					currentEnemy.updateEnemy(calculateDirection(currentEnemy.getPath()));
-				}else {
+					//Update direction of the enemy depending on what the current path is.
 
-					//If path is shorter, manually inserts enemy and player positions and walk straight towards them, they should be to close for there to
-					//be any kind of obsticle in the way.
-					currentEnemy.getPath().clear();
-					currentEnemy.getPath().add(playerPos);
-					currentEnemy.getPath().add(currentEnemy.getEnemy().getPosition());
-					currentEnemy.updateEnemy(calculateDirection(currentEnemy.getPath()));
+					//If path is longer than 2 tiles, just calculate the direction from the path
+					if (aiPlayer.getPath().size() >= 2){
+						aiPlayer.updateEnemy(calculateDirection(aiPlayer.getPath()));
+					}else {
+
+						//If path is shorter, manually inserts enemy and player positions and walk straight towards them, they should be to close for there to
+						//be any kind of obsticle in the way.
+						aiPlayer.getPath().clear();
+						aiPlayer.getPath().add(playerPos);
+						aiPlayer.getPath().add(aiPlayer.getEnemy().getPosition());
+						aiPlayer.updateEnemy(calculateDirection(aiPlayer.getPath()));
+					}
 				}
 			}
 		}
+	
+
+
+
+
+private Direction randomDir() {
+	Random rand = new Random();
+	int r = rand.nextInt(8);
+	Direction d = Direction.ORIGIN;
+	switch (r) {
+	case 0:
+		d = Direction.EAST;
+		break;
+	case 1:
+		d = Direction.NORTH;
+		break;
+	case 2:
+		d = Direction.NORTH_EAST;
+		break;
+	case 3:
+		d = Direction.NORTH_WEST;
+		break;
+	case 4:
+		d = Direction.SOUTH;
+		break;
+	case 5:
+		d = Direction.SOUTH_EAST;
+		break;
+	case 6:
+		d = Direction.SOUTH_WEST;
+		break;
+	case 7:
+		d = Direction.WEST;
+		break;
 	}
+	return d;
+}
+
+/**
+ * Replace the current list of enemies with a new one.
+ * 
+ * @param enemies A list of enemies to track
+ */
+public void setEnemies(List<Enemy> enemies) {
+	this.enemies.clear();
+	for (int i = 0; i< enemies.size();i++){
+		this.enemies.add(new AIPlayer (enemies.get(i)));
+	}
+}
+
+/**
+ * Adds a enemy to the list of enemies the AIController keeps track of
+ * @param enemy
+ */
+public void addEnemy(Enemy enemy){
+	this.enemies.add(new AIPlayer(enemy));
+}
+
+/**
+ * Given a enemy, that enemy will no longer be controlled by this AIController
+ * @param enemy
+ */
+public void removeEnemy(Enemy enemy){
+	this.enemies.remove(enemy);
+}
+
+public Direction calculateDirection(List <Point> path){
+	// Compare enemy position with next calculated position in path.
+	int dx = (int) Math.signum(path.get(path.size()-2).getX()-path.get(path.size()-1).getX());
+	int dy = (int) Math.signum(path.get(path.size()-2).getY()-path.get(path.size()-1).getY());
+
+	//Return direction depending on the values of dx and dy.
+	switch (dx){
+	case 1:
+		if(dy == -1)
+			return Direction.NORTH_EAST;
 
 
+		else if(dy == 0)
+			return Direction.EAST;
 
-	private Direction randomDir() {
-		Random rand = new Random();
-		int r = rand.nextInt(8);
-		Direction d = Direction.ORIGIN;
-		switch (r) {
-		case 0:
-			d = Direction.EAST;
-			break;
-		case 1:
-			d = Direction.NORTH;
-			break;
-		case 2:
-			d = Direction.NORTH_EAST;
-			break;
-		case 3:
-			d = Direction.NORTH_WEST;
-			break;
-		case 4:
-			d = Direction.SOUTH;
-			break;
-		case 5:
-			d = Direction.SOUTH_EAST;
-			break;
-		case 6:
-			d = Direction.SOUTH_WEST;
-			break;
-		case 7:
-			d = Direction.WEST;
-			break;
+		else{
+			return Direction.SOUTH_EAST;
 		}
-		return d;
-	}
 
-	/**
-	 * Replace the current list of enemies with a new one.
-	 * 
-	 * @param enemies A list of enemies to track
-	 */
-	public void setEnemies(List<Enemy> enemies) {
-		this.enemies.clear();
-		for (int i = 0; i< enemies.size();i++){
-			this.enemies.add(new AIPlayer (enemies.get(i)));
+	case 0:
+		if (dy == -1)
+			return Direction.NORTH;
+
+
+		else {
+			return Direction.SOUTH;
 		}
-	}
 
-	/**
-	 * Adds a enemy to the list of enemies the AIController keeps track of
-	 * @param enemy
-	 */
-	public void addEnemy(Enemy enemy){
-		this.enemies.add(new AIPlayer(enemy));
-	}
+	case -1:
+		if (dy == -1)
+			return Direction.NORTH_WEST;
 
-	/**
-	 * Given a enemy, that enemy will no longer be controlled by this AIController
-	 * @param enemy
-	 */
-	public void removeEnemy(Enemy enemy){
-		this.enemies.remove(enemy);
-	}
-
-	public Direction calculateDirection(List <Point> path){
-		// Compare enemy position with next calculated position in path.
-		int dx = (int) Math.signum(path.get(path.size()-2).getX()-path.get(path.size()-1).getX());
-		int dy = (int) Math.signum(path.get(path.size()-2).getY()-path.get(path.size()-1).getY());
-
-		//Return direction depending on the values of dx and dy.
-		switch (dx){
-		case 1:
-			if(dy == -1)
-				return Direction.NORTH_EAST;
+		else if (dy == 0)
+			return Direction.WEST;
 
 
-			else if(dy == 0)
-				return Direction.EAST;
+		else {
+			return Direction.SOUTH_WEST;
+		}
+	}//Should never reach this point since dx will always be 1,0 or -1
+	return null;
 
-			else{
-				return Direction.SOUTH_EAST;
-			}
+}
 
-		case 0:
-			if (dy == -1)
-				return Direction.NORTH;
-
-
-			else {
-				return Direction.SOUTH;
-			}
-
-		case -1:
-			if (dy == -1)
-				return Direction.NORTH_WEST;
-
-			else if (dy == 0)
-				return Direction.WEST;
-
-
-			else {
-				return Direction.SOUTH_WEST;
-			}
-		}//Should never reach this point since dx will always be 1,0 or -1
-		return null;
-
-	}
-
-	public Point calculateTile(Point point){
-		return new Point(point.x/this.width, point.y/this.height);
-	}
+public Point calculateTile(Point point){
+	return new Point(point.x/this.width, point.y/this.height);
+}
 
 
 }

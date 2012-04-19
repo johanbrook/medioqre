@@ -78,20 +78,20 @@ public class GameModel implements IGameModel {
 				Direction blockedDirection = t.getCollisionDirection(w);
 
 				if(t != w && t instanceof Player){
-					System.out.println("-----\nPlayer direction: "+currentDirection);
-					System.out.println("Collision direction: "+blockedDirection);
+//					System.out.println("-----\nPlayer direction: "+currentDirection);
+//					System.out.println("Collision direction: "+blockedDirection);
 					
 					int c = t.getCode(w);
-					
-					System.out.println("CODE: "+c);
-					System.out.println("Top: "+ ((c & Rectangle.OUT_TOP) == Rectangle.OUT_TOP));
-					System.out.println("Bottom: "+ ((c & Rectangle.OUT_BOTTOM) == Rectangle.OUT_BOTTOM));
-					System.out.println("Left: "+ ((c & Rectangle.OUT_LEFT) == Rectangle.OUT_LEFT));
-					System.out.println("Right: "+ ((c & Rectangle.OUT_RIGHT) == Rectangle.OUT_RIGHT));
+//					
+//					System.out.println("CODE: "+c);
+//					System.out.println("Top: "+ ((c & Rectangle.OUT_TOP) == Rectangle.OUT_TOP));
+//					System.out.println("Bottom: "+ ((c & Rectangle.OUT_BOTTOM) == Rectangle.OUT_BOTTOM));
+//					System.out.println("Left: "+ ((c & Rectangle.OUT_LEFT) == Rectangle.OUT_LEFT));
+//					System.out.println("Right: "+ ((c & Rectangle.OUT_RIGHT) == Rectangle.OUT_RIGHT));
 				}
-				
-				System.out.println("----------\n"+t);
-				System.out.println(w+"\n------------");
+//				
+//				System.out.println("----------\n"+t);
+//				System.out.println(w+"\n------------");
 									
 				if( (blockedDirection == Direction.NORTH_WEST ||
 					 blockedDirection == Direction.WEST)

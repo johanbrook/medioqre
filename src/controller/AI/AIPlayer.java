@@ -9,10 +9,15 @@ import constants.Direction;
 public class AIPlayer {
 	private Enemy unit;
 	private List <Point> path;
-	private int iq;
+	private int iq,updateCount;
+	public int  didUpdate, noUpdate;
 	
 	public AIPlayer (Enemy unit){
 		this.unit = unit;	
+		this.iq = 5;
+		this.updateCount = 0;
+		didUpdate = 0;
+		noUpdate = 0;
 	}
 	
 	public Enemy getEnemy(){
@@ -22,6 +27,22 @@ public class AIPlayer {
 	public int getIQ(){
 		return this.iq;
 	}
+	
+	public void updateCount(){
+		this.updateCount ++;
+		noUpdate++;
+	}
+	
+	public void resetCount(){
+		this.updateCount = 0;
+		didUpdate++;
+		
+	}
+	
+	public int getCount(){
+		return this.updateCount;
+	}
+	
 	
 	public List <Point> getPath(){
 		return this.path;
