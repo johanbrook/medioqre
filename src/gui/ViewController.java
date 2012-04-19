@@ -193,15 +193,20 @@ public class ViewController implements IEventHandler {
 				this.enemies = new IdentityHashMap<Entity, Actor>();
 				List<Entity> entities = ((GameModel) evt.getValue())
 						.getEntities();
-				Actor pActor = ResourceManager.loadActors()[0];
+				Actor[] actors = ResourceManager.loadActors();
+				Actor pActor = actors[0];
+				Actor eActor = actors[1];
 				for (Entity e : entities) {
-					Actor newA = pActor.clone();
-					newA.setEntity(e);
 					if (e instanceof Enemy)	{
-						this.enemies.put(e, newA);
+						Actor newE = eActor.clone();
+						newE.setEntity(e);
+						this.enemies.put(e, newE);
 						}
-					if (e instanceof Player)
+					else if (e instanceof Player) {
+						Actor newA = pActor.clone();
+						newA.setEntity(e);
 						this.player = newA;
+					}
 				}
 			}
 		}
