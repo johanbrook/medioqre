@@ -169,16 +169,20 @@ public class AudioController implements IEventHandler {
 	public void onEvent(Event evt) {
 
 		// Initialize
+		if (evt.getProperty() == Event.Property.INIT_MODEL
+				&& !soundSys.playing("Background Music")) {
+
+		}
 
 		// Entities
 		if (evt.getValue() instanceof Entity) {
 			Entity p = (Entity) evt.getValue();
 
+			// Player
 			if (p instanceof model.character.Player) {
 
 				// Player Walking
-				if (evt.getProperty() == Event.Property.DID_MOVE) {
-					if (!soundSys.playing("walk"))
+				if (evt.getProperty() == Event.Property.DID_MOVE && !soundSys.playing("walk")) {
 						playSoundFX("walk", true);
 				}
 
@@ -196,10 +200,10 @@ public class AudioController implements IEventHandler {
 			// Enemies
 			if (p instanceof model.character.Enemy) {
 
-				if (evt.getProperty() == Event.Property.DID_MOVE){
-					
-					//TODO HŠr blir det en del problem, behšver update()....
-					
+				if (evt.getProperty() == Event.Property.DID_MOVE) {
+
+					// TODO HŠr blir det en del problem, behšver update()....
+
 				}
 			}
 
