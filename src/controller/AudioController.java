@@ -174,8 +174,10 @@ public class AudioController implements IEventHandler {
 		if (evt.getValue() instanceof Entity) {
 			Entity p = (Entity) evt.getValue();
 
+			
 			if (p instanceof model.character.Player) {
 
+				//Player Walking
 				if (evt.getProperty() == Event.Property.DID_MOVE) {
 					if (!soundSys.playing("walk"))
 						playSoundFX("walk", true);
@@ -184,6 +186,14 @@ public class AudioController implements IEventHandler {
 				if (evt.getProperty() == Event.Property.DID_STOP) {
 					stopFX("walk");
 				}
+				
+				//Pickup Items
+				if (evt.getProperty() == Event.Property.PICKED_UP_ITEM){
+					//TODO Pickupljud!
+				}
+				
+				
+				
 			}
 		}
 
@@ -195,6 +205,11 @@ public class AudioController implements IEventHandler {
 		
 		
 		// FX
+		
+		
+		
+		
+		
 
 	}
 
