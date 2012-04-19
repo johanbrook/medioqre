@@ -16,9 +16,9 @@ import constants.Direction;
  */
 public class AIController {
 
-	private List <Enemy> enemies;
+	private List <AIPlayer> enemies;
 	private PathFinder pathfinder;
-	private int rows,columns,width, height;
+	private int width, height;
 	private Point playerPos,playerTile;
 
 	public AIController (int rows, int columns, int width, int height) {
@@ -27,11 +27,12 @@ public class AIController {
 
 	public AIController (List<Enemy> enemies, int rows, int columns, int width, int height){
 		this.pathfinder = new PathFinder(rows, columns);
-		this.enemies = enemies;
-		this.rows = rows;
-		this.columns = columns;
 		this.width = width;
 		this.height = height;
+		this.enemies = new ArrayList <AIPlayer>();
+		for (int i = 0; i < enemies.size(); i++) {
+			this.enemies.add(new AIPlayer(enemies.get(i)));
+		}
 	}
 
 	/**
@@ -55,32 +56,33 @@ public class AIController {
 
 
 
-	private void updateEnemy(Enemy currentEnemy ){
-		currentEnemy.start();
-		Point enemyTile = calculateTile(currentEnemy.getPosition());
+	private void updateEnemy(AIPlayer currentEnemy ){
+		currentEnemy.getEnemy().start();
+		Point enemyTile = calculateTile(currentEnemy.getEnemy().getPosition());
 		int length = (Math.abs(enemyTile.x - playerTile.x) + Math.abs(enemyTile.y
 				- playerTile.y));
 		//Calculates the path between enemy and player
 		if(length > 15 ){
-			currentEnemy.setDirection(randomDir());
+			currentEnemy.updateEnemy(randomDir());
 		}else {
 
-			List <Point> path = pathfinder.getPath(enemyTile, playerTile);
-			if (path != null){
-			}
-			//Update direction of the enemy depending on what the current path is.
+			currentEnemy.setPath(pathfinder.getPath(enemyTile, playerTile));
+			if (currentEnemy.getPath() != null){
 
-			//If path is longer than 2 tiles, just calculate the direction from the path
-			if (path.size() >= 2){
-				currentEnemy.setDirection(calculateDirection(path));
-			}else {
+				//Update direction of the enemy depending on what the current path is.
 
-				//If path is shorter, manually inserts enemy and player positions and walk straight towards them, they should be to close for there to
-				//be any kind of obsticle in the way.
-				path.clear();
-				path.add(playerPos);
-				path.add(currentEnemy.getPosition());
-				currentEnemy.setDirection(calculateDirection(path));
+				//If path is longer than 2 tiles, just calculate the direction from the path
+				if (currentEnemy.getPath().size() >= 2){
+					currentEnemy.updateEnemy(calculateDirection(currentEnemy.getPath()));
+				}else {
+
+					//If path is shorter, manually inserts enemy and player positions and walk straight towards them, they should be to close for there to
+					//be any kind of obsticle in the way.
+					currentEnemy.getPath().clear();
+					currentEnemy.getPath().add(playerPos);
+					currentEnemy.getPath().add(currentEnemy.getEnemy().getPosition());
+					currentEnemy.updateEnemy(calculateDirection(currentEnemy.getPath()));
+				}
 			}
 		}
 	}
@@ -126,7 +128,10 @@ public class AIController {
 	 * @param enemies A list of enemies to track
 	 */
 	public void setEnemies(List<Enemy> enemies) {
-		this.enemies = enemies;
+		this.enemies.clear();
+		for (int i = 0; i< enemies.size();i++){
+			this.enemies.add(new AIPlayer (enemies.get(i)));
+		}
 	}
 
 	/**
@@ -134,7 +139,7 @@ public class AIController {
 	 * @param enemy
 	 */
 	public void addEnemy(Enemy enemy){
-		this.enemies.add(enemy);
+		this.enemies.add(new AIPlayer(enemy));
 	}
 
 	/**

@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.util.List;
 
 import model.character.Enemy;
+import constants.Direction;
 
 public class AIPlayer {
 	private Enemy unit;
@@ -29,5 +30,8 @@ public class AIPlayer {
 	public void setPath(List <Point> path){
 		this.path = path;
 	}
-
+	
+	public void updateEnemy(Direction dir){
+		this.unit.setDirection(dir);
+	}
 }

@@ -79,11 +79,10 @@ public class PathFinder {
 					removeFromOpen(currentTile);
 				}
 			}
-
 		}
 		clear();
 		return null;
-	}
+	}// end getPath()
 
 	private List<Point> convertPath(ArrayList<AStarTile> path) {
 		List <Point> convertedPath = new ArrayList <Point>();
@@ -155,7 +154,7 @@ public class PathFinder {
 				}
 			}
 		}
-	}
+	}//end updateNeighbors
 
 	// Given a SmartButton, will return whether or not the current path from the
 	// start to the button is shorter than the currently recorded.
