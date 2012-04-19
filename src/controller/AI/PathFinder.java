@@ -15,9 +15,7 @@ public class PathFinder {
 	private AStarTile currentTile;
 	//Using a approx value of sqrt(2) for diagonalcost, in order to save time.
 	private final double DIAGONALCOST= 1.41421356;
-
-	private int columns;
-	private int rows;
+	private int rows,columns;
 
 
 	public PathFinder( int rows, int columns) {
@@ -43,7 +41,7 @@ public class PathFinder {
 	 * between the two. If no path is to be found, the return will be a
 	 * null-object
 	 * 
-	 * @param start
+	 * @param Startpoint, Endpoint
 	 * @return SmartButton [][] Shortest path between Start and Stop.
 	 * @return null if no path exists between Start and Stop
 	 */
@@ -60,8 +58,8 @@ public class PathFinder {
 			openList.add(start);
 
 			while (!openList.isEmpty()) {
-				int pointer = findBestTile();
-				currentTile = openList.get(pointer);
+				//Start by finding the tile in the open list with the best F-value
+				currentTile = openList.get(findBestTile());
 
 				// Algorithm complete and path found.
 				if (currentTile.equals(stop)) {
@@ -70,8 +68,6 @@ public class PathFinder {
 						path.add(currentTile.getParent());
 						currentTile = currentTile.getParent();
 					}
-					for (AStarTile t : path)
-						System.out.println("G: " + t.getG());
 					clear();
 					return convertPath(path);
 
@@ -83,11 +79,10 @@ public class PathFinder {
 					removeFromOpen(currentTile);
 				}
 			}
-
 		}
 		clear();
 		return null;
-	}
+	}// end getPath()
 
 	private List<Point> convertPath(ArrayList<AStarTile> path) {
 		List <Point> convertedPath = new ArrayList <Point>();
@@ -142,8 +137,8 @@ public class PathFinder {
 						currentTile.getG() + DIAGONALCOST : currentTile.getG() + 1);
 				currentNeighbors.get(k).setParent(currentTile);
 
-				// if a tile is neither open nor closed, we add it the openList
-				// and update the open-value accordingly.
+				// if a tile is neither open nor closed, adds tile to the openList
+				// and set the G-value accordingly.
 			} else if (!currentNeighbors.get(k).isOpen() && !currentNeighbors.get(k).isClosed()) {
 				
 				if (currentNeighbors.get(k).isSolid()) {
@@ -159,14 +154,11 @@ public class PathFinder {
 				}
 			}
 		}
-	}
+	}//end updateNeighbors
 
 	// Given a SmartButton, will return whether or not the current path from the
 	// start to the button is shorter than the currently recorded.
 	private boolean currentPathIsShorter(AStarTile tile) {
-		if (tile.getG() > (currentTile.isDiagonal(tile) ? 
-				currentTile.getG() + DIAGONALCOST : currentTile.getG() + 1)){
-		}
 		return tile.getG() > (currentTile.isDiagonal(tile) ? 
 				currentTile.getG() + DIAGONALCOST : currentTile.getG() + 1);
 	}

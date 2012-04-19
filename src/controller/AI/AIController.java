@@ -16,12 +16,10 @@ import constants.Direction;
  */
 public class AIController {
 
-	private List <Enemy> enemies;
+	private List <AIPlayer> enemies;
 	private PathFinder pathfinder;
-	private int rows,columns,width, height;
-	private Point playerPos;
-	private Point playerTile;
-	private int ticker;
+	private int width, height;
+	private Point playerPos,playerTile;
 
 	public AIController (int rows, int columns, int width, int height) {
 		this(new ArrayList <Enemy>(), rows, columns, width, height);
@@ -29,12 +27,12 @@ public class AIController {
 
 	public AIController (List<Enemy> enemies, int rows, int columns, int width, int height){
 		this.pathfinder = new PathFinder(rows, columns);
-		this.enemies = enemies;
-		this.rows = rows;
-		this.columns = columns;
 		this.width = width;
 		this.height = height;
-		this.ticker = 0;
+		this.enemies = new ArrayList <AIPlayer>();
+		for (int i = 0; i < enemies.size(); i++) {
+			this.enemies.add(new AIPlayer(enemies.get(i)));
+		}
 	}
 
 	/**
@@ -42,7 +40,6 @@ public class AIController {
 	 * @param playerPos
 	 */
 	public void updateAI(Point playerPos){
-//		ticker ++;
 		playerTile = calculateTile(playerPos);
 		this.playerPos = playerPos;
 
@@ -58,42 +55,43 @@ public class AIController {
 	}
 
 
-
-	private void updateEnemy(Enemy currentEnemy ){
-		currentEnemy.start();
-		Point enemyTile = calculateTile(currentEnemy.getPosition());
+	private void updateEnemy(AIPlayer aiPlayer ){
+		aiPlayer.getEnemy().start();
+		Point enemyTile = calculateTile(aiPlayer.getEnemy().getPosition());
 		int length = (Math.abs(enemyTile.x - playerTile.x) + Math.abs(enemyTile.y
 				- playerTile.y));
 		//Calculates the path between enemy and player
-		if(length > 15 ){
-			currentEnemy.setDirection(randomDir());
-		}else {
 
-			List <Point> path = pathfinder.getPath(enemyTile, playerTile);
-			if (path != null){
-//				if (ticker == 100){
-//					ticker = 0;
-//					for (Point b : path)
-//						System.out.println("Tile X: " + b.x + " Tile Y: " + b.y);
-//				}
+		if (aiPlayer.getCount() < length*1.5){
+			aiPlayer.updateCount();
+
+		}else{
+			aiPlayer.resetCount();
+
+			aiPlayer.setPath(pathfinder.getPath(enemyTile, playerTile));
+			if (aiPlayer.getPath() != null){
+
 				//Update direction of the enemy depending on what the current path is.
 
 				//If path is longer than 2 tiles, just calculate the direction from the path
-				if (path.size() >= 2){
-					currentEnemy.setDirection(calculateDirection(path));
+				if (aiPlayer.getPath().size() >= 2){
+					aiPlayer.updateEnemy(calculateDirection(aiPlayer.getPath()));
 				}else {
 
 					//If path is shorter, manually inserts enemy and player positions and walk straight towards them, they should be to close for there to
 					//be any kind of obsticle in the way.
-					path.clear();
-					path.add(playerPos);
-					path.add(currentEnemy.getPosition());
-					currentEnemy.setDirection(calculateDirection(path));
+					aiPlayer.getPath().clear();
+					aiPlayer.getPath().add(playerPos);
+					aiPlayer.getPath().add(aiPlayer.getEnemy().getPosition());
+					aiPlayer.updateEnemy(calculateDirection(aiPlayer.getPath()));
 				}
 			}
 		}
-
 	}
+
+
+
+
 
 	private Direction randomDir() {
 		Random rand = new Random();
@@ -134,15 +132,18 @@ public class AIController {
 	 * @param enemies A list of enemies to track
 	 */
 	public void setEnemies(List<Enemy> enemies) {
-		this.enemies = enemies;
+		this.enemies.clear();
+		for (int i = 0; i< enemies.size();i++){
+			this.enemies.add(new AIPlayer (enemies.get(i)));
+		}
 	}
-	
+
 	/**
 	 * Adds a enemy to the list of enemies the AIController keeps track of
 	 * @param enemy
 	 */
 	public void addEnemy(Enemy enemy){
-		this.enemies.add(enemy);
+		this.enemies.add(new AIPlayer(enemy));
 	}
 
 	/**
@@ -154,38 +155,40 @@ public class AIController {
 	}
 
 	public Direction calculateDirection(List <Point> path){
+		// Compare enemy position with next calculated position in path.
 		int dx = (int) Math.signum(path.get(path.size()-2).getX()-path.get(path.size()-1).getX());
 		int dy = (int) Math.signum(path.get(path.size()-2).getY()-path.get(path.size()-1).getY());
 
+		//Return direction depending on the values of dx and dy.
 		switch (dx){
 		case 1:
-			if(dy == -1){
+			if(dy == -1)
 				return Direction.NORTH_EAST;
-			}
 
-			else if(dy == 0){
+
+			else if(dy == 0)
 				return Direction.EAST;
-			}
+
 			else{
 				return Direction.SOUTH_EAST;
 			}
 
 		case 0:
-			if (dy == -1){
+			if (dy == -1)
 				return Direction.NORTH;
-			}
+
 
 			else {
 				return Direction.SOUTH;
 			}
 
 		case -1:
-			if (dy == -1){
+			if (dy == -1)
 				return Direction.NORTH_WEST;
-			}
-			else if (dy == 0){
+
+			else if (dy == 0)
 				return Direction.WEST;
-			}
+
 
 			else {
 				return Direction.SOUTH_WEST;
@@ -193,12 +196,10 @@ public class AIController {
 		}//Should never reach this point since dx will always be 1,0 or -1
 		return null;
 
-
 	}
 
 	public Point calculateTile(Point point){
 		return new Point(point.x/this.width, point.y/this.height);
 	}
-
 
 }
