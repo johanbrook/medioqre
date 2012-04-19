@@ -5,6 +5,7 @@ import java.net.URL;
 
 import javax.swing.JOptionPane;
 
+import audio.AudioConstants;
 import audio.SoundLibrary;
 
 import model.Entity;
@@ -146,7 +147,7 @@ public class AudioController implements IEventHandler {
 	public void update() {
 
 		soundSys.setListenerPosition(game.getPlayer().getPosition().x, game
-				.getPlayer().getPosition().y, 100);
+				.getPlayer().getPosition().y, AudioConstants.zROLLOFF);
 
 		soundSys.setPosition("walk", game.getPlayer().getPosition().x, game
 				.getPlayer().getPosition().y, 1);
