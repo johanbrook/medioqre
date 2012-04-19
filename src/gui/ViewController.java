@@ -24,16 +24,19 @@ import java.util.Map;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
+import constants.Direction;
 
 import datamanager.resourceloader.ResourceManager;
+
+import sun.font.FontFamily;
 import tools.GraphicalFPSMeter;
+import tools.Logger;
+import tools.TimerTool;
 
 import event.Event;
 import event.EventBus;
 import event.IEventHandler;
-import graphics.bitmap.Bitmap;
-import graphics.bitmap.BitmapTool;
-import gui.tilemap.TileMap;
+import event.Event.Property;
 
 import model.Entity;
 import model.GameModel;

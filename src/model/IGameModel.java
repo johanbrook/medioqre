@@ -6,7 +6,10 @@
 
 package model;
 
-import constants.Direction;
+import java.util.List;
+
+import model.character.Enemy;
+import model.character.Player;
 
 public interface IGameModel {
 	
@@ -17,16 +20,31 @@ public interface IGameModel {
 	 */
 	public void update(double delta);
 	
-	/**
-	 * Change the player's direction
-	 * 
-	 * @param dir The new direction
-	 */
-	public void updateDirection(Direction dir); 
 	
 	/**
 	 * Stop the player
 	 * 
 	 */
 	public void stopPlayer();
+	
+	/**
+	 * Get the player
+	 * 
+	 * @return The player
+	 */
+	public Player getPlayer();
+	
+	/**
+	 * Get all the enemies.
+	 * 
+	 * @return The enemies
+	 */
+	public List<Enemy> getEnemies();
+	
+	/**
+	 * Get all the entities in the game
+	 * 
+	 * @return The entities
+	 */
+	public List<Entity> getEntities();
 }

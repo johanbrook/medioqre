@@ -7,13 +7,13 @@
 package controller;
 
 
+import controller.AI.AIController;
 import tools.TimerTool;
 import event.Event;
 import event.EventBus;
 import gui.ViewController;
 import model.GameModel;
 import model.IGameModel;
-import static tools.Logger.*;
 
 public class AppController implements Runnable{
 	
@@ -22,12 +22,16 @@ public class AppController implements Runnable{
 	
 	private IGameModel game;
 	private ViewController view;
+	private AIController ai;
 	private AudioController audio;
 	
 	public AppController(){
 		System.out.println("Initializing main controller ...");
 		this.game = new GameModel();
-		this.view = new ViewController(new NavigationController(this.game), 20*32, 12*32);
+		
+		this.view = new ViewController(new NavigationController(this.game.getPlayer()), 20*32, 12*32);
+		this.ai = new AIController(this.game.getEnemies(), 48, 48, 32, 32);
+		
 		this.audio = AudioController.getInstance();
 		
 		EventBus.INSTANCE.publish(new Event(Event.Property.INIT_MODEL, this.game));
@@ -49,10 +53,12 @@ public class AppController implements Runnable{
 			
 			double dt = (double) updateLength / DELTA_RATIO;
 			TimerTool.start("Update");
-			game.update(dt);
+			this.ai.updateAI(this.game.getPlayer().getPosition());
+			this.game.update(dt);
 			TimerTool.stop();
+			
 			TimerTool.start("Rendering");
-			view.render(dt);
+			this.view.render(dt);
 			TimerTool.stop();
 			
 			

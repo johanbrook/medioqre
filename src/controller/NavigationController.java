@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import model.IGameModel;
+import model.character.Player;
 
 import constants.Direction;
 
@@ -20,6 +21,8 @@ public class NavigationController implements KeyListener {
 	private Map<Integer, Direction> keyMap;
 	private IGameModel game;
 	
+	private Player player;
+	
 	private boolean isQuick = false;
 	private Set<Integer> cachedKeys;
 	
@@ -32,18 +35,27 @@ public class NavigationController implements KeyListener {
 	 * 
 	 * @param game A game model
 	 */
-	public NavigationController(IGameModel game) {
+	public NavigationController(Player target) {
 		this.keys = new HashSet<Integer>();
 		this.keyMap = new HashMap<Integer, Direction>();
 		this.cachedKeys = new HashSet<Integer>();
 		
-		this.game = game;
+		this.player = target;
 		
 		this.keyMap.put(KeyEvent.VK_W, Direction.NORTH);
 		this.keyMap.put(KeyEvent.VK_A, Direction.WEST);
 		this.keyMap.put(KeyEvent.VK_S, Direction.SOUTH);
 		this.keyMap.put(KeyEvent.VK_D, Direction.EAST);
 		
+	}
+	
+	private void updatePlayerDirection(Direction dir) {
+		this.player.setDirection(dir);
+		this.player.start();
+	}
+	
+	private void stopPlayer() {
+		this.player.stop();
 	}
 	
 	
@@ -53,29 +65,29 @@ public class NavigationController implements KeyListener {
 		if(this.isQuick){
 			
 			if(this.cachedKeys.contains(KeyEvent.VK_W) && this.cachedKeys.contains(KeyEvent.VK_A)) {
-				this.game.updateDirection(Direction.NORTH_WEST);
+				updatePlayerDirection(Direction.NORTH_WEST);
 			}
 			else if(this.cachedKeys.contains(KeyEvent.VK_W) && this.cachedKeys.contains(KeyEvent.VK_D)) {
-				this.game.updateDirection(Direction.NORTH_EAST);
+				updatePlayerDirection(Direction.NORTH_EAST);
 			}
 			else if(this.cachedKeys.contains(KeyEvent.VK_S) && this.cachedKeys.contains(KeyEvent.VK_A)) {
-				this.game.updateDirection(Direction.SOUTH_WEST);
+				updatePlayerDirection(Direction.SOUTH_WEST);
 			}
 			else if(this.cachedKeys.contains(KeyEvent.VK_S) && this.cachedKeys.contains(KeyEvent.VK_D)) {
-				this.game.updateDirection(Direction.SOUTH_EAST);
+				updatePlayerDirection(Direction.SOUTH_EAST);
 			}
 			
 			this.isQuick = false;
 			
 			if(!keyIsPressed) {
-				this.game.stopPlayer();
+				stopPlayer();
 			}
 			
 			return;
 		}
 		
 		else if(!keyIsPressed) {
-			this.game.stopPlayer();
+			stopPlayer();
 			return;
 		}
 		
@@ -83,25 +95,25 @@ public class NavigationController implements KeyListener {
 		if(this.keys.size() > 1) {
 			// Multiple keys are pressed
 			if(checkKey(KeyEvent.VK_W) && checkKey(KeyEvent.VK_A)) {
-				this.game.updateDirection(Direction.NORTH_WEST);
+				updatePlayerDirection(Direction.NORTH_WEST);
 			}
 
 			else if(checkKey(KeyEvent.VK_W) && checkKey(KeyEvent.VK_D)) {
-				this.game.updateDirection(Direction.NORTH_EAST);
+				updatePlayerDirection(Direction.NORTH_EAST);
 			}
 
 			else if(checkKey(KeyEvent.VK_A) && checkKey(KeyEvent.VK_S)) {
-				this.game.updateDirection(Direction.SOUTH_WEST);
+				updatePlayerDirection(Direction.SOUTH_WEST);
 			}
 
 			else if(checkKey(KeyEvent.VK_S) && checkKey(KeyEvent.VK_D)) {
-				this.game.updateDirection(Direction.SOUTH_EAST);
+				updatePlayerDirection(Direction.SOUTH_EAST);
 			}
 		}
 		else {
 			// One single key is pressed - map directly to the direction
 			Object[] arr = this.keys.toArray();
-			this.game.updateDirection(this.keyMap.get(arr[0]));
+			updatePlayerDirection(this.keyMap.get(arr[0]));
 		}
 		
 	}
