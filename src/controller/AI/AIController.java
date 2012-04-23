@@ -62,7 +62,7 @@ public class AIController {
 				- playerTile.y));
 		//Calculates the path between enemy and player
 
-		if (aiPlayer.getCount() < length*1.5){
+		if (aiPlayer.getCount() < (length*1.5) + enemies.size()/2){
 			aiPlayer.updateCount();
 
 		}else{
