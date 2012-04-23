@@ -28,28 +28,9 @@ public class SharedTextures {
 	private SharedTextures()
 	{
 		this.textures = new TreeMap<String, Texture>();
-		try {
-			this.spriteBaseURL = (String) "res/spritesheets/";
-			 
-			
-			this.textures.put("player", TextureIO.newTexture(new File(spriteBaseURL+"animated.png"), false));
-			
-			this.textures.put("tiles", TextureIO.newTexture(new File(spriteBaseURL+"tiles_sheet.png"), false));
-//			this.textures.put("player", TextureIO.newTexture(new File(spriteBaseURL+"tiles_sheet.png"), false));
-		} catch (Exception e) {
-			System.out.println("Fatal error! Failed to load sprite textures!!\n\n");
-			e.printStackTrace();
-		}
+		this.spriteBaseURL = (String) "res/spritesheets/";
 	}
-	public Texture getPlayerTexture(){
-		return this.textures.get("player");
-	}
-	public Texture getTilesTexture(){
-		return this.textures.get("tiles");
-	}
-	public Texture getWalker1Texture(){
-		return this.textures.get("player");
-	}
+	
 	public Texture getTexture(String textureName) {
 		Texture t = this.textures.get(textureName);
 		if (t == null) {
@@ -58,6 +39,7 @@ public class SharedTextures {
 				t = TextureIO.newTexture(new File(spriteBaseURL+textureName+".png"), false);
 				if (t != null) {
 					this.textures.put(textureName, t);
+					System.out.println("Loaded texture: "+textureName);
 				} else {
 					System.out.println("Texture: "+textureName+" could not be loaded!");
 				}

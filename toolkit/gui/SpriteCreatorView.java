@@ -1,6 +1,6 @@
 package gui;
 
-import graphics.Actor;
+import graphics.opengl.Actor;
 
 import java.awt.Dimension;
 import java.awt.Frame;

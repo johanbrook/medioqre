@@ -1,4 +1,4 @@
-package graphics;
+package graphics.opengl;
 
 import javax.media.opengl.GLAutoDrawable;
 

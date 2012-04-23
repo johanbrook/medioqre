@@ -52,14 +52,14 @@ public class AppController implements Runnable{
 			lastLoopTime = now;
 			
 			double dt = (double) updateLength / DELTA_RATIO;
-			TimerTool.start("Update");
+//			TimerTool.start("Update");
 			this.ai.updateAI(this.game.getPlayer().getPosition());
 			this.game.update(dt);
-			TimerTool.stop();
+//			TimerTool.stop();
 			
-			TimerTool.start("Rendering");
+//			TimerTool.start("Rendering");
 			this.view.render(dt);
-			TimerTool.stop();
+//			TimerTool.stop();
 			
 			
 			try {

@@ -1,7 +1,7 @@
 package gui;
 
-import graphics.Actor;
-import graphics.Animation;
+import graphics.opengl.Actor;
+import graphics.opengl.Animation;
 
 import javax.swing.JPanel;
 import javax.swing.JComboBox;

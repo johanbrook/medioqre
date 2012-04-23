@@ -1,4 +1,4 @@
-package graphics;
+package graphics.opengl;
 
 import gui.SharedTextures;
 
@@ -220,7 +220,7 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 
 			this.texture.bind(gl);
 			gl.glBegin(GL2.GL_QUADS);
-
+			
 			gl.glTexCoord2f(tX1, tY1);
 			gl.glVertex2f(rX1, rY2);
 
@@ -259,8 +259,7 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 	{
 		try {
 			this.textureName = o.getString("texture");
-			this.texture = SharedTextures.getSharedTextures().getTexture(
-					this.textureName);
+			this.texture = null;
 			this.x = o.getInt("x");
 			this.y = o.getInt("y");
 			this.width = o.getInt("width");

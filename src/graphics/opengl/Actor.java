@@ -1,4 +1,4 @@
-package graphics;
+package graphics.opengl;
 
 import java.util.IdentityHashMap;
 import java.util.Map;
@@ -31,10 +31,7 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	private String name;
 
 	// Position
-	private int x;
-	private int y;
-	private int width;
-	private int height;
+	private Rectangle rectangle;
 
 	//************* Getters *************
 	/**
@@ -44,7 +41,7 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	 */
 	public int getX()
 	{
-		return this.x;
+		return this.rectangle.getX();
 	}
 
 	/**
@@ -54,7 +51,7 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	 */
 	public int getY()
 	{
-		return this.y;
+		return this.rectangle.getY();
 	}
 
 	/**
@@ -64,7 +61,7 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	 */
 	public int getWidth()
 	{
-		return this.width;
+		return this.rectangle.getWidth();
 	}
 
 	/**
@@ -74,9 +71,19 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	 */
 	public int getHeight()
 	{
-		return this.height;
+		return this.rectangle.getHeight();
 	}
-
+	
+	/**
+	 * Get the rectangle representing the x, y, width and height of the actor.
+	 * 
+	 * @return The rectangle.
+	 */
+	public Rectangle getRectangle()
+	{
+		return this.rectangle;
+	}
+	
 	public Animation getCurrentAnimation()
 	{
 		return this.currentAnimation;
@@ -110,7 +117,7 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	 */
 	public void setX(int x)
 	{
-		this.x = x;
+		this.rectangle.setX(x);
 	}
 
 	/**
@@ -120,7 +127,7 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	 */
 	public void setY(int y)
 	{
-		this.y = y;
+		this.rectangle.setY(y);
 	}
 
 	/**
@@ -130,7 +137,7 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	 */
 	public void setWidth(int width)
 	{
-		this.width = width;
+		this.rectangle.setWidth(width);
 	}
 
 	/**
@@ -140,7 +147,7 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	 */
 	public void setHeight(int height)
 	{
-		this.height = height;
+		this.rectangle.setHeight(height);
 	}
 
 	/**
@@ -203,10 +210,7 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 			Map<String, Animation> animations)
 	{
 		this.name = name;
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
+		this.rectangle = new Rectangle(x, y, width, height);
 		this.animations = animations;
 	}
 
@@ -249,10 +253,10 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 		JSONObject retObj = new JSONObject();
 		try {
 			retObj.put("name", this.name);
-			retObj.put("x", this.x);
-			retObj.put("y", this.y);
-			retObj.put("width", this.width);
-			retObj.put("height", this.height);
+			retObj.put("x", this.rectangle.getX());
+			retObj.put("y", this.rectangle.getY());
+			retObj.put("width", this.rectangle.getWidth());
+			retObj.put("height", this.rectangle.getHeight());
 
 			JSONArray anim = new JSONArray();
 			for (Animation a : this.animations.values()) {
@@ -272,11 +276,10 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	{
 		try {
 			this.name = o.getString("name");
-			this.x = o.getInt("x");
-			this.y = o.getInt("y");
-			this.width = o.getInt("width");
-			this.height = o.getInt("height");
-
+			this.rectangle = new Rectangle(o.getInt("x"), o.getInt("y"), o.getInt("width"), o.getInt("height"));
+		
+			System.out.println("Loading: "+o.getInt("x")+","+ o.getInt("y")+","+ o.getInt("width")+","+ o.getInt("height"));
+			
 			JSONArray anim = o.getJSONArray("animations");
 			this.animations = new TreeMap<String, Animation>();
 			for (int i = 0; i < anim.length(); i++) {
@@ -297,8 +300,8 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	 */
 	public String toStringFull()
 	{
-		return ("Actor: " + this.name + " Position: (" + this.x + "," + this.y
-				+ ") Size (w,h): (" + this.width + "," + this.height + ")");
+		return ("Actor: " + this.name + " Position: (" + this.rectangle.getX() + "," + this.rectangle.getY()
+				+ ") Size (w,h): (" + this.rectangle.getWidth() + "," + this.rectangle.getHeight() + ")");
 	}
 
 	public String toString()
