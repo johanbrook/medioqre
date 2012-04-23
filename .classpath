@@ -3,11 +3,32 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="src" path="res"/>
+	<classpathentry kind="src" path="toolkit"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="libs"/>
 	<classpathentry kind="lib" path="libs/CodecWav.jar"/>
 	<classpathentry kind="lib" path="libs/LibraryJavaSound.jar"/>
 	<classpathentry kind="lib" path="libs/SoundSystem.jar"/>
+	<classpathentry kind="lib" path="libs/gluegen-rt.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="Medioqre/libs/lib"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="libs/jogl.all.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="Medioqre/libs/lib"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="libs/nativewindow-natives-macosx-universal.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="Medioqre/libs/lib"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="libs/newt-natives-macosx-universal.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="Medioqre/libs/lib"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -63,7 +63,7 @@ public class ViewController implements IEventHandler {
 	private BitmapFont fpsBitmap;
 	private BufferedImage screenImage;
 	private Bitmap collisionBoxBox;
-	
+
 	private GraphicalFPSMeter fpsmeter;
 
 	public ViewController(KeyListener listener, int screenWidth,
@@ -167,7 +167,6 @@ public class ViewController implements IEventHandler {
 						int x =	SCREEN_WIDTH / 2 + this.player.getEntity().getOffsetX();
 						int y = SCREEN_HEIGHT / 2 + this.player.getEntity().getOffsetY();
 //						screen.blit(collisionBoxBox, x, y);
-						
 					} else
 						System.out.println("Playerimage is null!");
 				}
