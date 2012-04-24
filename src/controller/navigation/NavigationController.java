@@ -11,6 +11,10 @@ import java.util.Set;
 import model.character.Player;
 
 import constants.Direction;
+import event.Event;
+import event.EventBus;
+import event.IEventHandler;
+import event.Event.Property;
 
 /**
  *	The class responsible for handling navigational events.
@@ -35,6 +39,7 @@ public class NavigationController implements KeyListener {
 	private NavigationKey left;
 	private NavigationKey right;
 	private Key shoot;
+	private Key weaponModifier;
 	
 	
 	/**
@@ -62,9 +67,28 @@ public class NavigationController implements KeyListener {
 		
 		this.shoot = new Key("shoot", new Callable() {
 			@Override
-			public void action() {
+			public void on() {
 				System.out.println("** Attacked once **");
 				player.attack();
+			}
+
+			@Override
+			public void off() {
+				
+			}
+		});
+		
+		this.weaponModifier = new Key("chose_weapon", new Callable() {
+			@Override
+			public void on() {
+				System.out.println("Show weapon menu");
+				EventBus.INSTANCE.publish(new Event(Property.SHOW_WEAPON_MENU, player));
+			}
+
+			@Override
+			public void off() {
+				System.out.println("Hide weapon menu");
+				EventBus.INSTANCE.publish(new Event(Property.HIDE_WEAPON_MENU, player));
 			}
 		});
 		
@@ -73,6 +97,7 @@ public class NavigationController implements KeyListener {
 		this.keyMap.put(KeyEvent.VK_S, this.down);
 		this.keyMap.put(KeyEvent.VK_D, this.right);
 		this.keyMap.put(KeyEvent.VK_SPACE, this.shoot);
+		this.keyMap.put(KeyEvent.VK_SHIFT, this.weaponModifier);
 	}
 
 	
@@ -140,6 +165,9 @@ public class NavigationController implements KeyListener {
 		if(a instanceof NavigationKey){
 			this.navKeys.remove(a);
 			refreshDirection();
+		}
+		else {
+			a.fireUp();
 		}
 		
 		

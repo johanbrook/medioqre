@@ -10,7 +10,8 @@ import model.character.Player;
 import constants.Direction;
 
 interface Callable {
-	public void action();
+	public void on();
+	public void off();
 }
 
 public class Key {
@@ -24,7 +25,12 @@ public class Key {
 	
 	public void fire() {
 		if(callback != null)
-			callback.action();
+			callback.on();
+	}
+	
+	public void fireUp(){
+		if(callback != null)
+			callback.off();
 	}
 	
 	public String getKey() {

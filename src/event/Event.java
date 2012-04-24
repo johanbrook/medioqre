@@ -38,7 +38,9 @@ public class Event {
 		WAS_DAMAGED,
 		DID_ATTACK,
 		PICKED_UP_ITEM,
-		INIT_MODEL;
+		INIT_MODEL,
+		SHOW_WEAPON_MENU,
+		HIDE_WEAPON_MENU;
 	}
 	
 	private final Property name;
