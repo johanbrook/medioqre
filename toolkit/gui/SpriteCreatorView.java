@@ -57,27 +57,28 @@ public class SpriteCreatorView extends JFrame implements GLEventListener,
 		canvas.setBackground(Color.LIGHT_GRAY);
 
 		canvas.addGLEventListener(this);
-		
+
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
-		
+
 		JMenu mnFile = new JMenu("File");
 		menuBar.add(mnFile);
-		
+
 		JMenuItem mntmOpen = new JMenuItem("Open...");
 		mntmOpen.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent arg0)
 			{
 				JFileChooser chooser = new JFileChooser();
-			    
-			    int returnVal = chooser.showOpenDialog(getParent());
-			    if(returnVal == JFileChooser.APPROVE_OPTION) {
+
+				int returnVal = chooser.showOpenDialog(getParent());
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					try {
-						InputStream inputStream = new FileInputStream(new File(chooser.getSelectedFile().getAbsolutePath()));
+						InputStream inputStream = new FileInputStream(new File(
+								chooser.getSelectedFile().getAbsolutePath()));
 						String inputString = IOUtils.toString(inputStream);
-						
+
 						JSONObject jSon = new JSONObject(inputString);
 						player = new Actor(jSon);
 						actorEdit.addActor(player);
@@ -87,19 +88,22 @@ public class SpriteCreatorView extends JFrame implements GLEventListener,
 					} catch (JSONException e) {
 						System.out.println("Couldn't load file!");
 						e.printStackTrace();
-					}   	
-			    }	
+					}
+				}
 			}
 		});
-		mntmOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.META_MASK));
+		mntmOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O,
+				InputEvent.META_MASK));
 		mnFile.add(mntmOpen);
-		
+
 		JMenuItem mntmSave = new JMenuItem("Save");
-		mntmSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.META_MASK));
+		mntmSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
+				InputEvent.META_MASK));
 		mnFile.add(mntmSave);
-		
+
 		JMenuItem mntmSaveAs = new JMenuItem("Save as\u2026");
-		mntmSaveAs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.SHIFT_MASK | InputEvent.META_MASK));
+		mntmSaveAs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
+				InputEvent.SHIFT_MASK | InputEvent.META_MASK));
 		mnFile.add(mntmSaveAs);
 
 		Frame animationView = new Frame("SpriteView");
@@ -117,11 +121,11 @@ public class SpriteCreatorView extends JFrame implements GLEventListener,
 
 	private void reloadSprite(Actor newPlayer)
 	{
-//		synchronized (this.player) {
-//			System.out.println("Selected animation: "+this.animationEdit.getSelectedAnimation());
-//			newPlayer.setAnimation(this.animationEdit.getSelectedAnimation());
-//			this.player = newPlayer;
-//		}
+		// synchronized (this.player) {
+		// System.out.println("Selected animation: "+this.animationEdit.getSelectedAnimation());
+		// newPlayer.setAnimation(this.animationEdit.getSelectedAnimation());
+		// this.player = newPlayer;
+		// }
 	}
 
 	private void saveState()
@@ -147,8 +151,10 @@ public class SpriteCreatorView extends JFrame implements GLEventListener,
 		GL2 gl = arg0.getGL().getGL2();
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
 
-		this.player.getCurrentAnimation().update(dt);
-		this.player.render(this.rect, this.target, arg0);
+		if (this.player != null && this.player.getCurrentAnimation() != null) {
+			this.player.getCurrentAnimation().update(dt);
+			this.player.render(this.rect, this.target, arg0);
+		}
 	}
 
 	@Override
@@ -165,7 +171,6 @@ public class SpriteCreatorView extends JFrame implements GLEventListener,
 				this.player.getWidth(), this.player.getHeight());
 
 		String jSon = "{\"animations\":[{\"duration\":500,\"frames\":[{\"height\":16,\"texture\":\"pokemon\",\"width\":13,\"y\":8,\"x\":95},{\"height\":17,\"texture\":\"pokemon\",\"width\":13,\"y\":7,\"x\":81}],\"name\":\"moveLeft\"},{\"duration\":500,\"frames\":[{\"height\":16,\"texture\":\"pokemon\",\"width\":15,\"y\":8,\"x\":142},{\"height\":16,\"texture\":\"pokemon\",\"width\":15,\"y\":8,\"x\":125}],\"name\":\"moveUp\"},{\"duration\":500,\"frames\":[{\"height\":16,\"texture\":\"pokemon\",\"width\":13,\"y\":8,\"x\":53},{\"height\":17,\"texture\":\"pokemon\",\"width\":13,\"y\":7,\"x\":67}],\"name\":\"moveRight\"}],\"height\":128,\"width\":128,\"name\":\"New Actor\",\"y\":0,\"x\":0}";
-
 
 		// String jSon2 =
 		// "{\"animations\":[{\"duration\":500,\"frames\":[{\"height\":64,\"texture\":\"pokemon\",\"width\":64,\"y\":8,\"x\":50}],\"name\":\"moveLeft\"}],\"height\":64,\"width\":64,\"name\":\"player\",\"y\":0,\"x\":0}";
@@ -198,21 +203,24 @@ public class SpriteCreatorView extends JFrame implements GLEventListener,
 	{
 		if (e.getActionCommand().equals("actor")) {
 			this.animationEdit.setActor(this.actorEdit.getSelectedActor());
-			this.spriteEdit.setAnimation(this.animationEdit.getSelectedAnimation());
+			this.spriteEdit.setAnimation(this.animationEdit
+					.getSelectedAnimation());
 		} else if (e.getActionCommand().equals("animation")) {
 			this.spriteEdit.setAnimation(this.animationEdit
 					.getSelectedAnimation());
 		} else if (e.getActionCommand().equals("sprite")) {
-			
+
 		} else if (e.getActionCommand().equals("reload")) {
 			this.spriteEdit.saveState();
 			this.animationEdit.saveState();
 			this.actorEdit.saveState();
-			
+
 			this.player = new Actor(this.actorEdit.getSelectedActor()
 					.serialize());
-			this.player.setCurrentAnimation(this.animationEdit.getSelectedAnimation().getName());
-			this.rect = new Rectangle(this.player.getX(), this.player.getY(), this.player.getWidth(), this.player.getHeight());
+			this.player.setCurrentAnimation(this.animationEdit
+					.getSelectedAnimation().getName());
+			this.rect = new Rectangle(this.player.getX(), this.player.getY(),
+					this.player.getWidth(), this.player.getHeight());
 		}
 	}
 

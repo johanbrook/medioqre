@@ -6,6 +6,8 @@ import java.util.TreeMap;
 
 import javax.media.opengl.GLAutoDrawable;
 
+import model.Entity;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,6 +35,9 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	// Position
 	private Rectangle rectangle;
 
+	// Entity
+	private Entity entity;
+	
 	//************* Getters *************
 	/**
 	 * Get the x coordinate of the actor.
@@ -108,6 +113,15 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	{
 		return this.name;
 	}
+	
+	/**
+	 * Get the entity that the actor is following.
+	 * @return The entity.
+	 */
+	public Entity getEntity()
+	{
+		return this.entity;
+	}
 
 	//************* Setters *************
 	/**
@@ -179,6 +193,15 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	{
 		this.name = name;
 	}
+	
+	/**
+	 * Set the entity that the actor should follow.
+	 * @param e The Entity.
+	 */
+	public void setEntity(Entity e)
+	{
+		this.entity = e;
+	}
 
 	//************* Animations *************
 	/**
@@ -240,6 +263,16 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 
 	}
 
+	/**
+	 * Creates an actor that follows the provided entity.
+	 * @param o JSON object.
+	 * @param e Entity.
+	 */
+	public Actor(JSONObject o, Entity e) {
+		this(o);
+		
+	}
+	
 	@Override
 	public void render(Rectangle object, Rectangle target, GLAutoDrawable canvas)
 	{

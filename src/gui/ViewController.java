@@ -23,6 +23,7 @@ import tools.GraphicalFPSMeter;
 import tools.TimerTool;
 
 import model.Entity;
+import model.GameModel;
 
 import core.Rectangle;
 import event.Event;
@@ -40,7 +41,7 @@ public class ViewController implements IEventHandler, GLEventListener {
 
 	// Screen
 	private Rectangle target;
-	
+
 	// Actors
 	private Actor player;
 	private Map<Entity, Actor> enemies;
@@ -48,6 +49,8 @@ public class ViewController implements IEventHandler, GLEventListener {
 	// Tools
 	private GraphicalFPSMeter fpsmeter;
 	private GraphicalFPSMeter repaintFps;
+	
+	private GLAutoDrawable canvas;
 
 	public ViewController(KeyListener listener, int screenWidth,
 			int screenHeight)
@@ -56,7 +59,7 @@ public class ViewController implements IEventHandler, GLEventListener {
 
 		this.fpsmeter = new GraphicalFPSMeter();
 		this.repaintFps = new GraphicalFPSMeter();
-		
+
 		this.target = new Rectangle(0, 0, screenWidth, screenHeight);
 
 		// Creating the frame
@@ -70,6 +73,7 @@ public class ViewController implements IEventHandler, GLEventListener {
 		canvas.requestFocusInWindow();
 		canvas.addKeyListener(listener);
 		canvas.addGLEventListener(this);
+		this.canvas = canvas;
 
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
@@ -77,40 +81,75 @@ public class ViewController implements IEventHandler, GLEventListener {
 		frame.setVisible(true);
 		frame.pack();
 		frame.setLocationRelativeTo(null);
-	
+		
 		FPSAnimator anim = new FPSAnimator(canvas, 30);
-//		Animator anim = new Animator(canvas);
-		this.initScene();
-		anim.start();	
+		anim.start();
 	}
 
 	private void initScene()
 	{
-		try {
-			this.player = new Actor(new JSONObject("{\"animations\":[{\"duration\":400,\"frames\":[{\"height\":16,\"texture\":\"pokemon\",\"width\":13,\"y\":8,\"x\":53},{\"height\":17,\"texture\":\"pokemon\",\"width\":13,\"y\":7,\"x\":67}],\"name\":\"moveLeft\"}],\"height\":64,\"width\":64,\"name\":\"Derp\",\"y\":0,\"x\":0}"));
-			this.player.setCurrentAnimation("moveLeft");
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	
-	public void render(double dt)
-	{	
-//		fpsmeter.tick();
-//		System.out.println("fps: " + this.fpsmeter.currentFPS);
 
+	}
+
+	public void render(double dt)
+	{
+		// fpsmeter.tick();
+		// System.out.println("fps: " + this.fpsmeter.currentFPS);
 	}
 
 	@Override
 	public void onEvent(Event evt)
 	{
 
+		
+		
 		if (evt.getProperty() == Event.Property.INIT_MODEL) {
+			GameModel gm = (GameModel) evt.getValue();
+			try {
+				this.player = new Actor(
+						new JSONObject(
+								"{\"animations\":[{\"duration\":500,\"frames\":[{\"height\":32,\"texture\":\"frank\",\"width\":16,\"y\":0,\"x\":32},{\"height\":32,\"texture\":\"frank\",\"width\":16,\"y\":32,\"x\":32},{\"height\":32,\"texture\":\"frank\",\"width\":16,\"y\":64,\"x\":32},{\"height\":32,\"texture\":\"frank\",\"width\":16,\"y\":96,\"x\":33}],\"name\":\"moveW\"},{\"duration\":500,\"frames\":[{\"height\":32,\"texture\":\"frank\",\"width\":16,\"y\":0,\"x\":0},{\"height\":32,\"texture\":\"frank\",\"width\":16,\"y\":32,\"x\":0},{\"height\":32,\"texture\":\"frank\",\"width\":16,\"y\":64,\"x\":0},{\"height\":32,\"texture\":\"frank\",\"width\":16,\"y\":96,\"x\":0}],\"name\":\"moveS\"},{\"duration\":500,\"frames\":[{\"height\":32,\"texture\":\"frank\",\"width\":16,\"y\":0,\"x\":16},{\"height\":32,\"texture\":\"frank\",\"width\":16,\"y\":32,\"x\":16},{\"height\":32,\"texture\":\"frank\",\"width\":16,\"y\":64,\"x\":16},{\"height\":32,\"texture\":\"frank\",\"width\":16,\"y\":96,\"x\":17}],\"name\":\"moveSW\"}],\"height\":64,\"width\":32,\"name\":\"player\",\"y\":0,\"x\":0}"),
+						gm.getPlayer());
+				this.player.setCurrentAnimation("moveS");
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 		if (evt.getValue() instanceof Entity) {
+			if (evt.getProperty() == Event.Property.DID_MOVE) {
+				Entity e = (Entity) evt.getValue();
+				if (this.player.getEntity() == evt.getValue()) {
+					System.out.println("Derp");
+					switch (e.getDirection()) {
+					case SOUTH:
+						this.player.setCurrentAnimation("moveS");
+						break;
+					case SOUTH_WEST:
+						this.player.setCurrentAnimation("moveSW");
+						break;
+					case WEST:
+						this.player.setCurrentAnimation("moveW");
+						break;
+					case NORTH_WEST:
+						this.player.setCurrentAnimation("moveNW");
+						break;
+					case NORTH:
+						this.player.setCurrentAnimation("moveN");
+						break;
+					case NORTH_EAST:
+						this.player.setCurrentAnimation("moveNE");
+						break;
+					case EAST:
+						this.player.setCurrentAnimation("moveE");
+						break;
+					case SOUTH_EAST:
+						this.player.setCurrentAnimation("moveSE");
+						break;
+					}
+				}
+			}
 		}
 	}
 
@@ -119,13 +158,17 @@ public class ViewController implements IEventHandler, GLEventListener {
 	{
 		fpsmeter.tick();
 		System.out.println("fps: " + this.fpsmeter.currentFPS);
-		
+
 		GL2 gl = arg0.getGL().getGL2();
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
-		
-		this.player.getCurrentAnimation().update(16);
-		this.player.render(this.player.getRectangle(), this.target, arg0);
-		System.out.println("R: "+ this.player.getRectangle().getWidth() + ", "+ this.player.getRectangle().getHeight());
+
+		if (this.player != null && this.player.getCurrentAnimation() != null) {
+			this.player.getCurrentAnimation().update(16);
+			this.player.render(this.player.getRectangle(), this.target, arg0);
+			
+//			System.out.println("R: " + this.player.getRectangle().getWidth() + ", "
+//					+ this.player.getRectangle().getHeight());
+		}
 	}
 
 	@Override
@@ -137,10 +180,15 @@ public class ViewController implements IEventHandler, GLEventListener {
 		gl.glTexEnvf(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE,
 				GL2.GL_MODULATE);
 	}
-	
+
 	@Override
-	public void dispose(GLAutoDrawable arg0) {}
+	public void dispose(GLAutoDrawable arg0)
+	{
+	}
+
 	@Override
 	public void reshape(GLAutoDrawable arg0, int arg1, int arg2, int arg3,
-			int arg4) {}
+			int arg4)
+	{
+	}
 }
