@@ -122,7 +122,7 @@ public class ViewController implements IEventHandler, GLEventListener {
 				List<Enemy> en = gm.getEnemies();
 				this.enemies = new IdentityHashMap<Entity, Actor>();
 				for (Enemy e : en) {
-					Actor newA = new Actor(new JSONObject(ResourceLoader.loadStringFromResourceFolder("frank.actor")),e);
+					Actor newA = new Actor(new JSONObject(ResourceLoader.loadStringFromResourceFolder("walker1.actor")),e);
 					this.enemies.put(e, newA);
 					this.screen.addDrawableToLayer(newA, 0);
 				}
