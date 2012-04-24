@@ -2,10 +2,8 @@ package controller.navigation;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import model.character.Player;
@@ -13,7 +11,6 @@ import model.character.Player;
 import constants.Direction;
 import event.Event;
 import event.EventBus;
-import event.IEventHandler;
 import event.Event.Property;
 
 /**
@@ -68,7 +65,6 @@ public class NavigationController implements KeyListener {
 		this.shoot = new Key("shoot", new Callable() {
 			@Override
 			public void on() {
-				System.out.println("** Attacked once **");
 				player.attack();
 			}
 
@@ -82,13 +78,13 @@ public class NavigationController implements KeyListener {
 			@Override
 			public void on() {
 				System.out.println("Show weapon menu");
-				EventBus.INSTANCE.publish(new Event(Property.SHOW_WEAPON_MENU, player));
+				EventBus.INSTANCE.publish(new Event(Property.WEAPON_MENU_SHOW, player));
 			}
 
 			@Override
 			public void off() {
 				System.out.println("Hide weapon menu");
-				EventBus.INSTANCE.publish(new Event(Property.HIDE_WEAPON_MENU, player));
+				EventBus.INSTANCE.publish(new Event(Property.WEAPON_MENU_HIDE, player));
 			}
 		});
 		
