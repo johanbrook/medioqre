@@ -43,6 +43,7 @@ public class ViewController implements IEventHandler, GLEventListener {
 
 	// Screen
 	private Rectangle target;
+	private Screen screen;
 
 	// Actors
 	private Actor player;
@@ -62,7 +63,7 @@ public class ViewController implements IEventHandler, GLEventListener {
 		this.fpsmeter = new GraphicalFPSMeter();
 		this.repaintFps = new GraphicalFPSMeter();
 
-		this.target = new Rectangle(0, 0, screenWidth, screenHeight);
+		this.screen = new Screen(0, 0, screenWidth, screenHeight);
 
 		// Creating the frame
 		GLProfile glP = GLProfile.getDefault();
@@ -102,9 +103,6 @@ public class ViewController implements IEventHandler, GLEventListener {
 	@Override
 	public void onEvent(Event evt)
 	{
-
-		
-		
 		if (evt.getProperty() == Event.Property.INIT_MODEL) {
 			GameModel gm = (GameModel) evt.getValue();
 			try {
@@ -122,33 +120,7 @@ public class ViewController implements IEventHandler, GLEventListener {
 			if (evt.getProperty() == Event.Property.DID_MOVE) {
 				Entity e = (Entity) evt.getValue();
 				if (evt.getValue() instanceof Player) {
-					System.out.println("Derp");
-					switch (e.getDirection()) {
-					case SOUTH:
-						this.player.setCurrentAnimation("moveS");
-						break;
-					case SOUTH_WEST:
-						this.player.setCurrentAnimation("moveSW");
-						break;
-					case WEST:
-						this.player.setCurrentAnimation("moveW");
-						break;
-					case NORTH_WEST:
-						this.player.setCurrentAnimation("moveNW");
-						break;
-					case NORTH:
-						this.player.setCurrentAnimation("moveN");
-						break;
-					case NORTH_EAST:
-						this.player.setCurrentAnimation("moveNE");
-						break;
-					case EAST:
-						this.player.setCurrentAnimation("moveE");
-						break;
-					case SOUTH_EAST:
-						this.player.setCurrentAnimation("moveSE");
-						break;
-					}
+					
 				}
 			}
 		}
@@ -163,13 +135,7 @@ public class ViewController implements IEventHandler, GLEventListener {
 		GL2 gl = arg0.getGL().getGL2();
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
 
-		if (this.player != null && this.player.getCurrentAnimation() != null) {
-			this.player.getCurrentAnimation().update(16);
-			this.player.render(this.player.getRectangle(), this.target, arg0);
-			
-//			System.out.println("R: " + this.player.getRectangle().getWidth() + ", "
-//					+ this.player.getRectangle().getHeight());
-		}
+		this.screen.render(this.screen.getBounds(), this.screen.getBounds(), arg0);
 	}
 
 	@Override

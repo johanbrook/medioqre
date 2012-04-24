@@ -179,7 +179,8 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	 */
 	public void setCurrentAnimation(String animationName)
 	{
-		this.currentAnimation = this.animations.get(animationName);
+		Animation newAnimation = this.animations.get(animationName);
+		this.currentAnimation = newAnimation != null ? newAnimation : this.currentAnimation;
 	}
 
 	/**
@@ -229,6 +230,45 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 		}
 
 		this.animations.put(animation.getName(), animation);
+	}
+
+	// Update
+	@Override
+	public void update(double dt)
+	{
+		if (this.entity != null) {
+			String animation = "";
+			
+			switch (this.entity.getDirection()) {
+			case SOUTH:
+				animation = this.entity.isMoving() ? "moveS" : "stopS";
+				break;
+			case SOUTH_WEST:
+				animation = this.entity.isMoving() ? "moveSW" : "stopSW";
+				break;
+			case WEST:
+				animation = this.entity.isMoving() ? "moveW" : "stopW";
+				break;
+			case NORTH_WEST:
+				animation = this.entity.isMoving() ? "moveNW" : "stopNW";
+				break;
+			case NORTH:
+				animation = this.entity.isMoving() ? "moveN" : "stopN";
+				break;
+			case NORTH_EAST:
+				animation = this.entity.isMoving() ? "moveNE" : "stopNE";
+				break;
+			case EAST:
+				animation = this.entity.isMoving() ? "moveE" : "stopE";
+				break;
+			case SOUTH_EAST:
+				animation = this.entity.isMoving() ? "moveSE" : "stopSE";
+				break;			
+			}
+			this.setCurrentAnimation(animation);
+		}
+		if (this.currentAnimation != null)
+			this.currentAnimation.update(dt);
 	}
 
 	// ************* Constructors *************
@@ -286,8 +326,6 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	public Actor(JSONObject o)
 	{
 		this.deserialize(o);
-		this.setCurrentAnimation("moveLeft");
-
 	}
 
 	/**
@@ -301,7 +339,7 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	public Actor(JSONObject o, Entity e)
 	{
 		this(o);
-
+		this.entity = e;
 	}
 
 	@Override
@@ -375,5 +413,14 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	public String toString()
 	{
 		return this.name;
+	}
+
+	@Override
+	public Rectangle getBounds()
+	{
+		if (this.currentAnimation != null) 
+			return this.currentAnimation.getBounds();
+			
+		return null;
 	}
 }

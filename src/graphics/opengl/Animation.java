@@ -22,6 +22,7 @@ public class Animation implements JSONSerializable, GLRenderableObject {
 
 	private String name;
 	private Sprite[] frames;
+	private Sprite currentSprite;
 	private double durationMillis;
 
 	private double timePassed;
@@ -129,14 +130,10 @@ public class Animation implements JSONSerializable, GLRenderableObject {
 		this.frames = newFrames;
 	}
 
-	/**
-	 * Update the animation.
-	 * 
-	 * @param millisSinceLastFrame The amount of milliseconds since last update.
-	 */
-	public void update(double millisSinceLastFrame)
+	@Override
+	public void update(double dt)
 	{
-		this.timePassed += millisSinceLastFrame;
+		this.timePassed += dt;
 		if (this.timePassed >= durationMillis)
 			this.timePassed = 0;
 	}
@@ -151,8 +148,8 @@ public class Animation implements JSONSerializable, GLRenderableObject {
 	@Override
 	public void render(Rectangle object, Rectangle target, GLAutoDrawable canvas)
 	{
-		this.frames[(int) ((this.timePassed / this.durationMillis) * (double) (this.frames.length))]
-				.render(object, target, canvas);
+		this.currentSprite = this.frames[(int) ((this.timePassed / this.durationMillis) * (double) (this.frames.length))];
+		this.currentSprite.render(object, target, canvas);
 	}
 
 	@Override
@@ -193,6 +190,14 @@ public class Animation implements JSONSerializable, GLRenderableObject {
 			System.out.println("Failed to deserialize Animation!");
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public Rectangle getBounds()
+	{
+		if (this.currentSprite != null)
+			return this.currentSprite.getBounds();
+		return null;
 	}
 
 }

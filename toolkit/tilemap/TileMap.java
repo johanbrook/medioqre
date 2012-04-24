@@ -134,4 +134,16 @@ public class TileMap implements JSONSerializable, GLRenderableObject{
 			}
 		}
 	}
+	@Override
+	public void update(double dt)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public Rectangle getBounds()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

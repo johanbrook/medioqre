@@ -26,10 +26,7 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 	private String textureName;
 
 	private Texture texture;
-	private int x;
-	private int y;
-	private int width;
-	private int height;
+	private Rectangle rectangle;
 
 	// ************* Constructors *************
 	/**
@@ -61,10 +58,7 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 	{
 		this.textureName = textureName;
 		this.setTexture(this.textureName);
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
+		this.rectangle = new Rectangle(x, y, width, height);
 	}
 
 	// ************* Other *************
@@ -96,7 +90,8 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 	 */
 	public void setX(int x)
 	{
-		this.x = x;
+		if (this.rectangle != null)
+			this.rectangle.setX(x);
 	}
 
 	/**
@@ -107,7 +102,8 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 	 */
 	public void setY(int y)
 	{
-		this.y = y;
+		if (this.rectangle != null)
+			this.rectangle.setY(y);
 	}
 
 	/**
@@ -118,7 +114,8 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 	 */
 	public void setWidth(int width)
 	{
-		this.width = width;
+		if (this.rectangle != null)
+			this.rectangle.setWidth(width);
 	}
 
 	/**
@@ -129,7 +126,12 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 	 */
 	public void setHeight(int height)
 	{
-		this.height = height;
+		if (this.rectangle != null)
+			this.rectangle.setHeight(height);
+	}
+	public void setBounds(Rectangle r)
+	{
+		this.rectangle = r;
 	}
 
 	// ************* Getters *************
@@ -150,7 +152,7 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 	 */
 	public int getX()
 	{
-		return this.x;
+		return this.rectangle.getX();
 	}
 
 	/**
@@ -160,7 +162,7 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 	 */
 	public int getY()
 	{
-		return this.y;
+		return this.rectangle.getY();
 	}
 
 	/**
@@ -170,7 +172,7 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 	 */
 	public int getWidth()
 	{
-		return this.width;
+		return this.rectangle.getWidth();
 	}
 
 	/**
@@ -180,9 +182,15 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 	 */
 	public int getHeight()
 	{
-		return this.height;
+		return this.rectangle.getHeight();
 	}
 
+	@Override
+	public Rectangle getBounds()
+	{
+		return this.rectangle;
+	}
+	
 	// ************* Interface methods *************
 	@Override
 	public void render(Rectangle object, Rectangle target, GLAutoDrawable canvas)
@@ -195,11 +203,11 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 				this.texture = SharedTextures.getSharedTextures().getTexture(
 						this.textureName);
 
-			float tX1 = (float) this.x / (float) texture.getWidth();
-			float tX2 = ((float) this.x + (float) this.width)
+			float tX1 = (float) this.rectangle.getX() / (float) texture.getWidth();
+			float tX2 = ((float) this.rectangle.getX() + (float) this.rectangle.getWidth())
 					/ (float) texture.getWidth();
-			float tY1 = (float) this.y / (float) texture.getHeight();
-			float tY2 = ((float) this.y + (float) this.height)
+			float tY1 = (float) this.rectangle.getY() / (float) texture.getHeight();
+			float tY2 = ((float) this.rectangle.getY() + (float) this.rectangle.getHeight())
 					/ (float) texture.getHeight();
 
 			float rX1 = (float) ((2.0f * object.getX()) - (float) target
@@ -243,10 +251,10 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 		JSONObject retObj = new JSONObject();
 		try {
 			retObj.put("texture", this.textureName);
-			retObj.put("x", this.x);
-			retObj.put("y", this.y);
-			retObj.put("width", this.width);
-			retObj.put("height", this.height);
+			retObj.put("x", this.rectangle.getX());
+			retObj.put("y", this.rectangle.getY());
+			retObj.put("width", this.rectangle.getWidth());
+			retObj.put("height", this.rectangle.getHeight());
 		} catch (JSONException e) {
 			System.out.println("Failed to serialize Sprite!");
 			e.printStackTrace();
@@ -260,13 +268,14 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 		try {
 			this.textureName = o.getString("texture");
 			this.texture = null;
-			this.x = o.getInt("x");
-			this.y = o.getInt("y");
-			this.width = o.getInt("width");
-			this.height = o.getInt("height");
+			this.rectangle = new Rectangle(o.getInt("x"), o.getInt("y"), o.getInt("width"), o.getInt("height"));
 		} catch (JSONException e) {
 			System.out.println("Failed to deserialize Sprite!");
 			e.printStackTrace();
 		}
 	}
+
+	@Override
+	public void update(double dt)
+	{}
 }

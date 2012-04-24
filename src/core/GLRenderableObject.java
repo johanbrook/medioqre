@@ -12,4 +12,15 @@ public interface GLRenderableObject {
 	 */
 	public void render(Rectangle object, Rectangle target, GLAutoDrawable canvas);
 	
+	/**
+	 * Updates the state of the GLRenderableObject.
+	 * @param dt The time passed since last frame.
+	 */
+	public void update(double dt);
+	
+	/**
+	 * Get the bounds of the GLRenderableObject.
+	 * @return The Rectangle representing the bounds.
+	 */
+	public Rectangle getBounds();
 }
