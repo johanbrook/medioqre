@@ -24,8 +24,10 @@ import tools.TimerTool;
 
 import model.Entity;
 import model.GameModel;
+import model.character.Player;
 
 import core.Rectangle;
+import datamanagement.ResourceLoader;
 import event.Event;
 import event.EventBus;
 import event.IEventHandler;
@@ -107,8 +109,7 @@ public class ViewController implements IEventHandler, GLEventListener {
 			GameModel gm = (GameModel) evt.getValue();
 			try {
 				this.player = new Actor(
-						new JSONObject(
-								"{\"animations\":[{\"duration\":500,\"frames\":[{\"height\":32,\"texture\":\"frank\",\"width\":16,\"y\":0,\"x\":32},{\"height\":32,\"texture\":\"frank\",\"width\":16,\"y\":32,\"x\":32},{\"height\":32,\"texture\":\"frank\",\"width\":16,\"y\":64,\"x\":32},{\"height\":32,\"texture\":\"frank\",\"width\":16,\"y\":96,\"x\":33}],\"name\":\"moveW\"},{\"duration\":500,\"frames\":[{\"height\":32,\"texture\":\"frank\",\"width\":16,\"y\":0,\"x\":0},{\"height\":32,\"texture\":\"frank\",\"width\":16,\"y\":32,\"x\":0},{\"height\":32,\"texture\":\"frank\",\"width\":16,\"y\":64,\"x\":0},{\"height\":32,\"texture\":\"frank\",\"width\":16,\"y\":96,\"x\":0}],\"name\":\"moveS\"},{\"duration\":500,\"frames\":[{\"height\":32,\"texture\":\"frank\",\"width\":16,\"y\":0,\"x\":16},{\"height\":32,\"texture\":\"frank\",\"width\":16,\"y\":32,\"x\":16},{\"height\":32,\"texture\":\"frank\",\"width\":16,\"y\":64,\"x\":16},{\"height\":32,\"texture\":\"frank\",\"width\":16,\"y\":96,\"x\":17}],\"name\":\"moveSW\"}],\"height\":64,\"width\":32,\"name\":\"player\",\"y\":0,\"x\":0}"),
+						new JSONObject(ResourceLoader.loadStringFromAbsolutePath("/Users/Barber/Programmering/EclipseProjects/medioqre/res/spritesheets/frank.actor")),
 						gm.getPlayer());
 				this.player.setCurrentAnimation("moveS");
 			} catch (JSONException e) {
@@ -120,7 +121,7 @@ public class ViewController implements IEventHandler, GLEventListener {
 		if (evt.getValue() instanceof Entity) {
 			if (evt.getProperty() == Event.Property.DID_MOVE) {
 				Entity e = (Entity) evt.getValue();
-				if (this.player.getEntity() == evt.getValue()) {
+				if (evt.getValue() instanceof Player) {
 					System.out.println("Derp");
 					switch (e.getDirection()) {
 					case SOUTH:

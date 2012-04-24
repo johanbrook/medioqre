@@ -19,9 +19,10 @@ import core.Rectangle;
 /**
  * A class used to graphically represent a game character.
  * 
- * It's made up by a set of animations that are used to represent different states.
+ * It's made up by a set of animations that are used to represent different
+ * states.
  * 
- * @author Barber 
+ * @author Barber
  */
 public class Actor implements JSONSerializable, GLRenderableObject {
 
@@ -37,8 +38,8 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 
 	// Entity
 	private Entity entity;
-	
-	//************* Getters *************
+
+	// ************* Getters *************
 	/**
 	 * Get the x coordinate of the actor.
 	 * 
@@ -78,7 +79,7 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	{
 		return this.rectangle.getHeight();
 	}
-	
+
 	/**
 	 * Get the rectangle representing the x, y, width and height of the actor.
 	 * 
@@ -88,13 +89,13 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	{
 		return this.rectangle;
 	}
-	
+
 	public Animation getCurrentAnimation()
 	{
 		return this.currentAnimation;
 	}
 
-	/** 
+	/**
 	 * Get a Map with the animations of the actor.
 	 * 
 	 * @return The animations.
@@ -105,7 +106,8 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	}
 
 	/**
-	 * Get the name of the actor. Mostly used when creating actors and when loading them from file.
+	 * Get the name of the actor. Mostly used when creating actors and when
+	 * loading them from file.
 	 * 
 	 * @return The name of the actor.
 	 */
@@ -113,9 +115,10 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	{
 		return this.name;
 	}
-	
+
 	/**
 	 * Get the entity that the actor is following.
+	 * 
 	 * @return The entity.
 	 */
 	public Entity getEntity()
@@ -123,11 +126,12 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 		return this.entity;
 	}
 
-	//************* Setters *************
+	// ************* Setters *************
 	/**
 	 * Set the x coordinate of the actor.
 	 * 
-	 * @param x The x coordinate.
+	 * @param x
+	 *            The x coordinate.
 	 */
 	public void setX(int x)
 	{
@@ -137,7 +141,8 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	/**
 	 * Set the y coordinate of the actor.
 	 * 
-	 * @param y The y coordinate.
+	 * @param y
+	 *            The y coordinate.
 	 */
 	public void setY(int y)
 	{
@@ -147,7 +152,8 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	/**
 	 * Set the width of the actor.
 	 * 
-	 * @param width The width.
+	 * @param width
+	 *            The width.
 	 */
 	public void setWidth(int width)
 	{
@@ -157,7 +163,8 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	/**
 	 * Set the height of the actor.
 	 * 
-	 * @param height The height of the actor.
+	 * @param height
+	 *            The height of the actor.
 	 */
 	public void setHeight(int height)
 	{
@@ -167,7 +174,8 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	/**
 	 * Set the currently displayed animation.
 	 * 
-	 * @param animationName The name of the animation to display.
+	 * @param animationName
+	 *            The name of the animation to display.
 	 */
 	public void setCurrentAnimation(String animationName)
 	{
@@ -177,7 +185,8 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	/**
 	 * Set the animations Map.
 	 * 
-	 * @param animations The new animations.
+	 * @param animations
+	 *            The new animations.
 	 */
 	public void setAnimations(Map<String, Animation> animations)
 	{
@@ -187,47 +196,57 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	/**
 	 * Set the name of the actor.
 	 * 
-	 * @param name The name.
+	 * @param name
+	 *            The name.
 	 */
 	public void setName(String name)
 	{
 		this.name = name;
 	}
-	
+
 	/**
 	 * Set the entity that the actor should follow.
-	 * @param e The Entity.
+	 * 
+	 * @param e
+	 *            The Entity.
 	 */
 	public void setEntity(Entity e)
 	{
 		this.entity = e;
 	}
 
-	//************* Animations *************
+	// ************* Animations *************
 	/**
 	 * Add an animation to the actor.
 	 * 
-	 * @param animation The animation to add.
+	 * @param animation
+	 *            The animation to add.
 	 */
 	public void addAnimation(Animation animation)
 	{
 		if (this.animations == null) {
 			this.animations = new IdentityHashMap<String, Animation>();
 		}
-		
+
 		this.animations.put(animation.getName(), animation);
 	}
 
-	//************* Constructors *************
+	// ************* Constructors *************
 	/**
 	 * Creates an actor with the given animations.
 	 * 
-	 * @param name The name of the actor.
-	 * @param x The x coordinate.
-	 * @param y The y coordinate.
-	 * @param width The width.
-	 * @param height The height.
-	 * @param animations The animations.
+	 * @param name
+	 *            The name of the actor.
+	 * @param x
+	 *            The x coordinate.
+	 * @param y
+	 *            The y coordinate.
+	 * @param width
+	 *            The width.
+	 * @param height
+	 *            The height.
+	 * @param animations
+	 *            The animations.
 	 */
 	public Actor(String name, int x, int y, int width, int height,
 			Map<String, Animation> animations)
@@ -238,23 +257,31 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	}
 
 	/**
-	 * Creates an actor with no animations. Animations needs to be added separately. 
+	 * Creates an actor with no animations. Animations needs to be added
+	 * separately.
 	 * 
-	 * @param name The name.
-	 * @param x The x coordinate.
-	 * @param y The y coordinate.
-	 * @param width The width.
-	 * @param height The height.
+	 * @param name
+	 *            The name.
+	 * @param x
+	 *            The x coordinate.
+	 * @param y
+	 *            The y coordinate.
+	 * @param width
+	 *            The width.
+	 * @param height
+	 *            The height.
 	 */
 	public Actor(String name, int x, int y, int width, int height)
 	{
-		this(name, x, y, width, height, new IdentityHashMap<String, Animation>());
+		this(name, x, y, width, height,
+				new IdentityHashMap<String, Animation>());
 	}
 
 	/**
 	 * Creates an actor from the provided JSON object.
 	 * 
-	 * @param o The JSON object.
+	 * @param o
+	 *            The JSON object.
 	 */
 	public Actor(JSONObject o)
 	{
@@ -265,14 +292,18 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 
 	/**
 	 * Creates an actor that follows the provided entity.
-	 * @param o JSON object.
-	 * @param e Entity.
+	 * 
+	 * @param o
+	 *            JSON object.
+	 * @param e
+	 *            Entity.
 	 */
-	public Actor(JSONObject o, Entity e) {
+	public Actor(JSONObject o, Entity e)
+	{
 		this(o);
-		
+
 	}
-	
+
 	@Override
 	public void render(Rectangle object, Rectangle target, GLAutoDrawable canvas)
 	{
@@ -309,10 +340,13 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	{
 		try {
 			this.name = o.getString("name");
-			this.rectangle = new Rectangle(o.getInt("x"), o.getInt("y"), o.getInt("width"), o.getInt("height"));
-		
-			System.out.println("Loading: "+o.getInt("x")+","+ o.getInt("y")+","+ o.getInt("width")+","+ o.getInt("height"));
-			
+			this.rectangle = new Rectangle(o.getInt("x"), o.getInt("y"),
+					o.getInt("width"), o.getInt("height"));
+
+			System.out.println("Loading: " + o.getInt("x") + ","
+					+ o.getInt("y") + "," + o.getInt("width") + ","
+					+ o.getInt("height"));
+
 			JSONArray anim = o.getJSONArray("animations");
 			this.animations = new TreeMap<String, Animation>();
 			for (int i = 0; i < anim.length(); i++) {
@@ -333,8 +367,9 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	 */
 	public String toStringFull()
 	{
-		return ("Actor: " + this.name + " Position: (" + this.rectangle.getX() + "," + this.rectangle.getY()
-				+ ") Size (w,h): (" + this.rectangle.getWidth() + "," + this.rectangle.getHeight() + ")");
+		return ("Actor: " + this.name + " Position: (" + this.rectangle.getX()
+				+ "," + this.rectangle.getY() + ") Size (w,h): ("
+				+ this.rectangle.getWidth() + "," + this.rectangle.getHeight() + ")");
 	}
 
 	public String toString()
