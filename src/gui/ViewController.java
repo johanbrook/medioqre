@@ -109,7 +109,7 @@ public class ViewController implements IEventHandler, GLEventListener {
 			GameModel gm = (GameModel) evt.getValue();
 			try {
 				this.player = new Actor(
-						new JSONObject(ResourceLoader.loadStringFromAbsolutePath("/Users/Barber/Programmering/EclipseProjects/medioqre/res/spritesheets/frank.actor")),
+						new JSONObject(ResourceLoader.loadStringFromResourceFolder("frank.actor")),
 						gm.getPlayer());
 				this.player.setCurrentAnimation("moveS");
 			} catch (JSONException e) {
@@ -158,7 +158,7 @@ public class ViewController implements IEventHandler, GLEventListener {
 	public void display(GLAutoDrawable arg0)
 	{
 		fpsmeter.tick();
-		System.out.println("fps: " + this.fpsmeter.currentFPS);
+//		System.out.println("fps: " + this.fpsmeter.currentFPS);
 
 		GL2 gl = arg0.getGL().getGL2();
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT);

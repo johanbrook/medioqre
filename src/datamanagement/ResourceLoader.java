@@ -14,9 +14,9 @@ public class ResourceLoader {
 	{
 		InputStream inputStream;
 		try {
-			inputStream = new FileInputStream(new File(absolutePath));
-			String inputString = IOUtils.toString(inputStream);
-			return inputString;
+			InputStream input = new FileInputStream(new File(absolutePath));
+			String load = IOUtils.toString(input);
+			return load;
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -29,10 +29,9 @@ public class ResourceLoader {
 	public static String loadStringFromResourceFolder(String source)
 	{
 		try {
-			
-			System.out.println(ResourceLoader.class.getResource("res/spritesheets/frank.actor"));
-			String s = IOUtils.toString(ResourceLoader.class.getResourceAsStream("res/spritesheets/frank.actor"));// + source));
-			return s;
+			InputStream input = ClassLoader.getSystemResourceAsStream("spritesheets/"+source);
+			String load = IOUtils.toString(input);
+			return load;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
