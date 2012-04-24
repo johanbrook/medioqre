@@ -1,6 +1,9 @@
 package gui;
 
 import java.awt.event.KeyListener;
+import java.util.IdentityHashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import javax.media.opengl.GL;
@@ -24,6 +27,7 @@ import tools.TimerTool;
 
 import model.Entity;
 import model.GameModel;
+import model.character.Enemy;
 import model.character.Player;
 
 import core.Rectangle;
@@ -41,6 +45,9 @@ import graphics.opengl.Actor;
  */
 public class ViewController implements IEventHandler, GLEventListener {
 
+	// State
+	private boolean doneLoading = false;
+	
 	// Screen
 	private Rectangle target;
 	private Screen screen;
@@ -85,7 +92,7 @@ public class ViewController implements IEventHandler, GLEventListener {
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		
-		FPSAnimator anim = new FPSAnimator(canvas, 30);
+		FPSAnimator anim = new FPSAnimator(canvas, 60);
 		anim.start();
 	}
 
@@ -111,17 +118,27 @@ public class ViewController implements IEventHandler, GLEventListener {
 						gm.getPlayer());
 				this.player.setCurrentAnimation("moveS");
 				this.screen.addDrawableToLayer(this.player, 1);
+				
+				List<Enemy> en = gm.getEnemies();
+				this.enemies = new IdentityHashMap<Entity, Actor>();
+				for (Enemy e : en) {
+					Actor newA = new Actor(new JSONObject(ResourceLoader.loadStringFromResourceFolder("frank.actor")),e);
+					this.enemies.put(e, newA);
+					this.screen.addDrawableToLayer(newA, 0);
+				}
+				
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			this.doneLoading = true;
 		}
 
 		if (evt.getValue() instanceof Entity) {
 			if (evt.getProperty() == Event.Property.DID_MOVE) {
 				Entity e = (Entity) evt.getValue();
 				if (evt.getValue() instanceof Player) {
-					
+				
 				}
 			}
 		}
@@ -136,7 +153,10 @@ public class ViewController implements IEventHandler, GLEventListener {
 		GL2 gl = arg0.getGL().getGL2();
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
 
-		this.screen.render(this.screen.getBounds(), this.screen.getBounds(), arg0);
+		TimerTool.start("GL-Screen");
+		if (doneLoading)
+			this.screen.render(this.screen.getBounds(), this.screen.getBounds(), arg0);
+		TimerTool.stop();
 	}
 
 	@Override

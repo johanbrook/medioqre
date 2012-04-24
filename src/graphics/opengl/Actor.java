@@ -266,6 +266,8 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 				break;			
 			}
 			this.setCurrentAnimation(animation);
+			this.rectangle.setX(this.entity.getPosition().x);
+			this.rectangle.setY(this.entity.getPosition().y);
 		}
 		if (this.currentAnimation != null)
 			this.currentAnimation.update(dt);
