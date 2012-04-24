@@ -27,7 +27,12 @@ public class Screen implements GLRenderableObject {
 	public void addDrawableToLayer(GLRenderableObject ro, int zIndex)
 	{
 		if (this.layers == null) {
-			this.layers = new LinkedList[zIndex];
+			this.layers = new LinkedList[zIndex + 1];
+		} else if (this.layers.length < zIndex) {
+			LinkedList[] newLayers = new LinkedList[zIndex];
+			for (int i = 0; i < this.layers.length; i++) {
+				newLayers[i] = this.layers[i];
+			}
 		}
 		if (this.layers[zIndex] == null) {
 			this.layers[zIndex] = new LinkedList<GLRenderableObject>();
@@ -57,10 +62,12 @@ public class Screen implements GLRenderableObject {
 
 		for (int i = 0; i < layers.length; i++) {
 			Collection<GLRenderableObject> tmpLayer = layers[i];
-			for (GLRenderableObject glR : tmpLayer) {
-				if (glR != null) {
-					glR.update(16);
-					glR.render(glR.getBounds(), this.screenSize, canvas);
+			if (tmpLayer != null) {
+				for (GLRenderableObject glR : tmpLayer) {
+					if (glR != null) {
+						glR.update(16);
+						glR.render(glR.getBounds(), this.screenSize, canvas);
+					}
 				}
 			}
 		}

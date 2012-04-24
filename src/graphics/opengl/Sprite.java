@@ -195,7 +195,7 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 	@Override
 	public void render(Rectangle object, Rectangle target, GLAutoDrawable canvas)
 	{
-		if (object.intersectsRectangle(target)) {
+		if (object != null && object.intersectsRectangle(target)) {
 
 			GL2 gl = canvas.getGL().getGL2();
 

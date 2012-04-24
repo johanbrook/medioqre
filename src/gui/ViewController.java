@@ -110,6 +110,7 @@ public class ViewController implements IEventHandler, GLEventListener {
 						new JSONObject(ResourceLoader.loadStringFromResourceFolder("frank.actor")),
 						gm.getPlayer());
 				this.player.setCurrentAnimation("moveS");
+				this.screen.addDrawableToLayer(this.player, 1);
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

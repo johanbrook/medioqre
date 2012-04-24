@@ -345,7 +345,8 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	@Override
 	public void render(Rectangle object, Rectangle target, GLAutoDrawable canvas)
 	{
-		this.currentAnimation.render(object, target, canvas);
+		if (this.currentAnimation != null)
+			this.currentAnimation.render(this.rectangle, target, canvas);
 	}
 
 	@Override
