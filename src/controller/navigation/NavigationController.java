@@ -113,7 +113,7 @@ public class NavigationController implements KeyListener {
 				composite.fire(this.player);
 		}
 		else if(this.navKeys.size() == 1){
-			this.navKeys.first().fire(this.player);
+			this.navKeys.last().fire(this.player);
 		}
 	}
 	
@@ -128,25 +128,20 @@ public class NavigationController implements KeyListener {
 	 */
 	private NavigationKey createCompositeKey() {
 
-		System.out.println("Creating composite: " + this.navKeys);
 		
 		if(this.navKeys.contains(up) && this.navKeys.contains(right)){
-			System.out.println("TOP RIGHT");
 			return new NavigationKey("top_right", null, Direction.NORTH_EAST);
 		}
 		
 		if(this.navKeys.contains(up) && this.navKeys.contains(left)){
-			System.out.println("TOP LEFT");
 			return new NavigationKey("top_left", null, Direction.NORTH_WEST);
 		}
 		
 		if(this.navKeys.contains(down) && this.navKeys.contains(right)){
-			System.out.println("BOTTOM RIGHT");
 			return new NavigationKey("bottom_right", null, Direction.SOUTH_EAST);
 		}
 		
 		if(this.navKeys.contains(down) && this.navKeys.contains(left)){
-			System.out.println("BOTTOM LEFT");
 			return new NavigationKey("bottom_left", null, Direction.SOUTH_WEST);
 		}
 		
@@ -163,7 +158,6 @@ public class NavigationController implements KeyListener {
 			
 			if(a instanceof NavigationKey) {
 				this.navKeys.add((NavigationKey) a);
-				System.out.println("Keys: "+this.navKeys);
 				refreshDirection();
 			}
 			else{
