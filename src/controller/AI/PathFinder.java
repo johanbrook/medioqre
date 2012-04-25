@@ -3,6 +3,7 @@ package controller.AI;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  * Class capable of finding a path between different spots on a gameboard of tiles. Keeps a logic representation of that gameboard.
  * @author jesperpersson
@@ -68,7 +69,6 @@ public class PathFinder {
 						path.add(currentTile.getParent());
 						currentTile = currentTile.getParent();
 					}
-					for (AStarTile t : path)
 					clear();
 					return convertPath(path);
 
@@ -115,24 +115,22 @@ public class PathFinder {
 	 * will be updated, and it will be added to the open list for consideration
 	 */
 	private void updateNeighbors(List<AStarTile> currentNeighbors) {
-		
+
 		for (int k = 0; k < currentNeighbors.size(); k++) {
 
 			// if a tile is closed and the current paths g-value would be lower
 			// than its old g-value, we update the tiles g-value and sets it
-			// parent to
-			// currentTile
+			// adds currentTile as parent
 			if (currentNeighbors.get(k).isClosed() && currentPathIsShorter(currentNeighbors.get(k))) {
-				
+
 				currentNeighbors.get(k).setG(currentTile.isDiagonal(currentNeighbors.get(k)) ? 
 						currentTile.getG() + DIAGONALCOST : currentTile.getG() + 1);
-				
+
 				currentNeighbors.get(k).setParent(currentTile);
 
 				// if a tile is open and the current paths g-value would be
 				// lower than its old g-value, we update the tiles g-value and
-				// sets it parent to
-				// currentTile
+				// adds currentTile as parent
 			} else if (currentNeighbors.get(k).isOpen() && currentPathIsShorter(currentNeighbors.get(k))) {
 				currentNeighbors.get(k).setG(currentTile.isDiagonal(currentNeighbors.get(k)) ?
 						currentTile.getG() + DIAGONALCOST : currentTile.getG() + 1);
@@ -141,18 +139,12 @@ public class PathFinder {
 				// if a tile is neither open nor closed, adds tile to the openList
 				// and set the G-value accordingly.
 			} else if (!currentNeighbors.get(k).isOpen() && !currentNeighbors.get(k).isClosed()) {
-				
-				if (currentNeighbors.get(k).isSolid()) {
-					currentNeighbors.get(k).setClosed(true);
-					
-				} else {
-					
-					currentNeighbors.get(k).setOpen(true);
-					openList.add(currentNeighbors.get(k));
-					currentNeighbors.get(k).setParent(currentTile);
-					currentNeighbors.get(k).setG(currentTile.isDiagonal(currentNeighbors.get(k)) ? 
-							currentTile.getG() + DIAGONALCOST : currentTile.getG() + 1);
-				}
+
+				currentNeighbors.get(k).setOpen(true);
+				openList.add(currentNeighbors.get(k));
+				currentNeighbors.get(k).setParent(currentTile);
+				currentNeighbors.get(k).setG(currentTile.isDiagonal(currentNeighbors.get(k)) ? 
+						currentTile.getG() + DIAGONALCOST : currentTile.getG() + 1);
 			}
 		}
 	}//end updateNeighbors
@@ -169,7 +161,9 @@ public class PathFinder {
 	private void generateNeighbors() {
 		for (int i = 0; i < logicList.length; i++) {
 			for (int l = 0; l < logicList[i].length; l++) {
-				calculateNeighbors(logicList[i][l]);
+				if (logicList[i][l].isSolid() == false){
+					calculateNeighbors(logicList[i][l]);
+				}
 			}
 		}
 	}
@@ -182,28 +176,59 @@ public class PathFinder {
 		int left = tile.getRow() - 1;
 
 		if (top < columns) {
-			tile.addNeighbor(logicList[tile.getRow()][top]);
+			if (isRelevant(tile,logicList[tile.getRow()][top])){
+				tile.addNeighbor(logicList[tile.getRow()][top]);
+			}
+
 			if (right < rows) {
-				tile.addNeighbor(logicList[right][top]);
+				if (isRelevant(tile, logicList[right][top])){
+					tile.addNeighbor(logicList[right][top]);
+				}
 			}
 			if (left >= 0) {
-				tile.addNeighbor(logicList[left][top]);
+				if (isRelevant(tile,logicList[left][top])){
+					tile.addNeighbor(logicList[left][top]);
+				}
 			}
 		}
 		if (buttom >= 0) {
-			tile.addNeighbor(logicList[tile.getRow()][buttom]);
-			if (right < rows) {
-				tile.addNeighbor(logicList[right][buttom]);
+			if (isRelevant(tile,logicList[tile.getRow()][buttom])){
+				tile.addNeighbor(logicList[tile.getRow()][buttom]);
 			}
+
+			if (right < rows) {
+				if (isRelevant(tile,logicList[right][buttom])){
+					tile.addNeighbor(logicList[right][buttom]);
+				}
+			}
+
 			if (left >= 0) {
-				tile.addNeighbor(logicList[left][buttom]);
+				if (isRelevant(tile,logicList[left][buttom])){
+					tile.addNeighbor(logicList[left][buttom]);
+				}
 			}
 		}
 		if (left >= 0) {
-			tile.addNeighbor(logicList[left][tile.getColumn()]);
+			if (isRelevant(tile,logicList[left][tile.getColumn()])){
+				tile.addNeighbor(logicList[left][tile.getColumn()]);
+			}
 		}
 		if (right < rows) {
-			tile.addNeighbor(logicList[right][tile.getColumn()]);
+			if (isRelevant(tile,logicList[right][tile.getColumn()])){
+				tile.addNeighbor(logicList[right][tile.getColumn()]);
+			}
+		}
+	}
+
+	/*
+	 * Checks if a certain tile should be added to the current Tiles list of neighbors
+	 * @return True if the considered tile is not a solid, and the path between the two tiles will not go through a wall.
+	 */
+	private boolean isRelevant(AStarTile currentTile, AStarTile consideredTile){
+		if (consideredTile.isSolid()){
+			return false;
+		}else{
+			return true;
 		}
 	}
 
