@@ -228,7 +228,10 @@ public class PathFinder {
 		if (consideredTile.isSolid()){
 			return false;
 		}else{
-			return true;
+			int dx = consideredTile.getRow() - currentTile.getRow();
+			int dy = consideredTile.getColumn() - currentTile.getColumn();
+			return (!logicList[currentTile.getRow() + dx][currentTile.getColumn()].isSolid() && 
+					!logicList[currentTile.getRow()][currentTile.getColumn() + dy].isSolid());
 		}
 	}
 
