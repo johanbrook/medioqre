@@ -29,10 +29,10 @@ public class AppController implements Runnable{
 		System.out.println("Initializing main controller ...");
 		this.game = new GameModel();
 		
-		this.view = new ViewController(new NavigationController(this.game.getPlayer()), 20*32, 12*32);
+		this.view = new ViewController(new NavigationController(this.game.getPlayer()), 20*64, 12*64);
 		this.ai = new AIController(this.game.getEnemies(), 48, 48, 32, 32);
 		
-		this.audio = AudioController.getInstance();
+//		this.audio = AudioController.getInstance();
 		
 		EventBus.INSTANCE.publish(new Event(Event.Property.INIT_MODEL, this.game));
 		
