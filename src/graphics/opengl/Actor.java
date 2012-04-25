@@ -348,7 +348,7 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	public void render(Rectangle object, Rectangle target, GLAutoDrawable canvas)
 	{
 		if (this.currentAnimation != null)
-			this.currentAnimation.render(this.rectangle, target, canvas);
+			this.currentAnimation.render(object, target, canvas);
 	}
 
 	@Override
@@ -421,9 +421,6 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	@Override
 	public Rectangle getBounds()
 	{
-		if (this.currentAnimation != null) 
-			return this.currentAnimation.getBounds();
-			
-		return null;
+		return this.rectangle;
 	}
 }
