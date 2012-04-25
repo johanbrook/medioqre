@@ -23,12 +23,10 @@ public class GameModel implements IGameModel, IMessageListener {
 
 	private Character player;
 	private Enemy[] enemies;
-	//private AIController ai;
 
 	private List<Entity> entities;
 
 	public GameModel() {
-		//this.ai = new AIController(48, 48, 32, 32);
 
 		initEntities();
 	}

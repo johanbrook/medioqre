@@ -23,7 +23,7 @@ public class AppController implements Runnable{
 	private IGameModel game;
 	private ViewController view;
 	private AIController ai;
-	private AudioController audio;
+//	private AudioController audio;
 	private NavigationController navigation;
 		
 	public AppController(){
@@ -37,8 +37,7 @@ public class AppController implements Runnable{
 		
 		this.navigation.addReceiver((IMessageListener) this.game);
 		
-		this.audio = AudioController.getInstance();
-		
+//		this.audio = AudioController.getInstance();
 		
 		
 		EventBus.INSTANCE.publish(new Event(Event.Property.INIT_MODEL, this.game));
