@@ -33,6 +33,7 @@ public class AudioController implements IEventHandler {
 	private static AudioController sharedInstance;
 	private static SoundSystem soundSys;
 	private IGameModel game;
+	private static SoundLibrary lib = new SoundLibrary();
 	
 	private static float BGM_VOLUME = 1;
 	private static float FX_VOLUME = 1;
@@ -124,8 +125,8 @@ public class AudioController implements IEventHandler {
 
 	public void playSoundFX(String code, boolean toLoop) {
 
-		soundSys.newSource(false, code, SoundLibrary.getFXSound(code), toLoop,
-				0, 1, 1, 1, 1);
+//		soundSys.newSource(false, code, lib.getFXSound(code), toLoop,
+//				0, 1, 1, 1, 1);
 
 		soundSys.play(code);
 
@@ -235,9 +236,11 @@ public class AudioController implements IEventHandler {
 
 	private void playZombiewalk(Enemy e) {
 
-		soundSys.newSource(true, soundCode(e),
-				SoundLibrary.getFXSound("walk"), true, 1, 1, 1,
-				SoundSystemConfig.ATTENUATION_ROLLOFF, 0.5f);
+//		soundSys.newSource(true, soundCode(e),
+//				lib.getFXSound("walk"), true, 1, 1, 1,
+//				SoundSystemConfig.ATTENUATION_ROLLOFF, 0.5f);
+		
+		soundSys.newSource(true, soundCode(e), lib.getFXSound("walk"), "walk.wav", true, (float)1, (float)1, (float)1, SoundSystemConfig.ATTENUATION_ROLLOFF, 0.5f);
 
 		soundSys.play(soundCode(e));
 

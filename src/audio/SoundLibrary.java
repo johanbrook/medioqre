@@ -1,5 +1,6 @@
 package audio;
 
+import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,16 +17,26 @@ import event.Event.Property;
 
 public class SoundLibrary {
 
-	private static final Map<String, String> fxSoundLibrary = initializeFXSoundLibrary();
+	public static void main(String[] mamma){
+//		String s = SoundLibrary.class.getClassLoader().getResource("bitmapfonts/bmf_fps_meter.png").toString();
+		
+		System.out.println(c.getResource("sounds/").toString().substring(5));
+	}
+	
+	
+	private final Map<String, String> fxSoundLibrary = initializeFXSoundLibrary();
 	private static final Map<Integer, String> backgroundMusicLibrary = initializeBackgroundMusicLibrary();
 	private static final Map<Class, String> weaponSoundLibrary = initializeWeaponSoundLibrary();
-
+	private static ClassLoader c = SoundLibrary.class.getClassLoader();
+	
+	
+	
 	// FX Sound Library
-	private static Map<String, String> initializeFXSoundLibrary() {
+	private Map<String, String> initializeFXSoundLibrary() {
 		Map<String, String> fx = new HashMap<String, String>();
 
-		fx.put("walk", "http://theboxofficial.com/work/move.wav");
-		fx.put("zombieWalk", "http://theboxofficial.com/work/move.wav");
+		fx.put("walk", c.getResource("sounds/fx/walk.wav").toString());
+//		fx.put("zombieWalk", "http://theboxofficial.com/work/move.wav");
 			
 			
 		return Collections.unmodifiableMap(fx);
@@ -81,8 +92,10 @@ public class SoundLibrary {
 		return backgroundMusicLibrary.size();
 	}
 
-	public static String getFXSound(String code) {
-		return fxSoundLibrary.get(code);
+	public URL getFXSound(String code) {
+		URL m = c.getResource("sounds/fx/" + code + ".wav");
+		
+		return m;
 	}
 	
 
