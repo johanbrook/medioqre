@@ -179,12 +179,14 @@ public class NavigationController implements KeyListener, IMessageSender {
 		
 		Key a = this.keyMap.get(evt.getKeyCode());
 		
-		if(a instanceof NavigationKey){
-			this.navKeys.remove(a);
-			refreshDirection();
-		}
-		else {
-			a.fireUp();
+		if(a != null) {
+			if(a instanceof NavigationKey){
+				this.navKeys.remove(a);
+				refreshDirection();
+			}
+			else {
+				a.fireUp();
+			}
 		}
 		
 		
