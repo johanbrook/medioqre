@@ -229,6 +229,7 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 
 			this.texture.bind(gl);
 			gl.glBegin(GL2.GL_QUADS);
+			gl.glColor3f(1.0f, 1.0f, 1.0f);
 			
 			gl.glTexCoord2f(tX1, tY1);
 			gl.glVertex2f(rX1, -rY2);
