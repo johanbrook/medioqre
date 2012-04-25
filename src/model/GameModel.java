@@ -66,9 +66,9 @@ public class GameModel implements IGameModel {
 		
 		for(Entity w : this.entities) {
 						
-			if(t != w && t instanceof Player){
-				System.out.println("-----\nPlayer direction: "+t.getDirection());
-			}
+//			if(t != w && t instanceof Player){
+//				System.out.println("-----\nPlayer direction: "+t.getDirection());
+//			}
 			
 			
 			if(t != w && t.isColliding(w)) {
