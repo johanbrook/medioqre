@@ -4,6 +4,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import model.character.Player;
@@ -19,7 +20,7 @@ import event.Event.Property;
  */
 public class NavigationController implements KeyListener {
 	
-	private Set<NavigationKey> navKeys;
+	private NavigationKeyQueue navKeys;
 	private Map<Integer, Key> keyMap;
 	
 	private Player player;
@@ -51,9 +52,12 @@ public class NavigationController implements KeyListener {
 		initKeys();
 	}
 	
-	
+	/**
+	 * Create the keyboard keys in the game.
+	 */
 	private void initKeys() {
-		this.navKeys = new HashSet<NavigationKey>();
+		this.navKeys = new NavigationKeyQueue(2);
+		
 		this.cachedKeys = new HashSet<Integer>();
 		this.keyMap = new HashMap<Integer, Key>();
 		
@@ -97,17 +101,31 @@ public class NavigationController implements KeyListener {
 	}
 
 	
-	
+	/**
+	 * Refresh (if necessary) the target's direction based on the keys in
+	 * the navigation key list.
+	 */
 	private void refreshDirection() {
 		if(this.navKeys.size() > 1){
-			createCompositeKey().fire(this.player);
+			NavigationKey composite = createCompositeKey();
+			
+			if(composite != null)
+				composite.fire(this.player);
 		}
 		else if(this.navKeys.size() == 1){
-			((NavigationKey)this.navKeys.toArray()[0]).fire(this.player);
+			this.navKeys.first().fire(this.player);
 		}
 	}
 	
 	
+	/**
+	 * Creates a composite navigation key with a direction from the 
+	 * existing keys in the navigation list.
+	 * 
+	 * @return A new navigation key with a diagonal direction. If the list doesn't
+	 * contain matching diagonal key, null is returned.
+	 * @see Direction
+	 */
 	private NavigationKey createCompositeKey() {
 
 		System.out.println("Creating composite: " + this.navKeys);
@@ -145,6 +163,7 @@ public class NavigationController implements KeyListener {
 			
 			if(a instanceof NavigationKey) {
 				this.navKeys.add((NavigationKey) a);
+				System.out.println("Keys: "+this.navKeys);
 				refreshDirection();
 			}
 			else{
