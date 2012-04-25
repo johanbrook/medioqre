@@ -15,8 +15,8 @@ interface Callable {
 }
 
 public class Key {
-	private String key;
-	protected Callable callback;
+	private final String key;
+	protected final Callable callback;
 	
 	public Key(String name, Callable callback) {
 		this.key = name;
@@ -59,13 +59,12 @@ public class Key {
 
 class NavigationKey extends Key {
 
-	private Direction direction;
+	private final Direction direction;
 	
 	public NavigationKey(String name, Callable callback, Direction dir) {
 		super(name, callback);
 		this.direction = dir;
 	}
-	
 	
 	public void fire(Player target) {
 		super.fire();
