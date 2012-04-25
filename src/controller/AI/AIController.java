@@ -62,28 +62,33 @@ public class AIController {
 				- playerTile.y));
 		//Calculates the path between enemy and player
 
-		if (aiPlayer.getCount() < length*1.5){
+		if (aiPlayer.getCount() < (length*1.5) + enemies.size()/15){
 			aiPlayer.updateCount();
 
 		}else{
-			aiPlayer.resetCount();
+			if (enemyTile.x >= 0 && enemyTile.y >=0 &&
+					enemyTile.x < 48 && enemyTile.y < 48){
+				aiPlayer.resetCount();
 
-			aiPlayer.setPath(pathfinder.getPath(enemyTile, playerTile));
-			if (aiPlayer.getPath() != null){
+				aiPlayer.setPath(pathfinder.getPath(enemyTile, playerTile));
+				if (aiPlayer.getPath() != null){
 
-				//Update direction of the enemy depending on what the current path is.
+					//Update direction of the enemy depending on what the current path is.
 
-				//If path is longer than 2 tiles, just calculate the direction from the path
-				if (aiPlayer.getPath().size() >= 2){
-					aiPlayer.updateEnemy(calculateDirection(aiPlayer.getPath()));
+					//If path is longer than 2 tiles, just calculate the direction from the path
+					if (aiPlayer.getPath().size() >= 2){
+						aiPlayer.updateEnemy(calculateDirection(aiPlayer.getPath()));
+					}else {
+
+						//If path is shorter, manually inserts enemy and player positions and walk straight towards them, they should be to close for there to
+						//be any kind of obsticle in the way.
+						aiPlayer.getPath().clear();
+						aiPlayer.getPath().add(playerPos);
+						aiPlayer.getPath().add(aiPlayer.getEnemy().getPosition());
+						aiPlayer.updateEnemy(calculateDirection(aiPlayer.getPath()));
+					}
 				}else {
-
-					//If path is shorter, manually inserts enemy and player positions and walk straight towards them, they should be to close for there to
-					//be any kind of obsticle in the way.
-					aiPlayer.getPath().clear();
-					aiPlayer.getPath().add(playerPos);
-					aiPlayer.getPath().add(aiPlayer.getEnemy().getPosition());
-					aiPlayer.updateEnemy(calculateDirection(aiPlayer.getPath()));
+					aiPlayer.getEnemy().setDirection(randomDir());
 				}
 			}
 		}

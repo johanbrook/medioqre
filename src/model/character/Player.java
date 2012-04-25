@@ -47,7 +47,6 @@ public class Player extends Character {
 	@Override
 	public Projectile attack() {
 		EventBus.INSTANCE.publish(new Event(Property.DID_ATTACK, this));
-		//@todo Still not sure of the flow here
 		return this.currentWeapon.fire();
 	}
 

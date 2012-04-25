@@ -37,8 +37,13 @@ public class Event {
 		DID_STOP,
 		WAS_DAMAGED,
 		DID_ATTACK,
+		DID_FIRE,
 		PICKED_UP_ITEM,
-		INIT_MODEL;
+		INIT_MODEL,
+		WEAPON_MENU_SHOW,
+		WEAPON_MENU_HIDE,
+		FIRED_WEAPON_SUCCESS,
+		FIRED_WEAPON_FAIL;
 	}
 	
 	private final Property name;
@@ -53,6 +58,11 @@ public class Event {
 	public Event(Property property, Object value) {
 		this.name = property;
 		this.value = value;
+	}
+	
+	public Event(Property property) {
+		this.name = property;
+		this.value = null;
 	}
 	
 	/**

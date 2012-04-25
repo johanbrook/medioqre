@@ -263,7 +263,9 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 				break;
 			case SOUTH_EAST:
 				animation = this.entity.isMoving() ? "moveSE" : "stopSE";
-				break;			
+				break;	
+			case ORIGIN :
+				System.out.println("Fucked up!");
 			}
 			this.setCurrentAnimation(animation);
 			this.rectangle.setX(this.entity.getPosition().x);
