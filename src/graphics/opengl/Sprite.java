@@ -214,10 +214,11 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 					.getWidth()) / (float) target.getWidth();
 			float rX2 = (float) (2.0f * (object.getX() + object.getWidth()) - (float) target
 					.getWidth()) / (float) target.getWidth();
-			float rY1 = (float) (2.0f * object.getY() - (float) target
+			float rY1 = (float) (2.0f * (object.getY() + object.getHeight()) - (float) target
 					.getHeight()) / (float) target.getHeight();
-			float rY2 = (float) (2.0f * (object.getY() + object.getHeight()) - (float) target
+			float rY2 = (float) (2.0f * object.getY() - (float) target
 					.getHeight()) / (float) target.getHeight();
+			
 
 			gl.glEnable(GL.GL_BLEND);
 			gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
@@ -230,16 +231,16 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 			gl.glBegin(GL2.GL_QUADS);
 			
 			gl.glTexCoord2f(tX1, tY1);
-			gl.glVertex2f(rX1, rY2);
+			gl.glVertex2f(rX1, -rY2);
 
 			gl.glTexCoord2f(tX2, tY1);
-			gl.glVertex2f(rX2, rY2);
+			gl.glVertex2f(rX2, -rY2);
 
 			gl.glTexCoord2f(tX2, tY2);
-			gl.glVertex2f(rX2, rY1);
+			gl.glVertex2f(rX2, -rY1);
 
 			gl.glTexCoord2f(tX1, tY2);
-			gl.glVertex2f(rX1, rY1);
+			gl.glVertex2f(rX1, -rY1);
 
 			gl.glEnd();
 		}
