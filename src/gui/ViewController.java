@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Dimension;
 import java.awt.event.KeyListener;
 import java.util.IdentityHashMap;
 import java.util.LinkedList;
@@ -88,8 +89,9 @@ public class ViewController implements IEventHandler, GLEventListener {
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 		frame.add(canvas);
-		frame.setVisible(true);
+		frame.setPreferredSize(new Dimension(screenWidth, screenHeight));
 		frame.pack();
+		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
 		
 		FPSAnimator anim = new FPSAnimator(canvas, 60);
@@ -154,8 +156,10 @@ public class ViewController implements IEventHandler, GLEventListener {
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
 
 		TimerTool.start("GL-Screen");
-		if (doneLoading)
+		if (doneLoading) {
+			this.screen.setViewPort(this.player.getEntity().getPosition());
 			this.screen.render(this.screen.getBounds(), this.screen.getBounds(), arg0);
+		}
 		TimerTool.stop();
 	}
 
@@ -163,7 +167,7 @@ public class ViewController implements IEventHandler, GLEventListener {
 	public void init(GLAutoDrawable arg0)
 	{
 		GL2 gl = arg0.getGL().getGL2();
-		gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		gl.glClearColor(1.0f, 1.0f, 0.9f, 1.0f);
 		gl.glEnable(GL.GL_TEXTURE_2D);
 		gl.glTexEnvf(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE,
 				GL2.GL_MODULATE);
