@@ -64,10 +64,10 @@ public class GameModel implements IGameModel, IMessageListener {
 		this.entities = new ArrayList<Entity>();
 		
 		this.player = new Player();
-		this.player.setPosition(100, 100);
+		this.player.setPosition(1000, 100);
 		this.entities.add(this.player);
 		
-		this.enemies = new Enemy[1];
+		this.enemies = new Enemy[50];
 		
 		for (int i = 0; i < this.enemies.length; i++) {
 			this.enemies[i] = new Enemy(10, 10, 20+i*2, 20+i*2);
