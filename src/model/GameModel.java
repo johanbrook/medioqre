@@ -7,7 +7,11 @@ import java.util.List;
 import model.character.Character;
 import model.character.Enemy;
 import model.character.Player;
+import model.weapon.Projectile;
 import constants.Direction;
+import event.Event;
+import event.Event.Property;
+import event.IMessageListener;
 
 /**
  * Model for a game.
@@ -15,7 +19,7 @@ import constants.Direction;
  * @author Johan
  *
  */
-public class GameModel implements IGameModel {
+public class GameModel implements IGameModel, IMessageListener {
 
 	private Character player;
 	private Enemy[] enemies;
@@ -29,6 +33,28 @@ public class GameModel implements IGameModel {
 		initEntities();
 	}
 
+	
+	@Override
+	public void onMessage(Event evt) {
+		Property name = evt.getProperty();
+		
+		switch(name) {
+		case DID_STOP:
+			this.player.stop(); 
+			break;
+		case DID_FIRE:
+			Projectile newProjectile = this.player.attack();
+			this.entities.add(newProjectile);
+			System.out.println("Did add projectile");
+			break;
+		case CHANGED_DIRECTION:
+			this.player.start();
+			this.player.setDirection((Direction) evt.getValue());
+			break;
+		}
+		
+	}
+	
 
 	public void newWave() {
 
@@ -41,7 +67,7 @@ public class GameModel implements IGameModel {
 		this.player.setPosition(100, 100);
 		this.entities.add(this.player);
 		
-		this.enemies = new Enemy[20];
+		this.enemies = new Enemy[1];
 		
 		for (int i = 0; i < this.enemies.length; i++) {
 			this.enemies[i] = new Enemy(10, 10, 20+i*2, 20+i*2);
@@ -65,11 +91,6 @@ public class GameModel implements IGameModel {
 	private void checkCollisions(Entity t) {
 		
 		for(Entity w : this.entities) {
-						
-//			if(t != w && t instanceof Player){
-//				System.out.println("-----\nPlayer direction: "+t.getDirection());
-//			}
-			
 			
 			if(t != w && t.isColliding(w)) {
 				
@@ -185,5 +206,6 @@ public class GameModel implements IGameModel {
 	public List<Enemy> getEnemies() {
 		return (List<Enemy>) Arrays.asList(this.enemies);
 	}
+
 
 }

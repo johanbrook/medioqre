@@ -4,26 +4,27 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
-import model.character.Player;
 
 import constants.Direction;
 import event.Event;
 import event.EventBus;
+import event.IMessageListener;
+import event.IMessageSender;
 import event.Event.Property;
+import event.Messager;
 
 /**
  *	The class responsible for handling navigational events.
  *
  */
-public class NavigationController implements KeyListener {
+public class NavigationController implements KeyListener, IMessageSender {
 	
 	private NavigationKeyQueue navKeys;
 	private Map<Integer, Key> keyMap;
 	
-	private Player player;
+	private Messager messager = new Messager();
 	
 	private boolean isQuick = false;
 	private Set<Integer> cachedKeys;
@@ -41,15 +42,16 @@ public class NavigationController implements KeyListener {
 	
 	
 	/**
-	 * Create a new NavigationController, which controls a
-	 * <code>GameModel</code>.
-	 * 
-	 * @param game A game model
+	 * Create a new NavigationController.
 	 */
-	public NavigationController(Player target) {
-		this.player = target;
-		
+	public NavigationController() {
+
 		initKeys();
+	}
+	
+	@Override
+	public void addReceiver(IMessageListener listener) {
+		this.messager.addListener(listener);
 	}
 	
 	/**
@@ -69,7 +71,7 @@ public class NavigationController implements KeyListener {
 		this.shoot = new Key("shoot", new Callable() {
 			@Override
 			public void on() {
-				player.attack();
+				messager.sendMessage(new Event(Property.DID_FIRE));
 			}
 
 			@Override
@@ -82,13 +84,13 @@ public class NavigationController implements KeyListener {
 			@Override
 			public void on() {
 				System.out.println("Show weapon menu");
-				EventBus.INSTANCE.publish(new Event(Property.WEAPON_MENU_SHOW, player));
+				EventBus.INSTANCE.publish(new Event(Property.WEAPON_MENU_SHOW));
 			}
 
 			@Override
 			public void off() {
 				System.out.println("Hide weapon menu");
-				EventBus.INSTANCE.publish(new Event(Property.WEAPON_MENU_HIDE, player));
+				EventBus.INSTANCE.publish(new Event(Property.WEAPON_MENU_HIDE));
 			}
 		});
 		
@@ -106,15 +108,21 @@ public class NavigationController implements KeyListener {
 	 * the navigation key list.
 	 */
 	private void refreshDirection() {
+		Direction newDir = Direction.ORIGIN;
+		
 		if(this.navKeys.size() > 1){
 			NavigationKey composite = createCompositeKey();
 			
-			if(composite != null)
-				composite.fire(this.player);
+			if(composite != null){
+				newDir = composite.getDirection();
+			}
+				
 		}
-		else if(this.navKeys.size() == 1){
-			this.navKeys.last().fire(this.player);
+		else if(this.navKeys.size() == 1) {
+			newDir = this.navKeys.first().getDirection();
 		}
+		
+		messager.sendMessage(new Event(Property.CHANGED_DIRECTION, newDir));
 	}
 	
 	
@@ -182,7 +190,7 @@ public class NavigationController implements KeyListener {
 		
 		
 		if(this.navKeys.isEmpty()){
-			this.player.stop();
+			messager.sendMessage(new Event(Property.DID_STOP));
 		}
 		
 //		if(this.keyMap.containsKey(evt.getKeyCode())){
@@ -207,6 +215,5 @@ public class NavigationController implements KeyListener {
 	public void keyTyped(KeyEvent evt) {
 		
 	}
-	
-	
+
 }

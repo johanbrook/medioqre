@@ -66,10 +66,9 @@ class NavigationKey extends Key {
 		this.direction = dir;
 	}
 	
-	public void fire(Player target) {
+	public void fire() {
 		super.fire();
-		target.start();
-		target.setDirection(this.direction);
+		// sendMessage(Property.NAME, this.direction);
 	}
 	
 	public Direction getDirection() {

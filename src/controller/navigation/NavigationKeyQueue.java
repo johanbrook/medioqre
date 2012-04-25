@@ -36,8 +36,6 @@ public class NavigationKeyQueue implements Collection<NavigationKey> {
 	 *  @pre contains(key) == false
 	 */
 	public boolean add(NavigationKey key) {
-		System.out.println("List size: "+this.list.size());
-		System.out.println("Max: "+maxSize);
 		
 		if(this.list.size() < this.maxSize && !this.list.contains(key)) {
 			return this.list.add(key);

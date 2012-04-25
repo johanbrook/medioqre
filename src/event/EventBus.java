@@ -3,6 +3,8 @@ package event;
 import java.util.ArrayList;
 import java.util.List;
 
+import event.Event.Property;
+
 import tools.Logger;
 
 /**

@@ -6,12 +6,11 @@
 
 package controller;
 
-
 import controller.AI.AIController;
 import controller.navigation.NavigationController;
-import tools.TimerTool;
 import event.Event;
 import event.EventBus;
+import event.IMessageListener;
 import gui.ViewController;
 import model.GameModel;
 import model.IGameModel;
@@ -25,15 +24,22 @@ public class AppController implements Runnable{
 	private ViewController view;
 	private AIController ai;
 	private AudioController audio;
-	
+	private NavigationController navigation;
+		
 	public AppController(){
 		System.out.println("Initializing main controller ...");
-		this.game = new GameModel();
 		
-		this.view = new ViewController(new NavigationController(this.game.getPlayer()), 20*32, 12*32);
+		this.game = new GameModel();
+		this.navigation = new NavigationController();
+		
+		this.view = new ViewController(this.navigation, 20*32, 12*32);
 		this.ai = new AIController(this.game.getEnemies(), 48, 48, 32, 32);
 		
+		this.navigation.addReceiver((IMessageListener) this.game);
+		
 		this.audio = AudioController.getInstance();
+		
+		
 		
 		EventBus.INSTANCE.publish(new Event(Event.Property.INIT_MODEL, this.game));
 		
