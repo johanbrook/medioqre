@@ -37,6 +37,7 @@ public class Event {
 		DID_STOP,
 		WAS_DAMAGED,
 		DID_ATTACK,
+		DID_FIRE,
 		PICKED_UP_ITEM,
 		INIT_MODEL,
 		WEAPON_MENU_SHOW,
@@ -57,6 +58,11 @@ public class Event {
 	public Event(Property property, Object value) {
 		this.name = property;
 		this.value = value;
+	}
+	
+	public Event(Property property) {
+		this.name = property;
+		this.value = null;
 	}
 	
 	/**
