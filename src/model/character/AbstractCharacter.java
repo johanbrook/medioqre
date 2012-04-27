@@ -10,6 +10,7 @@ import event.EventBus;
 import event.Event.Property;
 
 import model.Entity;
+import model.weapon.AbstractWeapon;
 import model.weapon.Projectile;
 
 
@@ -20,9 +21,10 @@ import model.weapon.Projectile;
 *
 *	@author Johan
 */
-public abstract class Character extends Entity {
+public abstract class AbstractCharacter extends Entity {
 
 	private int health;
+	private AbstractWeapon currentWeapon;
 	
 	/**
 	 * A game character with 100 health points.
@@ -33,12 +35,21 @@ public abstract class Character extends Entity {
 	 * @param xoffset
 	 * @param yoffset
 	 */
-	public Character(int movementSpeed, Rectangle collBox, Dimension size, int xoffset, int yoffset) {
+	public AbstractCharacter(int movementSpeed, Rectangle collBox, Dimension size, int xoffset, int yoffset) {
 		super(collBox, size, xoffset, yoffset, movementSpeed);
 		this.health = 100;
 		this.setDirection(Direction.SOUTH);
 	}
 	
+	
+	public void setCurrentWeapon(AbstractWeapon w) {
+		this.currentWeapon = w;
+		EventBus.INSTANCE.publish(new Event(Property.CHANGED_WEAPON, this));
+	}
+	
+	public AbstractWeapon getCurrentWeapon(){
+		return this.currentWeapon;
+	}
 	
 	/**
 	 * Call this method to hurt the character with a certain amount
@@ -79,7 +90,10 @@ public abstract class Character extends Entity {
 	 * 
 	 * @param target The target to attack
 	 */
-	public abstract Projectile attack();
+	public Projectile attack() {
+		EventBus.INSTANCE.publish(new Event(Property.DID_ATTACK, this));
+		return this.currentWeapon.fire();
+	}
 	
 	
 	@Override

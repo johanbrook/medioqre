@@ -9,7 +9,7 @@ import java.util.List;
  * The weapon belt class
  * 
  * @author Johan
- *
+ * @deprecated 2012-04-26
  */
 public class WeaponBelt {
 	private List<AbstractWeapon> weapons;
@@ -19,9 +19,9 @@ public class WeaponBelt {
 	 * sword and portal gun).
 	 */
 	public WeaponBelt() {
-		AbstractWeapon[] temp = {new MachineGun(), new Sword(), new Grenade()};
+//		AbstractWeapon[] temp = {new MachineGun(this), new Sword(this), new Grenade(this)};
 		
-		this.weapons = new LinkedList<AbstractWeapon>(Arrays.asList(temp));
+//		this.weapons = new LinkedList<AbstractWeapon>(Arrays.asList(temp));
 	}
 	
 	/**

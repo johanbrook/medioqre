@@ -9,46 +9,47 @@ package model.character;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
-
-import event.Event;
-import event.Event.Property;
-import event.EventBus;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import model.weapon.*;
 
 
-public class Player extends Character {
+public class Player extends AbstractCharacter {
 	
-	private AbstractWeapon currentWeapon;
-	private WeaponBelt belt;
+	private List<AbstractWeapon> weaponbelt;
 	
 	public Player(){
 		super(30, new Rectangle(16, 16), new Dimension(20,20), 0, 16);
-		
-		this.belt = new WeaponBelt();
+
+		AbstractWeapon[] temp = {new MachineGun(this), new Sword(this), new Grenade(this)};
+		this.weaponbelt = new ArrayList<AbstractWeapon>(Arrays.asList(temp));
+
 		setCurrentWeapon(MachineGun.class);
 	}
 	
 	public void setCurrentWeapon(int slot) {
-		this.currentWeapon = this.belt.getWeapon(slot);
-		EventBus.INSTANCE.publish(new Event(Property.CHANGED_WEAPON, this));
+		setCurrentWeapon(this.weaponbelt.get(slot));
 	}
 	
-	 
 	public void setCurrentWeapon(Class<? extends AbstractWeapon> type) {
-		this.currentWeapon = this.belt.getWeapon(type);
-		EventBus.INSTANCE.publish(new Event(Property.CHANGED_WEAPON, this));
+		setCurrentWeapon(getWeaponFromBelt(type));
 	}
 	
-	public AbstractWeapon getCurrentWeapon(){
-		return this.currentWeapon;
+	/**
+	 * Get the weapon of a certain type from the belt.
+	 * 
+	 * @param type A weapon type (the weapon's class)
+	 * @return The first weapon in the belt with the specified type
+	 */
+	private AbstractWeapon getWeaponFromBelt(Class<? extends AbstractWeapon> type) {
+		
+		for(AbstractWeapon w : this.weaponbelt) {
+			if(w.getClass() == type) {
+				return w;
+			}
+		}
+		
+		return null;
 	}
-
-
-	@Override
-	public Projectile attack() {
-		EventBus.INSTANCE.publish(new Event(Property.DID_ATTACK, this));
-		return this.currentWeapon.fire();
-	}
-
-	
 }

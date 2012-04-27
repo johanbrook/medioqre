@@ -21,13 +21,13 @@ import tools.Logger;
 import constants.Direction;
 
 import model.CollidableObject;
-import model.character.Character;
+import model.character.AbstractCharacter;
 import model.character.Player;
 
 public class TestCollidableObject {
 
 	private CollidableObject obj;
-	private Character player;
+	private AbstractCharacter player;
 	
 	@BeforeClass
 	public static void before() {

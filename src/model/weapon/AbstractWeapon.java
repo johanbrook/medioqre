@@ -10,18 +10,22 @@ package model.weapon;
 import event.Event;
 import event.Event.Property;
 import event.EventBus;
+import model.character.AbstractCharacter;
 
 public abstract class AbstractWeapon {
 	
 	private int ammo;
-	private Projectile projectile;
+	private AbstractCharacter owner;
 	
-	
-	public AbstractWeapon(int initialAmmo, Projectile projectile) {
+	public AbstractWeapon(AbstractCharacter owner, int initialAmmo) {
 		this.ammo = initialAmmo;
-		this.projectile = projectile;
+		this.owner = owner;
 	}
 	
+	
+	public AbstractCharacter getOwner() {
+		return this.owner;
+	}
 	
 	public int getCurrentAmmo() {
 		return this.ammo;
@@ -31,22 +35,21 @@ public abstract class AbstractWeapon {
 		this.ammo += amount;
 	}
 	
-	public int getDamage() {
-		return this.projectile.getDamage();
-	} 
-
-	
 	public Projectile fire() {
+		Projectile p = getProjectile();
+		
 		if(this.ammo > 0 || this.ammo == -1){
 			this.ammo--;
-			EventBus.INSTANCE.publish(new Event(Property.FIRED_WEAPON_SUCCESS, this.projectile));
-			return this.projectile;
+			EventBus.INSTANCE.publish(new Event(Property.FIRED_WEAPON_SUCCESS, p));
+			return p;
 		}
 		else {
-			EventBus.INSTANCE.publish(new Event(Property.FIRED_WEAPON_FAIL, this.projectile));
+			EventBus.INSTANCE.publish(new Event(Property.FIRED_WEAPON_FAIL, p));
 			return null;
 		}
 	}
 	
+	
+	public abstract Projectile getProjectile();
 	
 }

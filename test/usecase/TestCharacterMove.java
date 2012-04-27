@@ -12,7 +12,7 @@ import java.awt.Point;
 
 
 import model.character.*;
-import model.character.Character;
+import model.character.AbstractCharacter;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -22,7 +22,7 @@ import constants.Direction;
 
 public class TestCharacterMove {
 
-	private Character player;
+	private AbstractCharacter player;
 	private final double DELTA = 1.0;
 	
 	// How far a player moves in 1.0 dt.

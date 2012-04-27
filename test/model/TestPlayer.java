@@ -60,7 +60,7 @@ public class TestPlayer {
 	
 	@Test
 	public void testSetCurrentWeapon(){
-		AbstractWeapon w = new Sword();
+		AbstractWeapon w = new Sword(this.player);
 		this.player.setCurrentWeapon(Sword.class);
 		
 		assertEquals(w, this.player.getCurrentWeapon());

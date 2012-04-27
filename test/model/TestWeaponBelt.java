@@ -1,15 +1,10 @@
-/**
-*	TestWeaponBelt.java
-*
-*	@author Johan
-*/
-
 package model;
 
 import static org.junit.Assert.*;
 
 import java.util.Arrays;
 
+import model.character.Player;
 import model.weapon.AbstractWeapon;
 import model.weapon.Grenade;
 import model.weapon.Projectile;
@@ -21,13 +16,21 @@ import model.weapon.WeaponBelt;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+*	TestWeaponBelt.java
+*
+*	@author Johan
+*	@deprecated 2012-04-26
+*/
 public class TestWeaponBelt {
 
 	private WeaponBelt belt;
+	private Player owner;
 	
 	@Before
 	public void setUp() throws Exception {
 		this.belt = new WeaponBelt();
+		this.owner = new Player();
 	}
 	
 
@@ -35,14 +38,14 @@ public class TestWeaponBelt {
 	public void testGetWeapon() {
 		AbstractWeapon weapon = this.belt.getWeapon(0);
 		
-		assertEquals(new MachineGun(), weapon);
+		assertEquals(new MachineGun(this.owner), weapon);
 	}
 	
 	@Test
 	public void testGetSpecificWeapon() {
 		AbstractWeapon weapon = this.belt.getWeapon(MachineGun.class);
 		
-		assertEquals(new MachineGun(), weapon);
+		assertEquals(new MachineGun(this.owner), weapon);
 	}
 	
 	
@@ -61,12 +64,12 @@ public class TestWeaponBelt {
 	
 	@Test
 	public void testCreateNewBeltFromArray() {
-		AbstractWeapon[] coll = {new Sword(), new MachineGun(), new Grenade()};
+		AbstractWeapon[] coll = {new Sword(this.owner), new MachineGun(this.owner), new Grenade(this.owner)};
 		WeaponBelt customBelt = new WeaponBelt(Arrays.asList(coll));
 		
-		assertEquals(new Sword(), customBelt.getWeapon(0));
-		assertEquals(new MachineGun(), customBelt.getWeapon(1));
-		assertEquals(new Grenade(), customBelt.getWeapon(2));
+		assertEquals(new Sword(this.owner), customBelt.getWeapon(0));
+		assertEquals(new MachineGun(this.owner), customBelt.getWeapon(1));
+		assertEquals(new Grenade(this.owner), customBelt.getWeapon(2));
 	}
 	
 	
@@ -80,7 +83,12 @@ public class TestWeaponBelt {
 	private class NonsenseWeapon extends AbstractWeapon {
 
 		public NonsenseWeapon() {
-			super(300, new Projectile(10, Range.FAR_RANGE));
+			super(owner, 300);
+		}
+
+		@Override
+		public Projectile getProjectile() {
+			return new Projectile(belt.getWeapon(NonsenseWeapon.class), 10, 10, 30, Range.FAR_RANGE, 30);
 		}
 		
 	}

@@ -6,6 +6,7 @@
 
 package model.weapon;
 
+import model.character.AbstractCharacter;
 import model.weapon.Projectile.Range;
 
 public class Sword extends AbstractWeapon {
@@ -13,8 +14,8 @@ public class Sword extends AbstractWeapon {
 	private final static int INITIAL_AMMO = -1;
 	private final static int DAMAGE = 10;
 	
-	public Sword() {
-		super(INITIAL_AMMO, new Projectile(DAMAGE, Range.SHORT_RANGE));
+	public Sword(AbstractCharacter owner) {
+		super(owner, INITIAL_AMMO);
 	}
 
 	public boolean equals(Object o) {
@@ -22,6 +23,12 @@ public class Sword extends AbstractWeapon {
 			return false;
 		
 		return true;
+	}
+
+	@Override
+	public Projectile getProjectile() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

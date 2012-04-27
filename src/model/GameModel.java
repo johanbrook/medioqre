@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import model.character.Character;
+import model.character.AbstractCharacter;
 import model.character.Enemy;
 import model.character.Player;
 import model.weapon.Projectile;
@@ -21,7 +21,7 @@ import event.IMessageListener;
  */
 public class GameModel implements IGameModel, IMessageListener {
 
-	private Character player;
+	private AbstractCharacter player;
 	private Enemy[] enemies;
 
 	private List<Entity> entities;
@@ -156,6 +156,11 @@ public class GameModel implements IGameModel, IMessageListener {
 				
 				if(blockedDirection == currentDirection){
 					stop = true;
+				}
+				
+				if(t instanceof Projectile) {
+					System.out.println("Projectile "+t.toString()+" collided with enemy "+w.toString());
+					this.entities.remove(t);
 				}
 				
 				if(stop)
