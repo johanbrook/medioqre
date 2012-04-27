@@ -28,7 +28,7 @@ public class Sword extends AbstractWeapon {
 	@Override
 	public Projectile getProjectile() {
 		// TODO Auto-generated method stub
-		return null;
+		return new Projectile(this, 10, 10, DAMAGE, Range.SHORT_RANGE, 30);
 	}
 
 }

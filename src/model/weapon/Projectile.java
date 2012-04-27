@@ -46,9 +46,6 @@ public class Projectile extends Entity {
 		
 		setPosition(x, y);
 		setDirection(this.owner.getOwner().getDirection());
-		
-		System.out.println("** Projectile created **");
-		System.out.println(this.toString());
 	}
 	
 	public int getDamage() {

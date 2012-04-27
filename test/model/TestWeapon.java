@@ -22,7 +22,6 @@ public class TestWeapon {
 	private AbstractWeapon grenade;
 	private AbstractWeapon sword;
 	private AbstractWeapon melee;
-	private AbstractWeapon portal;
 	
 	@Before
 	public void setUp() throws Exception {
