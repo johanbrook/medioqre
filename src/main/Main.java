@@ -1,5 +1,6 @@
 package main;
 
+import launcher.Launcher;
 import controller.AppController;
 import static tools.Logger.*;
 
@@ -31,6 +32,8 @@ public class Main {
 			}
 		}
 		
-		new AppController();
+//		new AppController();
+		
+		new Launcher();
 	}
 }
