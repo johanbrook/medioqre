@@ -1,5 +1,11 @@
 package gui.tilemapeditor;
 
+import gui.tilemapeditor.subviews.TileCanvas;
+import gui.tilemapeditor.subviews.TileInspector;
+import gui.tilemapeditor.subviews.TileSelector;
+
+import javax.media.opengl.GLCapabilities;
+import javax.media.opengl.GLProfile;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
@@ -14,6 +20,13 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.KeyStroke;
+import java.awt.event.KeyEvent;
+import java.awt.event.InputEvent;
+import javax.swing.JSeparator;
 
 public class TileMapEditor extends JFrame {
 
@@ -23,7 +36,39 @@ public class TileMapEditor extends JFrame {
 	}
 
 	public TileMapEditor()
-	{
+	{	
+		JMenuBar menuBar = new JMenuBar();
+		setJMenuBar(menuBar);
+		
+		JMenu mnFile = new JMenu("File");
+		menuBar.add(mnFile);
+		
+		JMenuItem mntmNewTilemap = new JMenuItem("New Tilemap...");
+		mntmNewTilemap.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.META_MASK));
+		mnFile.add(mntmNewTilemap);
+		
+		JSeparator separator_1 = new JSeparator();
+		mnFile.add(separator_1);
+		
+		JMenuItem mntmSave = new JMenuItem("Save");
+		mntmSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.META_MASK));
+		mnFile.add(mntmSave);
+		
+		JMenuItem mntmSaveAs = new JMenuItem("Save as...");
+		mntmSaveAs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.SHIFT_MASK | InputEvent.META_MASK));
+		mnFile.add(mntmSaveAs);
+		
+		JMenu mnTilesheet = new JMenu("TileSheet");
+		menuBar.add(mnTilesheet);
+		
+		JMenuItem mntmCreateNewTilesheet = new JMenuItem("Create new tile sheet...");
+		mnTilesheet.add(mntmCreateNewTilesheet);
+		
+		JSeparator separator = new JSeparator();
+		mnTilesheet.add(separator);
+		
+		JMenuItem mntmLoadTileSheet = new JMenuItem("Load tile sheet");
+		mnTilesheet.add(mntmLoadTileSheet);
 		this.initGui();
 	}
 
@@ -42,7 +87,9 @@ public class TileMapEditor extends JFrame {
 
 		// Creating Tile Canvas and adding it to
 		// split pane
-		TileCanvas tileCanvas = new TileCanvas();
+		GLProfile glP = GLProfile.getDefault();
+		GLCapabilities glC = new GLCapabilities(glP);
+		TileCanvas tileCanvas = new TileCanvas(glC);
 		splitPane_1.setLeftComponent(tileCanvas);
 
 		// Creating tile selector and adding it to
