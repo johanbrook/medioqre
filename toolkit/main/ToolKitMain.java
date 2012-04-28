@@ -1,7 +1,6 @@
 package main;
 
-import gui.SpriteCreatorView;
-import controllers.ToolKitController;
+import gui.spritecreator.SpriteCreatorView;
 
 public class ToolKitMain {
 	public static void main(String[] arg)
