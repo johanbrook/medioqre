@@ -1,6 +1,5 @@
 package graphics.opengl;
 
-import gui.SharedTextures;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
@@ -14,6 +13,7 @@ import com.jogamp.opengl.util.texture.Texture;
 import core.GLRenderableObject;
 import core.JSONSerializable;
 import core.Rectangle;
+import datamanagement.SharedTextures;
 
 /**
  * A class used to draw a certain part of a texture.
