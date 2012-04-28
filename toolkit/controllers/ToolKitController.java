@@ -1,6 +1,6 @@
 package controllers;
 
-import gui.ToolKitView;
+import gui.spritecreator.ToolKitView;
 
 public class ToolKitController {
 	
