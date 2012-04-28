@@ -1,7 +1,6 @@
 package tilemap;
 
 import graphics.opengl.Sprite;
-import gui.SharedTextures;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
@@ -12,6 +11,7 @@ import org.json.JSONObject;
 import core.GLRenderableObject;
 import core.JSONSerializable;
 import core.Rectangle;
+import datamanagement.SharedTextures;
 
 public class Tile implements JSONSerializable, GLRenderableObject{
 
