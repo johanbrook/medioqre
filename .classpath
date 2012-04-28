@@ -12,22 +12,22 @@
 	<classpathentry kind="lib" path="libs/SoundSystem.jar"/>
 	<classpathentry kind="lib" path="libs/gluegen-rt.jar">
 		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="Medioqre/libs/lib"/>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="Medioqre/libs/lib/macosx-universal"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="libs/jogl.all.jar">
 		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="Medioqre/libs/lib"/>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="Medioqre/libs/lib/macosx-universal"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="libs/nativewindow-natives-macosx-universal.jar">
 		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="Medioqre/libs/lib"/>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="Medioqre/libs/lib/macosx-universal"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="libs/newt-natives-macosx-universal.jar">
 		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="Medioqre/libs/lib"/>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="Medioqre/libs/lib/macosx-universal"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
