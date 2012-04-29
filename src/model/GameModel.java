@@ -2,7 +2,9 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import model.character.AbstractCharacter;
 import model.character.Enemy;
@@ -59,7 +61,12 @@ public class GameModel implements IGameModel, IMessageListener {
 	}
 
 	private void initEntities() {
-		this.entities = new ArrayList<Entity>();
+		// Use CopyOnWriteArrayList since we do concurrent reads/writes, and
+		// need them to be synchronized behind the scenes. Slightly more costly,
+		// but negligible since 
+		//	a) Our entities list is quite small
+		//	b) Writes happen very infrequently.
+		this.entities = new CopyOnWriteArrayList<Entity>();
 		
 		this.player = new Player();
 		this.player.setPosition(1000, 100);
