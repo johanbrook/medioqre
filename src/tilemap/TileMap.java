@@ -11,21 +11,33 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import core.GLRenderableObject;
 import core.JSONSerializable;
 import core.Rectangle;
+import core.Size;
 
 public class TileMap implements JSONSerializable, GLRenderableObject {
 
-	Tile[] tiles;
+	private Tile[][] tiles;
+	private Size tileSize = new Size(10, 10);
 
-	public TileMap(int rows, int cols, int tileSize)
+	// Temp
+	private Rectangle tileRenderRect = new Rectangle(0, 0, 0, 0);
+
+	public TileMap(int rows, int columns)
 	{
-		this.tiles = new Tile[rows * cols];
-		for (int y = 0; y < rows; y++) {
-			for (int x = 0; x < cols; x++) {
-				this.tiles[y * cols + x] = new Tile(x*tileSize, y*tileSize, tileSize, tileSize);
+		tiles = new Tile[columns][rows];
+		this.clearTileMap(new Tile());
+	}
+
+	public void clearTileMap(Tile clearTile)
+	{
+
+		for (int x = 0; x < this.tiles.length; x++) {
+			for (int y = 0; y < this.tiles[x].length; y++) {
+				this.tiles[x][y] = clearTile;
 			}
 		}
+
 	}
-	
+
 	public TileMap(JSONObject o)
 	{
 		this.deserialize(o);
@@ -34,9 +46,17 @@ public class TileMap implements JSONSerializable, GLRenderableObject {
 	@Override
 	public void render(Rectangle object, Rectangle target, GLAutoDrawable canvas)
 	{
-		if (this.tiles != null) {
-			for (int i = 0; i < this.tiles.length; i++) {
-				this.tiles[i].render(this.tiles[i].getBounds(), target, canvas);
+		System.out.println("Rendering Tilemap!");
+		for (int x = 0; x < this.tiles.length; x++) {
+			for (int y = 0; y < this.tiles[x].length; y++) {
+				tileRenderRect.setX(x * tileSize.getWidth());
+				tileRenderRect.setY(y * tileSize.getHeight());
+				tileRenderRect.setWidth(tileSize.getWidth());
+				tileRenderRect.setHeight(tileSize.getHeight());
+				
+				System.out.println("Rendering Tile at: "+x+","+y);
+				System.out.println(tileRenderRect);
+				this.tiles[x][y].render(tileRenderRect, target, canvas);
 			}
 		}
 	}
@@ -44,12 +64,15 @@ public class TileMap implements JSONSerializable, GLRenderableObject {
 	@Override
 	public void update(double dt)
 	{
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
 	public Rectangle getBounds()
 	{
-		throw new NotImplementedException();
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
@@ -57,12 +80,9 @@ public class TileMap implements JSONSerializable, GLRenderableObject {
 	{
 		try {
 			JSONObject retObj = new JSONObject();
-			JSONArray jSonArray = new JSONArray();
-			for (int i = 0; i < this.tiles.length; i++) {
-				jSonArray.put(this.tiles[i].serialize());
-			}
 
-			retObj.put("tiles", jSonArray);
+			retObj.put("test1", "Derp");
+			retObj.put("test2", "Herp");
 
 			return retObj;
 		} catch (JSONException e) {
@@ -76,14 +96,12 @@ public class TileMap implements JSONSerializable, GLRenderableObject {
 	public void deserialize(JSONObject o)
 	{
 		try {
-			JSONArray jSonArray = o.getJSONArray("tiles");
-			this.tiles = new Tile[jSonArray.length()];
-			for (int i = 0; i < jSonArray.length(); i++) {
-				this.tiles[i] = new Tile(jSonArray.getJSONObject(i));
-			}
+			System.out.println("test1: " + o.getString("test1"));
+			System.out.println("test2: " + o.getString("test2"));
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+
 }
