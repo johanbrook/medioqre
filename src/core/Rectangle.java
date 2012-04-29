@@ -4,8 +4,7 @@ public class Rectangle {
 
 	private int x;
 	private int y;
-	private int width;
-	private int height;
+	private Size size;
 	
 	/**
 	 * Creates a rectangle.
@@ -19,8 +18,7 @@ public class Rectangle {
 	{
 		this.x = x;
 		this.y = y;
-		this.width = width;
-		this.height = height;
+		this.size = new Size(width, height);
 	}
 	
 	// Collision
@@ -35,10 +33,10 @@ public class Rectangle {
 		if (r == null) return false;
 		if (!(r instanceof Rectangle)) return false;
 		
-		if (this.x >= r.x + r.width) return false;
-		if (this.x + this.width <= r.x) return false;
-		if (this.y >= r.y + r.height) return false;
-		if (this.y + this.height <= r.y) return false;
+		if (this.x >= r.x + r.size.getWidth()) return false;
+		if (this.x + this.size.getWidth() <= r.x) return false;
+		if (this.y >= r.y + r.size.getHeight()) return false;
+		if (this.y + this.size.getHeight() <= r.y) return false;
 		
 		return true;
 	}
@@ -94,7 +92,7 @@ public class Rectangle {
 	 */
 	public void setWidth(int width)
 	{
-		this.width = width;
+		this.size.setWidth(width);
 	}
 	/**
 	 * Set the height of the rectangle.
@@ -103,7 +101,7 @@ public class Rectangle {
 	 */
 	public void setHeight(int height)
 	{
-		this.height = height;
+		this.size.setHeight(height);
 	}
 	/**
 	 * Set the position of the rectangle.
@@ -153,7 +151,7 @@ public class Rectangle {
 	 */
 	public int getWidth()
 	{
-		return this.width;
+		return this.size.getWidth();
 	}
 	/**
 	 * Get the height of the rectangle.
@@ -162,7 +160,12 @@ public class Rectangle {
 	 */
 	public int getHeight()
 	{
-		return this.height;
+		return this.size.getHeight();
+	}
+	
+	public String toString()
+	{
+		return (this.getWidth()+"x"+this.getHeight()+" at "+this.getX()+","+this.getY());
 	}
 	
 }
