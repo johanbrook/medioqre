@@ -32,24 +32,41 @@ import javax.swing.KeyStroke;
 import java.awt.event.KeyEvent;
 import java.awt.event.InputEvent;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
 
 import javax.swing.JSeparator;
+
+import org.apache.commons.io.IOUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import tilemap.TileMap;
 
 public class TileMapEditor extends JFrame {
 
 	private File currentFile;
-	
+
+	private TileMap currentTileMap;
+
+	private JMenuItem mntmSave;
+	private JMenuItem mntmSaveAs;
+
 	public static void main(String[] args)
 	{
 		new TileMapEditor();
 	}
 
 	public TileMapEditor()
-	{	
+	{
 		this.initMenuBar();
 		this.initGui();
+		this.reloadGui();
 	}
-	
+
 	private void saveFile(File file)
 	{
 		System.out.println("Method for saving file");
@@ -62,45 +79,94 @@ public class TileMapEditor extends JFrame {
 				saveFile(currentFile);
 			}
 		} else {
+			FileWriter writer = null;
+			try {
+				writer = new FileWriter(file);
+				writer.write(this.currentTileMap.serialize().toString());
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+				if (writer != null)
+					try {
+						writer.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+			}
 			System.out.println("Saving file: " + file);
 		}
 	}
+
 	private void newTileMap()
 	{
 		System.out.println("Creating new tilemap.");
+		this.currentTileMap = new TileMap(20, 20);
+		this.reloadGui();
 	}
+
 	private void loadTileMap(File file)
 	{
-		System.out.println("Loading tilemap: "+file);
+		try {
+			InputStream inputStream = new FileInputStream(file);
+			String jsonString = IOUtils.toString(inputStream);
+			this.currentTileMap = new TileMap(new JSONObject(jsonString));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("Loading tilemap: " + file);
 	}
+
 	private void createNewTileSheet()
 	{
 		System.out.println("Creating new tilesheet.");
 	}
+
 	private void loadTileSheet(File tileSheet)
 	{
 		System.out.println("Loading tileSheet: " + tileSheet.getName());
 	}
+
 	private void clearTileMap()
 	{
 		System.out.println("Clearing tilemap.");
 	}
+
 	private void setTileMapSize(int rows, int columns)
 	{
-		System.out.println("Setting tilemap size to: "+rows+" x "+columns);
+		System.out
+				.println("Setting tilemap size to: " + rows + " x " + columns);
 	}
-	
-	
+
+	private void reloadGui()
+	{
+		if (this.currentTileMap == null) {
+			this.mntmSave.setEnabled(false);
+			this.mntmSaveAs.setEnabled(false);
+		} else {
+			this.mntmSave.setEnabled(true);
+			this.mntmSaveAs.setEnabled(true);
+		}
+	}
+
 	private void initMenuBar()
 	{
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
-		
+
 		JMenu mnFile = new JMenu("TileMap");
 		menuBar.add(mnFile);
-		
+
 		JMenuItem mntmNewTilemap = new JMenuItem("New Tilemap...");
-		mntmNewTilemap.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.META_MASK));
+		mntmNewTilemap.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N,
+				InputEvent.META_MASK));
 		mnFile.add(mntmNewTilemap);
 		mntmNewTilemap.addActionListener(new ActionListener() {
 			@Override
@@ -109,9 +175,10 @@ public class TileMapEditor extends JFrame {
 				newTileMap();
 			}
 		});
-		
+
 		JMenuItem mntmLoadTilemap = new JMenuItem("Open Tilemap...");
-		mntmLoadTilemap.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.META_MASK));
+		mntmLoadTilemap.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O,
+				InputEvent.META_MASK));
 		mnFile.add(mntmLoadTilemap);
 		mntmLoadTilemap.addActionListener(new ActionListener() {
 			@Override
@@ -119,16 +186,17 @@ public class TileMapEditor extends JFrame {
 			{
 				JFileChooser chooser = new JFileChooser();
 				int input = chooser.showOpenDialog(getParent());
-				if (input == JFileChooser.APPROVE_OPTION) 
+				if (input == JFileChooser.APPROVE_OPTION)
 					loadTileMap(chooser.getSelectedFile());
 			}
 		});
-		
+
 		JSeparator separator_1 = new JSeparator();
 		mnFile.add(separator_1);
-		
-		JMenuItem mntmSave = new JMenuItem("Save");
-		mntmSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.META_MASK));
+
+		mntmSave = new JMenuItem("Save");
+		mntmSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
+				InputEvent.META_MASK));
 		mnFile.add(mntmSave);
 		mntmSave.addActionListener(new ActionListener() {
 			@Override
@@ -137,27 +205,30 @@ public class TileMapEditor extends JFrame {
 				saveFile(currentFile);
 			}
 		});
-		
-		JMenuItem mntmSaveAs = new JMenuItem("Save as...");
-		mntmSaveAs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.SHIFT_MASK | InputEvent.META_MASK));
+
+		mntmSaveAs = new JMenuItem("Save as...");
+		mntmSaveAs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
+				InputEvent.SHIFT_MASK | InputEvent.META_MASK));
 		mnFile.add(mntmSaveAs);
-		
+
 		JSeparator separator_3 = new JSeparator();
 		mnFile.add(separator_3);
-		
+
 		JMenuItem mntmSize = new JMenuItem("Size...");
 		mnFile.add(mntmSize);
-		
+
 		JSeparator separator_4 = new JSeparator();
 		mnFile.add(separator_4);
-		
+
 		JMenuItem mntmClear = new JMenuItem("Clear Tiles");
 		mnFile.add(mntmClear);
 		mntmClear.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0)
 			{
-				int input = JOptionPane.showConfirmDialog(null, "Do you really want to clear the tilemap?", "Clear tilemap", JOptionPane.YES_NO_OPTION);
+				int input = JOptionPane.showConfirmDialog(null,
+						"Do you really want to clear the tilemap?",
+						"Clear tilemap", JOptionPane.YES_NO_OPTION);
 				if (input == JOptionPane.YES_OPTION)
 					clearTileMap();
 			}
@@ -166,8 +237,10 @@ public class TileMapEditor extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0)
 			{
-				int rows = Integer.valueOf(JOptionPane.showInputDialog("Number of rows: "));
-				int columns = Integer.valueOf(JOptionPane.showInputDialog("Number of columns: "));
+				int rows = Integer.valueOf(JOptionPane
+						.showInputDialog("Number of rows: "));
+				int columns = Integer.valueOf(JOptionPane
+						.showInputDialog("Number of columns: "));
 				setTileMapSize(rows, columns);
 			}
 		});
@@ -178,11 +251,12 @@ public class TileMapEditor extends JFrame {
 				saveFile(null);
 			}
 		});
-		
+
 		JMenu mnTilesheet = new JMenu("TileSheet");
 		menuBar.add(mnTilesheet);
-		
-		JMenuItem mntmCreateNewTilesheet = new JMenuItem("Create New TileSheet...");
+
+		JMenuItem mntmCreateNewTilesheet = new JMenuItem(
+				"Create New TileSheet...");
 		mnTilesheet.add(mntmCreateNewTilesheet);
 		mntmCreateNewTilesheet.addActionListener(new ActionListener() {
 			@Override
@@ -191,10 +265,10 @@ public class TileMapEditor extends JFrame {
 				createNewTileSheet();
 			}
 		});
-		
+
 		JSeparator separator = new JSeparator();
 		mnTilesheet.add(separator);
-		
+
 		JMenuItem mntmLoadTileSheet = new JMenuItem("Load TileSheet...");
 		mnTilesheet.add(mntmLoadTileSheet);
 		mntmLoadTileSheet.addActionListener(new ActionListener() {
@@ -336,7 +410,8 @@ public class TileMapEditor extends JFrame {
 
 			@Override
 			public void windowClosed(WindowEvent e)
-			{}
+			{
+			}
 
 			@Override
 			public void windowActivated(WindowEvent e)
