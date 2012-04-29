@@ -166,10 +166,9 @@ public class TileMapEditor extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0)
 			{
-				TileMapSizeMessageDialog tmsmd = new TileMapSizeMessageDialog();
-				int derp = tmsmd.showTileMapSizeDialog();
-				System.out.println("Derrrp: "+derp);
-				setTileMapSize(20, 20);
+				int rows = Integer.valueOf(JOptionPane.showInputDialog("Number of rows: "));
+				int columns = Integer.valueOf(JOptionPane.showInputDialog("Number of columns: "));
+				setTileMapSize(rows, columns);
 			}
 		});
 		mntmSaveAs.addActionListener(new ActionListener() {
@@ -202,7 +201,6 @@ public class TileMapEditor extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				System.out.println("Derp");
 				JFileChooser chooser = new JFileChooser();
 				int input = chooser.showOpenDialog(getParent());
 				if (input == JFileChooser.APPROVE_OPTION) {
