@@ -69,6 +69,10 @@ public class TileMapEditor extends JFrame {
 	{
 		System.out.println("Creating new tilemap.");
 	}
+	private void loadTileMap(File file)
+	{
+		System.out.println("Loading tilemap: "+file);
+	}
 	private void createNewTileSheet()
 	{
 		System.out.println("Creating new tilesheet.");
@@ -92,7 +96,7 @@ public class TileMapEditor extends JFrame {
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		
-		JMenu mnFile = new JMenu("File");
+		JMenu mnFile = new JMenu("TileMap");
 		menuBar.add(mnFile);
 		
 		JMenuItem mntmNewTilemap = new JMenuItem("New Tilemap...");
@@ -103,6 +107,20 @@ public class TileMapEditor extends JFrame {
 			public void actionPerformed(ActionEvent arg0)
 			{
 				newTileMap();
+			}
+		});
+		
+		JMenuItem mntmLoadTilemap = new JMenuItem("Open Tilemap...");
+		mntmLoadTilemap.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.META_MASK));
+		mnFile.add(mntmLoadTilemap);
+		mntmLoadTilemap.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0)
+			{
+				JFileChooser chooser = new JFileChooser();
+				int input = chooser.showOpenDialog(getParent());
+				if (input == JFileChooser.APPROVE_OPTION) 
+					loadTileMap(chooser.getSelectedFile());
 			}
 		});
 		
@@ -123,19 +141,27 @@ public class TileMapEditor extends JFrame {
 		JMenuItem mntmSaveAs = new JMenuItem("Save as...");
 		mntmSaveAs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.SHIFT_MASK | InputEvent.META_MASK));
 		mnFile.add(mntmSaveAs);
-		mntmSaveAs.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				saveFile(null);
-			}
-		});
 		
-		JMenu mnTilemap = new JMenu("Tilemap");
-		menuBar.add(mnTilemap);
+		JSeparator separator_3 = new JSeparator();
+		mnFile.add(separator_3);
 		
 		JMenuItem mntmSize = new JMenuItem("Size...");
-		mnTilemap.add(mntmSize);
+		mnFile.add(mntmSize);
+		
+		JSeparator separator_4 = new JSeparator();
+		mnFile.add(separator_4);
+		
+		JMenuItem mntmClear = new JMenuItem("Clear Tiles");
+		mnFile.add(mntmClear);
+		mntmClear.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0)
+			{
+				int input = JOptionPane.showConfirmDialog(null, "Do you really want to clear the tilemap?", "Clear tilemap", JOptionPane.YES_NO_OPTION);
+				if (input == JOptionPane.YES_OPTION)
+					clearTileMap();
+			}
+		});
 		mntmSize.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0)
@@ -146,26 +172,18 @@ public class TileMapEditor extends JFrame {
 				setTileMapSize(20, 20);
 			}
 		});
-		
-		JSeparator separator_2 = new JSeparator();
-		mnTilemap.add(separator_2);
-		
-		JMenuItem mntmClear = new JMenuItem("Clear");
-		mnTilemap.add(mntmClear);
-		mntmClear.addActionListener(new ActionListener() {
+		mntmSaveAs.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent arg0)
+			public void actionPerformed(ActionEvent e)
 			{
-				int input = JOptionPane.showConfirmDialog(null, "Do you really want to clear the tilemap?", "Clear tilemap", JOptionPane.YES_NO_OPTION);
-				if (input == JOptionPane.YES_OPTION)
-					clearTileMap();
+				saveFile(null);
 			}
 		});
 		
 		JMenu mnTilesheet = new JMenu("TileSheet");
 		menuBar.add(mnTilesheet);
 		
-		JMenuItem mntmCreateNewTilesheet = new JMenuItem("Create new tile sheet...");
+		JMenuItem mntmCreateNewTilesheet = new JMenuItem("Create New TileSheet...");
 		mnTilesheet.add(mntmCreateNewTilesheet);
 		mntmCreateNewTilesheet.addActionListener(new ActionListener() {
 			@Override
@@ -178,7 +196,7 @@ public class TileMapEditor extends JFrame {
 		JSeparator separator = new JSeparator();
 		mnTilesheet.add(separator);
 		
-		JMenuItem mntmLoadTileSheet = new JMenuItem("Load tile sheet");
+		JMenuItem mntmLoadTileSheet = new JMenuItem("Load TileSheet...");
 		mnTilesheet.add(mntmLoadTileSheet);
 		mntmLoadTileSheet.addActionListener(new ActionListener() {
 			@Override
