@@ -1,5 +1,6 @@
 package gui.tilemapeditor;
 
+import gui.tilemapeditor.messagedialogs.TileMapSizeMessageDialog;
 import gui.tilemapeditor.subviews.TileCanvas;
 import gui.tilemapeditor.subviews.TileInspector;
 import gui.tilemapeditor.subviews.TileSelector;
@@ -76,6 +77,15 @@ public class TileMapEditor extends JFrame {
 	{
 		System.out.println("Loading tileSheet: " + tileSheet.getName());
 	}
+	private void clearTileMap()
+	{
+		System.out.println("Clearing tilemap.");
+	}
+	private void setTileMapSize(int rows, int columns)
+	{
+		System.out.println("Setting tilemap size to: "+rows+" x "+columns);
+	}
+	
 	
 	private void initMenuBar()
 	{
@@ -118,6 +128,37 @@ public class TileMapEditor extends JFrame {
 			public void actionPerformed(ActionEvent e)
 			{
 				saveFile(null);
+			}
+		});
+		
+		JMenu mnTilemap = new JMenu("Tilemap");
+		menuBar.add(mnTilemap);
+		
+		JMenuItem mntmSize = new JMenuItem("Size...");
+		mnTilemap.add(mntmSize);
+		mntmSize.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0)
+			{
+				TileMapSizeMessageDialog tmsmd = new TileMapSizeMessageDialog();
+				int derp = tmsmd.showTileMapSizeDialog();
+				System.out.println("Derrrp: "+derp);
+				setTileMapSize(20, 20);
+			}
+		});
+		
+		JSeparator separator_2 = new JSeparator();
+		mnTilemap.add(separator_2);
+		
+		JMenuItem mntmClear = new JMenuItem("Clear");
+		mnTilemap.add(mntmClear);
+		mntmClear.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0)
+			{
+				int input = JOptionPane.showConfirmDialog(null, "Do you really want to clear the tilemap?", "Clear tilemap", JOptionPane.YES_NO_OPTION);
+				if (input == JOptionPane.YES_OPTION)
+					clearTileMap();
 			}
 		});
 		
