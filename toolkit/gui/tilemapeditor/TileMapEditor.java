@@ -16,20 +16,28 @@ import java.awt.Frame;
 
 import javax.swing.JSplitPane;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+
+import javax.swing.JFileChooser;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 import java.awt.event.KeyEvent;
 import java.awt.event.InputEvent;
+import java.io.File;
+
 import javax.swing.JSeparator;
 
 public class TileMapEditor extends JFrame {
 
+	private File currentFile;
+	
 	public static void main(String[] args)
 	{
 		new TileMapEditor();
@@ -37,6 +45,40 @@ public class TileMapEditor extends JFrame {
 
 	public TileMapEditor()
 	{	
+		this.initMenuBar();
+		this.initGui();
+	}
+	
+	private void saveFile(File file)
+	{
+		System.out.println("Method for saving file");
+		if (file == null) {
+			System.out.println("Filename is null");
+			JFileChooser chooser = new JFileChooser();
+			int input = chooser.showSaveDialog(getParent());
+			if (input == JFileChooser.APPROVE_OPTION) {
+				currentFile = chooser.getSelectedFile();
+				saveFile(currentFile);
+			}
+		} else {
+			System.out.println("Saving file: " + file);
+		}
+	}
+	private void newTileMap()
+	{
+		System.out.println("Creating new tilemap.");
+	}
+	private void createNewTileSheet()
+	{
+		System.out.println("Creating new tilesheet.");
+	}
+	private void loadTileSheet(File tileSheet)
+	{
+		System.out.println("Loading tileSheet: " + tileSheet.getName());
+	}
+	
+	private void initMenuBar()
+	{
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		
@@ -46,6 +88,13 @@ public class TileMapEditor extends JFrame {
 		JMenuItem mntmNewTilemap = new JMenuItem("New Tilemap...");
 		mntmNewTilemap.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.META_MASK));
 		mnFile.add(mntmNewTilemap);
+		mntmNewTilemap.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0)
+			{
+				newTileMap();
+			}
+		});
 		
 		JSeparator separator_1 = new JSeparator();
 		mnFile.add(separator_1);
@@ -53,23 +102,55 @@ public class TileMapEditor extends JFrame {
 		JMenuItem mntmSave = new JMenuItem("Save");
 		mntmSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.META_MASK));
 		mnFile.add(mntmSave);
+		mntmSave.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				saveFile(currentFile);
+			}
+		});
 		
 		JMenuItem mntmSaveAs = new JMenuItem("Save as...");
 		mntmSaveAs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.SHIFT_MASK | InputEvent.META_MASK));
 		mnFile.add(mntmSaveAs);
+		mntmSaveAs.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				saveFile(null);
+			}
+		});
 		
 		JMenu mnTilesheet = new JMenu("TileSheet");
 		menuBar.add(mnTilesheet);
 		
 		JMenuItem mntmCreateNewTilesheet = new JMenuItem("Create new tile sheet...");
 		mnTilesheet.add(mntmCreateNewTilesheet);
+		mntmCreateNewTilesheet.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				createNewTileSheet();
+			}
+		});
 		
 		JSeparator separator = new JSeparator();
 		mnTilesheet.add(separator);
 		
 		JMenuItem mntmLoadTileSheet = new JMenuItem("Load tile sheet");
 		mnTilesheet.add(mntmLoadTileSheet);
-		this.initGui();
+		mntmLoadTileSheet.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				System.out.println("Derp");
+				JFileChooser chooser = new JFileChooser();
+				int input = chooser.showOpenDialog(getParent());
+				if (input == JFileChooser.APPROVE_OPTION) {
+					loadTileSheet(chooser.getSelectedFile());
+				}
+			}
+		});
 	}
 
 	private void initGui()
@@ -189,6 +270,7 @@ public class TileMapEditor extends JFrame {
 					System.out.println("Not saving and sutting down!");
 				} else if (i == JOptionPane.YES_OPTION) {
 					System.out.println("Saving and sutting down!");
+					saveFile(currentFile);
 				} else {
 					return;
 				}
