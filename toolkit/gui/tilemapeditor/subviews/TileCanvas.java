@@ -1,5 +1,6 @@
 package gui.tilemapeditor.subviews;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCapabilities;
@@ -16,8 +17,8 @@ public class TileCanvas extends GLCanvas implements GLEventListener {
 	
 	private TileMap currentTileMap;
 	
-	Rectangle object = new Rectangle( 0, 0, 100,100);
-	Rectangle target = new Rectangle( 0, 0, 100,100);
+	Rectangle object = new Rectangle( 0, 0, 200,120);
+	Rectangle target = new Rectangle( 0, 0, 200,120);
 	
 	public TileCanvas()
 	{
@@ -36,6 +37,8 @@ public class TileCanvas extends GLCanvas implements GLEventListener {
 	public void setTileMap(TileMap tileMap)
 	{
 		this.currentTileMap = tileMap;
+		object = new Rectangle(0, 0, this.currentTileMap.getTileMapSize().getWidth(),this.currentTileMap.getTileMapSize().getHeight());
+		target = new Rectangle(0, 0, this.currentTileMap.getTileMapSize().getWidth(),this.currentTileMap.getTileMapSize().getHeight());
 	}
 	
 	@Override
@@ -54,10 +57,15 @@ public class TileCanvas extends GLCanvas implements GLEventListener {
 			
 			gl.glBegin(GL2.GL_QUADS);
 			gl.glColor3f(1.0f, 0.0f, 0.0f);
-			
 			gl.glVertex2f(-0.5f, -0.5f);
+			
+			gl.glColor3f(1.0f, 0.0f, 1.0f);
 			gl.glVertex2f(-0.5f, 0.5f);
+			
+			gl.glColor3f(0.0f, 1.0f, 0.0f);
 			gl.glVertex2f(0.5f, 0.5f);
+			
+			gl.glColor3f(0.0f, 0.0f, 1.0f);
 			gl.glVertex2f(0.5f, -0.5f);
 			
 			gl.glEnd();
@@ -69,6 +77,10 @@ public class TileCanvas extends GLCanvas implements GLEventListener {
 	{
 		GL2 gl = arg0.getGL().getGL2();
 		gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		
+		gl.glEnable(GL.GL_TEXTURE_2D);
+		gl.glTexEnvf(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE,
+				GL2.GL_MODULATE);
 	}
 	
 	@Override
