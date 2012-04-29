@@ -117,7 +117,10 @@ public class TileMapEditor extends JFrame {
 		try {
 			InputStream inputStream = new FileInputStream(file);
 			String jsonString = IOUtils.toString(inputStream);
+			
 			this.currentTileMap = new TileMap(new JSONObject(jsonString));
+			
+			this.tileCanvas.setTileMap(this.currentTileMap);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
