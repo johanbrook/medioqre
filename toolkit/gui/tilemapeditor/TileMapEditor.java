@@ -54,6 +54,8 @@ public class TileMapEditor extends JFrame {
 
 	private JMenuItem mntmSave;
 	private JMenuItem mntmSaveAs;
+	
+	private TileCanvas tileCanvas;
 
 	public static void main(String[] args)
 	{
@@ -101,7 +103,12 @@ public class TileMapEditor extends JFrame {
 	private void newTileMap()
 	{
 		System.out.println("Creating new tilemap.");
-		this.currentTileMap = new TileMap(20, 20);
+		int rows = Integer.valueOf(JOptionPane.showInputDialog("Number of rows: "));
+		int columns = Integer.valueOf(JOptionPane.showInputDialog("Number of columns: "));
+		this.currentTileMap = new TileMap(rows, columns);
+		
+		this.tileCanvas.setTileMap(this.currentTileMap);
+		
 		this.reloadGui();
 	}
 
@@ -301,7 +308,7 @@ public class TileMapEditor extends JFrame {
 		// split pane
 		GLProfile glP = GLProfile.getDefault();
 		GLCapabilities glC = new GLCapabilities(glP);
-		TileCanvas tileCanvas = new TileCanvas(glC);
+		tileCanvas = new TileCanvas(glC);
 		splitPane_1.setLeftComponent(tileCanvas);
 
 		// Creating tile selector and adding it to
