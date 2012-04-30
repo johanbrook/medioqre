@@ -37,8 +37,9 @@ public class TileCanvas extends GLCanvas implements GLEventListener {
 	public void setTileMap(TileMap tileMap)
 	{
 		this.currentTileMap = tileMap;
-		object = new Rectangle(0, 0, this.currentTileMap.getTileMapSize().getWidth(),this.currentTileMap.getTileMapSize().getHeight());
-		target = new Rectangle(0, 0, this.currentTileMap.getTileMapSize().getWidth(),this.currentTileMap.getTileMapSize().getHeight());
+		
+		this.object = new Rectangle(0, 0, this.currentTileMap.getTileMapSize().getWidth(),this.currentTileMap.getTileMapSize().getHeight());
+		this.target = new Rectangle(0, 0, this.currentTileMap.getTileMapSize().getWidth(),this.currentTileMap.getTileMapSize().getHeight());
 	}
 	
 	@Override
@@ -49,8 +50,6 @@ public class TileCanvas extends GLCanvas implements GLEventListener {
 		
 		
 		if (this.currentTileMap != null) {
-			System.out.println(object);
-			System.out.println(target);
 			this.currentTileMap.render(object, target, arg0);
 			
 		} else {
