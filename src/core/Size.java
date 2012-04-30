@@ -30,6 +30,10 @@ public class Size {
 	{
 		return this.height;
 	}
+	public String toString()
+	{
+		return ("WxH: "+this.getWidth() + "x"+this.getHeight());
+	}
 	
 	
 }
