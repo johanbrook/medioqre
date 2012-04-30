@@ -1,9 +1,9 @@
 package gui.tilemapeditor;
 
-import gui.tilemapeditor.messagedialogs.TileMapSizeMessageDialog;
 import gui.tilemapeditor.subviews.TileCanvas;
 import gui.tilemapeditor.subviews.TileInspector;
 import gui.tilemapeditor.subviews.TileSelector;
+import gui.tilemapeditor.tilesheeteditor.TileSheetEditor;
 
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
@@ -13,10 +13,8 @@ import javax.swing.WindowConstants;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Frame;
 
 import javax.swing.JSplitPane;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
@@ -45,6 +43,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import tilemap.TileMap;
+import tilemap.TileSheet;
 
 public class TileMapEditor extends JFrame {
 
@@ -54,7 +53,7 @@ public class TileMapEditor extends JFrame {
 
 	private JMenuItem mntmSave;
 	private JMenuItem mntmSaveAs;
-	
+
 	private TileCanvas tileCanvas;
 
 	public static void main(String[] args)
@@ -64,7 +63,6 @@ public class TileMapEditor extends JFrame {
 
 	public TileMapEditor()
 	{
-		this.initMenuBar();
 		this.initGui();
 		this.reloadGui();
 	}
@@ -103,12 +101,14 @@ public class TileMapEditor extends JFrame {
 	private void newTileMap()
 	{
 		System.out.println("Creating new tilemap.");
-		int rows = Integer.valueOf(JOptionPane.showInputDialog("Number of rows: "));
-		int columns = Integer.valueOf(JOptionPane.showInputDialog("Number of columns: "));
-		this.currentTileMap = new TileMap(rows, columns);
-		
+		int rows = Integer.valueOf(JOptionPane
+				.showInputDialog("Number of rows: "));
+		int columns = Integer.valueOf(JOptionPane
+				.showInputDialog("Number of columns: "));
+		this.currentTileMap = new TileMap(rows, columns, new TileSheet());
+
 		this.tileCanvas.setTileMap(this.currentTileMap);
-		
+
 		this.reloadGui();
 	}
 
@@ -117,9 +117,9 @@ public class TileMapEditor extends JFrame {
 		try {
 			InputStream inputStream = new FileInputStream(file);
 			String jsonString = IOUtils.toString(inputStream);
-			
+
 			this.currentTileMap = new TileMap(new JSONObject(jsonString));
-			
+
 			this.tileCanvas.setTileMap(this.currentTileMap);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -136,6 +136,7 @@ public class TileMapEditor extends JFrame {
 
 	private void createNewTileSheet()
 	{
+		new TileSheetEditor();
 		System.out.println("Creating new tilesheet.");
 	}
 
@@ -166,7 +167,7 @@ public class TileMapEditor extends JFrame {
 		}
 	}
 
-	private void initMenuBar()
+	private void initGui()
 	{
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -292,10 +293,7 @@ public class TileMapEditor extends JFrame {
 				}
 			}
 		});
-	}
 
-	private void initGui()
-	{
 		// Create Main split pane
 		JSplitPane splitPane = new JSplitPane();
 		getContentPane().add(splitPane, BorderLayout.CENTER);
