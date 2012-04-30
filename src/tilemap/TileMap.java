@@ -70,8 +70,6 @@ public class TileMap implements JSONSerializable, GLRenderableObject {
 				tileRenderRect.setWidth(tileSize.getWidth());
 				tileRenderRect.setHeight(tileSize.getHeight());
 				
-				System.out.println("Rendering Tile at: "+x+","+y);
-				System.out.println(tileRenderRect);
 				this.tileTypes.get(Integer.valueOf(this.tiles[x][y])).render(tileRenderRect, target, canvas);
 			}
 		}
