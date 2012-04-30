@@ -21,6 +21,7 @@ public class Tile implements JSONSerializable, GLRenderableObject{
 //	private Rectangle rectangle;
 	private Sprite sprite;
 	private int type;
+	boolean collidable;
 	
 	
 	// Testing shit
@@ -28,10 +29,19 @@ public class Tile implements JSONSerializable, GLRenderableObject{
 	// ********************************************* SHOULD BE REMOVED *********************************************
 	private Random random = new Random(); 
 	
-	public Tile(Sprite sprite, int type)
+	public Tile(Sprite sprite, int type, boolean collidable)
 	{
 		this.type = type;
 		this.sprite = sprite;
+	}
+	
+	public boolean isCollidable()
+	{
+		return this.collidable;
+	}
+	public void setCollidable(boolean collidable)
+	{
+		this.collidable = collidable;
 	}
 	
 	public Tile(JSONObject o)
