@@ -2,6 +2,7 @@ package launcher;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
@@ -16,8 +17,7 @@ public class Launcher extends JFrame {
 		boolean runningOnOSX = os.indexOf("mac") != -1; 
 		
 		if (runningOnOSX){
-		
-			
+			com.apple.eawt.Application app;
 			
 		}
 		
