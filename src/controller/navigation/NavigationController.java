@@ -3,9 +3,7 @@ package controller.navigation;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import constants.Direction;
 import event.Event;
@@ -22,12 +20,12 @@ import event.Messager;
 public class NavigationController implements KeyListener, IMessageSender {
 	
 	private NavigationKeyQueue navKeys;
+	private NavigationKeyQueue cachedKeys;
 	private Map<Integer, Key> keyMap;
 	
 	private Messager messager = new Messager();
 	
 	private boolean isQuick = false;
-	private Set<Integer> cachedKeys;
 	
 	private long start;
 	private final double EPSILON = 0.2;
@@ -60,7 +58,7 @@ public class NavigationController implements KeyListener, IMessageSender {
 	private void initKeys() {
 		this.navKeys = new NavigationKeyQueue(2);
 		
-		this.cachedKeys = new HashSet<Integer>();
+		this.cachedKeys = new NavigationKeyQueue(2);
 		this.keyMap = new HashMap<Integer, Key>();
 		
 		this.up = new NavigationKey("up", null, Direction.NORTH);
@@ -109,55 +107,46 @@ public class NavigationController implements KeyListener, IMessageSender {
 	 */
 	private void refreshDirection() {
 		
-		if(this.navKeys.size() > 1){
-			NavigationKey composite = createCompositeKey();
+		if(this.isQuick) {
+			NavigationKey composite = this.cachedKeys.createCompositeKey();
+			System.out.println("QUICK");
+			System.out.println("COMPOSITE: "+composite);
 			
-			if(composite != null){
+			if(composite != null)
 				messager.sendMessage(new Event(Property.CHANGED_DIRECTION, composite.getDirection()));
+		}
+		
+		else if(this.navKeys.hasMultiple()){
+			Direction dir;
+			NavigationKey composite = this.navKeys.createCompositeKey();
+			
+			// Diagonal direction
+			if(composite != null) {
+				dir = composite.getDirection();
 			}
-			else {
-				messager.sendMessage(new Event(Property.CHANGED_DIRECTION, this.navKeys.last().getDirection()));
+			
+			else{
+				dir = this.navKeys.last().getDirection();
 			}
-				
+			
+			messager.sendMessage(new Event(Property.CHANGED_DIRECTION, dir));
 		}
 		else if(this.navKeys.size() == 1) {
 			messager.sendMessage(new Event(Property.CHANGED_DIRECTION, this.navKeys.first().getDirection()));
 		}
-		
 	}
-	
-	
-	/**
-	 * Creates a composite navigation key with a direction from the 
-	 * existing keys in the navigation list.
-	 * 
-	 * @return A new navigation key with a diagonal direction. If the list doesn't
-	 * contain matching diagonal key, null is returned.
-	 * @see Direction
-	 */
-	private NavigationKey createCompositeKey() {
 
-		
-		if(this.navKeys.contains(up) && this.navKeys.contains(right)){
-			return new NavigationKey("top_right", null, Direction.NORTH_EAST);
+	
+	private void checkIsQuick() {
+		if(this.navKeys.size() == 1 && this.cachedKeys.hasMultiple()) {
+			double seconds = ((System.nanoTime() - start) / 10E8);
+			this.isQuick = seconds < EPSILON;
 		}
-		
-		if(this.navKeys.contains(up) && this.navKeys.contains(left)){
-			return new NavigationKey("top_left", null, Direction.NORTH_WEST);
+		else if(this.navKeys.size() == 2) {
+			this.start = System.nanoTime();
 		}
-		
-		if(this.navKeys.contains(down) && this.navKeys.contains(right)){
-			return new NavigationKey("bottom_right", null, Direction.SOUTH_EAST);
-		}
-		
-		if(this.navKeys.contains(down) && this.navKeys.contains(left)){
-			return new NavigationKey("bottom_left", null, Direction.SOUTH_WEST);
-		}
-		
-		
-		return null;
-		
 	}
+	
 	
 	@Override
 	public void keyPressed(KeyEvent evt) {
@@ -166,7 +155,10 @@ public class NavigationController implements KeyListener, IMessageSender {
 		if(a != null) {
 			
 			if(a instanceof NavigationKey) {
+				this.cachedKeys.clear();
+				this.isQuick = false;
 				this.navKeys.add((NavigationKey) a);
+				
 				refreshDirection();
 			}
 			else{
@@ -181,8 +173,13 @@ public class NavigationController implements KeyListener, IMessageSender {
 		Key a = this.keyMap.get(evt.getKeyCode());
 		
 		if(a != null) {
+			
 			if(a instanceof NavigationKey){
+				this.cachedKeys.add((NavigationKey) a);
+				checkIsQuick();
 				this.navKeys.remove(a);
+				System.out.println("Cached keys: "+this.cachedKeys);
+				
 				refreshDirection();
 			}
 			else {
@@ -191,27 +188,10 @@ public class NavigationController implements KeyListener, IMessageSender {
 		}
 		
 		
-		
 		if(this.navKeys.isEmpty()){
 			messager.sendMessage(new Event(Property.DID_STOP));
 		}
 		
-//		if(this.keyMap.containsKey(evt.getKeyCode())){
-//			
-//			if(this.keys.size() == 1 && this.cachedKeys.size() > 0) {
-//				double seconds = ((System.nanoTime() - start) / 10E8);
-//				this.isQuick = seconds < EPSILON;
-//			}
-//			else if(this.keys.size() == 2) {
-//				this.start = System.nanoTime();
-//			}
-//			
-//			
-//			this.cachedKeys.add(evt.getKeyCode());
-//			
-//			sendKeyAction(evt, !this.keys.isEmpty());
-//		}
-//		
 	}
 
 	@Override
