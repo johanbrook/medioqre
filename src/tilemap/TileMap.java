@@ -56,6 +56,22 @@ public class TileMap implements JSONSerializable, GLRenderableObject {
 		return this.tileMapSize;
 	}
 
+	public int[] getTilesToPizelArray()
+	{
+		int rows = this.tiles == null ? 0 : this.tiles.length;
+		int cols = rows > 0 ? this.tiles[0].length : 0;
+		
+		
+		int[] pixels = new int[rows * cols];
+		for (int x = 0; x < cols; x++) {
+			for (int y = 0; y < rows; y++) {
+				pixels[y * cols + x] = this.tiles[y][x];
+			}
+		}
+		
+		return pixels;
+	}
+	
 	public TileMap(JSONObject o)
 	{
 		this.deserialize(o);
