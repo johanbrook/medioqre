@@ -34,6 +34,18 @@ public class Main {
 		
 //		new AppController();
 		
+		
+		String os = System.getProperty("os.name").toLowerCase();
+		boolean runningOnOSX = os.indexOf("mac") != -1; 
+		
+		if (runningOnOSX){
+			System.setProperty("apple.laf.useScreenMenuBar", "true");
+			System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Frank The Tank");
+			
+		}
+		
+		
+		
 		new Launcher();
 	}
 }

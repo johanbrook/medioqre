@@ -13,13 +13,7 @@ public class Launcher extends JFrame {
 
 	public Launcher() {
 		
-		String os = System.getProperty("os.name").toLowerCase();
-		boolean runningOnOSX = os.indexOf("mac") != -1; 
 		
-		if (runningOnOSX){
-			com.apple.eawt.Application app;
-			
-		}
 		
 		setTitle("Frank the Tank");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
