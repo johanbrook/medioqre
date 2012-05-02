@@ -44,6 +44,7 @@ public class Launcher extends JFrame {
 
 		// Logo, Button for now, since I'd like an easter egg here
 		JButton Logo = new JButton("");
+		Logo.setBorder(null);
 		Logo.setBounds(265, 50, 330, 120);
 		Logo.setIcon(new ImageIcon(Launcher.class
 				.getResource("/images/launcher/logo.png")));
@@ -92,7 +93,7 @@ public class Launcher extends JFrame {
 			}
 		});
 
-		setBackground(new Color(100, 200, 100));
+		setBackground(new Color(0, 0, 0));
 		setVisible(true);
 	}
 }
