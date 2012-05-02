@@ -35,6 +35,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 import javax.swing.JSeparator;
 
@@ -42,6 +43,7 @@ import org.apache.commons.io.IOUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import tilemap.Tile;
 import tilemap.TileMap;
 import tilemap.TileSheet;
 
@@ -50,6 +52,7 @@ public class TileMapEditor extends JFrame {
 	private File currentFile;
 
 	private TileMap currentTileMap;
+	private TileSheet currentTileSheet;
 
 	private JMenuItem mntmSave;
 	private JMenuItem mntmSaveAs;
@@ -119,6 +122,7 @@ public class TileMapEditor extends JFrame {
 			String jsonString = IOUtils.toString(inputStream);
 
 			this.currentTileMap = new TileMap(new JSONObject(jsonString));
+			this.currentTileMap.setTileSheet(this.currentTileSheet);
 
 			this.tileCanvas.setTileMap(this.currentTileMap);
 		} catch (FileNotFoundException e) {
@@ -140,9 +144,24 @@ public class TileMapEditor extends JFrame {
 		System.out.println("Creating new tilesheet.");
 	}
 
-	private void loadTileSheet(File tileSheet)
+	private void loadTileSheet(File file)
 	{
-		System.out.println("Loading tileSheet: " + tileSheet.getName());
+		
+		try {
+			this.currentTileSheet = new TileSheet(new JSONObject(
+					IOUtils.toString(new FileInputStream(file))));
+			System.out.println("load TileSheet: " + file.getAbsolutePath());
+			
+			this.reloadGui();
+			return;
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (JSONException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println("Could not load: " + file.getAbsolutePath());
 	}
 
 	private void clearTileMap()
@@ -157,13 +176,18 @@ public class TileMapEditor extends JFrame {
 	}
 
 	private void reloadGui()
-	{
+	{	
 		if (this.currentTileMap == null) {
+			// Update GUI
 			this.mntmSave.setEnabled(false);
 			this.mntmSaveAs.setEnabled(false);
 		} else {
+			// Update GUI
 			this.mntmSave.setEnabled(true);
 			this.mntmSaveAs.setEnabled(true);
+			
+			// Update Logic
+			this.currentTileMap.setTileSheet(this.currentTileSheet);
 		}
 	}
 
