@@ -1,18 +1,27 @@
 package controller.AI;
 
 import java.awt.Point;
+
 import java.util.List;
 
 import model.character.Enemy;
 import model.weapon.Projectile;
 import constants.Direction;
 
+/**
+ * Class for representing a virtual player. Every AIPlayer will keep track of one enemy.
+ * Capable of keeping track of distance to player, path to player, a cooldown counter as well as a interval for attacks, an iq for sorting,
+ *  and a update count to keep track of when to update path.
+ * @author jesperpersson
+ *
+ */
+
 public class AIPlayer {
 	private Enemy unit;
 	private List <Point> path;
 	private int iq,updateCount,distance;
 	private final int ATTACK_RANGE = 35;
-	private double cooldown, attackIntervall;
+	private double cooldown, attackInterval;
 	
 	public AIPlayer (Enemy unit){
 		this.unit = unit;	
@@ -20,7 +29,7 @@ public class AIPlayer {
 		this.updateCount = 0;
 		this.distance = 100;
 		this.cooldown = 0;
-		this.attackIntervall = 5;
+		this.attackInterval = 5;
 		
 	}
 	
@@ -85,7 +94,7 @@ public class AIPlayer {
 	 public boolean inCooldown(double dt){
 		 this.cooldown -= dt;
 		 if (this.cooldown <= 0){
-			 this.cooldown = attackIntervall;
+			 this.cooldown = attackInterval;
 			 return false;
 		 }else {
 			 return true;
@@ -93,11 +102,11 @@ public class AIPlayer {
 	 }
 	 
 	 public double getAttackIntervall(){
-		 return this.attackIntervall;
+		 return this.attackInterval;
 	 }
 	 
 	 public void setAttackIntervall(double a){
-		this.attackIntervall = a; 
+		this.attackInterval = a; 
 	 }
 
 	public void resetCooldown() {
