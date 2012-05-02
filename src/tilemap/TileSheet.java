@@ -1,10 +1,7 @@
 package tilemap;
 
-import graphics.opengl.Sprite;
-
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.IdentityHashMap;
 import java.util.Map;
 
 import org.json.JSONArray;
