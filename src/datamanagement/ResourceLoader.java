@@ -29,7 +29,7 @@ public class ResourceLoader {
 	public static String loadStringFromResourceFolder(String source)
 	{
 		try {
-			InputStream input = ClassLoader.getSystemResourceAsStream("spritesheets/"+source);
+			InputStream input = ClassLoader.getSystemResourceAsStream("spritesheets/json/"+source);
 			String load = IOUtils.toString(input);
 			return load;
 		} catch (IOException e) {
