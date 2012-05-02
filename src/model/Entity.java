@@ -36,10 +36,7 @@ public abstract class Entity extends CollidableObject implements IMessageSender 
 		this.isMoving = true;
 	}
 	
-	@Override
-	public void addReceiver(IMessageListener listener) {
-		messager.addListener(listener);
-	}
+
 	
 	
 	/**
