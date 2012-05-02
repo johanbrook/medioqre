@@ -38,6 +38,8 @@ public class AppController implements Runnable{
 		
 		this.navigation.addReceiver((IMessageListener) this.game);
 		
+		this.ai.addReceiver((IMessageListener) this.game);
+		
 //		this.audio = AudioController.getInstance();
 		
 		
@@ -60,7 +62,7 @@ public class AppController implements Runnable{
 			
 			double dt = (double) updateLength / DELTA_RATIO;
 //			TimerTool.start("Update");
-			this.ai.updateAI(this.game.getPlayer().getPosition());
+			this.ai.updateAI(dt, this.game.getPlayer().getPosition());
 			this.game.update(dt);
 //			TimerTool.stop();
 			

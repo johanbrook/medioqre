@@ -53,6 +53,9 @@ public class GameModel implements IGameModel, IMessageListener {
 		case WAS_DESTROYED:
 			this.entities.remove(evt.getValue());
 			break;
+		case DID_ATTACK:
+			this.entities.add( ((Projectile)evt.getValue()) );
+			break;
 		}
 		
 	}
