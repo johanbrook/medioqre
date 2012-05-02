@@ -6,7 +6,12 @@ import java.util.List;
 import java.util.Random;
 
 import model.character.Enemy;
+import model.weapon.Projectile;
 import constants.Direction;
+import event.Event;
+import event.IMessageListener;
+import event.IMessageSender;
+import event.Messager;
 
 /**
  * Class for controlling a list of enemies. Using a PathFinder (implementation of the A*-algorithm), the AIController is able to calculate
@@ -14,12 +19,13 @@ import constants.Direction;
  * @author jesperpersson
  *
  */
-public class AIController {
+public class AIController implements IMessageSender{
 
 	private List <AIPlayer> enemies;
 	private PathFinder pathfinder;
 	private int width, height;
 	private Point playerPos,playerTile;
+	private Messager messager = new Messager();
 
 	public AIController (int rows, int columns, int width, int height) {
 		this(new ArrayList <Enemy>(), rows, columns, width, height);
@@ -39,7 +45,7 @@ public class AIController {
 	 * For each existing enemy, will update that enemies direction in order to reach the player in shortest amount of time possible
 	 * @param playerPos
 	 */
-	public void updateAI(Point playerPos){
+	public void updateAI(double dt, Point playerPos){
 		playerTile = calculateTile(playerPos);
 		this.playerPos = playerPos;
 
@@ -47,22 +53,29 @@ public class AIController {
 				playerTile.x < 48 && playerTile.y < 48){
 
 			if (enemies.size() > 0){
-				for (int i = 0; i < enemies.size(); i++){
-					updateEnemy(enemies.get(i));
+
+				for (AIPlayer ai : enemies){
+					updateEnemy(ai, dt);
+					ai.getEnemy().start();
 				}
 			}
 		}
-	}
+	}//end updateAI
 
 
-	private void updateEnemy(AIPlayer aiPlayer ){
-		aiPlayer.getEnemy().start();
+	/**
+	 * Given a aiPlayer, will update the direction of the players unit. Depending on the players updatecount, the length between 
+	 * the unit and the player, as well as the amount of enemies in the gameworld, the calculation take different forms.
+	 * @param aiPlayer
+	 */
+	private void updateEnemy(AIPlayer aiPlayer, double dt ){
 		Point enemyTile = calculateTile(aiPlayer.getEnemy().getPosition());
-		int length = (Math.abs(enemyTile.x - playerTile.x) + Math.abs(enemyTile.y
-				- playerTile.y));
-		//Calculates the path between enemy and player
 
-		if (aiPlayer.getCount() < (length*1.5) + enemies.size()/15){
+		aiPlayer.setDistance(Math.abs(aiPlayer.getEnemy().getPosition().x - playerPos.x) + Math.abs(aiPlayer.getEnemy().getPosition().y
+				- playerPos.y));
+		
+		handleAttack(aiPlayer,dt);
+		if (aiPlayer.getCount() < (aiPlayer.getDistance()/15) + enemies.size()/15){
 			aiPlayer.updateCount();
 
 		}else{
@@ -72,6 +85,8 @@ public class AIController {
 
 				aiPlayer.setPath(pathfinder.getPath(enemyTile, playerTile));
 				if (aiPlayer.getPath() != null){
+
+					
 
 					//Update direction of the enemy depending on what the current path is.
 
@@ -86,18 +101,33 @@ public class AIController {
 						aiPlayer.getPath().add(playerPos);
 						aiPlayer.getPath().add(aiPlayer.getEnemy().getPosition());
 						aiPlayer.updateEnemy(calculateDirection(aiPlayer.getPath()));
+
 					}
 				}else {
 					aiPlayer.getEnemy().setDirection(randomDir());
 				}
 			}
 		}
+	}//end updateEnemy
+
+
+	private void handleAttack(AIPlayer ai, double dt){
+		if (ai.inRange()) {
+			if (!ai.inCooldown(dt)){
+				Projectile proj = ai.doAttack();
+				messager.sendMessage(new Event(Event.Property.DID_ATTACK, proj));
+			}
+		}else {
+			ai.resetCooldown();
+		}
+
 	}
 
 
-
-
-
+	/**
+	 * Returns a randomly selected direction
+	 * @return
+	 */
 	private Direction randomDir() {
 		Random rand = new Random();
 		int r = rand.nextInt(8);
@@ -156,9 +186,19 @@ public class AIController {
 	 * @param enemy
 	 */
 	public void removeEnemy(Enemy enemy){
-		this.enemies.remove(enemy);
+		for (AIPlayer ai : enemies){
+			if (ai.getEnemy() == enemy){
+				this.enemies.remove(ai);
+			}
+		}
+			
 	}
 
+	/**
+	 * Given a list of points, will return the direction between the last two points in the list.
+	 * @param path
+	 * @return  
+	 */
 	public Direction calculateDirection(List <Point> path){
 		// Compare enemy position with next calculated position in path.
 		int dx = (int) Math.signum(path.get(path.size()-2).getX()-path.get(path.size()-1).getX());
@@ -203,8 +243,19 @@ public class AIController {
 
 	}
 
+	/**
+	 * Given a point representing a position in the gameworld, will return the tile of that position
+	 * @param point 
+	 * @return 
+	 */
 	public Point calculateTile(Point point){
 		return new Point(point.x/this.width, point.y/this.height);
+	}
+
+	@Override
+	public void addReceiver(IMessageListener listener) {
+		this.messager.addListener(listener);
+
 	}
 
 }

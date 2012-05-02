@@ -43,13 +43,18 @@ public class GameModel implements IGameModel, IMessageListener {
 			this.player.stop(); 
 			break;
 		case DID_FIRE:
-			Projectile newProjectile = this.player.attack();
-			this.entities.add(newProjectile);
+			this.entities.add(this.player.attack());
 			System.out.println("Did add projectile");
 			break;
 		case CHANGED_DIRECTION:
 			this.player.start();
 			this.player.setDirection((Direction) evt.getValue());
+			break;
+		case WAS_DESTROYED:
+			this.entities.remove(evt.getValue());
+			break;
+		case DID_ATTACK:
+			this.entities.add( ((Projectile)evt.getValue()) );
 			break;
 		}
 		
@@ -72,11 +77,12 @@ public class GameModel implements IGameModel, IMessageListener {
 		this.player.setPosition(1000, 100);
 		this.entities.add(this.player);
 		
-		this.enemies = new Enemy[50];
+		this.enemies = new Enemy[1];
 		
 		for (int i = 0; i < this.enemies.length; i++) {
 			this.enemies[i] = new Enemy(10, 10, 20+i*2, 20+i*2);
 			this.entities.add(this.enemies[i]);
+			this.enemies[i].addReceiver(this);
 		}
 	}
 	
@@ -89,9 +95,21 @@ public class GameModel implements IGameModel, IMessageListener {
 			// The entity has to move *after* collision checks have been finished, 
 			// otherwise you'll be able to bug your way through other entities.
 			t.move(dt);
+			
+			if(t instanceof Projectile)
+				doProjectileHandling((Projectile) t);
 		}
 
 	}
+	
+	
+	private void doProjectileHandling(Projectile t) {
+		if(t.getDistanceTravelled() >= t.getRange().getDistance()) {
+			System.out.println("REMOVE PROJECTILE");
+			this.entities.remove(t);
+		}
+	}
+	
 	
 	private void checkCollisions(Entity t) {
 		
@@ -99,83 +117,93 @@ public class GameModel implements IGameModel, IMessageListener {
 			
 			if(t != w && t.isColliding(w)) {
 				
-				boolean stop = false;
 				Direction currentDirection = t.getDirection();				
 				Direction blockedDirection = t.getDirectionOfObject(w);
 				
-				
-				if(currentDirection == Direction.EAST &&
-					(blockedDirection == Direction.NORTH_EAST || 
-					blockedDirection == Direction.SOUTH_EAST) ) {
-					
-					stop = true;
-				}
-				
-				if(currentDirection == Direction.SOUTH_EAST && 
-					(blockedDirection == Direction.NORTH_EAST ||
-					 blockedDirection == Direction.SOUTH_WEST) ) {
-						
-					stop = true;
-				}
-				
-				if(currentDirection == Direction.NORTH_EAST && 
-						(blockedDirection == Direction.SOUTH_EAST ||
-						 blockedDirection == Direction.NORTH_WEST)) {
-							
-					stop = true;
-				}
-				
-				if(currentDirection == Direction.WEST &&
-						(blockedDirection == Direction.NORTH_WEST || 
-						blockedDirection == Direction.SOUTH_WEST) ) {
-						
-					stop = true;
-				}
-				
-				if(currentDirection == Direction.SOUTH_WEST && 
-					(blockedDirection == Direction.NORTH_WEST ||
-					 blockedDirection == Direction.SOUTH_EAST) ) {
-						
-					stop = true;
-				}
-				
-				if(currentDirection == Direction.NORTH_WEST && 
-						(blockedDirection == Direction.SOUTH_WEST ||
-						 blockedDirection == Direction.NORTH_EAST) ) {
-							
-					stop = true;
-				}
-				
-				if(currentDirection == Direction.NORTH &&
-						(blockedDirection == Direction.NORTH_EAST || 
-						blockedDirection == Direction.NORTH_WEST) ) {
-						
-					stop = true;
-				}
-				
-				if(currentDirection == Direction.SOUTH && 
-					(blockedDirection == Direction.SOUTH_EAST ||
-					blockedDirection == Direction.SOUTH_WEST) ) {
-						
-					stop = true;
-				}
-				
-				
-				if(blockedDirection == currentDirection){
-					stop = true;
-				}
-				
 				if(t instanceof Projectile) {
-					System.out.println("Projectile "+t.toString()+" collided with enemy "+w.toString());
 					this.entities.remove(t);
+					if (w instanceof AbstractCharacter){
+						((AbstractCharacter) w).takeDamage(((Projectile) t).getDamage());
+						System.out.println("Enemy was hit, now has " + ((AbstractCharacter) w).getHealth() + " hp" + " movespeed: " + ((AbstractCharacter)w).getMovementSpeed());
+					}
 				}
 				
-				if(stop)
+				if(directionIsBlocked(currentDirection, blockedDirection)){
 					t.stop();
-				else
+				}
+				else {
 					w.start();
+				}
 			}
 		}
+	}
+	
+	
+	private boolean directionIsBlocked(Direction currentDirection, Direction blockedDirection) {
+		boolean stop = false;
+		
+		if(currentDirection == Direction.EAST &&
+			(blockedDirection == Direction.NORTH_EAST || 
+			blockedDirection == Direction.SOUTH_EAST) ) {
+			
+			stop = true;
+		}
+		
+		if(currentDirection == Direction.SOUTH_EAST && 
+			(blockedDirection == Direction.NORTH_EAST ||
+			 blockedDirection == Direction.SOUTH_WEST) ) {
+				
+			stop = true;
+		}
+		
+		if(currentDirection == Direction.NORTH_EAST && 
+				(blockedDirection == Direction.SOUTH_EAST ||
+				 blockedDirection == Direction.NORTH_WEST)) {
+					
+			stop = true;
+		}
+		
+		if(currentDirection == Direction.WEST &&
+				(blockedDirection == Direction.NORTH_WEST || 
+				blockedDirection == Direction.SOUTH_WEST) ) {
+				
+			stop = true;
+		}
+		
+		if(currentDirection == Direction.SOUTH_WEST && 
+			(blockedDirection == Direction.NORTH_WEST ||
+			 blockedDirection == Direction.SOUTH_EAST) ) {
+				
+			stop = true;
+		}
+		
+		if(currentDirection == Direction.NORTH_WEST && 
+				(blockedDirection == Direction.SOUTH_WEST ||
+				 blockedDirection == Direction.NORTH_EAST) ) {
+					
+			stop = true;
+		}
+		
+		if(currentDirection == Direction.NORTH &&
+				(blockedDirection == Direction.NORTH_EAST || 
+				blockedDirection == Direction.NORTH_WEST) ) {
+				
+			stop = true;
+		}
+		
+		if(currentDirection == Direction.SOUTH && 
+			(blockedDirection == Direction.SOUTH_EAST ||
+			blockedDirection == Direction.SOUTH_WEST) ) {
+				
+			stop = true;
+		}
+		
+		
+		if(blockedDirection == currentDirection){
+			stop = true;
+		}
+		
+		return stop;
 	}
 	
 

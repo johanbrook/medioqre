@@ -49,6 +49,9 @@ public class Actor {
 		if (currentAnimation == null)
 			return null;
 
+		if (this.entity == null)
+			return null;
+		
 		return currentAnimation.getCurrentFrame();
 	}
 
