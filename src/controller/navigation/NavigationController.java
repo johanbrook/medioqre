@@ -108,7 +108,6 @@ public class NavigationController implements KeyListener, IMessageSender {
 	 * the navigation key list.
 	 */
 	private void refreshDirection() {
-		System.out.println(this.navKeys);
 		
 		if(this.navKeys.size() > 1){
 			NavigationKey composite = createCompositeKey();
