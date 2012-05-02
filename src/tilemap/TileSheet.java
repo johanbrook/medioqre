@@ -2,7 +2,9 @@ package tilemap;
 
 import graphics.opengl.Sprite;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.Map;
 
 import org.json.JSONArray;
@@ -23,23 +25,39 @@ public class TileSheet implements JSONSerializable {
 
 	public TileSheet()
 	{
-		this.tileTypes = new HashMap<Integer, Tile>();
-		int firstType = 0xffffffff;
-		this.tileTypes.put(firstType, new Tile(new Sprite("tilesheet", 0, 0,
-				16, 16), firstType, false));
-		this.name = "test";
+		this.resetTiles();
 	}
 
+	public void resetTiles()
+	{
+		this.tileTypes = new HashMap<Integer, Tile>();
+	}
+	public void addTile(Integer type, Tile tile)
+	{
+		if (this.tileTypes == null) this.resetTiles();
+		this.tileTypes.put(type, tile);
+	}
+	
 	public String getName()
 	{
 		return this.name;
 	}
-
+	
+	public void setName(String name)
+	{
+		this.name = name;
+	}
+	
 	public Tile getTile(int tileType)
 	{
 		return this.tileTypes.get(Integer.valueOf(tileType));
 	}
 
+	public Collection<Tile> getTiles()
+	{
+		return this.tileTypes.values();
+	}
+	
 	@Override
 	public JSONObject serialize()
 	{
@@ -52,11 +70,10 @@ public class TileSheet implements JSONSerializable {
 				jsonArray.put(this.tileTypes.get(i).serialize());
 			}
 
-			retObj.put("tilesheet", jsonArray);
+			retObj.put("tiletypes", jsonArray);
 
 			return retObj;
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
