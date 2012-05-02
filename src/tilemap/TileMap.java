@@ -61,6 +61,11 @@ public class TileMap implements JSONSerializable, GLRenderableObject {
 		this.deserialize(o);
 	}
 
+	public void setTileSheet(TileSheet tileSheet)
+	{
+		this.tileSheet = tileSheet;
+	}
+	
 	@Override
 	public void render(Rectangle object, Rectangle target, GLAutoDrawable canvas)
 	{
@@ -129,7 +134,7 @@ public class TileMap implements JSONSerializable, GLRenderableObject {
 	{
 		try {
 
-			this.tileSheet = new TileSheet(new JSONObject(IOUtils.toString(ClassLoader.getSystemResource("res/spritesheet/"+o.getString("tilesheet")))));
+//			this.tileSheet = new TileSheet(o);
 			
 			this.tiles = null;
 			
@@ -147,9 +152,6 @@ public class TileMap implements JSONSerializable, GLRenderableObject {
 			this.tileMapSize = new Size(o.getInt("tilemapwidth"), o.getInt("tilemapheight"));
 			
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
