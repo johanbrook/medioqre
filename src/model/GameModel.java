@@ -108,6 +108,14 @@ public class GameModel implements IGameModel, IMessageListener {
 				Direction currentDirection = t.getDirection();				
 				Direction blockedDirection = t.getDirectionOfObject(w);
 				
+				if(t instanceof Projectile) {
+					this.entities.remove(t);
+					if (w instanceof AbstractCharacter){
+						((AbstractCharacter) w).takeDamage(((Projectile) t).getDamage());
+						System.out.println("Enemy was hit, now has " + ((AbstractCharacter) w).getHealth() + " hp" + " movespeed: " + ((AbstractCharacter)w).getMovementSpeed());
+					}
+				}
+				
 				if(directionIsBlocked(currentDirection, blockedDirection)){
 					t.stop();
 				}
