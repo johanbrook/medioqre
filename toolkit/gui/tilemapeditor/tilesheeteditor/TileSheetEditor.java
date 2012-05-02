@@ -28,6 +28,8 @@ import com.jogamp.opengl.util.FPSAnimator;
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureIO;
 
+import core.Rectangle;
+
 import tilemap.Tile;
 import tilemap.TileSheet;
 
@@ -51,17 +53,22 @@ import javax.swing.JButton;
 import java.awt.Component;
 import javax.swing.Box;
 import javax.swing.border.LineBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
 import java.awt.Color;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import javax.swing.JCheckBox;
+import javax.swing.JScrollPane;
 
 public class TileSheetEditor implements GLEventListener {
 
-	private File currentFile;
-	private TileSheet currentTileSheet;
-	private File currentTextureFile;
-	private Texture currentTexture;
+	private File		currentFile;
+	private TileSheet	currentTileSheet;
+	private File		currentTextureFile;
+	private Texture		currentTexture;
+	private Tile		currentTile;
 
 	public static void main(String[] arg)
 	{
@@ -111,6 +118,8 @@ public class TileSheetEditor implements GLEventListener {
 	public void saveTileSheet(File file)
 	{
 		this.currentFile = file;
+		
+		System.out.println(this.currentTileSheet.serialize());
 		System.out.println("Save TileSheet: " + file.getAbsolutePath());
 	}
 
@@ -119,64 +128,116 @@ public class TileSheetEditor implements GLEventListener {
 		if (this.currentTileSheet == null) {
 			mntmSave.setEnabled(false);
 			mntmSaveAs.setEnabled(false);
+
+			// Disable all gui
+			tfX.setEnabled(false);
+			tfY.setEnabled(false);
+			tfWidth.setEnabled(false);
+			tfHeight.setEnabled(false);
+			tfType.setEnabled(false);
+			chbxColl.setEnabled(false);
+			btnAdd.setEnabled(false);
+			btnRemove.setEnabled(false);
+			btnSave.setEnabled(false);
+
 		} else {
 			mntmSave.setEnabled(true);
 			mntmSaveAs.setEnabled(true);
+
+			// Enable all gui
+			tfX.setEnabled(true);
+			tfY.setEnabled(true);
+			tfWidth.setEnabled(true);
+			tfHeight.setEnabled(true);
+			tfType.setEnabled(true);
+			chbxColl.setEnabled(true);
+			btnAdd.setEnabled(true);
+			btnRemove.setEnabled(true);
+			btnSave.setEnabled(true);
 		}
-		
+
 		if (this.liTiles.getSelectedIndex() != -1 && this.tiles != null) {
 			Tile tile = this.tiles.get(this.liTiles.getSelectedIndex());
 			if (tile != null) {
-				
+				tfX.setText("" + tile.getSprite().getX());
+				tfY.setText("" + tile.getSprite().getY());
+				tfWidth.setText("" + tile.getSprite().getWidth());
+				tfHeight.setText("" + tile.getSprite().getHeight());
+				tfType.setText("" + tile.getType());
+				chbxColl.setSelected(tile.isCollidable());
 			}
 		}
-		
-		liTiles.setModel(new AbstractListModel() {			
-			public int getSize() {
+
+		liTiles.setModel(new AbstractListModel() {
+			public int getSize()
+			{
 				return tiles.size();
 			}
-			public Object getElementAt(int index) {
+
+			public Object getElementAt(int index)
+			{
 				return tiles.get(index);
 			}
 		});
 	}
-	
+
 	// JButton actions
 	public void addTile()
 	{
 		System.out.println("Add new tile");
-		this.tiles.add(new Tile(new Sprite("tilesheet", 0, 0, 0, 0), 0xffffffff, false));
-//		this.tiles.add("Hello" + this.tiles.size());
+		this.tiles.add(new Tile(new Sprite("tilesheet", 0, 0, 0, 0),
+				0xffffffff, false));
+		// this.tiles.add("Hello" + this.tiles.size());
 		this.updateGui();
 	}
+
 	public void removeTile()
 	{
-		int index = this.liTiles.getSelectedIndex();
-		if (index !=  -1) {
-			this.tiles.remove(index);
-			
-			this.updateGui();
+		this.tiles.remove(this.currentTile);
+		this.updateGui();
+	}
+
+	public void selectTile(int i)
+	{
+		this.currentTile = this.tiles.get(i);
+	}
+
+	public void saveTile()
+	{
+		if (this.currentTile != null) {
+			Tile tile = this.currentTile;
+			if (tile != null) {
+				tile.getSprite().setX(Integer.valueOf(tfX.getText()));
+				tile.getSprite().setY(Integer.valueOf(tfY.getText()));
+				tile.getSprite().setWidth(Integer.valueOf(tfWidth.getText()));
+				tile.getSprite().setHeight(Integer.valueOf(tfHeight.getText()));
+				tile.setType(Integer.valueOf(tfType.getText()));
+				tile.setCollidable(chbxColl.isSelected());
+			}
 		}
 	}
-	
+
 	// Ivar gui elements
-	private JMenuItem mntmSave;
-	private JMenuItem mntmSaveAs;
-	private JList liTiles;
-	ArrayList<Tile> tiles = new ArrayList<Tile>();
-	private JTextField tfX;
-	private JTextField tfY;
-	private JTextField tfWidth;
-	private JTextField tfHeight;
-	private JTextField tfType;
-	private JCheckBox chbxColl;
-	
-//	ArrayList<String> tiles = new ArrayList<String>();
+	private JMenuItem	mntmSave;
+	private JMenuItem	mntmSaveAs;
+	private JList		liTiles;
+	ArrayList<Tile>		tiles	= new ArrayList<Tile>();
+	private JTextField	tfX;
+	private JTextField	tfY;
+	private JTextField	tfWidth;
+	private JTextField	tfHeight;
+	private JTextField	tfType;
+	private JCheckBox	chbxColl;
+	private JButton		btnAdd;
+	private JButton		btnRemove;
+	private JButton		btnSave;
+
+	// ArrayList<String> tiles = new ArrayList<String>();
 
 	public void initGui()
 	{
 		final JFrame frame = new JFrame("TileSheetEditor");
-		frame.setPreferredSize(new Dimension(700, 500));
+		frame.setPreferredSize(new Dimension(700, 600));
 		frame.pack();
 
 		JMenuBar menuBar = new JMenuBar();
@@ -282,38 +343,27 @@ public class TileSheetEditor implements GLEventListener {
 		splitPane_1.setDividerSize(5);
 		splitPane_1.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		splitPane.setRightComponent(splitPane_1);
-		
+
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new LineBorder(new Color(128, 128, 128)));
 		splitPane_1.setLeftComponent(panel_1);
 		panel_1.setLayout(new BorderLayout(0, 0));
-		
-		liTiles = new JList();
-		liTiles.setModel(new AbstractListModel() {			
-			public int getSize() {
-				return tiles.size();
-			}
-			public Object getElementAt(int index) {
-				return tiles.get(index);
-			}
-		});
-		panel_1.add(liTiles, BorderLayout.CENTER);
-		
+
 		JPanel panel_3 = new JPanel();
 		panel_3.setBorder(new LineBorder(new Color(128, 128, 128)));
 		panel_1.add(panel_3, BorderLayout.NORTH);
 		panel_3.setLayout(new BorderLayout(0, 0));
-		
+
 		JLabel lblTiles = new JLabel("Tiles");
 		panel_3.add(lblTiles, BorderLayout.WEST);
-		
+
 		JPanel panel_5 = new JPanel();
 		panel_3.add(panel_5);
-		
+
 		JPanel panel_4 = new JPanel();
 		panel_3.add(panel_4, BorderLayout.EAST);
-		
-		JButton btnAdd = new JButton("+");
+
+		btnAdd = new JButton("+");
 		btnAdd.setPreferredSize(new Dimension(19, 19));
 		panel_4.add(btnAdd);
 		btnAdd.addActionListener(new ActionListener() {
@@ -323,10 +373,32 @@ public class TileSheetEditor implements GLEventListener {
 				addTile();
 			}
 		});
-		
-		JButton btnRemove = new JButton("-");
+
+		btnRemove = new JButton("-");
 		btnRemove.setPreferredSize(new Dimension(19, 19));
 		panel_4.add(btnRemove);
+
+		liTiles = new JList();
+		liTiles.setModel(new AbstractListModel() {
+			public int getSize()
+			{
+				return tiles.size();
+			}
+
+			public Object getElementAt(int index)
+			{
+				return tiles.get(index);
+			}
+		});
+		panel_1.add(liTiles, BorderLayout.CENTER);
+		liTiles.addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent arg0)
+			{
+				selectTile(arg0.getLastIndex());
+				updateGui();
+			}
+		});
 		btnRemove.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0)
@@ -334,92 +406,103 @@ public class TileSheetEditor implements GLEventListener {
 				removeTile();
 			}
 		});
-		
+
 		JPanel panel_2 = new JPanel();
 		panel_2.setBorder(new LineBorder(new Color(128, 128, 128)));
 		splitPane_1.setRightComponent(panel_2);
 		panel_2.setLayout(new BorderLayout(0, 0));
-		
+
 		JPanel panel_6 = new JPanel();
 		panel_6.setBorder(new LineBorder(new Color(128, 128, 128), 1, true));
 		panel_6.setBackground(new Color(192, 192, 192));
 		panel_2.add(panel_6);
 		panel_6.setLayout(null);
-		
+
 		JLabel lblX = new JLabel("X:");
 		lblX.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblX.setBounds(10, 12, 76, 16);
 		panel_6.add(lblX);
-		
+
 		JLabel lblY = new JLabel("Y:");
 		lblY.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblY.setBounds(10, 40, 76, 16);
 		panel_6.add(lblY);
-		
+
 		JLabel lblHeight = new JLabel("Height:");
 		lblHeight.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblHeight.setBounds(10, 96, 76, 16);
 		panel_6.add(lblHeight);
-		
+
 		JLabel lblWidth = new JLabel("Width:");
 		lblWidth.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblWidth.setBounds(10, 68, 76, 16);
 		panel_6.add(lblWidth);
-		
+
 		JLabel lblType = new JLabel("Type:");
 		lblType.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblType.setBounds(10, 147, 76, 16);
 		panel_6.add(lblType);
-		
+
 		tfX = new JTextField();
 		tfX.setBounds(98, 6, 83, 28);
 		tfX.setText("1");
 		panel_6.add(tfX);
 		tfX.setColumns(10);
-		
+
 		tfY = new JTextField();
 		tfY.setColumns(10);
 		tfY.setBounds(98, 34, 83, 28);
 		tfY.setText("2");
 		panel_6.add(tfY);
-		
+
 		tfWidth = new JTextField();
 		tfWidth.setColumns(10);
 		tfWidth.setBounds(98, 62, 83, 28);
 		tfWidth.setText("3");
 		panel_6.add(tfWidth);
-		
+
 		tfHeight = new JTextField();
 		tfHeight.setColumns(10);
 		tfHeight.setText("4");
 		tfHeight.setBounds(98, 90, 83, 28);
 		panel_6.add(tfHeight);
-		
+
 		tfType = new JTextField();
 		tfType.setColumns(10);
 		tfType.setBounds(98, 141, 83, 28);
 		tfType.setText("5");
 		panel_6.add(tfType);
-		
+
 		chbxColl = new JCheckBox("");
 		chbxColl.setBounds(98, 168, 83, 23);
 		panel_6.add(chbxColl);
-		
+
 		JSeparator separator_1 = new JSeparator();
 		separator_1.setForeground(new Color(128, 128, 128));
 		separator_1.setBounds(0, 124, 100000, 12);
 		panel_6.add(separator_1);
-		
+
 		JLabel lblCollidable = new JLabel("Collidable:");
 		lblCollidable.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblCollidable.setBounds(10, 175, 76, 16);
 		panel_6.add(lblCollidable);
-		
+
+		btnSave = new JButton("Save");
+		btnSave.setBounds(98, 203, 83, 29);
+		panel_6.add(btnSave);
+		btnSave.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				saveTile();
+			}
+		});
+
 		JPanel panel_7 = new JPanel();
 		panel_7.setPreferredSize(new Dimension(10, 30));
 		panel_2.add(panel_7, BorderLayout.NORTH);
 		panel_7.setLayout(new BorderLayout(0, 0));
-		
+
 		JLabel lblTile = new JLabel("Tile");
 		panel_7.add(lblTile, BorderLayout.WEST);
 		splitPane_1.setDividerLocation(0.5);
@@ -457,7 +540,7 @@ public class TileSheetEditor implements GLEventListener {
 			try {
 				this.currentTexture = TextureIO.newTexture(
 						this.currentTextureFile, false);
-				this.currentTexture.bind(gl);
+				this.currentTexture.bind(gl);			
 			} catch (GLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -467,19 +550,23 @@ public class TileSheetEditor implements GLEventListener {
 			}
 		}
 
-		gl.glBegin(GL2.GL_QUADS);
-		gl.glColor3f(1.0f, 1.0f, 1.0f);
-
-		gl.glTexCoord2f(0.0f, 0.0f);
-		gl.glVertex2f(-1.0f, 1.0f);
-		gl.glTexCoord2f(0.0f, 1.0f);
-		gl.glVertex2f(-1.0f, -1.0f);
-		gl.glTexCoord2f(1.0f, 1.0f);
-		gl.glVertex2f(1.0f, -1.0f);
-		gl.glTexCoord2f(1.0f, 0.0f);
-		gl.glVertex2f(1.0f, 1.0f);
-
-		gl.glEnd();
+//		gl.glBegin(GL2.GL_QUADS);
+//		gl.glColor3f(1.0f, 1.0f, 1.0f);
+//
+//		gl.glTexCoord2f(0.0f, 0.0f);
+//		gl.glVertex2f(-1.0f, 1.0f);
+//		gl.glTexCoord2f(0.0f, 1.0f);
+//		gl.glVertex2f(-1.0f, -1.0f);
+//		gl.glTexCoord2f(1.0f, 1.0f);
+//		gl.glVertex2f(1.0f, -1.0f);
+//		gl.glTexCoord2f(1.0f, 0.0f);
+//		gl.glVertex2f(1.0f, 1.0f);
+//
+//		gl.glEnd();
+		
+		for (Tile t : this.tiles) {
+			t.render(t.getBounds(),	new Rectangle(0, 0, 64, 64), arg0);
+		}
 
 	}
 
