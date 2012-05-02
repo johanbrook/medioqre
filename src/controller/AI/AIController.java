@@ -47,15 +47,21 @@ public class AIController {
 				playerTile.x < 48 && playerTile.y < 48){
 
 			if (enemies.size() > 0){
+				
 				for (AIPlayer ai : enemies){
 					updateEnemy(ai);
 					ai.getEnemy().start();
 				}
 			}
 		}
-	}
+	}//end updateAI
 
 
+	/**
+	 * Given a aiPlayer, will update the direction of the players unit. Depending on the players updatecount, the length between 
+	 * the unit and the player, as well as the amount of enemies in the gameworld, the calculation take different forms.
+	 * @param aiPlayer
+	 */
 	private void updateEnemy(AIPlayer aiPlayer ){
 		Point enemyTile = calculateTile(aiPlayer.getEnemy().getPosition());
 		
@@ -96,12 +102,15 @@ public class AIController {
 				}
 			}
 		}
-	}
+	}//end updateEnemy
 
 
 
 
-
+/**
+ * Returns a randomly selected direction
+ * @return
+ */
 	private Direction randomDir() {
 		Random rand = new Random();
 		int r = rand.nextInt(8);
@@ -163,6 +172,11 @@ public class AIController {
 		this.enemies.remove(enemy);
 	}
 
+	/**
+	 * Given a list of points, will return the direction between the last two points in the list.
+	 * @param path
+	 * @return  
+	 */
 	public Direction calculateDirection(List <Point> path){
 		// Compare enemy position with next calculated position in path.
 		int dx = (int) Math.signum(path.get(path.size()-2).getX()-path.get(path.size()-1).getX());
@@ -207,6 +221,11 @@ public class AIController {
 
 	}
 
+	/**
+	 * Given a point representing a position in the gameworld, will return the tile of that position
+	 * @param point 
+	 * @return 
+	 */
 	public Point calculateTile(Point point){
 		return new Point(point.x/this.width, point.y/this.height);
 	}
