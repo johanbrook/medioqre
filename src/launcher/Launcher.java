@@ -6,6 +6,9 @@ import java.awt.Image;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 
 public class Launcher extends JFrame {
 
@@ -27,7 +30,14 @@ public class Launcher extends JFrame {
 		setVisible(true);
 
 		setBackground(new Color(100, 200, 100));
+		getContentPane().setLayout(null);
+		
+		JButton btnNewButton = new JButton("");
+		btnNewButton.setIcon(new ImageIcon(Launcher.class.getResource("/images/launcher/logo.png")));
+		btnNewButton.setFocusable(false);
+		btnNewButton.setBorderPainted(false);
+		btnNewButton.setBounds(275, 50, 250, 100);
+		getContentPane().add(btnNewButton);
 
 	}
-
 }
