@@ -1,9 +1,12 @@
 package controller.navigation;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
+import constants.Direction;
 
 
 /**
@@ -25,6 +28,53 @@ public class NavigationKeyQueue implements Collection<NavigationKey> {
 	public NavigationKeyQueue(int maxSize) {
 		this.list = new LinkedList<NavigationKey>();
 		this.maxSize = maxSize;
+	}
+	
+	
+	/**
+	 * Checks if multiple keys are pressed.
+	 * 
+	 * @return True if multiple keys are pressed, otherwise false
+	 */
+	public boolean hasMultiple() {
+		return this.list.size() > 1;
+	}
+	
+	
+	/**
+	 * Creates a composite navigation key with a direction from the 
+	 * existing keys in the navigation list.
+	 * 
+	 * @return A new navigation key with a diagonal direction. If the list doesn't
+	 * contain matching diagonal key, null is returned.
+	 * @see Direction
+	 */
+	public NavigationKey createCompositeKey() {
+		List<Direction> dirs = new ArrayList<Direction>();
+		
+		for(NavigationKey dir : this.list) {
+			dirs.add(dir.getDirection());
+		}
+		
+		if(dirs.contains(Direction.NORTH) && dirs.contains(Direction.EAST)){
+			return new NavigationKey("top_right", null, Direction.NORTH_EAST);
+		}
+		
+		if(dirs.contains(Direction.NORTH) && dirs.contains(Direction.WEST)){
+			return new NavigationKey("top_left", null, Direction.NORTH_WEST);
+		}
+		
+		if(dirs.contains(Direction.SOUTH) && dirs.contains(Direction.EAST)){
+			return new NavigationKey("bottom_right", null, Direction.SOUTH_EAST);
+		}
+		
+		if(dirs.contains(Direction.SOUTH) && dirs.contains(Direction.WEST)){
+			return new NavigationKey("bottom_left", null, Direction.SOUTH_WEST);
+		}
+		
+		
+		return null;
+		
 	}
 	
 	/**
