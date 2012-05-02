@@ -69,6 +69,7 @@ public class TileSheetEditor implements GLEventListener {
 	private File		currentTextureFile;
 	private Texture		currentTexture;
 	private Tile		currentTile;
+	private Rectangle	renceringRect;
 
 	public static void main(String[] arg)
 	{
@@ -118,7 +119,7 @@ public class TileSheetEditor implements GLEventListener {
 	public void saveTileSheet(File file)
 	{
 		this.currentFile = file;
-		
+
 		System.out.println(this.currentTileSheet.serialize());
 		System.out.println("Save TileSheet: " + file.getAbsolutePath());
 	}
@@ -317,6 +318,7 @@ public class TileSheetEditor implements GLEventListener {
 		menuBar.add(mnTexture);
 
 		JMenuItem mntmLoad = new JMenuItem("Load...");
+		mntmLoad.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.META_MASK));
 		mnTexture.add(mntmLoad);
 		mntmLoad.addActionListener(new ActionListener() {
 			@Override
@@ -529,6 +531,7 @@ public class TileSheetEditor implements GLEventListener {
 		GL2 gl = arg0.getGL().getGL2();
 		gl.glClear(GL2.GL_COLOR_BUFFER_BIT);
 
+		gl.glEnable(GL2.GL_TEXTURE_2D);
 		gl.glEnable(GL.GL_BLEND);
 		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER,
@@ -540,7 +543,8 @@ public class TileSheetEditor implements GLEventListener {
 			try {
 				this.currentTexture = TextureIO.newTexture(
 						this.currentTextureFile, false);
-				this.currentTexture.bind(gl);			
+				this.currentTexture.bind(gl);
+				this.renceringRect = new Rectangle(0, 0, this.currentTexture.getWidth(), this.currentTexture.getHeight());
 			} catch (GLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -550,22 +554,46 @@ public class TileSheetEditor implements GLEventListener {
 			}
 		}
 
-//		gl.glBegin(GL2.GL_QUADS);
-//		gl.glColor3f(1.0f, 1.0f, 1.0f);
-//
-//		gl.glTexCoord2f(0.0f, 0.0f);
-//		gl.glVertex2f(-1.0f, 1.0f);
-//		gl.glTexCoord2f(0.0f, 1.0f);
-//		gl.glVertex2f(-1.0f, -1.0f);
-//		gl.glTexCoord2f(1.0f, 1.0f);
-//		gl.glVertex2f(1.0f, -1.0f);
-//		gl.glTexCoord2f(1.0f, 0.0f);
-//		gl.glVertex2f(1.0f, 1.0f);
-//
-//		gl.glEnd();
 		
-		for (Tile t : this.tiles) {
-			t.render(t.getBounds(),	new Rectangle(0, 0, 64, 64), arg0);
+		 gl.glBegin(GL2.GL_QUADS);
+		 gl.glColor3f(1.0f, 1.0f, 1.0f);
+		
+		 gl.glTexCoord2f(0.0f, 0.0f);
+		 gl.glVertex2f(-1.0f, 1.0f);
+		 gl.glTexCoord2f(0.0f, 1.0f);
+		 gl.glVertex2f(-1.0f, -1.0f);
+		 gl.glTexCoord2f(1.0f, 1.0f);
+		 gl.glVertex2f(1.0f, -1.0f);
+		 gl.glTexCoord2f(1.0f, 0.0f);
+		 gl.glVertex2f(1.0f, 1.0f);
+		
+		 gl.glEnd();
+
+		if (this.currentTile != null) {
+			
+			Tile t = this.currentTile;
+			
+			float rX1 = (float) ((2.0f * t.getBounds().getX()) - (float) this.renceringRect
+					.getWidth()) / (float) this.renceringRect.getWidth();
+			float rX2 = (float) (2.0f * (t.getBounds().getX() + t.getBounds().getWidth()) - (float) this.renceringRect
+					.getWidth()) / (float) this.renceringRect.getWidth();
+			float rY1 = (float) (2.0f * (t.getBounds().getY() + t.getBounds().getHeight()) - (float) this.renceringRect
+					.getHeight()) / (float) this.renceringRect.getHeight();
+			float rY2 = (float) (2.0f * t.getBounds().getY() - (float) this.renceringRect
+					.getHeight()) / (float) this.renceringRect.getHeight();
+			
+			gl.glDisable(GL2.GL_TEXTURE_2D);
+			gl.glBegin(GL2.GL_QUADS);
+			gl.glColor4f(1.0f, 0.0f, 0.0f, 0.6f);
+			
+			gl.glVertex2f(rX1, -rY2);
+			gl.glVertex2f(rX2, -rY2);
+			gl.glVertex2f(rX2, -rY1);
+			gl.glVertex2f(rX1, -rY1);
+
+			gl.glEnd();
+			
+//			t.render(t.getBounds(), this.renceringRect, arg0);
 		}
 
 	}
