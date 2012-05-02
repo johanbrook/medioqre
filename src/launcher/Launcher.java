@@ -92,7 +92,7 @@ public class Launcher extends JFrame {
 		});
 
 		setVisible(true);
-		setBackground(new Color(100, 200, 100));
+		setBackground(new Color(0, 0, 0));
 
 	}
 }
