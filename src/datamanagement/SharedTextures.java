@@ -28,7 +28,7 @@ public class SharedTextures {
 	private SharedTextures()
 	{
 		this.textures = new TreeMap<String, Texture>();
-		this.spriteBaseURL = (String) "res/spritesheets/";
+		this.spriteBaseURL = (String) "res/spritesheets/images/";
 	}
 	
 	public Texture getTexture(String textureName) {
