@@ -95,9 +95,21 @@ public class GameModel implements IGameModel, IMessageListener {
 			// The entity has to move *after* collision checks have been finished, 
 			// otherwise you'll be able to bug your way through other entities.
 			t.move(dt);
+			
+			if(t instanceof Projectile)
+				doProjectileHandling((Projectile) t);
 		}
 
 	}
+	
+	
+	private void doProjectileHandling(Projectile t) {
+		if(t.getDistanceTravelled() >= t.getRange().getDistance()) {
+			System.out.println("REMOVE PROJECTILE");
+			this.entities.remove(t);
+		}
+	}
+	
 	
 	private void checkCollisions(Entity t) {
 		
