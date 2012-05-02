@@ -4,10 +4,10 @@ import java.awt.Point;
 
 import constants.Direction;
 import event.Event;
+import event.Event.Property;
 import event.EventBus;
 import event.IMessageListener;
 import event.IMessageSender;
-import event.Event.Property;
 import event.Messager;
 
 /**
@@ -141,4 +141,11 @@ public abstract class Entity extends CollidableObject implements IMessageSender 
 	public String toString() {
 		return super.toString() + " [speed:"+this.movementSpeed+"] [moving:"+this.isMoving+"] [dir:"+this.direction+"]";
 	}
+	
+	@Override
+	public void addReceiver (IMessageListener listener){
+		this.messager.addListener(listener);
+	}
+	
+	
 }

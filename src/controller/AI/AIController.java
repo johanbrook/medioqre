@@ -47,8 +47,9 @@ public class AIController {
 				playerTile.x < 48 && playerTile.y < 48){
 
 			if (enemies.size() > 0){
-				for (int i = 0; i < enemies.size(); i++){
-					updateEnemy(enemies.get(i));
+				for (AIPlayer ai : enemies){
+					updateEnemy(ai);
+					ai.getEnemy().start();
 				}
 			}
 		}
@@ -56,13 +57,12 @@ public class AIController {
 
 
 	private void updateEnemy(AIPlayer aiPlayer ){
-		aiPlayer.getEnemy().start();
 		Point enemyTile = calculateTile(aiPlayer.getEnemy().getPosition());
-		int length = (Math.abs(enemyTile.x - playerTile.x) + Math.abs(enemyTile.y
+		
+		aiPlayer.setDistance(Math.abs(enemyTile.x - playerTile.x) + Math.abs(enemyTile.y
 				- playerTile.y));
-		//Calculates the path between enemy and player
 
-		if (aiPlayer.getCount() < (length*1.5) + enemies.size()/15){
+		if (aiPlayer.getCount() < (aiPlayer.getDistance()*1.5) + enemies.size()/15){
 			aiPlayer.updateCount();
 
 		}else{
@@ -86,6 +86,10 @@ public class AIController {
 						aiPlayer.getPath().add(playerPos);
 						aiPlayer.getPath().add(aiPlayer.getEnemy().getPosition());
 						aiPlayer.updateEnemy(calculateDirection(aiPlayer.getPath()));
+						
+						if (aiPlayer.getDistance() < 1.5) {
+							aiPlayer.doAttack();
+						}
 					}
 				}else {
 					aiPlayer.getEnemy().setDirection(randomDir());
