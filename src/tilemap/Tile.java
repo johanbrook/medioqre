@@ -55,6 +55,11 @@ public class Tile implements JSONSerializable, GLRenderableObject{
 		return this.type;
 	}
 	
+	public Sprite getSprite()
+	{
+		return this.sprite;
+	}
+	
 	@Override
 	public void render(Rectangle object, Rectangle target, GLAutoDrawable canvas)
 	{
