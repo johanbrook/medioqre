@@ -40,6 +40,7 @@ import java.awt.event.InputEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -50,8 +51,6 @@ import javax.swing.JList;
 import javax.swing.AbstractListModel;
 import javax.swing.JLabel;
 import javax.swing.JButton;
-import java.awt.Component;
-import javax.swing.Box;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -60,7 +59,6 @@ import java.awt.Color;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import javax.swing.JCheckBox;
-import javax.swing.JScrollPane;
 
 public class TileSheetEditor implements GLEventListener {
 
@@ -92,6 +90,11 @@ public class TileSheetEditor implements GLEventListener {
 	public void newTileSheet()
 	{
 		this.currentTileSheet = new TileSheet();
+		this.tiles = null;
+		this.currentFile = null;
+		this.currentTile = null;
+		this.currentTexture = null;
+
 		System.out.println("Create new TileSheet");
 		this.updateGui();
 	}
@@ -102,28 +105,58 @@ public class TileSheetEditor implements GLEventListener {
 			this.currentTileSheet = new TileSheet(new JSONObject(
 					IOUtils.toString(new FileInputStream(file))));
 			System.out.println("load TileSheet: " + file.getAbsolutePath());
+			
+			if (this.tiles == null) this.tiles = new ArrayList<Tile>();
+			for (Tile t : this.currentTileSheet.getTiles()) {
+				this.tiles.add(t);
+			}
+			
+			this.currentTextureFile = new File(file.getParent()+"/"+file.getName().substring(0, file.getName().indexOf('.'))+".png");
+			
+			this.updateGui();
+			
 			return;
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("Couldn't load: " + file.getAbsolutePath());
+		System.out.println("Could not load: " + file.getAbsolutePath());
 	}
 
 	public void saveTileSheet(File file)
 	{
+		System.out.println("Method for saving file");
+
 		this.currentFile = file;
 
-		System.out.println(this.currentTileSheet.serialize());
-		System.out.println("Save TileSheet: " + file.getAbsolutePath());
+		this.currentTileSheet.resetTiles();
+		this.currentTileSheet.setName(file.getName());
+		for (Tile t : this.tiles) {
+			this.currentTileSheet.addTile(t.getType(), t);
+		}
+
+		FileWriter writer = null;
+		try {
+			writer = new FileWriter(file);
+			writer.write(this.currentTileSheet.serialize().toString());
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (writer != null)
+				try {
+					writer.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+		}
+		System.out.println("Saving file: " + file);
 	}
 
+	@SuppressWarnings("serial")
 	public void updateGui()
 	{
 		if (this.currentTileSheet == null) {
@@ -172,7 +205,8 @@ public class TileSheetEditor implements GLEventListener {
 		liTiles.setModel(new AbstractListModel() {
 			public int getSize()
 			{
-				return tiles.size();
+				int size = tiles != null ? tiles.size() : 0;
+				return size;
 			}
 
 			public Object getElementAt(int index)
@@ -186,9 +220,11 @@ public class TileSheetEditor implements GLEventListener {
 	public void addTile()
 	{
 		System.out.println("Add new tile");
+		if (this.tiles == null)
+			this.tiles = new ArrayList<Tile>();
+
 		this.tiles.add(new Tile(new Sprite("tilesheet", 0, 0, 0, 0),
 				0xffffffff, false));
-		// this.tiles.add("Hello" + this.tiles.size());
 		this.updateGui();
 	}
 
@@ -219,25 +255,24 @@ public class TileSheetEditor implements GLEventListener {
 	}
 
 	// Ivar gui elements
-	private JMenuItem	mntmSave;
-	private JMenuItem	mntmSaveAs;
-	private JList		liTiles;
-	ArrayList<Tile>		tiles	= new ArrayList<Tile>();
-	private JTextField	tfX;
-	private JTextField	tfY;
-	private JTextField	tfWidth;
-	private JTextField	tfHeight;
-	private JTextField	tfType;
-	private JCheckBox	chbxColl;
-	private JButton		btnAdd;
-	private JButton		btnRemove;
-	private JButton		btnSave;
+	private final JFrame	frame	= new JFrame("TileSheetEditor");
+	private JMenuItem		mntmSave;
+	private JMenuItem		mntmSaveAs;
+	private JList			liTiles;
+	ArrayList<Tile>			tiles	= new ArrayList<Tile>();
+	private JTextField		tfX;
+	private JTextField		tfY;
+	private JTextField		tfWidth;
+	private JTextField		tfHeight;
+	private JTextField		tfType;
+	private JCheckBox		chbxColl;
+	private JButton			btnAdd;
+	private JButton			btnRemove;
+	private JButton			btnSave;
 
-	// ArrayList<String> tiles = new ArrayList<String>();
-
+	@SuppressWarnings("serial")
 	public void initGui()
 	{
-		final JFrame frame = new JFrame("TileSheetEditor");
 		frame.setPreferredSize(new Dimension(700, 600));
 		frame.pack();
 
@@ -318,7 +353,8 @@ public class TileSheetEditor implements GLEventListener {
 		menuBar.add(mnTexture);
 
 		JMenuItem mntmLoad = new JMenuItem("Load...");
-		mntmLoad.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.META_MASK));
+		mntmLoad.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L,
+				InputEvent.META_MASK));
 		mnTexture.add(mntmLoad);
 		mntmLoad.addActionListener(new ActionListener() {
 			@Override
@@ -544,64 +580,60 @@ public class TileSheetEditor implements GLEventListener {
 				this.currentTexture = TextureIO.newTexture(
 						this.currentTextureFile, false);
 				this.currentTexture.bind(gl);
-				this.renceringRect = new Rectangle(0, 0, this.currentTexture.getWidth(), this.currentTexture.getHeight());
+				this.renceringRect = new Rectangle(0, 0,
+						this.currentTexture.getWidth(),
+						this.currentTexture.getHeight());
 			} catch (GLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 
-		
-		 gl.glBegin(GL2.GL_QUADS);
-		 gl.glColor3f(1.0f, 1.0f, 1.0f);
-		
-		 gl.glTexCoord2f(0.0f, 0.0f);
-		 gl.glVertex2f(-1.0f, 1.0f);
-		 gl.glTexCoord2f(0.0f, 1.0f);
-		 gl.glVertex2f(-1.0f, -1.0f);
-		 gl.glTexCoord2f(1.0f, 1.0f);
-		 gl.glVertex2f(1.0f, -1.0f);
-		 gl.glTexCoord2f(1.0f, 0.0f);
-		 gl.glVertex2f(1.0f, 1.0f);
-		
-		 gl.glEnd();
+		gl.glBegin(GL2.GL_QUADS);
+		gl.glColor3f(1.0f, 1.0f, 1.0f);
+
+		gl.glTexCoord2f(0.0f, 0.0f);
+		gl.glVertex2f(-1.0f, 1.0f);
+		gl.glTexCoord2f(0.0f, 1.0f);
+		gl.glVertex2f(-1.0f, -1.0f);
+		gl.glTexCoord2f(1.0f, 1.0f);
+		gl.glVertex2f(1.0f, -1.0f);
+		gl.glTexCoord2f(1.0f, 0.0f);
+		gl.glVertex2f(1.0f, 1.0f);
+
+		gl.glEnd();
 
 		if (this.currentTile != null) {
-			
+
 			Tile t = this.currentTile;
-			
+
 			float rX1 = (float) ((2.0f * t.getBounds().getX()) - (float) this.renceringRect
 					.getWidth()) / (float) this.renceringRect.getWidth();
-			float rX2 = (float) (2.0f * (t.getBounds().getX() + t.getBounds().getWidth()) - (float) this.renceringRect
-					.getWidth()) / (float) this.renceringRect.getWidth();
-			float rY1 = (float) (2.0f * (t.getBounds().getY() + t.getBounds().getHeight()) - (float) this.renceringRect
-					.getHeight()) / (float) this.renceringRect.getHeight();
+			float rX2 = (float) (2.0f * (t.getBounds().getX() + t.getBounds()
+					.getWidth()) - (float) this.renceringRect.getWidth())
+					/ (float) this.renceringRect.getWidth();
+			float rY1 = (float) (2.0f * (t.getBounds().getY() + t.getBounds()
+					.getHeight()) - (float) this.renceringRect.getHeight())
+					/ (float) this.renceringRect.getHeight();
 			float rY2 = (float) (2.0f * t.getBounds().getY() - (float) this.renceringRect
 					.getHeight()) / (float) this.renceringRect.getHeight();
-			
+
 			gl.glDisable(GL2.GL_TEXTURE_2D);
 			gl.glBegin(GL2.GL_QUADS);
 			gl.glColor4f(1.0f, 0.0f, 0.0f, 0.6f);
-			
+
 			gl.glVertex2f(rX1, -rY2);
 			gl.glVertex2f(rX2, -rY2);
 			gl.glVertex2f(rX2, -rY1);
 			gl.glVertex2f(rX1, -rY1);
 
 			gl.glEnd();
-			
-//			t.render(t.getBounds(), this.renceringRect, arg0);
 		}
 
 	}
 
-	@Override
-	public void dispose(GLAutoDrawable arg0)
-	{
-	}
+	
 
 	@Override
 	public void init(GLAutoDrawable arg0)
@@ -610,12 +642,13 @@ public class TileSheetEditor implements GLEventListener {
 		gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 		gl.glEnable(GL2.GL_TEXTURE_2D);
 	}
-
+	
+	@Override
+	public void dispose(GLAutoDrawable arg0)
+	{
+	}
 	@Override
 	public void reshape(GLAutoDrawable arg0, int arg1, int arg2, int arg3,
 			int arg4)
-	{
-		// TODO Auto-generated method stub
-
-	}
+	{}
 }
