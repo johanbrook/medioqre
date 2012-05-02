@@ -3,6 +3,7 @@ package launcher;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.LayoutManager;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
@@ -10,14 +11,26 @@ import javax.swing.JInternalFrame;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
+import controller.AppController;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+/**
+ * 
+ * Launcher for Frank the Tank
+ * 
+ * 
+ * @author chrisnordqvist
+ * 
+ */
+
 public class Launcher extends JFrame {
 
 	private static final long serialVersionUID = -3189420915172593199L;
 
 	public Launcher() {
-		
-		
-		
+
 		setTitle("Frank the Tank");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -27,17 +40,59 @@ public class Launcher extends JFrame {
 				(screenSize.height / 2) - (launcherSize.height / 2),
 				launcherSize.width, launcherSize.height);
 
-		setVisible(true);
-
-		setBackground(new Color(100, 200, 100));
 		getContentPane().setLayout(null);
+
+		// Logo, Button for now, since I'd like an easter egg here
+		JButton Logo = new JButton("");
+		Logo.setBounds(235, 50, 330, 120);
+		Logo.setIcon(new ImageIcon(Launcher.class
+				.getResource("/images/launcher/logo.png")));
+		Logo.setFocusable(false);
+		Logo.setBorderPainted(false);
+		getContentPane().add(Logo);
+
+		/*
+		 * Start Button
+		 */
+		JButton btnStartGame = new JButton("Start Game");
+		btnStartGame.setBounds(340, 220, 120, 40);
+		getContentPane().add(btnStartGame);
+
+		btnStartGame.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+
+				dispose();
+
+				// Create main game
+				new AppController();
+			}
+		});
+
+		/*
+		 * Options Button
+		 */
+
+		JButton btnOptions = new JButton("Options");
+		btnOptions.setBounds(340, 280, 120, 40);
+		getContentPane().add(btnOptions);
 		
-		JButton btnNewButton = new JButton("");
-		btnNewButton.setIcon(new ImageIcon(Launcher.class.getResource("/images/launcher/logo.png")));
-		btnNewButton.setFocusable(false);
-		btnNewButton.setBorderPainted(false);
-		btnNewButton.setBounds(275, 50, 250, 100);
-		getContentPane().add(btnNewButton);
+		JButton button = new JButton("");
+		button.setIcon(new ImageIcon(Launcher.class.getResource("/images/launcher/frank.png")));
+		button.setFocusable(false);
+		button.setBorderPainted(false);
+		button.setBounds(20, 184, 224, 294);
+		getContentPane().add(button);
+
+		btnOptions.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//TODO Fix options view!
+				
+				System.out.println("Options pressed");
+			}
+		});
+
+		setVisible(true);
+		setBackground(new Color(100, 200, 100));
 
 	}
 }
