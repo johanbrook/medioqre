@@ -54,6 +54,10 @@ public class Tile implements JSONSerializable, GLRenderableObject{
 	{
 		return this.type;
 	}
+	public void setType(int type)
+	{
+		this.type = type;
+	}
 	
 	public Sprite getSprite()
 	{
