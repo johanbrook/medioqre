@@ -5,6 +5,7 @@ import gui.tilemapeditor.subviews.TileInspector;
 import gui.tilemapeditor.subviews.TileSelector;
 import gui.tilemapeditor.tilesheeteditor.TileSheetEditor;
 
+import javax.imageio.ImageIO;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
 import javax.swing.JFrame;
@@ -29,6 +30,8 @@ import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 import java.awt.event.KeyEvent;
 import java.awt.event.InputEvent;
+import java.awt.image.BufferedImage;
+import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -82,21 +85,16 @@ public class TileMapEditor extends JFrame {
 				saveFile(currentFile);
 			}
 		} else {
-			FileWriter writer = null;
+			BufferedImage img = new BufferedImage(this.currentTileMap.getTileMapSize().getWidth(), this.currentTileMap.getTileMapSize().getHeight(), BufferedImage.TYPE_INT_ARGB);
+			img.setRGB(0, 0, img.getWidth(), img.getHeight(), this.currentTileMap.getTilesToPizelArray(), 0, 0);
+			
 			try {
-				writer = new FileWriter(file);
-				writer.write(this.currentTileMap.serialize().toString());
-
+				ImageIO.write(img, "png", file);
 			} catch (IOException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} finally {
-				if (writer != null)
-					try {
-						writer.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
 			}
+			
 			System.out.println("Saving file: " + file);
 		}
 	}
