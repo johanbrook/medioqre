@@ -44,7 +44,7 @@ public class Launcher extends JFrame {
 
 		// Logo, Button for now, since I'd like an easter egg here
 		JButton Logo = new JButton("");
-		Logo.setBounds(235, 50, 330, 120);
+		Logo.setBounds(265, 50, 330, 120);
 		Logo.setIcon(new ImageIcon(Launcher.class
 				.getResource("/images/launcher/logo.png")));
 		Logo.setFocusable(false);
@@ -55,7 +55,7 @@ public class Launcher extends JFrame {
 		 * Start Button
 		 */
 		JButton btnStartGame = new JButton("Start Game");
-		btnStartGame.setBounds(340, 220, 120, 40);
+		btnStartGame.setBounds(370, 220, 120, 40);
 		getContentPane().add(btnStartGame);
 
 		btnStartGame.addActionListener(new ActionListener() {
@@ -73,7 +73,7 @@ public class Launcher extends JFrame {
 		 */
 
 		JButton btnOptions = new JButton("Options");
-		btnOptions.setBounds(340, 280, 120, 40);
+		btnOptions.setBounds(370, 280, 120, 40);
 		getContentPane().add(btnOptions);
 		
 		JButton button = new JButton("");
