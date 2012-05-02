@@ -124,6 +124,13 @@ public class TileSheetEditor implements GLEventListener {
 			mntmSaveAs.setEnabled(true);
 		}
 		
+		if (this.liTiles.getSelectedIndex() != -1 && this.tiles != null) {
+			Tile tile = this.tiles.get(this.liTiles.getSelectedIndex());
+			if (tile != null) {
+				
+			}
+		}
+		
 		liTiles.setModel(new AbstractListModel() {			
 			public int getSize() {
 				return tiles.size();
@@ -157,11 +164,13 @@ public class TileSheetEditor implements GLEventListener {
 	private JMenuItem mntmSaveAs;
 	private JList liTiles;
 	ArrayList<Tile> tiles = new ArrayList<Tile>();
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
+	private JTextField tfX;
+	private JTextField tfY;
+	private JTextField tfWidth;
+	private JTextField tfHeight;
+	private JTextField tfType;
+	private JCheckBox chbxColl;
+	
 //	ArrayList<String> tiles = new ArrayList<String>();
 
 	public void initGui()
@@ -362,34 +371,39 @@ public class TileSheetEditor implements GLEventListener {
 		lblType.setBounds(10, 147, 76, 16);
 		panel_6.add(lblType);
 		
-		textField = new JTextField();
-		textField.setBounds(98, 6, 83, 28);
-		panel_6.add(textField);
-		textField.setColumns(10);
+		tfX = new JTextField();
+		tfX.setBounds(98, 6, 83, 28);
+		tfX.setText("1");
+		panel_6.add(tfX);
+		tfX.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(98, 34, 83, 28);
-		panel_6.add(textField_1);
+		tfY = new JTextField();
+		tfY.setColumns(10);
+		tfY.setBounds(98, 34, 83, 28);
+		tfY.setText("2");
+		panel_6.add(tfY);
 		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		textField_2.setBounds(98, 62, 83, 28);
-		panel_6.add(textField_2);
+		tfWidth = new JTextField();
+		tfWidth.setColumns(10);
+		tfWidth.setBounds(98, 62, 83, 28);
+		tfWidth.setText("3");
+		panel_6.add(tfWidth);
 		
-		textField_3 = new JTextField();
-		textField_3.setColumns(10);
-		textField_3.setBounds(98, 90, 83, 28);
-		panel_6.add(textField_3);
+		tfHeight = new JTextField();
+		tfHeight.setColumns(10);
+		tfHeight.setText("4");
+		tfHeight.setBounds(98, 90, 83, 28);
+		panel_6.add(tfHeight);
 		
-		textField_4 = new JTextField();
-		textField_4.setColumns(10);
-		textField_4.setBounds(98, 141, 83, 28);
-		panel_6.add(textField_4);
+		tfType = new JTextField();
+		tfType.setColumns(10);
+		tfType.setBounds(98, 141, 83, 28);
+		tfType.setText("5");
+		panel_6.add(tfType);
 		
-		JCheckBox chckbxNewCheckBox = new JCheckBox("");
-		chckbxNewCheckBox.setBounds(98, 168, 83, 23);
-		panel_6.add(chckbxNewCheckBox);
+		chbxColl = new JCheckBox("");
+		chbxColl.setBounds(98, 168, 83, 23);
+		panel_6.add(chbxColl);
 		
 		JSeparator separator_1 = new JSeparator();
 		separator_1.setForeground(new Color(128, 128, 128));
