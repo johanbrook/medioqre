@@ -64,7 +64,8 @@ public class Launcher extends JFrame {
 				dispose();
 
 				// Create main game
-				new AppController();
+				AppController game = new AppController();
+				game.init();
 			}
 		});
 
@@ -91,8 +92,7 @@ public class Launcher extends JFrame {
 			}
 		});
 
-		setVisible(true);
 		setBackground(new Color(100, 200, 100));
-
+		setVisible(true);
 	}
 }

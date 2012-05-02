@@ -37,17 +37,17 @@ public class AppController implements Runnable{
 		this.ai = new AIController(this.game.getEnemies(), 48, 48, 32, 32);
 		
 		this.navigation.addReceiver((IMessageListener) this.game);
-		
 		this.ai.addReceiver((IMessageListener) this.game);
 		
 //		this.audio = AudioController.getInstance();
 		
 		
 		EventBus.INSTANCE.publish(new Event(Event.Property.INIT_MODEL, this.game));
-		
-		Thread t = new Thread(this);
-		t.start();
-		
+	}
+	
+	
+	public void init() {
+		new Thread(this).start();
 	}
 
 	
