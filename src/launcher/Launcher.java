@@ -57,7 +57,6 @@ public class Launcher extends JFrame {
 		 * Start Button
 		 */
 		JButton btnStartGame = new JButton("Start Game");
-		btnStartGame.setBorderPainted(false);
 		btnStartGame.setForeground(Color.LIGHT_GRAY);
 		btnStartGame.setBounds(370, 220, 120, 40);
 		getContentPane().add(btnStartGame);
@@ -80,9 +79,10 @@ public class Launcher extends JFrame {
 		JButton btnOptions = new JButton("Options");
 		btnOptions.setBounds(370, 280, 120, 40);
 		getContentPane().add(btnOptions);
-		
+
 		JButton button = new JButton("");
-		button.setIcon(new ImageIcon(Launcher.class.getResource("/images/launcher/frank.png")));
+		button.setIcon(new ImageIcon(Launcher.class
+				.getResource("/images/launcher/frank.png")));
 		button.setFocusable(false);
 		button.setBorderPainted(false);
 		button.setBounds(20, 100, 224, 294);
@@ -90,8 +90,8 @@ public class Launcher extends JFrame {
 
 		btnOptions.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//TODO Fix options view!
-				
+				// TODO Fix options view!
+
 				System.out.println("Options pressed");
 			}
 		});
