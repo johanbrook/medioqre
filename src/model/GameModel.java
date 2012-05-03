@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -13,8 +14,11 @@ import model.item.MedPack;
 import model.weapon.Projectile;
 import constants.Direction;
 import event.Event;
+import event.EventBus;
+import event.IMessageSender;
 import event.Event.Property;
 import event.IMessageListener;
+import event.Messager;
 
 /**
  * Model for a game.
@@ -22,10 +26,12 @@ import event.IMessageListener;
  * @author Johan
  *
  */
-public class GameModel implements IGameModel, IMessageListener {
+public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 
+	private Messager messager = new Messager();
+	
 	private AbstractCharacter player;
-	private Enemy[] enemies;
+	private List<Enemy> enemies;
 
 	private List<CollidableObject> objects;
 
@@ -35,7 +41,15 @@ public class GameModel implements IGameModel, IMessageListener {
 	public GameModel() {
 		this.currentLevel = 0;
 
-		initEntities();
+		// Use CopyOnWriteArrayList since we do concurrent reads/writes, and
+		// need them to be synchronized behind the scenes. Slightly more costly,
+		// but negligible since 
+		//	a) Our entities list is quite small
+		//	b) Writes happen very infrequently.
+		this.objects = new CopyOnWriteArrayList<CollidableObject>();
+		this.enemies = new ArrayList<Enemy>();
+		
+		initPlayer();
 	}
 
 
@@ -63,6 +77,12 @@ public class GameModel implements IGameModel, IMessageListener {
 			break;
 		case WAS_DESTROYED:
 			this.objects.remove(evt.getValue());
+			
+			if(evt.getValue() instanceof Enemy) {
+				System.out.println("Was ENEMY, removing from ENEMIES list");
+				this.enemies.remove(evt.getValue());
+				checkEnemiesLeft();
+			}
 			System.out.println(evt.getValue().getClass().getSimpleName() + " was destroyed");
 			break;
 		case DID_ATTACK:
@@ -80,6 +100,10 @@ public class GameModel implements IGameModel, IMessageListener {
 
 		addEnemies(1);
 		addItems();
+		
+		Event evt = new Event(Property.NEW_WAVE, this.enemies);
+		this.messager.sendMessage(evt);
+		EventBus.INSTANCE.publish(evt);
 	}
 
 	private void addItems() {
@@ -97,29 +121,22 @@ public class GameModel implements IGameModel, IMessageListener {
 	}
 
 	private void addEnemies(int amount) {
-		this.enemies = new Enemy[amount];
-
-		for (int i = 0; i < this.enemies.length; i++) {
-			this.enemies[i] = new Enemy(10, 10, 20+i*2, 20+i*2);
-			this.objects.add(this.enemies[i]);
-			this.enemies[i].addReceiver(this);
+		this.enemies.clear();
+		
+		for (int i = 0; i < amount; i++) {
+			Enemy temp = new Enemy(10, 10, 20+i*2, 20+i*2);
+			temp.addReceiver(this);
+			this.enemies.add(temp);
+			this.objects.add(temp);
 		}
+		
+		System.out.println("** Enemies added");
 	}
 
-	private void initEntities() {
-		// Use CopyOnWriteArrayList since we do concurrent reads/writes, and
-		// need them to be synchronized behind the scenes. Slightly more costly,
-		// but negligible since 
-		//	a) Our entities list is quite small
-		//	b) Writes happen very infrequently.
-		this.objects = new CopyOnWriteArrayList<CollidableObject>();
-
+	private void initPlayer() {
 		this.player = new Player();
 		this.player.setPosition(1000, 100);
 		this.objects.add(this.player);
-
-		addEnemies(1);
-		addItems();
 	}
 
 
@@ -271,6 +288,12 @@ public class GameModel implements IGameModel, IMessageListener {
 		moveEntities(dt);
 	}
 
+	
+	private void checkEnemiesLeft() {
+		if(this.enemies.isEmpty()) {
+			this.newWave();
+		}
+	}
 
 	/**
 	 * Get the player in the game.
@@ -297,7 +320,13 @@ public class GameModel implements IGameModel, IMessageListener {
 	 * @return The enemies 
 	 */
 	public List<Enemy> getEnemies() {
-		return (List<Enemy>) Arrays.asList(this.enemies);
+		return this.enemies;
+	}
+
+
+	@Override
+	public void addReceiver(IMessageListener listener) {
+		this.messager.addListener(listener);
 	}
 
 

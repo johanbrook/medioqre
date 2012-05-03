@@ -12,6 +12,7 @@ import event.Event;
 import event.IMessageListener;
 import event.IMessageSender;
 import event.Messager;
+import event.Event.Property;
 
 /**
  * Class for controlling a list of enemies. Using a PathFinder (implementation of the A*-algorithm), the AIController is able to calculate
@@ -19,7 +20,7 @@ import event.Messager;
  * @author jesperpersson
  *
  */
-public class AIController implements IMessageSender{
+public class AIController implements IMessageSender, IMessageListener {
 
 	private List <AIPlayer> enemies;
 	private PathFinder pathfinder;
@@ -27,20 +28,24 @@ public class AIController implements IMessageSender{
 	private Point playerPos,playerTile;
 	private Messager messager = new Messager();
 
-	public AIController (int rows, int columns, int width, int height) {
-		this(new ArrayList <Enemy>(), rows, columns, width, height);
-	}
 
-	public AIController (List<Enemy> enemies, int rows, int columns, int width, int height){
+	public AIController (int rows, int columns, int width, int height){
 		this.pathfinder = new PathFinder(rows, columns);
 		this.width = width;
 		this.height = height;
 		this.enemies = new ArrayList <AIPlayer>();
-		for (int i = 0; i < enemies.size(); i++) {
-			this.enemies.add(new AIPlayer(enemies.get(i)));
+	}
+	
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void onMessage(Event evt) {
+		System.out.println("Something happened! AI: "+evt.getProperty());
+		if(evt.getProperty() == Property.NEW_WAVE) {
+			this.setEnemies((List<Enemy>) evt.getValue() );
 		}
 	}
-
+	
 	/**
 	 * For each existing enemy, will update that enemies direction in order to reach the player in shortest amount of time possible
 	 * @param playerPos
@@ -166,8 +171,8 @@ public class AIController implements IMessageSender{
 	 */
 	public void setEnemies(List<Enemy> enemies) {
 		this.enemies.clear();
-		for (int i = 0; i< enemies.size();i++){
-			this.enemies.add(new AIPlayer (enemies.get(i)));
+		for (Enemy e : enemies){
+			this.enemies.add(new AIPlayer(e));
 		}
 	}
 
@@ -255,5 +260,6 @@ public class AIController implements IMessageSender{
 		this.messager.addListener(listener);
 
 	}
+
 
 }

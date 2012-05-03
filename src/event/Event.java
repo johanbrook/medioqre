@@ -43,7 +43,8 @@ public class Event {
 		WEAPON_MENU_SHOW,
 		WEAPON_MENU_HIDE,
 		FIRED_WEAPON_SUCCESS,
-		FIRED_WEAPON_FAIL;
+		FIRED_WEAPON_FAIL,
+		NEW_WAVE;
 	}
 	
 	private final Property name;
