@@ -12,6 +12,7 @@ import tilemap.TileMap;
 import com.jogamp.opengl.util.FPSAnimator;
 
 import core.Rectangle;
+import core.Size;
 
 public class TileCanvas extends GLCanvas implements GLEventListener {
 	
@@ -38,7 +39,9 @@ public class TileCanvas extends GLCanvas implements GLEventListener {
 	{
 		this.currentTileMap = tileMap;
 		
-		this.object = new Rectangle(0, 0, this.currentTileMap.getTileMapSize().getWidth(),this.currentTileMap.getTileMapSize().getHeight());
+		this.currentTileMap.setTileSize(new Size(1,1));
+		this.currentTileMap.setViewPortSize(new Size(this.currentTileMap.getTileMapSize().getWidth(), this.currentTileMap.getTileMapSize().getHeight()));
+		
 		this.target = new Rectangle(0, 0, this.currentTileMap.getTileMapSize().getWidth(),this.currentTileMap.getTileMapSize().getHeight());
 	}
 	
@@ -50,7 +53,7 @@ public class TileCanvas extends GLCanvas implements GLEventListener {
 		
 		
 		if (this.currentTileMap != null) {
-			this.currentTileMap.render(object, target, arg0);
+			this.currentTileMap.render(this.currentTileMap.getBounds(), target, arg0);
 			
 		} else {
 			
