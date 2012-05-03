@@ -27,22 +27,22 @@ public class AnimatedBackgoundPanel extends JPanel implements ActionListener {
 //		this(8, 8);
 	}
 
-	public AnimatedBackgoundPanel(int rows, int width, int height) {
+	public AnimatedBackgoundPanel(int rows, int cols, int width, int height) {
 		
 		setBounds(0, 0, width, height);
 
 		this.rows = rows;
-		this.cols = rows;
+		this.cols = cols;
 		
-		rect = new Rectangle[rows][rows];
-		rnd = new double [rows][rows];
+		rect = new Rectangle[rows][cols];
+		rnd = new double [rows][cols];
 		
 		int rw = getWidth() / rows;
-		int rh = getHeight() / rows;
+		int rh = getHeight() / cols;
 
 		for (int r = 0; r < rows; r++) {
 
-			for (int c = 0; c < rows; c++) {
+			for (int c = 0; c < cols; c++) {
 
 				rect[r][c] = new Rectangle(r * rw, c * rh, rw, rh);
 				rnd[r][c] = Math.random();
@@ -112,7 +112,7 @@ public class AnimatedBackgoundPanel extends JPanel implements ActionListener {
 		JFrame f = new JFrame("hejhej");
 		f.setBounds(100, 100, 800, 600);
 
-		AnimatedBackgoundPanel ani = new AnimatedBackgoundPanel(10, 600,600);
+		AnimatedBackgoundPanel ani = new AnimatedBackgoundPanel(8, 6, 800,600);
 		System.out.print(ani);
 		ani.setVisible(true);
 
