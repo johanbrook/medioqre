@@ -1,5 +1,6 @@
 package gui.tilemapeditor;
 
+import graphics.tools.PixelCastingTool;
 import gui.tilemapeditor.subviews.TileCanvas;
 import gui.tilemapeditor.subviews.TileInspector;
 import gui.tilemapeditor.subviews.TileSelector;
@@ -23,7 +24,9 @@ import java.awt.event.ComponentListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -31,6 +34,7 @@ import javax.swing.KeyStroke;
 import java.awt.event.KeyEvent;
 import java.awt.event.InputEvent;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
 import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.FileInputStream;
@@ -86,8 +90,11 @@ public class TileMapEditor extends JFrame {
 			}
 		} else {
 			BufferedImage img = new BufferedImage(this.currentTileMap.getTileMapSize().getWidth(), this.currentTileMap.getTileMapSize().getHeight(), BufferedImage.TYPE_INT_ARGB);
-			img.setRGB(0, 0, img.getWidth(), img.getHeight(), this.currentTileMap.getTilesToPizelArray(), 0, 0);
 			
+			int[] pixels = ((DataBufferInt)img.getRaster().getDataBuffer()).getData();
+						
+			this.currentTileMap.fillPizelArrayWithTiles(pixels);
+					
 			try {
 				ImageIO.write(img, "png", file);
 			} catch (IOException e) {
@@ -106,7 +113,10 @@ public class TileMapEditor extends JFrame {
 				.showInputDialog("Number of rows: "));
 		int columns = Integer.valueOf(JOptionPane
 				.showInputDialog("Number of columns: "));
-		this.currentTileMap = new TileMap(rows, columns, new TileSheet());
+		
+		TileSheet t = this.currentTileSheet == null ? new TileSheet() : this.currentTileSheet;
+		
+		this.currentTileMap = new TileMap(rows, columns, t, null);
 
 		this.tileCanvas.setTileMap(this.currentTileMap);
 
@@ -116,24 +126,26 @@ public class TileMapEditor extends JFrame {
 	private void loadTileMap(File file)
 	{
 		try {
-			InputStream inputStream = new FileInputStream(file);
-			String jsonString = IOUtils.toString(inputStream);
-
-			this.currentTileMap = new TileMap(new JSONObject(jsonString));
-			this.currentTileMap.setTileSheet(this.currentTileSheet);
+			this.currentFile = file;
+			
+			BufferedImage img = ImageIO.read(this.currentFile);
+			
+			int[] pixels = PixelCastingTool.getARGBarrayFromDataBuffer(img.getRaster(), img.getWidth(), img.getHeight());
+			
+			this.currentTileMap = new TileMap(img.getWidth(), img.getHeight(), this.currentTileSheet, pixels);
 
 			this.tileCanvas.setTileMap(this.currentTileMap);
+			
+			System.out.println("Loading tilemap: " + file);
+			return;
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
-		System.out.println("Loading tilemap: " + file);
+		System.out.println("Could not load: " + file);
 	}
 
 	private void createNewTileSheet()
