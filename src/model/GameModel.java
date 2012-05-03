@@ -70,12 +70,14 @@ public class GameModel implements IGameModel, IMessageListener {
 	public void newWave() {
 		this.currentLevel++;
 		
-		addEnemies(5);
+		addEnemies(1);
 		addItems();
 	}
 	
 	private void addItems() {
-		
+		for(int i = 0; i < 5; i++) {
+			this.objects.add(new AmmoCrate(30, 30+i*2, 30+i*2));
+		}
 	}
 	
 	private void addEnemies(int amount) {
@@ -100,7 +102,7 @@ public class GameModel implements IGameModel, IMessageListener {
 		this.player.setPosition(1000, 100);
 		this.objects.add(this.player);
 		
-		addEnemies(5);
+		addEnemies(1);
 		addItems();
 	}
 	
