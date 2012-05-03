@@ -157,9 +157,11 @@ public class GameModel implements IGameModel, IMessageListener {
 
 				if(t instanceof Projectile) {
 					this.objects.remove(t);
+					
 					if (w instanceof AbstractCharacter){
 						((AbstractCharacter) w).takeDamage(((Projectile) t).getDamage());
-						System.out.println( w.getClass().getName() + " was hit, now has " + ((AbstractCharacter) w).getHealth() + " hp" + " movespeed: " + ((AbstractCharacter)w).getMovementSpeed());
+						
+						System.out.println(w.getClass().getSimpleName()+" was hit, now has " + ((AbstractCharacter) w).getHealth() + " hp");
 					}
 
 
