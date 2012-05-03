@@ -2,6 +2,7 @@ package tilemap;
 
 import graphics.tools.PixelCastingTool;
 
+import java.awt.Point;
 import java.util.Random;
 
 import javax.media.opengl.GLAutoDrawable;
@@ -21,6 +22,7 @@ public class TileMap implements GLRenderableObject {
 	private int[][] tiles;
 	private Size tileSize = new Size(1, 1);
 	private Size tileMapSize;
+	private Rectangle tileViewPort;
 	
 	// Temp
 	private Rectangle tileRenderRect;
@@ -31,7 +33,7 @@ public class TileMap implements GLRenderableObject {
 		
 		this.tileMapSize = new Size(columns, rows);
 		
-		this.tileSheet = tileSheet; 
+		this.setTileSheet(tileSheet); 
 	}
 
 	public void randomizeTileMap()
@@ -60,9 +62,7 @@ public class TileMap implements GLRenderableObject {
 			}
 		}
 
-	}
-	
-	
+	}	
 	public Size getTileMapSize()
 	{
 		return this.tileMapSize;
@@ -84,15 +84,27 @@ public class TileMap implements GLRenderableObject {
 	{
 		this.tileSheet = tileSheet;
 	}
+	public void setViewPortSize(Size size)
+	{
+		if (this.tileViewPort == null) this.tileViewPort = new Rectangle(0, 0, 0, 0);
+		
+		this.tileViewPort.setWidth(size.getWidth());
+		this.tileViewPort.setHeight(size.getHeight());
+	}
+	public void setTileSize(Size size)
+	{
+		this.tileSize = size;
+	}
+	
 	
 	@Override
 	public void render(Rectangle object, Rectangle target, GLAutoDrawable canvas)
-	{
+	{		
 		if (this.tileRenderRect == null) this.tileRenderRect = new Rectangle(0, 0, 0, 0);
 		for (int x = 0; x < this.tiles.length; x++) {
 			for (int y = 0; y < this.tiles[x].length; y++) {
-				tileRenderRect.setX(x * tileSize.getWidth());
-				tileRenderRect.setY(y * tileSize.getHeight());
+				tileRenderRect.setX(x * tileSize.getWidth()+object.getX());
+				tileRenderRect.setY(y * tileSize.getHeight()+object.getY());
 				tileRenderRect.setWidth(tileSize.getWidth());
 				tileRenderRect.setHeight(tileSize.getHeight());
 				
@@ -111,7 +123,6 @@ public class TileMap implements GLRenderableObject {
 	@Override
 	public Rectangle getBounds()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return this.tileViewPort;
 	}
 }
