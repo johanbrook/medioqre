@@ -23,6 +23,7 @@ import org.json.JSONObject;
 import com.jogamp.opengl.util.Animator;
 import com.jogamp.opengl.util.FPSAnimator;
 
+import tilemap.TileMap;
 import tools.GraphicalFPSMeter;
 import tools.TimerTool;
 
@@ -32,6 +33,7 @@ import model.character.Enemy;
 import model.character.Player;
 
 import core.Rectangle;
+import core.Size;
 import datamanagement.ResourceLoader;
 import event.Event;
 import event.EventBus;
@@ -53,6 +55,9 @@ public class ViewController implements IEventHandler, GLEventListener {
 	private Rectangle target;
 	private Screen screen;
 
+	// Map
+	private TileMap tilemap;
+	
 	// Actors
 	private Actor player;
 	private Map<Entity, Actor> enemies;
@@ -115,6 +120,14 @@ public class ViewController implements IEventHandler, GLEventListener {
 		if (evt.getProperty() == Event.Property.INIT_MODEL) {
 			GameModel gm = (GameModel) evt.getValue();
 			try {
+				this.tilemap = ResourceLoader.loadTileMapFromResources("test.png");
+				this.tilemap.setTileSheet(ResourceLoader.loadTileSheetFromResource("tiles.tilesheet"));
+				this.tilemap.setViewPortSize(new Size(48*12,48*20));
+				this.tilemap.setTileSize(new Size(48,48));
+				
+				this.screen.addDrawableToLayer(this.tilemap, 0);
+				
+				
 				this.player = new Actor(
 						new JSONObject(ResourceLoader.loadJSONStringFromResources("frank.actor")),
 						gm.getPlayer());
@@ -126,7 +139,7 @@ public class ViewController implements IEventHandler, GLEventListener {
 				for (Enemy e : en) {
 					Actor newA = new Actor(new JSONObject(ResourceLoader.loadJSONStringFromResources("walker1.actor")),e);
 					this.enemies.put(e, newA);
-					this.screen.addDrawableToLayer(newA, 0);
+					this.screen.addDrawableToLayer(newA, 1);
 				}
 				
 			} catch (JSONException e) {
@@ -155,19 +168,19 @@ public class ViewController implements IEventHandler, GLEventListener {
 		GL2 gl = arg0.getGL().getGL2();
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
 
-		TimerTool.start("GL-Screen");
+//		TimerTool.start("GL-Screen");
 		if (doneLoading) {
 			this.screen.setViewPort(this.player.getEntity().getPosition());
 			this.screen.render(this.screen.getBounds(), this.screen.getBounds(), arg0);
 		}
-		TimerTool.stop();
+//		TimerTool.stop();
 	}
 
 	@Override
 	public void init(GLAutoDrawable arg0)
 	{
 		GL2 gl = arg0.getGL().getGL2();
-		gl.glClearColor(1.0f, 1.0f, 0.9f, 1.0f);
+		gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 		gl.glEnable(GL.GL_TEXTURE_2D);
 		gl.glTexEnvf(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE,
 				GL2.GL_MODULATE);
