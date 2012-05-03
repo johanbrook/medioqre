@@ -9,6 +9,12 @@ import model.character.Player;
 import tools.Logger;
 
 import constants.Direction;
+import event.Event;
+import event.EventBus;
+import event.IMessageListener;
+import event.Event.Property;
+import event.IMessageSender;
+import event.Messager;
 
 /**
  * The collidable object super class.
@@ -23,12 +29,14 @@ import constants.Direction;
  * @author Johan
  *
  */
-public abstract class CollidableObject {
+public abstract class CollidableObject implements IMessageSender {
 	
 	private Rectangle collisionBox;
 	private Dimension size;
 	private int xoffset;
 	private int yoffset;
+	
+	private Messager messager = new Messager();
 
 	public final static int TOP = 1;
 	public final static int BOTTOM = 2;
@@ -56,6 +64,20 @@ public abstract class CollidableObject {
 		this.collisionBox.y += this.yoffset;
 	}
 	
+	@Override
+	public void addReceiver(IMessageListener listener) {
+		this.messager.addListener(listener);
+	}
+	
+	/**
+	 * Destroy the entity
+	 * 
+	 */
+	public void destroy(){
+		Event evt = new Event(Property.WAS_DESTROYED, this);
+		EventBus.INSTANCE.publish(evt);
+		messager.sendMessage(evt);
+	}
 	
 	/**
 	 * Get the size of this object.
@@ -134,6 +156,9 @@ public abstract class CollidableObject {
 	public Rectangle getCollisionBox(){
 		return this.collisionBox;
 	}
+	
+
+	
 	
 	/**
 	 * Check whether this object is colliding with another CollidableObject.
