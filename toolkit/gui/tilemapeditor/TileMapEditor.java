@@ -50,6 +50,8 @@ import org.apache.commons.io.IOUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import datamanagement.ResourceLoader;
+
 import tilemap.Tile;
 import tilemap.TileMap;
 import tilemap.TileSheet;
@@ -125,27 +127,15 @@ public class TileMapEditor extends JFrame {
 
 	private void loadTileMap(File file)
 	{
-		try {
-			this.currentFile = file;
-			
-			BufferedImage img = ImageIO.read(this.currentFile);
-			
-			int[] pixels = PixelCastingTool.getARGBarrayFromDataBuffer(img.getRaster(), img.getWidth(), img.getHeight());
-			
-			this.currentTileMap = new TileMap(img.getWidth(), img.getHeight(), this.currentTileSheet, pixels);
+		this.currentFile = file;
+				
+		this.currentTileMap = ResourceLoader.loadTileMapFromAbsolutePath(this.currentFile.getAbsolutePath());
+		this.currentTileMap.setTileSheet(this.currentTileSheet);
 
-			this.tileCanvas.setTileMap(this.currentTileMap);
-			
-			System.out.println("Loading tilemap: " + file);
-			return;
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println("Could not load: " + file);
+		this.tileCanvas.setTileMap(this.currentTileMap);
+		
+		System.out.println("Loading tilemap: " + file);
+
 	}
 
 	private void createNewTileSheet()
@@ -229,6 +219,11 @@ public class TileMapEditor extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0)
 			{
+				if (currentTileSheet == null) {
+					JOptionPane.showMessageDialog(getParent(), "Y U NO LOAD TILESHEET FIRST?  ლ(ಠ益ಠლ)");
+					return;
+				}
+				
 				JFileChooser chooser = new JFileChooser();
 				int input = chooser.showOpenDialog(getParent());
 				if (input == JFileChooser.APPROVE_OPTION)
@@ -319,7 +314,7 @@ public class TileMapEditor extends JFrame {
 		mntmLoadTileSheet.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
-			{
+			{	
 				JFileChooser chooser = new JFileChooser();
 				int input = chooser.showOpenDialog(getParent());
 				if (input == JFileChooser.APPROVE_OPTION) {
