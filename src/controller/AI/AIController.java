@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import model.character.Enemy;
 import model.weapon.Projectile;
@@ -33,7 +34,7 @@ public class AIController implements IMessageSender, IMessageListener {
 		this.pathfinder = new PathFinder(rows, columns);
 		this.width = width;
 		this.height = height;
-		this.enemies = new ArrayList <AIPlayer>();
+		this.enemies = new CopyOnWriteArrayList<AIPlayer>();
 	}
 	
 
@@ -41,8 +42,15 @@ public class AIController implements IMessageSender, IMessageListener {
 	@Override
 	public void onMessage(Event evt) {
 		System.out.println("Something happened! AI: "+evt.getProperty());
-		if(evt.getProperty() == Property.NEW_WAVE) {
-			this.setEnemies((List<Enemy>) evt.getValue() );
+		
+		switch(evt.getProperty()) {
+			case NEW_WAVE:
+				this.setEnemies((List<Enemy>) evt.getValue() );
+			break;
+			
+			case WAS_DESTROYED:
+				this.removeEnemy((Enemy) evt.getValue());
+			break;
 		}
 	}
 	
@@ -189,7 +197,7 @@ public class AIController implements IMessageSender, IMessageListener {
 	 * @param enemy
 	 */
 	public void removeEnemy(Enemy enemy){
-		for (AIPlayer ai : enemies){
+		for (AIPlayer ai : this.enemies){
 			if (ai.getEnemy() == enemy){
 				this.enemies.remove(ai);
 			}

@@ -81,6 +81,7 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 			if(evt.getValue() instanceof Enemy) {
 				System.out.println("Was ENEMY, removing from ENEMIES list");
 				this.enemies.remove(evt.getValue());
+				this.messager.sendMessage(evt);
 				checkEnemiesLeft();
 			}
 			System.out.println(evt.getValue().getClass().getSimpleName() + " was destroyed");
