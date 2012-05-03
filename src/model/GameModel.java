@@ -9,6 +9,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import model.character.AbstractCharacter;
 import model.character.Enemy;
 import model.character.Player;
+import model.item.AmmoCrate;
+import model.item.MedPack;
 import model.weapon.Projectile;
 import constants.Direction;
 import event.Event;
