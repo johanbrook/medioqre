@@ -30,6 +30,7 @@ public class AmmoCrate extends CollidableObject implements ICollectableItem {
 	public void pickedUpBy(Player source) {
 		source.getCurrentWeapon().addAmmo(this.amount);
 		EventBus.INSTANCE.publish(new Event(Property.PICKED_UP_ITEM, this));
+		this.destroy();
 	}
 
 }
