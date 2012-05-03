@@ -1,28 +1,21 @@
 package tilemap;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import graphics.tools.PixelCastingTool;
 
-import graphics.opengl.Sprite;
+import java.util.Random;
 
 import javax.media.opengl.GLAutoDrawable;
 
-import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import core.GLRenderableObject;
 import core.JSONSerializable;
 import core.Rectangle;
 import core.Size;
 
-public class TileMap implements JSONSerializable, GLRenderableObject {
+public class TileMap implements GLRenderableObject {
 
 	private TileSheet tileSheet;
 	private int[][] tiles;
@@ -32,9 +25,10 @@ public class TileMap implements JSONSerializable, GLRenderableObject {
 	// Temp
 	private Rectangle tileRenderRect;
 	
-	public TileMap(int rows, int columns, TileSheet tileSheet)
+	public TileMap(int rows, int columns, TileSheet tileSheet, int[] pixels)
 	{
-		tiles = new int[columns][rows];
+		this.tiles = pixels == null ? new int[columns][rows] : PixelCastingTool.get2dTileMatrixFromPixelArray(columns, rows, pixels);
+		
 		this.tileMapSize = new Size(columns, rows);
 		
 		this.tileSheet = tileSheet;
@@ -44,9 +38,18 @@ public class TileMap implements JSONSerializable, GLRenderableObject {
 
 	public void clearTileMap(int clearTile)
 	{
+		int[] diffTiles = new int[this.tileSheet.getTiles().size()];
+		int index = 0;
+		for (Tile t : this.tileSheet.getTiles()) {
+			diffTiles[index] = t.getType();
+			index++;
+		}
+		
+		Random r = new Random();
+		 
 		for (int x = 0; x < this.tiles.length; x++) {
 			for (int y = 0; y < this.tiles[x].length; y++) {
-				this.tiles[x][y] = clearTile;
+				this.tiles[x][y] = diffTiles[r.nextInt(diffTiles.length)];
 			}
 		}
 
@@ -56,27 +59,18 @@ public class TileMap implements JSONSerializable, GLRenderableObject {
 		return this.tileMapSize;
 	}
 
-	public int[] getTilesToPizelArray()
+	public void fillPizelArrayWithTiles(int[] arrayToFill)
 	{
 		int rows = this.tiles == null ? 0 : this.tiles.length;
 		int cols = rows > 0 ? this.tiles[0].length : 0;
 		
-		
-		int[] pixels = new int[rows * cols];
-		for (int x = 0; x < cols; x++) {
-			for (int y = 0; y < rows; y++) {
-				pixels[y * cols + x] = this.tiles[y][x];
+		for (int y = 0; y < cols; y++) {
+			for (int x = 0; x < rows; x++) {
+				arrayToFill[y * cols + x] = this.tiles[x][y];
 			}
 		}
-		
-		return pixels;
 	}
 	
-	public TileMap(JSONObject o)
-	{
-		this.deserialize(o);
-	}
-
 	public void setTileSheet(TileSheet tileSheet)
 	{
 		this.tileSheet = tileSheet;
@@ -111,66 +105,4 @@ public class TileMap implements JSONSerializable, GLRenderableObject {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
-	public JSONObject serialize()
-	{
-		try {
-			JSONObject retObj = new JSONObject();
-
-			retObj.put("tilesheet", this.tileSheet.getName());
-			
-			JSONArray cols = new JSONArray();
-			for (int[] i : this.tiles) {
-				JSONArray rows = new JSONArray();
-				for (int j : i) {
-					JSONObject jsonObject = new JSONObject();
-					jsonObject.put("i", ""+j);
-					rows.put(jsonObject);
-				}
-				cols.put(rows);
-			}
-			retObj.put("tiles", cols);
-			
-			retObj.put("tilewidth", this.tileSize.getWidth());
-			retObj.put("tileheight", this.tileSize.getHeight());
-			retObj.put("tilemapwidth", this.tileMapSize.getWidth());
-			retObj.put("tilemapheight", this.tileMapSize.getHeight());
-
-			return retObj;
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	@Override
-	public void deserialize(JSONObject o)
-	{
-		try {
-
-//			this.tileSheet = new TileSheet(o);
-			
-			this.tiles = null;
-			
-			JSONArray cols = o.getJSONArray("tiles");
-			for (int i = 0; i < cols.length(); i++) {
-				JSONArray rows = cols.getJSONArray(i);
-				for (int j = 0; j < rows.length(); j++) {
-					if (this.tiles == null) this.tiles = new int[cols.length()][rows.length()];
-					JSONObject jsonObject = rows.getJSONObject(j);
-					this.tiles[i][j] = jsonObject.getInt("i");
-				}
-			}
-			
-			this.tileSize = new Size(o.getInt("tilewidth"), o.getInt("tileheight"));
-			this.tileMapSize = new Size(o.getInt("tilemapwidth"), o.getInt("tilemapheight"));
-			
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
 }
