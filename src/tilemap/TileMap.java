@@ -31,12 +31,10 @@ public class TileMap implements GLRenderableObject {
 		
 		this.tileMapSize = new Size(columns, rows);
 		
-		this.tileSheet = tileSheet;
-		
-		this.clearTileMap(0xffffffff);
+		this.tileSheet = tileSheet; 
 	}
 
-	public void clearTileMap(int clearTile)
+	public void randomizeTileMap()
 	{
 		int[] diffTiles = new int[this.tileSheet.getTiles().size()];
 		int index = 0;
@@ -54,6 +52,17 @@ public class TileMap implements GLRenderableObject {
 		}
 
 	}
+	public void clearTileMap(int clearTile)
+	{	 
+		for (int x = 0; x < this.tiles.length; x++) {
+			for (int y = 0; y < this.tiles[x].length; y++) {
+				this.tiles[x][y] = clearTile;
+			}
+		}
+
+	}
+	
+	
 	public Size getTileMapSize()
 	{
 		return this.tileMapSize;
