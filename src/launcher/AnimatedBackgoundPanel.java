@@ -7,16 +7,18 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import sun.java2d.loops.FillRect;
-
 public class AnimatedBackgoundPanel extends JPanel implements ActionListener {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6369702432499487888L;
+
 	private Timer timer;
-	private int delay = 100;
+	private int delay = 300;
 	private Rectangle[][] rect;
 	private double[][] rnd;
 	private int rows;
@@ -24,19 +26,19 @@ public class AnimatedBackgoundPanel extends JPanel implements ActionListener {
 	private float delta = 0.1f;
 
 	public AnimatedBackgoundPanel() {
-//		this(8, 8);
+		// this(8, 8);
 	}
 
 	public AnimatedBackgoundPanel(int rows, int cols, int width, int height) {
-		
+
 		setBounds(0, 0, width, height);
 
 		this.rows = rows;
 		this.cols = cols;
-		
+
 		rect = new Rectangle[rows][cols];
-		rnd = new double [rows][cols];
-		
+		rnd = new double[rows][cols];
+
 		int rw = getWidth() / rows;
 		int rh = getHeight() / cols;
 
@@ -52,15 +54,15 @@ public class AnimatedBackgoundPanel extends JPanel implements ActionListener {
 
 		timer = new Timer(delay, this);
 		timer.start();
-		
-
 
 	}
 
 	public void paint(Graphics g) {
 
+		super.paintComponents(g);
+
 		Graphics2D g2d = (Graphics2D) g;
-		
+
 		for (int r = 0; r < rows; r++) {
 
 			for (int c = 0; c < cols; c++) {
@@ -69,27 +71,23 @@ public class AnimatedBackgoundPanel extends JPanel implements ActionListener {
 				int y = rect[r][c].y;
 				int dw = rect[r][c].width;
 				int dh = rect[r][c].height;
-				
-				
 
-				
-				g2d.setColor(new Color(10,20,10));
-				
+				g2d.setColor(new Color(10, 20, 10));
+
 				double p = Math.random();
-				
+
 				if (p > 0.85)
-					g2d.setColor(new Color(50,100,50));
-				
+					g2d.setColor(new Color(50, 100, 50));
+
 				if (p > 0.99)
-					g2d.setColor(new Color(100,200,100));
-				
-				g2d.fillRect(x,y,dw,dh);
-				
+					g2d.setColor(new Color(100, 200, 100));
+
+				g2d.fillRect(x, y, dw, dh);
 
 			}
 
 		}
-		
+
 	}
 
 	@Override
@@ -102,22 +100,10 @@ public class AnimatedBackgoundPanel extends JPanel implements ActionListener {
 
 			}
 		}
-		
-		delta = (delta+0.1f) % 100;
+
+		delta = (delta + 0.1f) % 100;
 		repaint();
 
-	}
-
-	public static void main(String[] a) {
-		JFrame f = new JFrame("hejhej");
-		f.setBounds(100, 100, 800, 600);
-
-		AnimatedBackgoundPanel ani = new AnimatedBackgoundPanel(8, 6, 800,600);
-		System.out.print(ani);
-		ani.setVisible(true);
-
-		f.add(ani);
-		f.setVisible(true);
 	}
 
 }
