@@ -30,6 +30,8 @@ public class MedPack extends CollidableObject implements ICollectableItem {
 	public void pickedUpBy(Player source) {
 		source.addHealth(this.amount);
 		EventBus.INSTANCE.publish(new Event(Property.PICKED_UP_ITEM, this));
+		System.out.println("Picked up MedPack");
+
 		this.destroy();
 	}
 

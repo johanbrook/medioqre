@@ -86,8 +86,6 @@ public class AIController implements IMessageSender{
 				aiPlayer.setPath(pathfinder.getPath(enemyTile, playerTile));
 				if (aiPlayer.getPath() != null){
 
-					
-
 					//Update direction of the enemy depending on what the current path is.
 
 					//If path is longer than 2 tiles, just calculate the direction from the path
