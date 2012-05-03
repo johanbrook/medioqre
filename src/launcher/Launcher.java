@@ -59,7 +59,7 @@ public class Launcher extends JFrame {
 				.getResource("/images/launcher/frank.png")));
 		frank.setFocusable(false);
 		frank.setBorderPainted(false);
-		frank.setBounds(4, 117, 224, 294);
+		frank.setBounds(4, 117	, 224, 294);
 		panel.add(frank);
 		
 		JButton logo = new JButton("");
@@ -70,10 +70,42 @@ public class Launcher extends JFrame {
 		logo.setBounds(220, 11, 392, 212);
 		panel.add(logo);
 		
+		JButton startButton = new JButton("");
+		startButton.setIcon(new ImageIcon(Launcher.class
+				.getResource("/images/launcher/startButton.png")));
+		startButton.setFocusable(false);
+		startButton.setBorderPainted(false);
+		startButton.setBounds(300, 260, 239, 26);
+		panel.add(startButton);
+		
+		JButton optionsButton = new JButton("");
+		optionsButton.setIcon(new ImageIcon(Launcher.class
+				.getResource("/images/launcher/optionsButton.png")));
+		optionsButton.setFocusable(false);
+		optionsButton.setBorderPainted(false);
+		optionsButton.setBounds(300, 320, 239, 26);
+		panel.add(optionsButton);
 		
 		
+		startButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				dispose();
+
+				// Create main game
+				AppController game = new AppController();
+				game.init();
+			}
+		});
 		
-		add(panel);
+		optionsButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				//TODO Build options like a boss!
+				System.out.println("Options pressed!");
+			}
+		});
+		
+		
+		getContentPane().add(panel);
 		setVisible(true);
 
 	}
