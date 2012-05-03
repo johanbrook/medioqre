@@ -94,7 +94,7 @@ public class Screen implements GLRenderableObject {
 			return;
 
 		if (this.screenSize == null)
-			System.out.println("Nullll");
+			System.out.println("Screen size is null.");
 
 		if (renderRect == null)
 			this.renderRect = new Rectangle(0, 0, 0, 0);
