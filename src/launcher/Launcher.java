@@ -54,13 +54,21 @@ public class Launcher extends JFrame {
 		panel.setLayout(null);
 		
 		
-		JButton button = new JButton("");
-		button.setIcon(new ImageIcon(Launcher.class
+		JButton frank = new JButton("");
+		frank.setIcon(new ImageIcon(Launcher.class
 				.getResource("/images/launcher/frank.png")));
-		button.setFocusable(false);
-		button.setBorderPainted(false);
-		button.setBounds(24, 120, 224, 294);
-		panel.add(button);
+		frank.setFocusable(false);
+		frank.setBorderPainted(false);
+		frank.setBounds(4, 117, 224, 294);
+		panel.add(frank);
+		
+		JButton logo = new JButton("");
+		logo.setIcon(new ImageIcon(Launcher.class
+				.getResource("/images/launcher/logo.png")));
+		logo.setFocusable(false);
+		logo.setBorderPainted(false);
+		logo.setBounds(220, 11, 392, 212);
+		panel.add(logo);
 		
 		
 		
