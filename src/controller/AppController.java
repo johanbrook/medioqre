@@ -48,6 +48,7 @@ public class AppController implements Runnable{
 	
 	public void init() {
 		new Thread(this).start();
+		this.game.newWave();
 	}
 
 	

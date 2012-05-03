@@ -109,8 +109,6 @@ public class NavigationController implements KeyListener, IMessageSender {
 		
 		if(this.isQuick) {
 			NavigationKey composite = this.cachedKeys.createCompositeKey();
-			System.out.println("QUICK");
-			System.out.println("COMPOSITE: "+composite);
 			
 			if(composite != null)
 				messager.sendMessage(new Event(Property.CHANGED_DIRECTION, composite.getDirection()));
@@ -178,7 +176,6 @@ public class NavigationController implements KeyListener, IMessageSender {
 				this.cachedKeys.add((NavigationKey) a);
 				checkIsQuick();
 				this.navKeys.remove(a);
-				System.out.println("Cached keys: "+this.cachedKeys);
 				
 				refreshDirection();
 			}

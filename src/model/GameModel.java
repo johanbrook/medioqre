@@ -27,9 +27,13 @@ public class GameModel implements IGameModel, IMessageListener {
 	private Enemy[] enemies;
 
 	private List<Entity> entities;
+	
+	private int currentLevel;
+	private final double LEVEL_MULTIPLIER = 1.5;
 
 	public GameModel() {
-
+		this.currentLevel = 0;
+		
 		initEntities();
 	}
 
@@ -62,7 +66,24 @@ public class GameModel implements IGameModel, IMessageListener {
 	
 
 	public void newWave() {
-
+		this.currentLevel++;
+		
+		addEnemies(5);
+		addItems();
+	}
+	
+	private void addItems() {
+		
+	}
+	
+	private void addEnemies(int amount) {
+		this.enemies = new Enemy[amount];
+		
+		for (int i = 0; i < this.enemies.length; i++) {
+			this.enemies[i] = new Enemy(10, 10, 20+i*2, 20+i*2);
+			this.entities.add(this.enemies[i]);
+			this.enemies[i].addReceiver(this);
+		}
 	}
 
 	private void initEntities() {
@@ -77,13 +98,8 @@ public class GameModel implements IGameModel, IMessageListener {
 		this.player.setPosition(1000, 100);
 		this.entities.add(this.player);
 		
-		this.enemies = new Enemy[1];
-		
-		for (int i = 0; i < this.enemies.length; i++) {
-			this.enemies[i] = new Enemy(10, 10, 20+i*2, 20+i*2);
-			this.entities.add(this.enemies[i]);
-			this.enemies[i].addReceiver(this);
-		}
+		addEnemies(5);
+		addItems();
 	}
 	
 	

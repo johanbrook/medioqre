@@ -40,4 +40,10 @@ public interface IGameModel {
 	 * @return The entities
 	 */
 	public List<Entity> getEntities();
+	
+	/**
+	 * Initialize a new wave/round.
+	 * 
+	 */
+	public void newWave();
 }
