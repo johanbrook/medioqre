@@ -39,6 +39,7 @@ import event.EventBus;
 import event.IEventHandler;
 import event.Event.Property;
 
+import model.CollidableObject;
 import model.Entity;
 import model.GameModel;
 import model.character.Enemy;
@@ -259,16 +260,15 @@ public class ViewController implements IEventHandler {
 		if (evt.getProperty() == Event.Property.INIT_MODEL) {
 			if (evt.getValue() instanceof GameModel) {
 				this.enemies = new IdentityHashMap<Entity, Actor>();
-				List<Entity> entities = ((GameModel) evt.getValue())
-						.getEntities();
+				List<CollidableObject> entities = ((GameModel) evt.getValue()).getObjects();
 				Actor[] actors = ResourceManager.loadActors();
 				Actor pActor = actors[0];
 				Actor eActor = actors[1];
-				for (Entity e : entities) {
+				for (CollidableObject e : entities) {
 					if (e instanceof Enemy) {
 						Actor newE = eActor.clone();
 						newE.setEntity(e);
-						this.enemies.put(e, newE);
+						this.enemies.put( (Entity) e, newE);
 					} else if (e instanceof Player) {
 						Actor newA = pActor.clone();
 						newA.setEntity(e);

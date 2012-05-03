@@ -35,11 +35,11 @@ public interface IGameModel {
 	public List<Enemy> getEnemies();
 	
 	/**
-	 * Get all the entities in the game
+	 * Get all the objects in the game
 	 * 
-	 * @return The entities
+	 * @return The objects
 	 */
-	public List<Entity> getEntities();
+	public List<CollidableObject> getObjects();
 	
 	/**
 	 * Initialize a new wave/round.

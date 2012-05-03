@@ -28,7 +28,7 @@ public class GameModel implements IGameModel, IMessageListener {
 	private AbstractCharacter player;
 	private Enemy[] enemies;
 
-	private List<Entity> entities;
+	private List<CollidableObject> objects;
 	
 	private int currentLevel;
 	private final double LEVEL_MULTIPLIER = 1.5;
@@ -49,7 +49,7 @@ public class GameModel implements IGameModel, IMessageListener {
 			this.player.stop(); 
 			break;
 		case DID_FIRE:
-			this.entities.add(this.player.attack());
+			this.objects.add(this.player.attack());
 			System.out.println("Did add projectile");
 			break;
 		case CHANGED_DIRECTION:
@@ -57,10 +57,10 @@ public class GameModel implements IGameModel, IMessageListener {
 			this.player.setDirection((Direction) evt.getValue());
 			break;
 		case WAS_DESTROYED:
-			this.entities.remove(evt.getValue());
+			this.objects.remove(evt.getValue());
 			break;
 		case DID_ATTACK:
-			this.entities.add( ((Projectile)evt.getValue()) );
+			this.objects.add( ((Projectile)evt.getValue()) );
 			break;
 		}
 		
@@ -83,7 +83,7 @@ public class GameModel implements IGameModel, IMessageListener {
 		
 		for (int i = 0; i < this.enemies.length; i++) {
 			this.enemies[i] = new Enemy(10, 10, 20+i*2, 20+i*2);
-			this.entities.add(this.enemies[i]);
+			this.objects.add(this.enemies[i]);
 			this.enemies[i].addReceiver(this);
 		}
 	}
@@ -94,11 +94,11 @@ public class GameModel implements IGameModel, IMessageListener {
 		// but negligible since 
 		//	a) Our entities list is quite small
 		//	b) Writes happen very infrequently.
-		this.entities = new CopyOnWriteArrayList<Entity>();
+		this.objects = new CopyOnWriteArrayList<CollidableObject>();
 		
 		this.player = new Player();
 		this.player.setPosition(1000, 100);
-		this.entities.add(this.player);
+		this.objects.add(this.player);
 		
 		addEnemies(5);
 		addItems();
@@ -106,16 +106,19 @@ public class GameModel implements IGameModel, IMessageListener {
 	
 	
 	private void moveEntities(double dt) {
-		for(Entity t : this.entities) {
-			
-			checkCollisions(t);
+		for(CollidableObject t : this.objects) {
 			
 			// The entity has to move *after* collision checks have been finished, 
 			// otherwise you'll be able to bug your way through other entities.
-			t.move(dt);
+			if(t instanceof Entity) {
+				Entity temp = (Entity) t;
+				checkCollisions(temp);
+				temp.move(dt);
+			}
 			
-			if(t instanceof Projectile)
+			if(t instanceof Projectile){
 				doProjectileHandling((Projectile) t);
+			}
 		}
 
 	}
@@ -124,14 +127,14 @@ public class GameModel implements IGameModel, IMessageListener {
 	private void doProjectileHandling(Projectile t) {
 		if(t.getDistanceTravelled() >= t.getRange().getDistance()) {
 			System.out.println("REMOVE PROJECTILE");
-			this.entities.remove(t);
+			this.objects.remove(t);
 		}
 	}
 	
 	
 	private void checkCollisions(Entity t) {
 		
-		for(Entity w : this.entities) {
+		for(CollidableObject w : this.objects) {
 			
 			if(t != w && t.isColliding(w)) {
 				
@@ -139,7 +142,7 @@ public class GameModel implements IGameModel, IMessageListener {
 				Direction blockedDirection = t.getDirectionOfObject(w);
 				
 				if(t instanceof Projectile) {
-					this.entities.remove(t);
+					this.objects.remove(t);
 					if (w instanceof AbstractCharacter){
 						((AbstractCharacter) w).takeDamage(((Projectile) t).getDamage());
 						System.out.println("Enemy was hit, now has " + ((AbstractCharacter) w).getHealth() + " hp" + " movespeed: " + ((AbstractCharacter)w).getMovementSpeed());
@@ -150,7 +153,7 @@ public class GameModel implements IGameModel, IMessageListener {
 					t.stop();
 				}
 				else {
-					w.start();
+//					w.start();
 				}
 			}
 		}
@@ -250,8 +253,8 @@ public class GameModel implements IGameModel, IMessageListener {
 	 * 
 	 * @return The entities
 	 */
-	public List<Entity> getEntities() {
-		return this.entities;
+	public List<CollidableObject> getObjects() {
+		return this.objects;
 	}
 	
 	/**
