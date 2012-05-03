@@ -36,7 +36,7 @@ public class Launcher extends JFrame {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		Dimension launcherSize = new Dimension(800, 500);
+		Dimension launcherSize = new Dimension(640, 400);
 		setBounds((screenSize.width / 2) - (launcherSize.width / 2),
 				(screenSize.height / 2) - (launcherSize.height / 2),
 				launcherSize.width, launcherSize.height);
@@ -83,7 +83,7 @@ public class Launcher extends JFrame {
 		button.setIcon(new ImageIcon(Launcher.class.getResource("/images/launcher/frank.png")));
 		button.setFocusable(false);
 		button.setBorderPainted(false);
-		button.setBounds(20, 184, 224, 294);
+		button.setBounds(20, 100, 224, 294);
 		getContentPane().add(button);
 
 		btnOptions.addActionListener(new ActionListener() {
