@@ -5,6 +5,7 @@ import java.awt.Point;
 import java.util.Map;
 import java.util.TreeMap;
 
+import model.CollidableObject;
 import model.Entity;
 
 import constants.Direction;
@@ -13,7 +14,7 @@ public class Actor {
 
 	private Map<String, Animation> animations;
 	private Animation currentAnimation;
-	private Entity entity;
+	private CollidableObject object;
 	private boolean isMoving;
 
 	public Actor clone()
@@ -24,24 +25,24 @@ public class Actor {
 			newAnimations.put(s, this.animations.get(s).clone());
 		}
 		
-		Actor newActor = new Actor(this.entity, newAnimations);
+		Actor newActor = new Actor(this.object, newAnimations);
 		return newActor;
 	}
 
-	public Actor(Entity e, Map<String, Animation> animations)
+	public Actor(CollidableObject entity2, Map<String, Animation> animations)
 	{
-		this.entity = e;
+		this.object = entity2;
 		this.animations = animations;
 		this.currentAnimation = null;
 	}
 	
-	public void setEntity(Entity e)
+	public void setEntity(CollidableObject e)
 	{
-		this.entity = e;
+		this.object = e;
 	}
-	public Entity getEntity()
+	public CollidableObject getEntity()
 	{
-		return this.entity;
+		return this.object;
 	}
 	
 	public Bitmap getCurrentFrame()
@@ -49,7 +50,7 @@ public class Actor {
 		if (currentAnimation == null)
 			return null;
 
-		if (this.entity == null)
+		if (this.object == null)
 			return null;
 		
 		return currentAnimation.getCurrentFrame();
@@ -57,7 +58,7 @@ public class Actor {
 
 	public Point getPosition()
 	{
-		if (this.entity != null) return this.entity.getPosition();
+		if (this.object != null) return this.object.getPosition();
 		else return new Point(0,0);
 	}
 
@@ -110,8 +111,9 @@ public class Actor {
 
 	public void update(double dt)
 	{
-		if (this.entity != null)
-			this.setDirection(this.entity.getDirection());
+		if (this.object != null && this.object instanceof Entity){
+			this.setDirection( ((Entity) this.object).getDirection());
+		}
 		if (currentAnimation != null)
 			currentAnimation.updateAnimation(dt);
 	}

@@ -39,6 +39,7 @@ import event.EventBus;
 import event.IEventHandler;
 import event.Event.Property;
 
+import model.CollidableObject;
 import model.Entity;
 import model.GameModel;
 import model.character.Enemy;
@@ -60,6 +61,7 @@ public class ViewController implements IEventHandler {
 	private Actor player;
 	private Map<Entity, Actor> enemies;
 	private Map<Entity, Actor> projectiles;
+	private Map<Entity, Actor> items;
 	private TileMap gameMap;
 	private Bitmap screen;
 	private BitmapFont fpsBitmap;
@@ -161,7 +163,7 @@ public class ViewController implements IEventHandler {
 										- this.player.getPosition().y
 										+ SCREEN_HEIGHT / 2
 										+ eActor.getEntity().getOffsetY();
-								// screen.blit(collisionBoxBox, x, y);
+								screen.blit(collisionBoxBox, x, y);
 							}
 						}
 					}
@@ -189,7 +191,35 @@ public class ViewController implements IEventHandler {
 										- this.player.getPosition().y
 										+ SCREEN_HEIGHT / 2
 										+ eActor.getEntity().getOffsetY();
-								// screen.blit(collisionBoxBox, x, y);
+								screen.blit(collisionBoxBox, x, y);
+							}
+						}
+					}
+				}
+				
+				if (this.items != null) {
+					for (Actor eActor : this.items.values()) {
+						if (eActor != null) {
+							eActor.update(dt);
+							if (eActor.getCurrentFrame() != null) {
+								screen.blit(
+										eActor.getCurrentFrame(),
+										eActor.getPosition().x
+												- this.player.getPosition().x
+												+ SCREEN_WIDTH / 2,
+										eActor.getPosition().y
+												- this.player.getPosition().y
+												+ SCREEN_HEIGHT / 2);
+
+								int x = eActor.getPosition().x
+										- this.player.getPosition().x
+										+ SCREEN_WIDTH / 2
+										+ eActor.getEntity().getOffsetX();
+								int y = eActor.getPosition().y
+										- this.player.getPosition().y
+										+ SCREEN_HEIGHT / 2
+										+ eActor.getEntity().getOffsetY();
+								 screen.blit(collisionBoxBox, x, y);
 							}
 						}
 					}
@@ -230,16 +260,15 @@ public class ViewController implements IEventHandler {
 		if (evt.getProperty() == Event.Property.INIT_MODEL) {
 			if (evt.getValue() instanceof GameModel) {
 				this.enemies = new IdentityHashMap<Entity, Actor>();
-				List<Entity> entities = ((GameModel) evt.getValue())
-						.getEntities();
+				List<CollidableObject> entities = ((GameModel) evt.getValue()).getObjects();
 				Actor[] actors = ResourceManager.loadActors();
 				Actor pActor = actors[0];
 				Actor eActor = actors[1];
-				for (Entity e : entities) {
+				for (CollidableObject e : entities) {
 					if (e instanceof Enemy) {
 						Actor newE = eActor.clone();
 						newE.setEntity(e);
-						this.enemies.put(e, newE);
+						this.enemies.put( (Entity) e, newE);
 					} else if (e instanceof Player) {
 						Actor newA = pActor.clone();
 						newA.setEntity(e);
@@ -255,7 +284,6 @@ public class ViewController implements IEventHandler {
 			if (p instanceof model.weapon.Projectile) {
 				
 				if (evt.getProperty() == Event.Property.FIRED_WEAPON_SUCCESS) {
-					System.out.println("Derp");
 					
 					if (this.projectiles == null)
 						this.projectiles = new IdentityHashMap<Entity, Actor>();

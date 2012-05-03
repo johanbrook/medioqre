@@ -6,9 +6,6 @@ import constants.Direction;
 import event.Event;
 import event.Event.Property;
 import event.EventBus;
-import event.IMessageListener;
-import event.IMessageSender;
-import event.Messager;
 
 /**
 *	Entity.
@@ -17,13 +14,11 @@ import event.Messager;
 *
 *	@author Johan
 */
-public abstract class Entity extends CollidableObject implements IMessageSender {
+public abstract class Entity extends CollidableObject  {
 	
 	private int movementSpeed;
 	private boolean isMoving;
 	private Direction direction;
-	
-	private Messager messager = new Messager();
 	
 	/**
 	 * Create a new entity.
@@ -123,26 +118,10 @@ public abstract class Entity extends CollidableObject implements IMessageSender 
 		return this.movementSpeed;
 	}
 	
-	/**
-	 * Destroy the entity
-	 * 
-	 */
-	public void destroy(){
-		//@todo Should the model destroy itself?
-		Event evt = new Event(Property.WAS_DESTROYED, this);
-		EventBus.INSTANCE.publish(evt);
-		messager.sendMessage(evt);
-	}
 	
 	@Override
 	public String toString() {
 		return super.toString() + " [speed:"+this.movementSpeed+"] [moving:"+this.isMoving+"] [dir:"+this.direction+"]";
 	}
-	
-	@Override
-	public void addReceiver (IMessageListener listener){
-		this.messager.addListener(listener);
-	}
-	
 	
 }

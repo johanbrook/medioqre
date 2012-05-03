@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import model.character.Enemy;
 import model.weapon.Projectile;
@@ -12,6 +13,7 @@ import event.Event;
 import event.IMessageListener;
 import event.IMessageSender;
 import event.Messager;
+import event.Event.Property;
 
 /**
  * Class for controlling a list of enemies. Using a PathFinder (implementation of the A*-algorithm), the AIController is able to calculate
@@ -19,7 +21,7 @@ import event.Messager;
  * @author jesperpersson
  *
  */
-public class AIController implements IMessageSender{
+public class AIController implements IMessageSender, IMessageListener {
 
 	private List <AIPlayer> enemies;
 	private PathFinder pathfinder;
@@ -27,20 +29,31 @@ public class AIController implements IMessageSender{
 	private Point playerPos,playerTile;
 	private Messager messager = new Messager();
 
-	public AIController (int rows, int columns, int width, int height) {
-		this(new ArrayList <Enemy>(), rows, columns, width, height);
-	}
 
-	public AIController (List<Enemy> enemies, int rows, int columns, int width, int height){
+	public AIController (int rows, int columns, int width, int height){
 		this.pathfinder = new PathFinder(rows, columns);
 		this.width = width;
 		this.height = height;
-		this.enemies = new ArrayList <AIPlayer>();
-		for (int i = 0; i < enemies.size(); i++) {
-			this.enemies.add(new AIPlayer(enemies.get(i)));
+		this.enemies = new CopyOnWriteArrayList<AIPlayer>();
+	}
+	
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void onMessage(Event evt) {
+		System.out.println("Something happened! AI: "+evt.getProperty());
+		
+		switch(evt.getProperty()) {
+			case NEW_WAVE:
+				this.setEnemies((List<Enemy>) evt.getValue() );
+			break;
+			
+			case WAS_DESTROYED:
+				this.removeEnemy((Enemy) evt.getValue());
+			break;
 		}
 	}
-
+	
 	/**
 	 * For each existing enemy, will update that enemies direction in order to reach the player in shortest amount of time possible
 	 * @param playerPos
@@ -85,8 +98,6 @@ public class AIController implements IMessageSender{
 
 				aiPlayer.setPath(pathfinder.getPath(enemyTile, playerTile));
 				if (aiPlayer.getPath() != null){
-
-					
 
 					//Update direction of the enemy depending on what the current path is.
 
@@ -168,8 +179,8 @@ public class AIController implements IMessageSender{
 	 */
 	public void setEnemies(List<Enemy> enemies) {
 		this.enemies.clear();
-		for (int i = 0; i< enemies.size();i++){
-			this.enemies.add(new AIPlayer (enemies.get(i)));
+		for (Enemy e : enemies){
+			this.enemies.add(new AIPlayer(e));
 		}
 	}
 
@@ -186,7 +197,7 @@ public class AIController implements IMessageSender{
 	 * @param enemy
 	 */
 	public void removeEnemy(Enemy enemy){
-		for (AIPlayer ai : enemies){
+		for (AIPlayer ai : this.enemies){
 			if (ai.getEnemy() == enemy){
 				this.enemies.remove(ai);
 			}
@@ -257,5 +268,6 @@ public class AIController implements IMessageSender{
 		this.messager.addListener(listener);
 
 	}
+
 
 }
