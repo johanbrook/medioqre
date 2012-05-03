@@ -258,7 +258,6 @@ public class ViewController implements IEventHandler {
 	public void onEvent(Event evt) {
 		if (evt.getProperty() == Event.Property.INIT_MODEL || evt.getProperty() == Event.Property.GAME_OVER) {
 			if (evt.getValue() instanceof GameModel) {
-				System.out.println("INSIDE YOUR MOM");
 				this.enemies = new IdentityHashMap<Entity, Actor>();
 				List<CollidableObject> entities = ((GameModel) evt.getValue()).getObjects();
 				Actor[] actors = ResourceManager.loadActors();

@@ -75,7 +75,6 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 			
 			this.player.start();
 			this.player.setDirection((Direction) evt.getValue());
-			System.out.println("Changed_Direction "+ this.player.getPosition());
 			break;
 		case WAS_DESTROYED:
 			this.objects.remove(evt.getValue());
@@ -105,7 +104,6 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 		this.objects.clear();
 		initPlayer();
 		newWave();
-		System.out.println(this.objects);
 	}
 
 	public void newWave() {
