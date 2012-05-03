@@ -19,7 +19,7 @@ import model.IGameModel;
 
 public class AppController implements Runnable{
 	
-	public static final int FPS = 300;
+	public static final int FPS = 60;
 	private static final double DELTA_RATIO = 10E7;
 	
 	private IGameModel game;
