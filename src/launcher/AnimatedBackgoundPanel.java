@@ -18,7 +18,7 @@ public class AnimatedBackgoundPanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 6369702432499487888L;
 
 	private Timer timer;
-	private int delay = 30;
+	private int delay = 100;
 	private Rectangle[][] rect;
 	private double[][] rnd;
 	private int rows;
@@ -49,6 +49,8 @@ public class AnimatedBackgoundPanel extends JPanel implements ActionListener {
 
 		}
 
+		setBackground(new Color(0,0,0));
+		
 		timer = new Timer(delay, this);
 		timer.start();
 
@@ -70,12 +72,16 @@ public class AnimatedBackgoundPanel extends JPanel implements ActionListener {
 				g2d.setColor(new Color(10, 20, 10));
 
 				double p = Math.random();
-
-				if (p > 0.85)
-					g2d.setColor(new Color(50, 100, 50));
-
-				if (p > 0.99)
-					g2d.setColor(new Color(100, 200, 100));
+				
+				if (p > 0.99) {
+					g2d.setColor(new Color(30, 60, 30));
+				} else if (p > 0.85) {
+					g2d.setColor(new Color(20, 40, 20));
+				} else if (p > 0.6) {
+					g2d.setColor(new Color(15, 30, 15));
+				}
+				
+				
 
 				g2d.fillRect(x, y, dw, dh);
 

@@ -48,7 +48,7 @@ public class Launcher extends JFrame {
 				(screenSize.height / 2) - (launcherSize.height / 2),
 				launcherSize.width, launcherSize.height);
 
-		panel = new AnimatedBackgoundPanel(32, 20, 640, 400);
+		panel = new AnimatedBackgoundPanel(16, 10, 640, 400);
 		panel.setVisible(true);
 		
 		panel.setLayout(null);
