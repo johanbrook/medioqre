@@ -44,7 +44,8 @@ public class Event {
 		WEAPON_MENU_HIDE,
 		FIRED_WEAPON_SUCCESS,
 		FIRED_WEAPON_FAIL,
-		NEW_WAVE;
+		NEW_WAVE,
+		GAME_OVER;
 	}
 	
 	private final Property name;

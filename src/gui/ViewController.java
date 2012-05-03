@@ -149,11 +149,11 @@ public class ViewController implements IEventHandler {
 								screen.blit(
 										eActor.getCurrentFrame(),
 										eActor.getPosition().x
-												- this.player.getPosition().x
-												+ SCREEN_WIDTH / 2,
+										- this.player.getPosition().x
+										+ SCREEN_WIDTH / 2,
 										eActor.getPosition().y
-												- this.player.getPosition().y
-												+ SCREEN_HEIGHT / 2);
+										- this.player.getPosition().y
+										+ SCREEN_HEIGHT / 2);
 
 								int x = eActor.getPosition().x
 										- this.player.getPosition().x
@@ -177,11 +177,11 @@ public class ViewController implements IEventHandler {
 								screen.blit(
 										eActor.getCurrentFrame(),
 										eActor.getPosition().x
-												- this.player.getPosition().x
-												+ SCREEN_WIDTH / 2,
+										- this.player.getPosition().x
+										+ SCREEN_WIDTH / 2,
 										eActor.getPosition().y
-												- this.player.getPosition().y
-												+ SCREEN_HEIGHT / 2);
+										- this.player.getPosition().y
+										+ SCREEN_HEIGHT / 2);
 
 								int x = eActor.getPosition().x
 										- this.player.getPosition().x
@@ -196,7 +196,7 @@ public class ViewController implements IEventHandler {
 						}
 					}
 				}
-				
+
 				if (this.items != null) {
 					for (Actor eActor : this.items.values()) {
 						if (eActor != null) {
@@ -205,11 +205,11 @@ public class ViewController implements IEventHandler {
 								screen.blit(
 										eActor.getCurrentFrame(),
 										eActor.getPosition().x
-												- this.player.getPosition().x
-												+ SCREEN_WIDTH / 2,
+										- this.player.getPosition().x
+										+ SCREEN_WIDTH / 2,
 										eActor.getPosition().y
-												- this.player.getPosition().y
-												+ SCREEN_HEIGHT / 2);
+										- this.player.getPosition().y
+										+ SCREEN_HEIGHT / 2);
 
 								int x = eActor.getPosition().x
 										- this.player.getPosition().x
@@ -219,12 +219,12 @@ public class ViewController implements IEventHandler {
 										- this.player.getPosition().y
 										+ SCREEN_HEIGHT / 2
 										+ eActor.getEntity().getOffsetY();
-								 screen.blit(collisionBoxBox, x, y);
+								screen.blit(collisionBoxBox, x, y);
 							}
 						}
 					}
 				}
-				
+
 				if (player != null) {
 					player.update(dt);
 
@@ -256,9 +256,9 @@ public class ViewController implements IEventHandler {
 
 	@Override
 	public void onEvent(Event evt) {
-
-		if (evt.getProperty() == Event.Property.INIT_MODEL) {
+		if (evt.getProperty() == Event.Property.INIT_MODEL || evt.getProperty() == Event.Property.GAME_OVER) {
 			if (evt.getValue() instanceof GameModel) {
+				System.out.println("INSIDE YOUR MOM");
 				this.enemies = new IdentityHashMap<Entity, Actor>();
 				List<CollidableObject> entities = ((GameModel) evt.getValue()).getObjects();
 				Actor[] actors = ResourceManager.loadActors();
@@ -282,12 +282,12 @@ public class ViewController implements IEventHandler {
 			Entity p = (Entity) evt.getValue();
 
 			if (p instanceof model.weapon.Projectile) {
-				
+
 				if (evt.getProperty() == Event.Property.FIRED_WEAPON_SUCCESS) {
-					
+
 					if (this.projectiles == null)
 						this.projectiles = new IdentityHashMap<Entity, Actor>();
-					
+
 					Actor tmp = this.player.clone();
 					tmp.setEntity(p);
 					this.enemies.put(p, tmp);

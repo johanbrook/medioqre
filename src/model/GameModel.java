@@ -72,8 +72,10 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 			}
 			break;
 		case CHANGED_DIRECTION:
+			
 			this.player.start();
 			this.player.setDirection((Direction) evt.getValue());
+			System.out.println("Changed_Direction "+ this.player.getPosition());
 			break;
 		case WAS_DESTROYED:
 			this.objects.remove(evt.getValue());
@@ -83,6 +85,8 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 				this.enemies.remove(evt.getValue());
 				this.messager.sendMessage(evt);
 				checkEnemiesLeft();
+			} else if (evt.getValue() instanceof Player){
+				gameOver();
 			}
 			System.out.println(evt.getValue().getClass().getSimpleName() + " was destroyed");
 			break;
@@ -95,6 +99,14 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 
 	}
 
+	
+	private void gameOver(){
+		EventBus.INSTANCE.publish(new Event(Event.Property.GAME_OVER, this));
+		this.objects.clear();
+		initPlayer();
+		newWave();
+		System.out.println(this.objects);
+	}
 
 	public void newWave() {
 		this.currentLevel++;
@@ -138,6 +150,7 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 		this.player = new Player();
 		this.player.setPosition(1000, 100);
 		this.objects.add(this.player);
+		this.player.addReceiver(this);
 	}
 
 
