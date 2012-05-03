@@ -34,7 +34,7 @@ public class Launcher extends JFrame {
 
 	private static final long serialVersionUID = -3189420915172593199L;
 
-	JPanel panel = new JPanel();
+	JPanel panel;
 
 	public Launcher() {
 		setResizable(false);
@@ -49,12 +49,23 @@ public class Launcher extends JFrame {
 				launcherSize.width, launcherSize.height);
 
 		panel = new AnimatedBackgoundPanel(32, 20, 640, 400);
-		panel.setBorder(BorderFactory.createLineBorder(Color.black));
-		panel.setBounds(0, 0, 100, 100);
 		panel.setVisible(true);
-
+		
+		panel.setLayout(null);
+		
+		
+		JButton button = new JButton("");
+		button.setIcon(new ImageIcon(Launcher.class
+				.getResource("/images/launcher/frank.png")));
+		button.setFocusable(false);
+		button.setBorderPainted(false);
+		button.setBounds(20, 100, 224, 294);
+		panel.add(button);
+		
+		
+		
+		
 		add(panel);
-
 		setVisible(true);
 
 	}

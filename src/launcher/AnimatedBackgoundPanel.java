@@ -18,16 +18,13 @@ public class AnimatedBackgoundPanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 6369702432499487888L;
 
 	private Timer timer;
-	private int delay = 300;
+	private int delay = 30;
 	private Rectangle[][] rect;
 	private double[][] rnd;
 	private int rows;
 	private int cols;
 	private float delta = 0.1f;
 
-	public AnimatedBackgoundPanel() {
-		// this(8, 8);
-	}
 
 	public AnimatedBackgoundPanel(int rows, int cols, int width, int height) {
 
@@ -59,8 +56,6 @@ public class AnimatedBackgoundPanel extends JPanel implements ActionListener {
 
 	public void paint(Graphics g) {
 
-		super.paintComponents(g);
-
 		Graphics2D g2d = (Graphics2D) g;
 
 		for (int r = 0; r < rows; r++) {
@@ -88,20 +83,12 @@ public class AnimatedBackgoundPanel extends JPanel implements ActionListener {
 
 		}
 
+		super.paintComponents(g);
+
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		if (delta < 0.9f) {
-			for (int r = 0; r < rows; r++) {
-				for (int c = 0; c < cols; c++) {
-					rnd[r][c] = Math.random();
-				}
-
-			}
-		}
-
-		delta = (delta + 0.1f) % 100;
 		repaint();
 
 	}
