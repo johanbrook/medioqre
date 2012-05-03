@@ -57,6 +57,8 @@ public class Launcher extends JFrame {
 		 * Start Button
 		 */
 		JButton btnStartGame = new JButton("Start Game");
+		btnStartGame.setBorderPainted(false);
+		btnStartGame.setForeground(Color.LIGHT_GRAY);
 		btnStartGame.setBounds(370, 220, 120, 40);
 		getContentPane().add(btnStartGame);
 
