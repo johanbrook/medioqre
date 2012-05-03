@@ -50,6 +50,7 @@ public class GameModel implements IGameModel, IMessageListener {
 		case DID_FIRE:
 			Projectile projectile = this.player.attack();
 			if (projectile != null){
+				projectile.addReceiver(this);
 				this.objects.add(projectile);
 				System.out.println("Did add projectile");
 			}else {
@@ -62,6 +63,7 @@ public class GameModel implements IGameModel, IMessageListener {
 			break;
 		case WAS_DESTROYED:
 			this.objects.remove(evt.getValue());
+			System.out.println(evt.getValue().getClass().getSimpleName() + " was destroyed");
 			break;
 		case DID_ATTACK:
 			this.objects.add( ((Projectile)evt.getValue()) );
@@ -140,8 +142,7 @@ public class GameModel implements IGameModel, IMessageListener {
 
 	private void doProjectileHandling(Projectile t) {
 		if(t.getDistanceTravelled() >= t.getRange().getDistance()) {
-			System.out.println("REMOVE PROJECTILE");
-			this.objects.remove(t);
+			t.destroy();
 		}
 	}
 
@@ -167,17 +168,19 @@ public class GameModel implements IGameModel, IMessageListener {
 
 				} else if (w instanceof ICollectableItem && t instanceof Player){
 					((ICollectableItem) w).pickedUpBy( ((Player) t));
+					
 					if (w instanceof AmmoCrate)
 						System.out.println("Picked up AmmoCrate, current ammo: " + this.player.getCurrentWeapon().getCurrentAmmo());
 					if (w instanceof MedPack)
 						System.out.println("Picked up MedPack, current HP: " + this.player.getHealth());
 
 				}
+				
 				if(directionIsBlocked(currentDirection, blockedDirection)){
 					t.stop();
 				}
 				else {
-					//					w.start();
+					//w.start();
 				}
 			}
 		}
