@@ -116,7 +116,7 @@ public class ViewController implements IEventHandler, GLEventListener {
 			GameModel gm = (GameModel) evt.getValue();
 			try {
 				this.player = new Actor(
-						new JSONObject(ResourceLoader.loadStringFromResourceFolder("frank.actor")),
+						new JSONObject(ResourceLoader.loadJSONStringFromResources("frank.actor")),
 						gm.getPlayer());
 				this.player.setCurrentAnimation("moveS");
 				this.screen.addDrawableToLayer(this.player, 1);
@@ -124,7 +124,7 @@ public class ViewController implements IEventHandler, GLEventListener {
 				List<Enemy> en = gm.getEnemies();
 				this.enemies = new IdentityHashMap<Entity, Actor>();
 				for (Enemy e : en) {
-					Actor newA = new Actor(new JSONObject(ResourceLoader.loadStringFromResourceFolder("walker1.actor")),e);
+					Actor newA = new Actor(new JSONObject(ResourceLoader.loadJSONStringFromResources("walker1.actor")),e);
 					this.enemies.put(e, newA);
 					this.screen.addDrawableToLayer(newA, 0);
 				}
