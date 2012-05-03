@@ -66,7 +66,9 @@ public class GameModel implements IGameModel, IMessageListener {
 			System.out.println(evt.getValue().getClass().getSimpleName() + " was destroyed");
 			break;
 		case DID_ATTACK:
-			this.objects.add( ((Projectile)evt.getValue()) );
+			Projectile enemyProjectile = (Projectile) evt.getValue();
+			enemyProjectile.addReceiver(this);
+			this.objects.add(enemyProjectile);
 			break;
 		}
 
@@ -116,7 +118,7 @@ public class GameModel implements IGameModel, IMessageListener {
 		this.player.setPosition(1000, 100);
 		this.objects.add(this.player);
 
-		addEnemies(0);
+		addEnemies(1);
 		addItems();
 	}
 
@@ -156,8 +158,8 @@ public class GameModel implements IGameModel, IMessageListener {
 				Direction currentDirection = t.getDirection();				
 				Direction blockedDirection = t.getDirectionOfObject(w);
 
-				if(t instanceof Projectile) {
-					this.objects.remove(t);
+				if(t instanceof Projectile && !(w instanceof ICollectableItem)) {
+					t.destroy();
 					
 					if (w instanceof AbstractCharacter){
 						((AbstractCharacter) w).takeDamage(((Projectile) t).getDamage());
@@ -176,11 +178,16 @@ public class GameModel implements IGameModel, IMessageListener {
 
 				}
 				
-				if(directionIsBlocked(currentDirection, blockedDirection)){
-					t.stop();
-				}
-				else {
-					//w.start();
+				
+				
+				if(!(w instanceof ICollectableItem)) {
+					if(directionIsBlocked(currentDirection, blockedDirection)){
+						
+						t.stop();
+					}
+					else {
+						//w.start();
+					}
 				}
 			}
 		}
