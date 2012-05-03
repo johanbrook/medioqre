@@ -68,7 +68,6 @@ class NavigationKey extends Key {
 	
 	public void fire() {
 		super.fire();
-		// sendMessage(Property.NAME, this.direction);
 	}
 	
 	public Direction getDirection() {

@@ -32,9 +32,6 @@ public class Main {
 			}
 		}
 		
-//		new AppController();
-		
-		
 		String os = System.getProperty("os.name").toLowerCase();
 		boolean runningOnOSX = os.indexOf("mac") != -1; 
 		
@@ -43,8 +40,6 @@ public class Main {
 			System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Frank The Tank");
 			
 		}
-		
-		
 		
 		new Launcher();
 	}

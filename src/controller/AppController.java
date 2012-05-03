@@ -6,6 +6,7 @@
 
 package controller;
 
+import tools.TimerTool;
 import controller.AI.AIController;
 import controller.navigation.NavigationController;
 import event.Event;
@@ -36,15 +37,17 @@ public class AppController implements Runnable{
 		this.ai = new AIController(this.game.getEnemies(), 48, 48, 32, 32);
 		
 		this.navigation.addReceiver((IMessageListener) this.game);
+		this.ai.addReceiver((IMessageListener) this.game);
 		
 //		this.audio = AudioController.getInstance();
 		
 		
 		EventBus.INSTANCE.publish(new Event(Event.Property.INIT_MODEL, this.game));
-		
-		Thread t = new Thread(this);
-		t.start();
-		
+	}
+	
+	
+	public void init() {
+		new Thread(this).start();
 	}
 
 	
@@ -59,7 +62,7 @@ public class AppController implements Runnable{
 			
 			double dt = (double) updateLength / DELTA_RATIO;
 //			TimerTool.start("Update");
-			this.ai.updateAI(this.game.getPlayer().getPosition());
+			this.ai.updateAI(dt, this.game.getPlayer().getPosition());
 			this.game.update(dt);
 //			TimerTool.stop();
 			

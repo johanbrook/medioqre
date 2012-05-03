@@ -4,8 +4,11 @@ import java.awt.Point;
 
 import constants.Direction;
 import event.Event;
-import event.EventBus;
 import event.Event.Property;
+import event.EventBus;
+import event.IMessageListener;
+import event.IMessageSender;
+import event.Messager;
 
 /**
 *	Entity.
@@ -14,11 +17,13 @@ import event.Event.Property;
 *
 *	@author Johan
 */
-public abstract class Entity extends CollidableObject {
+public abstract class Entity extends CollidableObject implements IMessageSender {
 	
 	private int movementSpeed;
 	private boolean isMoving;
 	private Direction direction;
+	
+	private Messager messager = new Messager();
 	
 	/**
 	 * Create a new entity.
@@ -30,6 +35,8 @@ public abstract class Entity extends CollidableObject {
 		this.direction = Direction.ORIGIN;
 		this.isMoving = true;
 	}
+	
+
 	
 	
 	/**
@@ -122,11 +129,20 @@ public abstract class Entity extends CollidableObject {
 	 */
 	public void destroy(){
 		//@todo Should the model destroy itself?
-		EventBus.INSTANCE.publish(new Event(Property.WAS_DESTROYED, this));
+		Event evt = new Event(Property.WAS_DESTROYED, this);
+		EventBus.INSTANCE.publish(evt);
+		messager.sendMessage(evt);
 	}
 	
 	@Override
 	public String toString() {
 		return super.toString() + " [speed:"+this.movementSpeed+"] [moving:"+this.isMoving+"] [dir:"+this.direction+"]";
 	}
+	
+	@Override
+	public void addReceiver (IMessageListener listener){
+		this.messager.addListener(listener);
+	}
+	
+	
 }

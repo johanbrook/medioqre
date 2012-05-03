@@ -7,13 +7,13 @@
 package model.weapon;
 
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.Rectangle;
 
 import constants.Direction;
 
 import model.Entity;
 import model.character.AbstractCharacter;
-import model.character.Player;
 
 
 public class Projectile extends Entity {
@@ -22,8 +22,21 @@ public class Projectile extends Entity {
 	private Range range;
 	private AbstractWeapon owner;
 	
+	private double distanceTravelled;
+	private Point startPos;
+	
 	public enum Range {
-		SHORT_RANGE, MEDIUM_RANGE, FAR_RANGE;
+		SHORT_RANGE(40), MEDIUM_RANGE(200), FAR_RANGE(1500);
+		
+		private final double distance;
+		
+		Range(double distance) {
+			this.distance = distance;
+		}
+		
+		public double getDistance() {
+			return this.distance;
+		}
 	}
 	
 	
@@ -33,6 +46,7 @@ public class Projectile extends Entity {
 		this.owner = owner;
 		this.damage = damage;
 		this.range = range;
+		this.distanceTravelled = 0;
 		
 		AbstractCharacter p = this.owner.getOwner();
 		Direction dir = p.getDirection();
@@ -45,7 +59,9 @@ public class Projectile extends Entity {
 		}
 		
 		setPosition(x, y);
-		setDirection(this.owner.getOwner().getDirection());
+		setDirection(this.owner.getOwner().getDirection());	
+		
+		this.startPos = this.getPosition();
 	}
 	
 	public int getDamage() {
@@ -54,6 +70,22 @@ public class Projectile extends Entity {
 	
 	public Range getRange() {
 		return this.range;
+	}
+	
+	public double getDistanceTravelled() {
+		return this.distanceTravelled;
+	}
+	
+	public void updateDistanceTravelled() {
+		this.distanceTravelled = Math.abs(this.getPosition().x - this.startPos.x) + 
+				Math.abs(this.getPosition().y - this.startPos.y);
+	}
+	
+	@Override
+	public void move(double dt) {
+		super.move(dt);
+		
+		this.updateDistanceTravelled();
 	}
 	
 }
