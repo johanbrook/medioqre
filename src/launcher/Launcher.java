@@ -30,6 +30,7 @@ public class Launcher extends JFrame {
 	private static final long serialVersionUID = -3189420915172593199L;
 
 	public Launcher() {
+		setResizable(false);
 
 		setTitle("Frank the Tank");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
