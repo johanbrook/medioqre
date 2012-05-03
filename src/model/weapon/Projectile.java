@@ -49,12 +49,11 @@ public class Projectile extends Entity {
 		this.distanceTravelled = 0;
 		
 		AbstractCharacter p = this.owner.getOwner();
-		Direction dir = p.getDirection();
 		
 		int x = p.getPosition().x;
 		int y = p.getPosition().y;
 		
-		if(dir == Direction.SOUTH) {
+		if(p.getDirection() == Direction.SOUTH) {
 			y = p.getPosition().y + p.getSize().height;
 		}
 		
