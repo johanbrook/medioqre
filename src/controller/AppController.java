@@ -19,7 +19,7 @@ import model.IGameModel;
 
 public class AppController implements Runnable{
 	
-	public static final int FPS = 300;
+	public static final int FPS = 60;
 	private static final double DELTA_RATIO = 10E7;
 	
 	private IGameModel game;
@@ -67,10 +67,6 @@ public class AppController implements Runnable{
 //			TimerTool.start("Update");
 			this.ai.updateAI(dt, this.game.getPlayer().getPosition());
 			this.game.update(dt);
-//			TimerTool.stop();
-			
-//			TimerTool.start("Rendering");
-			this.view.render(dt);
 //			TimerTool.stop();
 			
 			
