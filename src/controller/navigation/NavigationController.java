@@ -54,8 +54,7 @@ public class NavigationController implements KeyListener, IMessageSender {
 		this.weaponMap.put(up, 0);
 		this.weaponMap.put(left, 1);
 		this.weaponMap.put(right, 2);
-//TODO	Portal Gun?
-//		this.weaponMap.put(down, 3);
+		this.weaponMap.put(down, 3);
 	}
 	
 	@Override
@@ -170,8 +169,9 @@ public class NavigationController implements KeyListener, IMessageSender {
 	 */
 	private void chooseWeapon(NavigationKey key) {
 		
-		if(this.weaponMap.get(key) != null)
+		if(this.weaponMap.get(key) != null){
 			this.messager.sendMessage(new Event(Property.CHANGED_WEAPON, this.weaponMap.get(key)));
+		}
 	}
 	
 	

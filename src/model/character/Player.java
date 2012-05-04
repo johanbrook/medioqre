@@ -29,7 +29,7 @@ public class Player extends AbstractCharacter {
 	public Player(){
 		super(30, new Rectangle(16, 16), new Dimension(20,20), 0, 16);
 
-		AbstractWeapon[] temp = {new MachineGun(this), new Sword(this), new Grenade(this)};
+		AbstractWeapon[] temp = {new MachineGun(this), new Sword(this), new Grenade(this), new PortalGun(this)};
 		this.weaponbelt = new ArrayList<AbstractWeapon>(Arrays.asList(temp));
 
 		setCurrentWeapon(MachineGun.class);
