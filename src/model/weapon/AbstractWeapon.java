@@ -60,7 +60,7 @@ public abstract class AbstractWeapon {
 	 * @return The projectile from this weapon.
 	 */
 	public Projectile fire() {
-		Projectile p = getProjectile();
+		Projectile p = this.getProjectile();
 
 		if (this.ammo != 0){
 			if(this.ammo != -1)

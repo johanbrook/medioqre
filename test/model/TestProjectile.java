@@ -41,5 +41,27 @@ public class TestProjectile {
 		
 		assertEquals(new Point(10, 10), this.projectile.getPosition());
 	}
+	
+	
+	@Test
+	public void testDistanceTravelledHorizontal() {
+		int speed = this.projectile.getMovementSpeed();
+		
+		this.projectile.move(1.0);
+		
+		// Should've moved speed*1.0
+		assertEquals(speed*1.0, this.projectile.getDistanceTravelled(), 0.5);
+	}
+	
+	@Test
+	public void testDistanceTravelledVertical() {
+		int speed = this.projectile.getMovementSpeed();
+		
+		this.projectile.setDirection(Direction.SOUTH);
+		this.projectile.move(1.0);
+		
+		// Should've moved speed*1.0
+		assertEquals(speed*1.0, this.projectile.getDistanceTravelled(), 0.5);
+	}
 
 }
