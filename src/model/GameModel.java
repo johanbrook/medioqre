@@ -116,31 +116,29 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 	public void newGame(){
 		initPlayer();
 		this.messager.sendMessage(new Event(Event.Property.NEW_GAME,this));
-		newWave();	
 	}
 
 	
 	private void gameOver(){
 		EventBus.INSTANCE.publish(new Event(Event.Property.GAME_OVER, this));
 		this.objects.clear();
-		initPlayer();
-		newWave();
+		newGame();
 	}
 
 	public void newWave() {
 		this.currentLevel++;
 
-		addEnemies(1);
-		addItems();
+		initEnemies(1);
+		addItems(5);
 		
 		Event evt = new Event(Property.NEW_WAVE, this.enemies);
 		this.messager.sendMessage(evt);
 		EventBus.INSTANCE.publish(evt);
 	}
 
-	private void addItems() {
+	private void addItems(int amount) {
 		
-		for(int i = 0; i < 5; i++) {
+		for(int i = 0; i < amount; i++) {
 			AmmoCrate tempAmmo = new AmmoCrate(30, 30+i*2, 30+i*2);
 			tempAmmo.addReceiver(this);
 
@@ -153,7 +151,7 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 		}
 	}
 
-	private void addEnemies(int amount) {
+	private void initEnemies(int amount) {
 		this.enemies.clear();
 		
 		for (int i = 0; i < amount; i++) {

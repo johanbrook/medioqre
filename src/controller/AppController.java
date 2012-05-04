@@ -47,6 +47,7 @@ public class AppController implements Runnable{
 	
 	public void init() {
 		this.game.newGame();
+		this.game.newWave();
 		new Thread(this).start();
 				
 		EventBus.INSTANCE.publish(new Event(Event.Property.INIT_MODEL, this.game));
@@ -63,7 +64,6 @@ public class AppController implements Runnable{
 			lastLoopTime = now;
 			
 			double dt = (double) updateLength / DELTA_RATIO;
-			System.out.println(dt);
 //			TimerTool.start("Update");
 			this.ai.updateAI(dt);
 			this.game.update(dt);
