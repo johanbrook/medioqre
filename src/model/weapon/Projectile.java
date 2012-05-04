@@ -80,9 +80,13 @@ public class Projectile extends Entity {
 				Math.abs(this.getPosition().y - this.startPos.y);
 	}
 	
+	public AbstractWeapon getOwner() {
+		return this.owner;
+	}
+	
 	@Override
 	public String toString() {
-		return "["+this.getClass()+"] "+super.toString() + " [owner/type:"+this.owner.toString()+"]";
+		return super.toString() + " [owner/type:"+this.owner+"]";
 	}
 	
 	@Override

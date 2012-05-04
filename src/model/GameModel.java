@@ -67,7 +67,7 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 			if (projectile != null){
 				projectile.addReceiver(this);
 				this.objects.add(projectile);
-				System.out.println("Did add projectile of type: "+projectile);
+				System.out.println("Did add projectile of type: "+projectile.getOwner().getClass().getSimpleName());
 			}else {
 				System.out.println("Out of ammo");
 			}

@@ -255,6 +255,6 @@ public abstract class CollidableObject implements IMessageSender {
 	
 	@Override
 	public String toString() {
-		return "[x:"+this.getPosition().x+":y:"+this.getPosition().y+"] [w:"+this.getSize().width+":h:"+this.getSize().height+"]";
+		return this.getClass().getSimpleName()+ " [x:"+this.getPosition().x+":y:"+this.getPosition().y+"] [w:"+this.getSize().width+":h:"+this.getSize().height+"]";
 	}
 }

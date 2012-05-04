@@ -54,6 +54,7 @@ public class NavigationController implements KeyListener, IMessageSender {
 		this.weaponMap.put(up, 0);
 		this.weaponMap.put(left, 1);
 		this.weaponMap.put(right, 2);
+//TODO	Portal Gun?
 //		this.weaponMap.put(down, 3);
 	}
 	
@@ -91,7 +92,6 @@ public class NavigationController implements KeyListener, IMessageSender {
 		this.weaponModifier = new Key("chose_weapon", new Callable() {
 			@Override
 			public void on() {
-				System.out.println("Show weapon menu");
 				doNavigation = false;
 				System.out.println("Navigation is inactive");
 				EventBus.INSTANCE.publish(new Event(Property.WEAPON_MENU_SHOW));
@@ -99,7 +99,6 @@ public class NavigationController implements KeyListener, IMessageSender {
 
 			@Override
 			public void off() {
-				System.out.println("Hide weapon menu");
 				doNavigation = true;
 				System.out.println("Navigation is active");
 				EventBus.INSTANCE.publish(new Event(Property.WEAPON_MENU_HIDE));
@@ -161,7 +160,6 @@ public class NavigationController implements KeyListener, IMessageSender {
 	
 	
 	private void chooseWeapon(NavigationKey key) {
-		System.out.println(key + " was pressed, is weapon slot "+ this.weaponMap.get(key));
 		
 		if(this.weaponMap.get(key) != null)
 			this.messager.sendMessage(new Event(Property.CHANGED_WEAPON, this.weaponMap.get(key)));

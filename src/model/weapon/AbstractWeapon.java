@@ -54,7 +54,7 @@ public abstract class AbstractWeapon {
 	
 	@Override
 	public String toString() {
-		return "["+this.getClass()+"] "+super.toString() + " [ammo:"+this.ammo+"]";
+		return super.toString() + " [ammo:"+this.ammo+"]";
 	}
 
 

@@ -98,6 +98,6 @@ public abstract class AbstractCharacter extends Entity {
 	
 	@Override
 	public String toString() {
-		return "["+this.getClass()+"] "+super.toString() + " [hp:"+this.health+"]";
+		return super.toString() + " [hp:"+this.health+"]";
 	}
 }
