@@ -7,7 +7,6 @@ import java.net.URL;
 
 import launcher.Launcher;
 import controller.AppController;
-import static tools.Logger.*;
 
 /**
  * Main class. Application entry point.
@@ -23,19 +22,6 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		
-		if(args.length > 0){
-			if(args[0].equalsIgnoreCase("--logging")){
-				setLogginEnabled(true);
-				
-				if(args.length > 1) {
-					setLogMode(Integer.parseInt(args[1]));
-				}
-				else {
-					setLogMode(LOG_ALL);
-				}
-			}
-		}
 		
 		String os = System.getProperty("os.name").toLowerCase();
 		boolean runningOnOSX = os.indexOf("mac") != -1; 

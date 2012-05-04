@@ -1,11 +1,11 @@
-/**
-*	Logger.java
-*
-*	@author Johan
-*/
-
 package tools;
 
+/**
+ *	Logger class
+ * 
+ *	@author Johan
+ *	@deprecated 2012-05-04 Not used.
+ */
 public final class Logger {
 	
 	public static final int LOG_ALL = 1;
