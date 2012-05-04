@@ -2,17 +2,11 @@ package tilemap;
 
 import graphics.tools.PixelCastingTool;
 
-import java.awt.Point;
 import java.util.Random;
 
 import javax.media.opengl.GLAutoDrawable;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import core.GLRenderableObject;
-import core.JSONSerializable;
 import core.Rectangle;
 import core.Size;
 
