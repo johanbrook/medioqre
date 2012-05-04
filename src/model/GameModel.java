@@ -30,7 +30,7 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 
 	private Messager messager = new Messager();
 	
-	private AbstractCharacter player;
+	private Player player;
 	private List<Enemy> enemies;
 
 	private List<CollidableObject> objects;
@@ -38,6 +38,10 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 	private int currentLevel;
 	private final double LEVEL_MULTIPLIER = 1.5;
 
+	/**
+	 * Create a new model for a game. 
+	 * 
+	 */
 	public GameModel() {
 		this.currentLevel = 0;
 
@@ -49,7 +53,7 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 		this.objects = new CopyOnWriteArrayList<CollidableObject>();
 		this.enemies = new ArrayList<Enemy>();
 		
-		initPlayer();
+		
 	}
 
 
@@ -67,7 +71,7 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 			if (projectile != null){
 				projectile.addReceiver(this);
 				this.objects.add(projectile);
-				System.out.println("Did add projectile");
+				System.out.println("Did add projectile of type: "+projectile.getOwner().getClass().getSimpleName());
 			}else {
 				System.out.println("Out of ammo");
 			}
@@ -100,32 +104,41 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 			enemyProjectile.addReceiver(this);
 			this.objects.add(enemyProjectile);
 			break;
+		
+		case CHANGED_WEAPON:
+			int slot = (Integer) evt.getValue();
+			this.player.setCurrentWeapon(slot);
+			
+			break;
 		}
-
+	}
+	
+	public void newGame(){
+		initPlayer();
+		this.messager.sendMessage(new Event(Event.Property.NEW_GAME,this));
 	}
 
 	
 	private void gameOver(){
 		EventBus.INSTANCE.publish(new Event(Event.Property.GAME_OVER, this));
 		this.objects.clear();
-		initPlayer();
-		newWave();
+		newGame();
 	}
 
 	public void newWave() {
 		this.currentLevel++;
 
-		addEnemies(1);
-		addItems();
+		initEnemies(1);
+		addItems(5);
 		
 		Event evt = new Event(Property.NEW_WAVE, this.enemies);
 		this.messager.sendMessage(evt);
 		EventBus.INSTANCE.publish(evt);
 	}
 
-	private void addItems() {
+	private void addItems(int amount) {
 		
-		for(int i = 0; i < 5; i++) {
+		for(int i = 0; i < amount; i++) {
 			AmmoCrate tempAmmo = new AmmoCrate(30, 30+i*2, 30+i*2);
 			tempAmmo.addReceiver(this);
 
@@ -138,7 +151,7 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 		}
 	}
 
-	private void addEnemies(int amount) {
+	private void initEnemies(int amount) {
 		this.enemies.clear();
 		
 		for (int i = 0; i < amount; i++) {

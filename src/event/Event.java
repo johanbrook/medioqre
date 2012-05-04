@@ -12,20 +12,6 @@ public class Event {
 	 * Enum describing different event property names, i.e. the 
 	 * different types of events.
 	 * 
-	 * <h3>Types</h3>
-	 * 
-	 * <ul>
-	 * <li>WAS_CREATED</li>
-	 * <li>CHANGED_DIRECTION</li>
-	 * <li>CHANGED_WEAPON</li>
-	 * <li>WAS_DESTROYED</li>
-	 * <li>DID_MOVE</li>
-	 * <li>DID_STOP</li>
-	 * <li>WAS_DAMAGED</li>
-	 * <li>DID_ATTACK</li>
-	 * <li>PICKED_UP_ITEM</li>
-	 * </ul>
-	 * 
 	 * @author Johan
 	 */
 	public enum Property {
@@ -45,7 +31,8 @@ public class Event {
 		FIRED_WEAPON_SUCCESS,
 		FIRED_WEAPON_FAIL,
 		NEW_WAVE,
-		GAME_OVER;
+		GAME_OVER,
+		NEW_GAME;
 	}
 	
 	private final Property name;
@@ -62,6 +49,11 @@ public class Event {
 		this.value = value;
 	}
 	
+	/**
+	 * Create an event without an associated value.
+	 * 
+	 * @param property The property name
+	 */
 	public Event(Property property) {
 		this.name = property;
 		this.value = null;

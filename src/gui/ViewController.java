@@ -115,7 +115,7 @@ public class ViewController implements IEventHandler, GLEventListener {
 			GameModel gm = (GameModel) evt.getValue();
 			try {
 				this.tilemap = ResourceLoader
-						.loadTileMapFromResources("test.png");
+						.loadTileMapFromResources("test2.png");
 				this.tilemap.setTileSheet(ResourceLoader
 						.loadTileSheetFromResource("tiles.tilesheet"));
 				this.tilemap.setViewPortSize(new Size(48 * 12, 48 * 20));

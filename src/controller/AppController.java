@@ -46,10 +46,10 @@ public class AppController implements Runnable{
 	
 	
 	public void init() {
-		new Thread(this).start();
+		this.game.newGame();
 		this.game.newWave();
-		this.ai.setEnemies(this.game.getEnemies());
-		
+		new Thread(this).start();
+				
 		EventBus.INSTANCE.publish(new Event(Event.Property.INIT_MODEL, this.game));
 	}
 
@@ -65,7 +65,7 @@ public class AppController implements Runnable{
 			
 			double dt = (double) updateLength / DELTA_RATIO;
 //			TimerTool.start("Update");
-			this.ai.updateAI(dt, this.game.getPlayer().getPosition());
+			this.ai.updateAI(dt);
 			this.game.update(dt);
 //			TimerTool.stop();
 			

@@ -1,19 +1,19 @@
 package controller.AI;
 
 import java.awt.Point;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import model.GameModel;
 import model.character.Enemy;
+import model.character.Player;
 import model.weapon.Projectile;
 import constants.Direction;
 import event.Event;
 import event.IMessageListener;
 import event.IMessageSender;
 import event.Messager;
-import event.Event.Property;
 
 /**
  * Class for controlling a list of enemies. Using a PathFinder (implementation of the A*-algorithm), the AIController is able to calculate
@@ -27,6 +27,7 @@ public class AIController implements IMessageSender, IMessageListener {
 	private PathFinder pathfinder;
 	private int width, height;
 	private Point playerPos,playerTile;
+	private Player player;
 	private Messager messager = new Messager();
 
 
@@ -36,31 +37,36 @@ public class AIController implements IMessageSender, IMessageListener {
 		this.height = height;
 		this.enemies = new CopyOnWriteArrayList<AIPlayer>();
 	}
-	
+
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public void onMessage(Event evt) {
 		System.out.println("Something happened! AI: "+evt.getProperty());
-		
+
 		switch(evt.getProperty()) {
-			case NEW_WAVE:
-				this.setEnemies((List<Enemy>) evt.getValue() );
+		case NEW_GAME:
+			player = ((GameModel) evt.getValue() ).getPlayer();
+//			this.pathfinder.initWalls(           ObjectFactory.getWalls()     );
 			break;
-			
-			case WAS_DESTROYED:
-				this.removeEnemy((Enemy) evt.getValue());
+		case NEW_WAVE:
+			this.setEnemies((List<Enemy>) evt.getValue() );
+			break;
+
+		case WAS_DESTROYED:
+			this.removeEnemy((Enemy) evt.getValue());
 			break;
 		}
 	}
-	
+
 	/**
-	 * For each existing enemy, will update that enemies direction in order to reach the player in shortest amount of time possible
-	 * @param playerPos
+	 * Updates each enemy the AIController keeps track of.
+	 * @param dt Time since last update
 	 */
-	public void updateAI(double dt, Point playerPos){
+	public void updateAI(double dt){
+		this.playerPos = player.getPosition();
 		playerTile = calculateTile(playerPos);
-		this.playerPos = playerPos;
+		
 
 		if (playerTile.x >= 0 && playerTile.y >=0 &&
 				playerTile.x < 48 && playerTile.y < 48){
@@ -86,7 +92,7 @@ public class AIController implements IMessageSender, IMessageListener {
 
 		aiPlayer.setDistance(Math.abs(aiPlayer.getEnemy().getPosition().x - playerPos.x) + Math.abs(aiPlayer.getEnemy().getPosition().y
 				- playerPos.y));
-		
+
 		handleAttack(aiPlayer,dt);
 		if (aiPlayer.getCount() < (aiPlayer.getDistance()/15) + enemies.size()/15){
 			aiPlayer.updateCount();
@@ -108,11 +114,7 @@ public class AIController implements IMessageSender, IMessageListener {
 
 						//If path is shorter, manually inserts enemy and player positions and walk straight towards them, they should be to close for there to
 						//be any kind of obsticle in the way.
-						aiPlayer.getPath().clear();
-						aiPlayer.getPath().add(playerPos);
-						aiPlayer.getPath().add(aiPlayer.getEnemy().getPosition());
-						aiPlayer.updateEnemy(calculateDirection(aiPlayer.getPath()));
-
+					aiPlayer.getEnemy().setDirection(findLineToPlayer(aiPlayer));
 					}
 				}else {
 					aiPlayer.getEnemy().setDirection(randomDir());
@@ -121,7 +123,12 @@ public class AIController implements IMessageSender, IMessageListener {
 		}
 	}//end updateEnemy
 
-
+	
+	/**
+	 * If enemy is in range of player, will try to send projectiles into the game. The AIPlayer keeps track of cooldown.
+	 * @param ai AIPlayer in control of this specific enemy
+	 * @param dt time since last update
+	 */
 	private void handleAttack(AIPlayer ai, double dt){
 		if (ai.inRange()) {
 			if (!ai.inCooldown(dt)){
@@ -131,7 +138,19 @@ public class AIController implements IMessageSender, IMessageListener {
 		}else {
 			ai.resetCooldown();
 		}
-
+	}
+	
+	/**
+	 * Given a AIPlayer, will return the direction towards the player, not taking any walls or other collidables into consideration
+	 * @param aiPlayer
+	 * @return
+	 */
+	private Direction findLineToPlayer(AIPlayer aiPlayer){
+		aiPlayer.getPath().clear();
+		aiPlayer.getPath().add(playerPos);
+		aiPlayer.getPath().add(aiPlayer.getEnemy().getPosition());
+		return(calculateDirection(aiPlayer.getPath()));
+		
 	}
 
 
@@ -202,7 +221,7 @@ public class AIController implements IMessageSender, IMessageListener {
 				this.enemies.remove(ai);
 			}
 		}
-			
+
 	}
 
 	/**
