@@ -33,7 +33,7 @@ public class TestGameModel implements IEventHandler {
 	
 	@Test
 	public void testUpdateDirection() {
-		this.game.updateDirection(Direction.NORTH);
+		this.game.getPlayer().setDirection(Direction.NORTH);
 		
 		assertEquals(Direction.NORTH, this.newDir);
 	}

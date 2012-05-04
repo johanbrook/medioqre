@@ -7,6 +7,7 @@
 package model.item;
 
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.Rectangle;
 
 import event.Event;
@@ -20,8 +21,8 @@ public class MedPack extends CollidableObject implements ICollectableItem {
 
 	private int amount;
 	
-	public MedPack(int amount) {
-		super(new Rectangle(10, 10), new Dimension(10, 10), 0, 0);
+	public MedPack(int amount, int x, int y) {
+		super(new Rectangle(x, y, 10, 10), new Dimension(10, 10), 0, 0);
 		this.amount = amount;
 	}
 
@@ -29,6 +30,9 @@ public class MedPack extends CollidableObject implements ICollectableItem {
 	public void pickedUpBy(Player source) {
 		source.addHealth(this.amount);
 		EventBus.INSTANCE.publish(new Event(Property.PICKED_UP_ITEM, this));
+		System.out.println("Picked up MedPack");
+
+		this.destroy();
 	}
 
 }

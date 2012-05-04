@@ -4,8 +4,8 @@ import java.awt.Point;
 
 import constants.Direction;
 import event.Event;
-import event.EventBus;
 import event.Event.Property;
+import event.EventBus;
 
 /**
 *	Entity.
@@ -14,7 +14,7 @@ import event.Event.Property;
 *
 *	@author Johan
 */
-public abstract class Entity extends CollidableObject {
+public abstract class Entity extends CollidableObject  {
 	
 	private int movementSpeed;
 	private boolean isMoving;
@@ -30,6 +30,8 @@ public abstract class Entity extends CollidableObject {
 		this.direction = Direction.ORIGIN;
 		this.isMoving = true;
 	}
+	
+
 	
 	
 	/**
@@ -116,17 +118,10 @@ public abstract class Entity extends CollidableObject {
 		return this.movementSpeed;
 	}
 	
-	/**
-	 * Destroy the entity
-	 * 
-	 */
-	public void destroy(){
-		//@todo Should the model destroy itself?
-		EventBus.INSTANCE.publish(new Event(Property.WAS_DESTROYED, this));
-	}
 	
 	@Override
 	public String toString() {
 		return super.toString() + " [speed:"+this.movementSpeed+"] [moving:"+this.isMoving+"] [dir:"+this.direction+"]";
 	}
+	
 }

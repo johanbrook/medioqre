@@ -1,16 +1,24 @@
 package model;
 
-import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
+import java.util.concurrent.CopyOnWriteArrayList;
 
-import model.character.Character;
+import model.character.AbstractCharacter;
 import model.character.Enemy;
 import model.character.Player;
+import model.item.AmmoCrate;
+import model.item.ICollectableItem;
+import model.item.MedPack;
+import model.weapon.Projectile;
 import constants.Direction;
-import controller.AI.AIController;
+import event.Event;
+import event.EventBus;
+import event.IMessageSender;
+import event.Event.Property;
+import event.IMessageListener;
+import event.Messager;
 
 /**
  * Model for a game.
@@ -18,129 +26,270 @@ import controller.AI.AIController;
  * @author Johan
  *
  */
-public class GameModel implements IGameModel {
+public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 
-	private Character player;
-	private Enemy[] enemies;
-	private Random rand = new Random();
-	//private AIController ai;
+	private Messager messager = new Messager();
+	
+	private AbstractCharacter player;
+	private List<Enemy> enemies;
 
-	private List<Entity> entities;
+	private List<CollidableObject> objects;
+
+	private int currentLevel;
+	private final double LEVEL_MULTIPLIER = 1.5;
 
 	public GameModel() {
-		//this.ai = new AIController(48, 48, 32, 32);
+		this.currentLevel = 0;
 
-		initEntities();
+		// Use CopyOnWriteArrayList since we do concurrent reads/writes, and
+		// need them to be synchronized behind the scenes. Slightly more costly,
+		// but negligible since 
+		//	a) Our entities list is quite small
+		//	b) Writes happen very infrequently.
+		this.objects = new CopyOnWriteArrayList<CollidableObject>();
+		this.enemies = new ArrayList<Enemy>();
+		
+		initPlayer();
 	}
 
+
+	@Override
+	public void onMessage(Event evt) {
+		Property name = evt.getProperty();
+
+		switch(name) {
+		case DID_STOP:
+			this.player.stop(); 
+			break;
+		case DID_FIRE:
+			Projectile projectile = this.player.attack();
+			if (projectile != null){
+				projectile.addReceiver(this);
+				this.objects.add(projectile);
+				System.out.println("Did add projectile");
+			}else {
+				System.out.println("Out of ammo");
+			}
+			break;
+		case CHANGED_DIRECTION:
+			
+			this.player.start();
+			this.player.setDirection((Direction) evt.getValue());
+			break;
+		case WAS_DESTROYED:
+			this.objects.remove(evt.getValue());
+			
+			if(evt.getValue() instanceof Enemy) {
+				System.out.println("Was ENEMY, removing from ENEMIES list");
+				this.enemies.remove(evt.getValue());
+				this.messager.sendMessage(evt);
+				checkEnemiesLeft();
+			} else if (evt.getValue() instanceof Player){
+				gameOver();
+			}
+			System.out.println(evt.getValue().getClass().getSimpleName() + " was destroyed");
+			break;
+		case DID_ATTACK:
+			Projectile enemyProjectile = (Projectile) evt.getValue();
+			enemyProjectile.addReceiver(this);
+			this.objects.add(enemyProjectile);
+			break;
+		}
+
+	}
+
+	
+	private void gameOver(){
+		EventBus.INSTANCE.publish(new Event(Event.Property.GAME_OVER, this));
+		this.objects.clear();
+		initPlayer();
+		newWave();
+	}
 
 	public void newWave() {
+		this.currentLevel++;
 
+		addEnemies(1);
+		addItems();
+		
+		Event evt = new Event(Property.NEW_WAVE, this.enemies);
+		this.messager.sendMessage(evt);
+		EventBus.INSTANCE.publish(evt);
 	}
 
-	private void initEntities() {
-		this.entities = new ArrayList<Entity>();
-		
-		this.player = new Player();
-		this.entities.add(this.player);
-		
-		this.enemies = new Enemy[10];
-		
-		for (int i = 0; i < this.enemies.length; i++) {
-			this.enemies[i] = new Enemy(10, 10, i, i);
-			this.entities.add(this.enemies[i]);
+	private void addItems() {
+		for(int i = 0; i < 5; i++) {
+			AmmoCrate tempAmmo = new AmmoCrate(30, 30+i*2, 30+i*2);
+			tempAmmo.addReceiver(this);
+
+			MedPack tempMed = new MedPack(25, 50+i*5, 50+i*5);
+			tempMed.addReceiver(this);
+
+			this.objects.add(tempAmmo);
+			this.objects.add(tempMed);
+
 		}
 	}
-	
-	
+
+	private void addEnemies(int amount) {
+		this.enemies.clear();
+		
+		for (int i = 0; i < amount; i++) {
+			Enemy temp = new Enemy(10, 10, 20+i*2, 20+i*2);
+			temp.addReceiver(this);
+			this.enemies.add(temp);
+			this.objects.add(temp);
+		}
+		
+		System.out.println("** Enemies added");
+	}
+
+	private void initPlayer() {
+		this.player = new Player();
+		this.player.setPosition(1000, 100);
+		this.objects.add(this.player);
+		this.player.addReceiver(this);
+	}
+
+
 	private void moveEntities(double dt) {
-		for(Entity t : this.entities) {
-			
-			checkCollisions(t);
-			
+		for(CollidableObject t : this.objects) {
+
 			// The entity has to move *after* collision checks have been finished, 
 			// otherwise you'll be able to bug your way through other entities.
-			t.move(dt);
+			if(t instanceof Entity) {
+				Entity temp = (Entity) t;
+				checkCollisions(temp);
+				temp.move(dt);
+			}
+
+			if(t instanceof Projectile){
+				doProjectileHandling((Projectile) t);
+			}
+		}
+
+	}
+
+
+	private void doProjectileHandling(Projectile t) {
+		if(t.getDistanceTravelled() >= t.getRange().getDistance()) {
+			t.destroy();
 		}
 	}
-	
-	private void checkCollisions(Entity t) {
-		
-		for(Entity w : this.entities) {
-			
-			// This baby is in need of a grave refactor :)
-			
-			boolean stop = false;
-			
-			if(t != w && t.isColliding(w)) {
-				
-				Direction currentDirection = t.getDirection();				
-				Direction blockedDirection = t.getCollisionDirection(w);
 
-				if(t != w && t instanceof Player){
-					System.out.println("-----\nPlayer direction: "+currentDirection);
-					System.out.println("Collision direction: "+blockedDirection);
+
+	private void checkCollisions(Entity t) {
+
+		for(CollidableObject w : this.objects) {
+
+			if(t != w && t.isColliding(w)) {
+
+				Direction currentDirection = t.getDirection();				
+				Direction blockedDirection = t.getDirectionOfObject(w);
+
+				if(t instanceof Projectile && !(w instanceof ICollectableItem)) {
+					t.destroy();
 					
-					int c = t.getCode(w);
+					if (w instanceof AbstractCharacter){
+						((AbstractCharacter) w).takeDamage(((Projectile) t).getDamage());
+						
+						System.out.println(w.getClass().getSimpleName()+" was hit, now has " + ((AbstractCharacter) w).getHealth() + " hp");
+					}
+
+
+				} else if (w instanceof ICollectableItem && t instanceof Player){
+					((ICollectableItem) w).pickedUpBy( ((Player) t));
 					
-					System.out.println("CODE: "+c);
-					System.out.println("Top: "+ ((c & Rectangle.OUT_TOP) == Rectangle.OUT_TOP));
-					System.out.println("Bottom: "+ ((c & Rectangle.OUT_BOTTOM) == Rectangle.OUT_BOTTOM));
-					System.out.println("Left: "+ ((c & Rectangle.OUT_LEFT) == Rectangle.OUT_LEFT));
-					System.out.println("Right: "+ ((c & Rectangle.OUT_RIGHT) == Rectangle.OUT_RIGHT));
+					if (w instanceof AmmoCrate)
+						System.out.println("Picked up AmmoCrate, current ammo: " + this.player.getCurrentWeapon().getCurrentAmmo());
+					if (w instanceof MedPack)
+						System.out.println("Picked up MedPack, current HP: " + this.player.getHealth());
+
 				}
 				
-				System.out.println("----------\n"+t);
-				System.out.println(w+"\n------------");
-									
-				if( (blockedDirection == Direction.NORTH_WEST ||
-					 blockedDirection == Direction.WEST)
-						&& (currentDirection == Direction.WEST || 
-							currentDirection == Direction.NORTH_WEST ||
-							currentDirection == Direction.NORTH)) {
-					
-					stop = true;
-				}
 				
-				if( (blockedDirection == Direction.NORTH_EAST ||
-					 blockedDirection == Direction.EAST) 
-						&& (currentDirection == Direction.EAST || 
-							currentDirection == Direction.NORTH_EAST ||
-							currentDirection == Direction.NORTH) ){
-							
-					stop = true;
-				}
 				
-				if( (blockedDirection == Direction.SOUTH_WEST ||
-						 blockedDirection == Direction.WEST) 
-							&& (currentDirection == Direction.WEST || 
-								currentDirection == Direction.SOUTH_WEST ||
-								currentDirection == Direction.SOUTH) ){
-					
-					
-					stop = true;
+				if(!(w instanceof ICollectableItem)) {
+					if(directionIsBlocked(currentDirection, blockedDirection)){
+						
+						t.stop();
+					}
+					else {
+						//w.start();
+					}
 				}
-				
-				if( (blockedDirection == Direction.SOUTH_EAST ||
-						 blockedDirection == Direction.EAST) 
-							&& (currentDirection == Direction.EAST || 
-								currentDirection == Direction.SOUTH_EAST ||
-								currentDirection == Direction.SOUTH)){
-								
-					stop = true;
-				}
-				
-				if(blockedDirection == currentDirection){
-					stop = true;
-				}
-					
-				
-				if(stop)
-					t.stop();
 			}
 		}
 	}
-	
+
+
+	private boolean directionIsBlocked(Direction currentDirection, Direction blockedDirection) {
+		boolean stop = false;
+
+		if(currentDirection == Direction.EAST &&
+				(blockedDirection == Direction.NORTH_EAST || 
+				blockedDirection == Direction.SOUTH_EAST) ) {
+
+			stop = true;
+		}
+
+		if(currentDirection == Direction.SOUTH_EAST && 
+				(blockedDirection == Direction.NORTH_EAST ||
+				blockedDirection == Direction.SOUTH_WEST) ) {
+
+			stop = true;
+		}
+
+		if(currentDirection == Direction.NORTH_EAST && 
+				(blockedDirection == Direction.SOUTH_EAST ||
+				blockedDirection == Direction.NORTH_WEST)) {
+
+			stop = true;
+		}
+
+		if(currentDirection == Direction.WEST &&
+				(blockedDirection == Direction.NORTH_WEST || 
+				blockedDirection == Direction.SOUTH_WEST) ) {
+
+			stop = true;
+		}
+
+		if(currentDirection == Direction.SOUTH_WEST && 
+				(blockedDirection == Direction.NORTH_WEST ||
+				blockedDirection == Direction.SOUTH_EAST) ) {
+
+			stop = true;
+		}
+
+		if(currentDirection == Direction.NORTH_WEST && 
+				(blockedDirection == Direction.SOUTH_WEST ||
+				blockedDirection == Direction.NORTH_EAST) ) {
+
+			stop = true;
+		}
+
+		if(currentDirection == Direction.NORTH &&
+				(blockedDirection == Direction.NORTH_EAST || 
+				blockedDirection == Direction.NORTH_WEST) ) {
+
+			stop = true;
+		}
+
+		if(currentDirection == Direction.SOUTH && 
+				(blockedDirection == Direction.SOUTH_EAST ||
+				blockedDirection == Direction.SOUTH_WEST) ) {
+
+			stop = true;
+		}
+
+
+		if(blockedDirection == currentDirection){
+			stop = true;
+		}
+
+		return stop;
+	}
+
 
 	/**
 	 * Updates the game model.
@@ -150,35 +299,47 @@ public class GameModel implements IGameModel {
 
 		moveEntities(dt);
 	}
+
 	
-	
-	
+	private void checkEnemiesLeft() {
+		if(this.enemies.isEmpty()) {
+			this.newWave();
+		}
+	}
+
+	/**
+	 * Get the player in the game.
+	 * 
+	 * @return The current player
+	 */
 	public Player getPlayer() {
 		return (Player) this.player;
 	}
-	
+
+
 	/**
-	 * Updates the player's direction.
+	 * Get all the entities in the game.
 	 * 
-	 * @param dir The direction
-	 * @see Direction
+	 * @return The entities
 	 */
-	public void updateDirection(Direction dir) {
-		this.player.setDirection(dir);
-		this.player.start();
+	public List<CollidableObject> getObjects() {
+		return this.objects;
 	}
 
-	public void stopPlayer(){
-		this.player.stop();
-	}
-
-
-	public List<Entity> getEntities() {
-		return this.entities;
-	}
-	
+	/**
+	 * Get all the enemies in the game.
+	 * 
+	 * @return The enemies 
+	 */
 	public List<Enemy> getEnemies() {
-		return (List<Enemy>) Arrays.asList(this.enemies);
+		return this.enemies;
 	}
+
+
+	@Override
+	public void addReceiver(IMessageListener listener) {
+		this.messager.addListener(listener);
+	}
+
 
 }

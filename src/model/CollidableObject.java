@@ -9,6 +9,12 @@ import model.character.Player;
 import tools.Logger;
 
 import constants.Direction;
+import event.Event;
+import event.EventBus;
+import event.IMessageListener;
+import event.Event.Property;
+import event.IMessageSender;
+import event.Messager;
 
 /**
  * The collidable object super class.
@@ -23,13 +29,19 @@ import constants.Direction;
  * @author Johan
  *
  */
-public abstract class CollidableObject {
+public abstract class CollidableObject implements IMessageSender {
 	
 	private Rectangle collisionBox;
 	private Dimension size;
 	private int xoffset;
 	private int yoffset;
+	
+	private Messager messager = new Messager();
 
+	public final static int TOP = 1;
+	public final static int BOTTOM = 2;
+	public final static int RIGHT = 4;
+	public final static int LEFT = 8;
 	
 	/**
 	 * A collidable object with a collision box, size, and offsets for the 
@@ -52,6 +64,20 @@ public abstract class CollidableObject {
 		this.collisionBox.y += this.yoffset;
 	}
 	
+	@Override
+	public void addReceiver(IMessageListener listener) {
+		this.messager.addListener(listener);
+	}
+	
+	/**
+	 * Destroy the entity
+	 * 
+	 */
+	public void destroy(){
+		Event evt = new Event(Property.WAS_DESTROYED, this);
+		EventBus.INSTANCE.publish(evt);
+		messager.sendMessage(evt);
+	}
 	
 	/**
 	 * Get the size of this object.
@@ -131,6 +157,9 @@ public abstract class CollidableObject {
 		return this.collisionBox;
 	}
 	
+
+	
+	
 	/**
 	 * Check whether this object is colliding with another CollidableObject.
 	 * 
@@ -144,46 +173,83 @@ public abstract class CollidableObject {
 		return this.collisionBox.intersects(obj.getCollisionBox());
 	}
 	
-	public Direction getCollisionDirection(CollidableObject obj) {		
-		int code = this.collisionBox.outcode(obj.getCollisionBox().getLocation());		
+	
+	/**
+	 * Get the direction 
+	 * 
+	 * @param obj
+	 * @return
+	 */
+	public Direction getDirectionOfObject(CollidableObject obj) {		
+        int code = getLocationOfPoint(obj.getCollisionBox().getLocation());
+        
         Direction d = Direction.ORIGIN;
+                
+        if(code == TOP)
+            d = Direction.NORTH;
+        if(code == RIGHT)
+            d = Direction.EAST;
+        if(code == LEFT)
+            d = Direction.WEST;
+        if(code == BOTTOM)
+            d = Direction.SOUTH;
         
-        boolean top = false, bottom = false, right = false, left = false;
-        
-        
-        
-        if((code & Rectangle.OUT_TOP) == Rectangle.OUT_TOP)
-            top = true;
-        if((code & Rectangle.OUT_RIGHT) == Rectangle.OUT_RIGHT)
-            right = true;
-        if((code & Rectangle.OUT_LEFT) == Rectangle.OUT_LEFT)
-            left = true;
-        if((code & Rectangle.OUT_BOTTOM) == Rectangle.OUT_BOTTOM)
-            bottom = true;
-        
-        if(top && left)
-        	d = Direction.NORTH_WEST;
-        else if(top && right)
-        	d = Direction.NORTH_EAST;
-        else if(top)
-        	d = Direction.NORTH;
-        else if(left && bottom)
+        if(code == BOTTOM + LEFT)
         	d = Direction.SOUTH_WEST;
-        else if(right && bottom)
+        if(code == BOTTOM + RIGHT)
         	d = Direction.SOUTH_EAST;
-        else if(left)
-        	d = Direction.WEST;
-        else if(right)
-        	d = Direction.EAST;
-        else if(bottom)
-        	d = Direction.SOUTH;
+        if(code == TOP + LEFT)
+        	d = Direction.NORTH_WEST;
+        if(code == TOP + RIGHT)
+        	d = Direction.NORTH_EAST;
         
 		return d;
 	}
 	
-	public int getCode(CollidableObject obj) {
-		return this.collisionBox.outcode(obj.getCollisionBox().getLocation());
+	/**
+	 * Get the location of a given point relative to this object.
+	 * 
+	 * @param p The point
+	 * @return An integer constant, TOP, RIGHT, BOTTOM, LEFT
+	 * @see TOP
+	 * @see BOTTOM
+	 * @see LEFT
+	 * @see RIGHT
+	 */
+	public int getLocationOfPoint(Point p) {
+		return getLocationOfPoint(p.x, p.y);
 	}
+	
+	/**
+	 * Get the location of given coordinates relative to this object.
+	 * 
+	 * @param x The x coordinate
+	 * @param y The y coordinate
+	 * @return An integer constant, TOP, RIGHT, BOTTOM, LEFT
+	 * @see TOP
+	 * @see BOTTOM
+	 * @see LEFT
+	 * @see RIGHT
+	 */
+	public int getLocationOfPoint(int x, int y) {
+        int out = 0;
+        if (this.collisionBox.width <= 0) {
+            out = LEFT | RIGHT;
+        } else if (x < this.collisionBox.x) {
+            out |= LEFT;
+        } else if (x > this.collisionBox.x) {
+            out |= RIGHT;
+        }
+        if (this.collisionBox.height <= 0) {
+            out |= TOP | BOTTOM;
+        } else if (y < this.collisionBox.y) {
+            out |= TOP;
+        } else if (y > this.collisionBox.y) {
+            out |= BOTTOM;
+        }
+        return out;
+    }
+	
 	
 	// Overrides
 	

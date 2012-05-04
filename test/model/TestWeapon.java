@@ -8,6 +8,7 @@ package model;
 
 import static org.junit.Assert.*;
 
+import model.character.Player;
 import model.weapon.*;
 
 import org.junit.Before;
@@ -21,14 +22,14 @@ public class TestWeapon {
 	private AbstractWeapon grenade;
 	private AbstractWeapon sword;
 	private AbstractWeapon melee;
-	private AbstractWeapon portal;
 	
 	@Before
 	public void setUp() throws Exception {
-		this.machineGun = new MachineGun();
-		this.grenade = new Grenade();
-		this.sword = new Sword();
-		this.melee = new Melee();
+		Player p = new Player();
+		this.machineGun = new MachineGun(p);
+		this.grenade = new Grenade(p);
+		this.sword = new Sword(p);
+		this.melee = new Melee(p);
 	}
 	
 	@Test

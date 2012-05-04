@@ -20,13 +20,6 @@ public interface IGameModel {
 	 */
 	public void update(double delta);
 	
-	
-	/**
-	 * Stop the player
-	 * 
-	 */
-	public void stopPlayer();
-	
 	/**
 	 * Get the player
 	 * 
@@ -42,9 +35,15 @@ public interface IGameModel {
 	public List<Enemy> getEnemies();
 	
 	/**
-	 * Get all the entities in the game
+	 * Get all the objects in the game
 	 * 
-	 * @return The entities
+	 * @return The objects
 	 */
-	public List<Entity> getEntities();
+	public List<CollidableObject> getObjects();
+	
+	/**
+	 * Initialize a new wave/round.
+	 * 
+	 */
+	public void newWave();
 }

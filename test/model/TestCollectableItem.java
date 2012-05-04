@@ -25,8 +25,8 @@ public class TestCollectableItem {
 	
 	@Before
 	public void setUp() throws Exception {
-		this.medpack = new MedPack(30);
-		this.ammocrate = new AmmoCrate(30);
+		this.medpack = new MedPack(30, 1, 1);
+		this.ammocrate = new AmmoCrate(30, 1, 1);
 		this.player = new Player();
 	}
 
