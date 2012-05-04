@@ -43,8 +43,8 @@ public class TestCollidableObject {
 	@Test
 	public void testIsColliding() {
 		
-		CollidableObject collidingObject1 = new Wall(10,10);	// The obj wxh is 16x16, and the wall wxh is 10x10
-		CollidableObject collidingObject2 = new Wall(15,15);
+		CollidableObject collidingObject1 = new ConcreteCollidableObject(10,10);	// The obj wxh is 16x16, and the wall wxh is 10x10
+		CollidableObject collidingObject2 = new ConcreteCollidableObject(15,15);
 						
 		assertTrue(this.obj.isColliding(collidingObject1));
 		assertTrue(this.obj.isColliding(collidingObject2));
@@ -52,7 +52,7 @@ public class TestCollidableObject {
 	
 	@Test
 	public void testIsNotColliding() {
-		CollidableObject safeObject = new Wall(30,30);
+		CollidableObject safeObject = new ConcreteCollidableObject(30,30);
 				
 		assertFalse(this.obj.isColliding(safeObject));
 	}
