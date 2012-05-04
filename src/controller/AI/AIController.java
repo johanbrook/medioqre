@@ -60,8 +60,8 @@ public class AIController implements IMessageSender, IMessageListener {
 	}
 
 	/**
-	 * For each existing enemy, will update that enemies direction in order to reach the player in shortest amount of time possible
-	 * @param playerPos
+	 * Updates each enemy the AIController keeps track of.
+	 * @param dt Time since last update
 	 */
 	public void updateAI(double dt){
 		this.playerPos = player.getPosition();
@@ -114,11 +114,7 @@ public class AIController implements IMessageSender, IMessageListener {
 
 						//If path is shorter, manually inserts enemy and player positions and walk straight towards them, they should be to close for there to
 						//be any kind of obsticle in the way.
-						aiPlayer.getPath().clear();
-						aiPlayer.getPath().add(playerPos);
-						aiPlayer.getPath().add(aiPlayer.getEnemy().getPosition());
-						aiPlayer.updateEnemy(calculateDirection(aiPlayer.getPath()));
-
+					aiPlayer.getEnemy().setDirection(findLineToPlayer(aiPlayer));
 					}
 				}else {
 					aiPlayer.getEnemy().setDirection(randomDir());
@@ -127,7 +123,12 @@ public class AIController implements IMessageSender, IMessageListener {
 		}
 	}//end updateEnemy
 
-
+	
+	/**
+	 * If enemy is in range of player, will try to send projectiles into the game. The AIPlayer keeps track of cooldown.
+	 * @param ai AIPlayer in control of this specific enemy
+	 * @param dt time since last update
+	 */
 	private void handleAttack(AIPlayer ai, double dt){
 		if (ai.inRange()) {
 			if (!ai.inCooldown(dt)){
@@ -137,7 +138,19 @@ public class AIController implements IMessageSender, IMessageListener {
 		}else {
 			ai.resetCooldown();
 		}
-
+	}
+	
+	/**
+	 * Given a AIPlayer, will return the direction towards the player, not taking any walls or other collidables into consideration
+	 * @param aiPlayer
+	 * @return
+	 */
+	private Direction findLineToPlayer(AIPlayer aiPlayer){
+		aiPlayer.getPath().clear();
+		aiPlayer.getPath().add(playerPos);
+		aiPlayer.getPath().add(aiPlayer.getEnemy().getPosition());
+		return(calculateDirection(aiPlayer.getPath()));
+		
 	}
 
 

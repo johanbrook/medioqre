@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class capable of finding a path between different spots on a gameboard of tiles. Keeps a logic representation of that gameboard.
+ * Class capable of finding a path between different spots on a matrice of tiles. Keeps a logic representation of that matrice using AStarTiles.
  * @author jesperpersson
  *
  */
@@ -22,10 +22,10 @@ public class PathFinder {
 	public PathFinder( int rows, int columns) {
 		this.columns = columns;
 		this.rows = rows;
-		init();
+		initTiles();
 	}
 
-	private void init() {
+	private void initTiles() {
 		logicList = new AStarTile[rows][columns];
 		for (int i = 0; i < this.rows; i++) {
 			for (int l = 0; l < this.columns; l++) {
@@ -34,6 +34,7 @@ public class PathFinder {
 		}
 		generateNeighbors();
 	}
+	
 	
 	public void initWalls(boolean [][] gameBoard){
 		for (int i = 0; i < this.rows; i++) {
@@ -93,6 +94,11 @@ public class PathFinder {
 		return null;
 	}// end getPath()
 
+	/**
+	 * Converts a list of AStarTiles into a list of Points. Each point will represent the position of a tile in the matrice.
+	 * @param path
+	 * @return convertedPath
+	 */
 	private List<Point> convertPath(ArrayList<AStarTile> path) {
 		List <Point> convertedPath = new ArrayList <Point>();
 		for (int i = 0; i < path.size(); i++){
@@ -164,8 +170,8 @@ public class PathFinder {
 				currentTile.getG() + DIAGONALCOST : currentTile.getG() + 1);
 	}
 
-	// Loops through gameboard and make sure every button calculates its
-	// neighbors
+	// Loops through gameboard and make sure every button calculates finds its
+	// neighbors.
 	private void generateNeighbors() {
 		for (int i = 0; i < logicList.length; i++) {
 			for (int l = 0; l < logicList[i].length; l++) {
@@ -176,7 +182,7 @@ public class PathFinder {
 		}
 	}
 
-	// Tells the specified button to calculate and add its neighbors.
+	// Tells the specified button to calculate and add its neighbors. Only adds non-solids. 
 	private void calculateNeighbors(AStarTile tile) {
 		int top = tile.getColumn() + 1;
 		int buttom = tile.getColumn() - 1;
