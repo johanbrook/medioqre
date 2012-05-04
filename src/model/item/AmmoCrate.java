@@ -1,9 +1,3 @@
-/**
-*	AmmoCrate.java
-*
-*	@author Johan
-*/
-
 package model.item;
 
 import java.awt.Dimension;
@@ -17,10 +11,22 @@ import event.Event.Property;
 import model.CollidableObject;
 import model.character.Player;
 
+/**
+*	An ammo crate.
+*
+*	@author Johan
+*/
 public class AmmoCrate extends CollidableObject implements ICollectableItem {
 
 	private int amount;
 	
+	/**
+	 * Create a new ammo crate.
+	 * 
+	 * @param amount The ammo amount
+	 * @param x The x coordinate
+	 * @param y The y coordinate
+	 */
 	public AmmoCrate(int amount, int x, int y) {
 		super(new Rectangle(x, y, 10, 10), new Dimension(10, 10), 0, 0);
 		

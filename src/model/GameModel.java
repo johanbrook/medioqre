@@ -38,6 +38,10 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 	private int currentLevel;
 	private final double LEVEL_MULTIPLIER = 1.5;
 
+	/**
+	 * Create a new model for a game. 
+	 * 
+	 */
 	public GameModel() {
 		this.currentLevel = 0;
 

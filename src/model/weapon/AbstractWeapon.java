@@ -1,9 +1,3 @@
-/**
- *	Weapon.java
- *
- *	@author Johan
- */
-
 package model.weapon;
 
 
@@ -12,29 +6,59 @@ import event.Event.Property;
 import event.EventBus;
 import model.character.AbstractCharacter;
 
+/**
+ *	Weapon.java
+ *
+ *	@author Johan
+ */
 public abstract class AbstractWeapon {
 
 	private int ammo;
 	private AbstractCharacter owner;
 
+	/**
+	 * Create a new weapon with an owner and initial ammo.
+	 * 
+	 * @param owner The owner
+	 * @param initialAmmo The ammo
+	 */
 	public AbstractWeapon(AbstractCharacter owner, int initialAmmo) {
 		this.ammo = initialAmmo;
 		this.owner = owner;
 	}
 
-
+	/**
+	 * Return this weapon's owner (an AbstractCharacter).
+	 * 
+	 * @return Its owner
+	 */
 	public AbstractCharacter getOwner() {
 		return this.owner;
 	}
 
+	/**
+	 * Get the current ammo amount.
+	 * 
+	 * @return The amount
+	 */
 	public int getCurrentAmmo() {
 		return this.ammo;
 	}
 
+	/**
+	 * Add ammo
+	 * 
+	 * @param amount The amount
+	 */
 	public void addAmmo(int amount) {
 		this.ammo += amount;
 	}
 
+	/**
+	 * Fire this weapon and return the resulting projectile.
+	 * 
+	 * @return The projectile from this weapon.
+	 */
 	public Projectile fire() {
 		Projectile p = getProjectile();
 
@@ -57,7 +81,11 @@ public abstract class AbstractWeapon {
 		return super.toString() + " [ammo:"+this.ammo+"]";
 	}
 
-
+	/**
+	 * Get the associated projectile from this weapon.
+	 * 
+	 * @return The projectile.
+	 */
 	public abstract Projectile getProjectile();
 
 }

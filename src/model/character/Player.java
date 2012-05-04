@@ -23,6 +23,9 @@ public class Player extends AbstractCharacter {
 	
 	private List<AbstractWeapon> weaponbelt;
 	
+	/**
+	 * Create a new player.
+	 */
 	public Player(){
 		super(30, new Rectangle(16, 16), new Dimension(20,20), 0, 16);
 
@@ -32,6 +35,11 @@ public class Player extends AbstractCharacter {
 		setCurrentWeapon(MachineGun.class);
 	}
 	
+	/**
+	 * Set the current weapon from the player's weapon belt slot.
+	 * 
+	 * @param slot The slot number
+	 */
 	public void setCurrentWeapon(int slot) {
 		setCurrentWeapon(this.weaponbelt.get(slot));
 		
@@ -39,6 +47,11 @@ public class Player extends AbstractCharacter {
 		System.out.println("Current weapon is " + getCurrentWeapon());
 	}
 	
+	/**
+	 * Set the current weapon based on the weapon type.
+	 * 
+	 * @param type The type
+	 */
 	public void setCurrentWeapon(Class<? extends AbstractWeapon> type) {
 		setCurrentWeapon(getWeaponFromBelt(type));
 	}

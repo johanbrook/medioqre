@@ -115,7 +115,7 @@ public class NavigationController implements KeyListener, IMessageSender {
 
 	
 	/**
-	 * Refresh (if necessary) the target's direction based on the keys in
+	 * Refresh the target's direction based on the keys in
 	 * the navigation key list.
 	 */
 	private void refreshDirection() {
@@ -148,6 +148,10 @@ public class NavigationController implements KeyListener, IMessageSender {
 	}
 
 	
+	/**
+	 * If two nav keys are released very close to each other in time,
+	 * the action is a quick one. Used for determining diagonal directions.
+	 */
 	private void checkIsQuick() {
 		if(this.navKeys.size() == 1 && this.cachedKeys.hasMultiple()) {
 			double seconds = ((System.nanoTime() - start) / 10E8);
@@ -158,7 +162,12 @@ public class NavigationController implements KeyListener, IMessageSender {
 		}
 	}
 	
-	
+	/**
+	 * Tell the model about the currently selected weapon from the
+	 * HUD menu. Nav keys maps to weapon slots.
+	 * 
+	 * @param key The nav key released
+	 */
 	private void chooseWeapon(NavigationKey key) {
 		
 		if(this.weaponMap.get(key) != null)
