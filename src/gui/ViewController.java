@@ -106,13 +106,7 @@ public class ViewController implements IEventHandler, GLEventListener {
 		anim.start();
 	}
 
-	
 
-	public void render(double dt)
-	{
-		// fpsmeter.tick();
-		// System.out.println("fps: " + this.fpsmeter.currentFPS);
-	}
 
 	@Override
 	public void onEvent(Event evt)

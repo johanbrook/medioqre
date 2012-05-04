@@ -54,7 +54,7 @@ public class Projectile extends Entity {
 		int y = p.getPosition().y;
 		
 		if(p.getDirection() == Direction.SOUTH) {
-			y = p.getPosition().y + p.getSize().height;
+			y = (int) p.getCollisionBox().getMaxY();
 		}
 		
 		setPosition(x, y);

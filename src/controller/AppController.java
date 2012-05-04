@@ -69,10 +69,6 @@ public class AppController implements Runnable{
 			this.game.update(dt);
 //			TimerTool.stop();
 			
-//			TimerTool.start("Rendering");
-			this.view.render(dt);
-//			TimerTool.stop();
-			
 			
 			try {
 				Thread.sleep(1000/FPS);

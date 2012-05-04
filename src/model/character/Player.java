@@ -26,8 +26,6 @@ public class Player extends AbstractCharacter {
 		this.weaponbelt = new ArrayList<AbstractWeapon>(Arrays.asList(temp));
 
 		setCurrentWeapon(MachineGun.class);
-		this.getCurrentWeapon().addAmmo(-this.getCurrentWeapon().getCurrentAmmo()+1);
-		System.out.println(this.getCurrentWeapon().getCurrentAmmo());
 	}
 	
 	public void setCurrentWeapon(int slot) {
