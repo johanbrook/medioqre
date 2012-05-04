@@ -48,10 +48,7 @@ public class AppController implements Runnable{
 	public void init() {
 		this.game.newGame();
 		new Thread(this).start();
-		
-		this.game.newWave();
-		this.ai.setEnemies(this.game.getEnemies());
-		
+				
 		EventBus.INSTANCE.publish(new Event(Event.Property.INIT_MODEL, this.game));
 	}
 

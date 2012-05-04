@@ -116,8 +116,7 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 	public void newGame(){
 		initPlayer();
 		this.messager.sendMessage(new Event(Event.Property.NEW_GAME,this));
-		
-		
+		newWave();	
 	}
 
 	
