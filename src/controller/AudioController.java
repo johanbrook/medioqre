@@ -51,15 +51,16 @@ public class AudioController implements IEventHandler {
 	}
 
 	private AudioController() {
-		// Link to JavaSound
+		
+		
+		// Link to system sound
 		try {
+			
 			SoundSystemConfig.addLibrary(LibraryJavaSound.class);
-		} catch (SoundSystemException e) {
-		}
 
-		// Link to Wav Codec
-		try {
+			// Link to Wav Codec
 			SoundSystemConfig.setCodec("wav", CodecWav.class);
+			
 		} catch (SoundSystemException e) {
 		}
 

@@ -17,9 +17,7 @@ import event.Event.Property;
 
 public class SoundLibrary {
 
-	public static void main(String[] mamma){
-//		String s = SoundLibrary.class.getClassLoader().getResource("bitmapfonts/bmf_fps_meter.png").toString();
-		
+	public static void main(String[] mamma){		
 		System.out.println(c.getResource("sounds/").toString().substring(5));
 	}
 	
