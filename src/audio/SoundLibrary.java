@@ -20,13 +20,13 @@ import event.Event.Property;
 public class SoundLibrary {
 
 	public static void main(String[] mamma){		
-		System.out.println(c.getResource("sounds/").toString().substring(5));
+		System.out.println(c.getResource("sounds/fx/walk.wav").toString().substring(5));
 	}
 	
 	
 	private final Map<String, String> fxSoundLibrary = initializeFXSoundLibrary();
 	private static final Map<Integer, String> backgroundMusicLibrary = initializeBackgroundMusicLibrary();
-	private static final Map<Class, String> weaponSoundLibrary = initializeWeaponSoundLibrary();
+	private static final Map<Class<?>, String> weaponSoundLibrary = initializeWeaponSoundLibrary();
 	private static ClassLoader c = SoundLibrary.class.getClassLoader();
 	
 	
@@ -35,7 +35,8 @@ public class SoundLibrary {
 	private Map<String, String> initializeFXSoundLibrary() {
 		Map<String, String> fx = new HashMap<String, String>();
 
-		fx.put("walk", c.getResource("sounds/fx/walk.wav").toString());
+		fx.put("walk", c.getResource("sounds/fx/walk.wav").toString().substring(5));
+		fx.put("startUpSound", c.getResource("sounds/fx/walk.wav").toString().substring(5));
 //		fx.put("zombieWalk", "http://theboxofficial.com/work/move.wav");
 			
 			
@@ -76,7 +77,7 @@ public class SoundLibrary {
 	 * sound code is invalid, null is given back.
 	 */
 
-	public static String getWeaponSound(Class<?> code) {
+	public static String getWeaponSound(Class code) {
 
 		return weaponSoundLibrary.get(code);
 
@@ -91,11 +92,14 @@ public class SoundLibrary {
 		return backgroundMusicLibrary.size();
 	}
 
-	public URL getFXSound(String code) {
-		URL m = c.getResource("sounds/fx/" + code + ".wav");
+	public String getFXSound(String code) {
+		String m = c.getResource("sounds/fx/" + code + ".wav").toString().substring(5);
 		
 		return m;
 	}
+	
+	
+	
 	
 
 }

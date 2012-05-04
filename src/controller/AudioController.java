@@ -34,10 +34,9 @@ public class AudioController implements IEventHandler {
 	private static SoundSystem soundSys;
 	private IGameModel game;
 	private static SoundLibrary lib = new SoundLibrary();
-	
+
 	private static float BGM_VOLUME = 1;
 	private static float FX_VOLUME = 1;
-	
 
 	private int bgmID = 1;
 
@@ -51,16 +50,15 @@ public class AudioController implements IEventHandler {
 	}
 
 	private AudioController() {
-		
-		
+
 		// Link to system sound
 		try {
-			
+
 			SoundSystemConfig.addLibrary(LibraryJavaSound.class);
 
 			// Link to Wav Codec
 			SoundSystemConfig.setCodec("wav", CodecWav.class);
-			
+
 		} catch (SoundSystemException e) {
 		}
 
@@ -75,66 +73,18 @@ public class AudioController implements IEventHandler {
 	}
 
 	/*
-	 * ____________BGM_____________
-	 */
-
-	public void playBGM() {
-
-		String filename = SoundLibrary.getBackgroundMusic(bgmID);
-		System.out.println(filename);
-
-		URL url;
-		try {
-			url = new URL("file:///" + SoundSystemConfig.getSoundFilesPackage()
-					+ filename);
-
-			soundSys.backgroundMusic("Background Music", url, filename, true);
-
-			JOptionPane.showMessageDialog(null, url);
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
-
-	}
-
-	public void nextBGM() {
-
-		if (bgmID == SoundLibrary.getBGMLibrarySize()) {
-			bgmID = 1;
-		} else {
-			bgmID++;
-		}
-
-		this.playBGM();
-
-	}
-
-	public void setPitchBGM(float newValue) {
-
-		soundSys.setPitch("Background Music", newValue);
-		System.out.println("Pitch set to: " + newValue);
-
-	}
-
-	public void restorePitchBGM() {
-		soundSys.setPitch("Background Music", (float) 1.0);
-	}
-
-	/*
 	 * ____________SFX_____________
 	 */
 
-	public void playSoundFX(String code, boolean toLoop) {
-
-//		soundSys.newSource(false, code, lib.getFXSound(code), toLoop,
-//				0, 1, 1, 1, 1);
-
-		soundSys.play(code);
-
+	public void playerWalk() {
+		soundSys.newSource(false, "playerWalk", lib.getFXSound("walk"), false,
+				game.getPlayer().getPosition().x, game.getPlayer()
+						.getPosition().y, 1.0f,
+				SoundSystemConfig.ATTENUATION_NONE, 0.5f);
 	}
 
-	public void stopFX(String code) {
-		soundSys.stop(code);
+	public void stopPlayerWalk() {
+		soundSys.stop("playerWalk");
 	}
 
 	/*
@@ -167,7 +117,7 @@ public class AudioController implements IEventHandler {
 	}
 
 	public void playWeaponSound(Class<?> input) {
-		soundSys.quickPlay(true, SoundLibrary.getWeaponSound(input), false, 1,
+		soundSys.quickPlay(true, SoundLibrary.getWeaponSound(new model.weapon.MachineGun(new Object())), false, 1,
 				1, 1, 1, 0);
 	}
 
@@ -190,12 +140,12 @@ public class AudioController implements IEventHandler {
 				// Player Walking
 				if (evt.getProperty() == Event.Property.DID_MOVE
 						&& !soundSys.playing("walk")) {
-					playSoundFX("walk", true);
+					playerWalk();
 
 				}
 
 				if (evt.getProperty() == Event.Property.DID_STOP) {
-					stopFX("walk");
+					 stopPlayerWalk();
 				}
 
 				// Pickup Items
@@ -237,44 +187,49 @@ public class AudioController implements IEventHandler {
 
 	private void playZombiewalk(Enemy e) {
 
-//		soundSys.newSource(true, soundCode(e),
-//				lib.getFXSound("walk"), true, 1, 1, 1,
-//				SoundSystemConfig.ATTENUATION_ROLLOFF, 0.5f);
-		
-		soundSys.newSource(true, soundCode(e), lib.getFXSound("walk"), "walk.wav", true, (float)1, (float)1, (float)1, SoundSystemConfig.ATTENUATION_ROLLOFF, 0.5f);
+		// soundSys.newSource(true, soundCode(e),
+		// lib.getFXSound("walk"), true, 1, 1, 1,
+		// SoundSystemConfig.ATTENUATION_ROLLOFF, 0.5f);
 
-		soundSys.play(soundCode(e));
+		// soundSys.newSource(true, soundCode(e), lib.getFXSound("walk"),
+		// "walk.wav", true, (float)1, (float)1, (float)1,
+		// SoundSystemConfig.ATTENUATION_ROLLOFF, 0.5f);
+
+		// soundSys.play(soundCode(e));
 
 	}
 
-	private void stopZombiewalk(Enemy e){
+	private void stopZombiewalk(Enemy e) {
 		soundSys.stop(soundCode(e));
 	}
-	
+
 	private void removeZombieSounds(Enemy e) {
 		soundSys.removeSource(soundCode(e));
 	}
 
-	
-	public float getBGMVolume(){
+	public float getBGMVolume() {
 		return BGM_VOLUME;
 	}
-	
-	public void setVolume(float f){
+
+	public void setVolume(float f) {
 		BGM_VOLUME = f;
 	}
-	
-	public float getFXVolume(){
+
+	public float getFXVolume() {
 		return FX_VOLUME;
 	}
-	
-	public void setFXVolume(float f){
+
+	public void setFXVolume(float f) {
 		FX_VOLUME = f;
 	}
-	
-	public String soundCode(Entity e){
+
+	public String soundCode(Entity e) {
 		return e.hashCode() + "";
 	}
-	
-	
+
+	public void playStartUpSound() {
+		soundSys.quickPlay(false, lib.getFXSound("startUpSound"), false, 1.0f,
+				1.0f, 1.0f, SoundSystemConfig.ATTENUATION_NONE, 0.5f);
+	}
+
 }
