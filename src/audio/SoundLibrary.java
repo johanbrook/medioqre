@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import model.weapon.AbstractWeapon;
+
 import event.Event;
 import event.Event.Property;
 
@@ -41,8 +43,8 @@ public class SoundLibrary {
 	}
 
 	// Weapon Sound Library
-	private static Map<Class, String> initializeWeaponSoundLibrary() {
-		Map<Class, String> weapon = new HashMap<Class, String>();
+	private static Map<Class<?>, String> initializeWeaponSoundLibrary() {
+		Map<Class<?>, String> weapon = new HashMap<Class<?>, String>();
 		
 		weapon.put(model.weapon.MachineGun.class, "http://theboxofficial.com/work/gun.wav");
 		weapon.put(model.weapon.Grenade.class, "Grenade.... BOOOOM");
@@ -74,14 +76,13 @@ public class SoundLibrary {
 	 * sound code is invalid, null is given back.
 	 */
 
-	public static String getWeaponSound(Class code) {
+	public static String getWeaponSound(Class<?> code) {
 
 		return weaponSoundLibrary.get(code);
 
 	}
 
 	public static String getBackgroundMusic(int id) {
-
 		return backgroundMusicLibrary.get(id);
 
 	}
