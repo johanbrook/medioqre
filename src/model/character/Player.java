@@ -12,6 +12,10 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import event.Event;
+import event.EventBus;
+import event.Event.Property;
 import model.weapon.*;
 
 
@@ -30,6 +34,9 @@ public class Player extends AbstractCharacter {
 	
 	public void setCurrentWeapon(int slot) {
 		setCurrentWeapon(this.weaponbelt.get(slot));
+		
+		EventBus.INSTANCE.publish( new Event(Property.CHANGED_WEAPON, getCurrentWeapon()) );
+		System.out.println("Current weapon is " + getCurrentWeapon());
 	}
 	
 	public void setCurrentWeapon(Class<? extends AbstractWeapon> type) {

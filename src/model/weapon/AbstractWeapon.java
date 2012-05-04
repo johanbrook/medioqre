@@ -50,6 +50,12 @@ public abstract class AbstractWeapon {
 			return null;
 		}
 	}
+	
+	
+	@Override
+	public String toString() {
+		return "["+this.getClass()+"] "+super.toString() + " [ammo:"+this.ammo+"]";
+	}
 
 
 	public abstract Projectile getProjectile();

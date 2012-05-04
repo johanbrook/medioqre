@@ -22,6 +22,7 @@ public class NavigationController implements KeyListener, IMessageSender {
 	private NavigationKeyQueue navKeys;
 	private NavigationKeyQueue cachedKeys;
 	private Map<Integer, Key> keyMap;
+	private Map<NavigationKey, Integer> weaponMap;
 	
 	private Messager messager = new Messager();
 	
@@ -30,6 +31,8 @@ public class NavigationController implements KeyListener, IMessageSender {
 	private long start;
 	private final double EPSILON = 0.2;
 	
+	/** True if the navigation keys should be active, i.e. used for navigating */
+	private boolean doNavigation = true;
 	
 	private NavigationKey up;
 	private NavigationKey down;
@@ -43,8 +46,15 @@ public class NavigationController implements KeyListener, IMessageSender {
 	 * Create a new NavigationController.
 	 */
 	public NavigationController() {
-
 		initKeys();
+		
+		// Map keys to certain slots in the weapon chooser. These
+		// slots should later map to weapons in the belt.
+		this.weaponMap = new HashMap<NavigationKey, Integer>();
+		this.weaponMap.put(up, 0);
+		this.weaponMap.put(left, 1);
+		this.weaponMap.put(right, 2);
+//		this.weaponMap.put(down, 3);
 	}
 	
 	@Override
@@ -77,17 +87,21 @@ public class NavigationController implements KeyListener, IMessageSender {
 				
 			}
 		});
-		
+
 		this.weaponModifier = new Key("chose_weapon", new Callable() {
 			@Override
 			public void on() {
 				System.out.println("Show weapon menu");
+				doNavigation = false;
+				System.out.println("Navigation is inactive");
 				EventBus.INSTANCE.publish(new Event(Property.WEAPON_MENU_SHOW));
 			}
 
 			@Override
 			public void off() {
 				System.out.println("Hide weapon menu");
+				doNavigation = true;
+				System.out.println("Navigation is active");
 				EventBus.INSTANCE.publish(new Event(Property.WEAPON_MENU_HIDE));
 			}
 		});
@@ -146,6 +160,14 @@ public class NavigationController implements KeyListener, IMessageSender {
 	}
 	
 	
+	private void chooseWeapon(NavigationKey key) {
+		System.out.println(key + " was pressed, is weapon slot "+ this.weaponMap.get(key));
+		
+		if(this.weaponMap.get(key) != null)
+			this.messager.sendMessage(new Event(Property.CHANGED_WEAPON, this.weaponMap.get(key)));
+	}
+	
+	
 	@Override
 	public void keyPressed(KeyEvent evt) {
 		Key a = this.keyMap.get(evt.getKeyCode());
@@ -157,7 +179,10 @@ public class NavigationController implements KeyListener, IMessageSender {
 				this.isQuick = false;
 				this.navKeys.add((NavigationKey) a);
 				
-				refreshDirection();
+				if(this.doNavigation){
+					refreshDirection();
+				}
+				
 			}
 			else{
 				a.fire();
@@ -177,7 +202,12 @@ public class NavigationController implements KeyListener, IMessageSender {
 				checkIsQuick();
 				this.navKeys.remove(a);
 				
-				refreshDirection();
+				if(this.doNavigation) {
+					refreshDirection();
+				}
+				else {
+					chooseWeapon((NavigationKey) a);
+				}
 			}
 			else {
 				a.fireUp();

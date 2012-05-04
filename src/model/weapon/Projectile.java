@@ -81,6 +81,11 @@ public class Projectile extends Entity {
 	}
 	
 	@Override
+	public String toString() {
+		return "["+this.getClass()+"] "+super.toString() + " [owner/type:"+this.owner.toString()+"]";
+	}
+	
+	@Override
 	public void move(double dt) {
 		super.move(dt);
 		

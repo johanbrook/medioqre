@@ -30,7 +30,7 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 
 	private Messager messager = new Messager();
 	
-	private AbstractCharacter player;
+	private Player player;
 	private List<Enemy> enemies;
 
 	private List<CollidableObject> objects;
@@ -67,7 +67,7 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 			if (projectile != null){
 				projectile.addReceiver(this);
 				this.objects.add(projectile);
-				System.out.println("Did add projectile");
+				System.out.println("Did add projectile of type: "+projectile);
 			}else {
 				System.out.println("Out of ammo");
 			}
@@ -100,8 +100,13 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 			enemyProjectile.addReceiver(this);
 			this.objects.add(enemyProjectile);
 			break;
+		
+		case CHANGED_WEAPON:
+			int slot = (Integer) evt.getValue();
+			this.player.setCurrentWeapon(slot);
+			
+			break;
 		}
-
 	}
 
 	
