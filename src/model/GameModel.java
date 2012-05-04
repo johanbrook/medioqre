@@ -61,6 +61,7 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 		case DID_STOP:
 			this.player.stop(); 
 			break;
+			
 		case DID_FIRE:
 			Projectile projectile = this.player.attack();
 			if (projectile != null){
@@ -71,11 +72,13 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 				System.out.println("Out of ammo");
 			}
 			break;
+			
 		case CHANGED_DIRECTION:
 			
 			this.player.start();
 			this.player.setDirection((Direction) evt.getValue());
 			break;
+			
 		case WAS_DESTROYED:
 			this.objects.remove(evt.getValue());
 			
@@ -84,11 +87,14 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 				this.enemies.remove(evt.getValue());
 				this.messager.sendMessage(evt);
 				checkEnemiesLeft();
+				
 			} else if (evt.getValue() instanceof Player){
 				gameOver();
 			}
+			
 			System.out.println(evt.getValue().getClass().getSimpleName() + " was destroyed");
 			break;
+			
 		case DID_ATTACK:
 			Projectile enemyProjectile = (Projectile) evt.getValue();
 			enemyProjectile.addReceiver(this);
@@ -118,6 +124,7 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 	}
 
 	private void addItems() {
+		
 		for(int i = 0; i < 5; i++) {
 			AmmoCrate tempAmmo = new AmmoCrate(30, 30+i*2, 30+i*2);
 			tempAmmo.addReceiver(this);
