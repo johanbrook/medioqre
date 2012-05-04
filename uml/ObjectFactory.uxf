@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="11.5">
+  <zoom_level>10</zoom_level>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>430</x>
+      <y>140</y>
+      <w>430</w>
+      <h>340</h>
+    </coordinates>
+    <panel_attributes> 
+ObjectFactory
+ 
+--
+Setup
++ setLevel(Level)
++ getLevels:Level[]
+--
+--
+Model
++ newPlayer:Player
++ newEnemiesForWave(int waveNumber):List&lt;Enemy&gt;
++ newItemsForWave(int waveNumber):List&lt;CollectableItem&gt;
++ newWalls:List&lt;Wall&gt;
++ newProjectile(Weapon owner):Projectile
++ newWeapons:List&lt;Weapon&gt;
+--
+ViewController
++ newActor(Entity):Actor
++ newTileMap:TileMap
++ newScreen:Screen
+--
+AIController
++ getCollidables:boolean[][]</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
