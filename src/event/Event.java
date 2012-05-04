@@ -31,7 +31,8 @@ public class Event {
 		FIRED_WEAPON_SUCCESS,
 		FIRED_WEAPON_FAIL,
 		NEW_WAVE,
-		GAME_OVER;
+		GAME_OVER,
+		NEW_GAME;
 	}
 	
 	private final Property name;

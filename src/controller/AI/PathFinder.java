@@ -30,11 +30,19 @@ public class PathFinder {
 		for (int i = 0; i < this.rows; i++) {
 			for (int l = 0; l < this.columns; l++) {
 				logicList[i][l] = new AStarTile(i,l);
-				//TODO set solid if this place in gameworld is solid
 			}
 		}
 		generateNeighbors();
-
+	}
+	
+	public void initWalls(boolean [][] gameBoard){
+		for (int i = 0; i < this.rows; i++) {
+			for (int l = 0; l < this.columns; l++) {
+				if (gameBoard [i][l]){
+					this.logicList[i][l].setSolid(true);
+				}
+			}
+		}
 	}
 
 	/**

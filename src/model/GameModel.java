@@ -53,7 +53,7 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 		this.objects = new CopyOnWriteArrayList<CollidableObject>();
 		this.enemies = new ArrayList<Enemy>();
 		
-		initPlayer();
+		
 	}
 
 
@@ -111,6 +111,13 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 			
 			break;
 		}
+	}
+	
+	public void newGame(){
+		initPlayer();
+		this.messager.sendMessage(new Event(Event.Property.NEW_GAME,this));
+		
+		
 	}
 
 	
