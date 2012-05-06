@@ -26,6 +26,7 @@ import event.IMessageSender;
 import event.Event.Property;
 import event.IMessageListener;
 import event.Messager;
+import factory.ObjectFactory;
 
 /**
  * Model for a game.
@@ -155,7 +156,7 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 	public void newWave() {
 		this.currentWave++;
 
-		initEnemies(2*this.currentWave);
+		initEnemies();
 		addItems(1);
 		
 		Event evt = new Event(Property.NEW_WAVE, this);
@@ -178,17 +179,23 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 		}
 	}
 
-	private void initEnemies(int amount) {
+	private void initEnemies() {
+		this.objects.removeAll(this.enemies);
 		this.enemies.clear();
-
-		for (int i = 0; i < amount; i++) {
-			Enemy temp = new Enemy(10, new Rectangle(20+i*2, 20+i*2, 28, 48), new Dimension(20,20), 0, 16);
+		
+		List<Enemy> tempEnemies = ObjectFactory.newEnemiesForWave(this.currentWave);
+		
+		System.out.println("Enemies received");
+		System.out.println(tempEnemies);
+		
+		for(Enemy temp : tempEnemies) {
 			temp.addReceiver(this);
-			this.enemies.add(temp);
-			this.objects.add(temp);
 		}
-
-		System.out.println("** Enemies added");
+		
+		this.enemies.addAll(tempEnemies);
+		this.objects.addAll(tempEnemies);
+		
+		System.out.println("** "+ tempEnemies.size() +" enemies added");
 	}
 
 	private void initPlayer() {
