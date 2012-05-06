@@ -20,33 +20,43 @@ import tilemap.TileSheet;
 
 public class ResourceLoader {
 	
-	public static String loadJSONStringFromAbsolutePath(String absolutePath)
-	{
+	
+	public static String loadJSONStringFromStream(InputStream s) {
+		if(s == null) {
+			throw new IllegalArgumentException("Input stream can't be null");
+		}
+		
 		try {
-			InputStream input = new FileInputStream(new File(absolutePath));
-			String load = IOUtils.toString(input);
-			return load;
+			return IOUtils.toString(s);
+
+		} catch (IOException e) {
+			System.err.println(e.getMessage());
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
+	public static String loadJSONStringFromAbsolutePath(String absolutePath) {
+		
+		try {
+			return loadJSONStringFromStream(new FileInputStream(new File(absolutePath)));
+			
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.err.println(e.getMessage());
 			e.printStackTrace();
 		}
+		
 		return null;
 	}
-	public static String loadJSONStringFromResources(String resource)
-	{
-		try {
-			InputStream input = ClassLoader.getSystemResourceAsStream("spritesheets/json/"+resource);
-			String load = IOUtils.toString(input);
-			return load;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
+	
+	
+	public static String loadJSONStringFromResources(String resource) {
+		
+		return loadJSONStringFromStream(ClassLoader.getSystemResourceAsStream(resource));		
 	}
+	
+	
 	public static TileMap loadTileMapFromAbsolutePath(String absolutePath)
 	{
 		try {
@@ -59,16 +69,18 @@ public class ResourceLoader {
 			
 			return tileMap;
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+			System.err.println(e.getMessage());
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.err.println(e.getMessage());
 			e.printStackTrace();
 		}
 		System.out.println("Could not load: " + absolutePath);
 		
 		return null;
 	}
+	
+	
 	public static TileMap loadTileMapFromResources(String resource)
 	{
 		try {			
@@ -80,16 +92,18 @@ public class ResourceLoader {
 			
 			return tileMap;
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+			System.err.println(e.getMessage());
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.err.println(e.getMessage());
 			e.printStackTrace();
 		}
 		System.out.println("Could not load: " + resource);
 		
 		return null;
 	}
+	
+	
 	public static TileSheet loadTileSheetFromAbsolutePath(String absolutePath)
 	{
 		try {
@@ -106,6 +120,8 @@ public class ResourceLoader {
 		}
 		return null;
 	}
+	
+	
 	public static TileSheet loadTileSheetFromResource(String resource)
 	{
 		try {
@@ -113,10 +129,10 @@ public class ResourceLoader {
 			String load = IOUtils.toString(input);
 			return new TileSheet(new JSONObject(load));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.err.println(e.getMessage());
 			e.printStackTrace();
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
+			System.err.println(e.getMessage());
 			e.printStackTrace();
 		}
 		return null;

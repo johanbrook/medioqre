@@ -132,7 +132,7 @@ public class ViewController implements IEventHandler, GLEventListener {
 
 				this.player = new Actor(new JSONObject(
 						ResourceLoader
-								.loadJSONStringFromResources("frank.actor")),
+								.loadJSONStringFromResources("spritesheets/json/frank.actor")),
 						gm.getPlayer());
 				this.player.setCurrentAnimation("moveS");
 				this.screen.addDrawableToLayer(this.player, 1);
@@ -162,7 +162,7 @@ public class ViewController implements IEventHandler, GLEventListener {
 						newA = new Actor(
 								new JSONObject(
 										ResourceLoader
-												.loadJSONStringFromResources("walker1.actor")),
+												.loadJSONStringFromResources("spritesheets/json/walker1.actor")),
 								(Entity) e);
 						this.enemies.put(e, newA);
 						this.screen.addDrawableToLayer(newA, 1);
@@ -175,7 +175,7 @@ public class ViewController implements IEventHandler, GLEventListener {
 						newA = new Actor(
 								new JSONObject(
 										ResourceLoader
-												.loadJSONStringFromResources("gameitems.actor")),
+												.loadJSONStringFromResources("spritesheets/json/gameitems.actor")),
 								e);
 						this.items.put(e, newA);
 						this.screen.addDrawableToLayer(newA, 1);
@@ -194,7 +194,7 @@ public class ViewController implements IEventHandler, GLEventListener {
 						newA = new Actor(
 								new JSONObject(
 										ResourceLoader
-												.loadJSONStringFromResources("machinegun_projectile.actor")),
+												.loadJSONStringFromResources("spritesheets/json/machinegun_projectile.actor")),
 								(CollidableObject) evt.getValue());
 
 						this.projectiles.put((CollidableObject) evt.getValue(),
@@ -214,7 +214,7 @@ public class ViewController implements IEventHandler, GLEventListener {
 			try {
 				newA = new Actor(new JSONObject(
 						ResourceLoader
-								.loadJSONStringFromResources("portal.actor")),
+								.loadJSONStringFromResources("spritesheets/json/portal.actor")),
 						(CollidableObject) p);
 				this.items.put((CollidableObject) p, newA);
 				this.screen.addDrawableToLayer(newA, 1);
