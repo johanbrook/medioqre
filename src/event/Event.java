@@ -32,8 +32,9 @@ public class Event {
 		FIRED_WEAPON_FAIL,
 		NEW_WAVE,
 		GAME_OVER,
-		NEW_GAME;
-	}
+		NEW_GAME,
+		PORTAL_CREATED
+	};
 	
 	private final Property name;
 	private final Object value;
