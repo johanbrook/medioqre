@@ -193,7 +193,7 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 	}
 
 	private void initPlayer() {
-		this.player = new Player();
+		this.player = new Player(30, new Rectangle(28, 48), new Dimension(20,20), 0, 16);
 		this.player.setPosition(1000, 100);
 		this.objects.add(this.player);
 		this.player.addReceiver(this);
