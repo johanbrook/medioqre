@@ -9,13 +9,12 @@ package model.character;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import event.Event;
 import event.EventBus;
 import event.Event.Property;
+import factory.ObjectFactory;
 import model.weapon.*;
 
 
@@ -29,8 +28,7 @@ public class Player extends AbstractCharacter {
 	public Player(int speed, Rectangle box, Dimension size, int offsetX, int offsetY){
 		super(speed, box, size, offsetX, offsetY);
 
-		AbstractWeapon[] temp = {new MachineGun(this, 10), new Sword(this, -1), new Grenade(this, 4), new PortalGun(this, -1)};
-		this.weaponbelt = new ArrayList<AbstractWeapon>(Arrays.asList(temp));
+		this.weaponbelt = ObjectFactory.newWeaponBelt(this);
 
 		setCurrentWeapon(MachineGun.class);
 	}

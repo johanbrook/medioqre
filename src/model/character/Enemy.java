@@ -10,7 +10,6 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-import model.weapon.Melee;
 import event.Event;
 import event.Event.Property;
 import event.EventBus;
@@ -18,9 +17,7 @@ import event.EventBus;
 public class Enemy extends AbstractCharacter {
 	
 	public Enemy(int movementSpeed, Rectangle collBox, Dimension size, int xoffset, int yoffset) {
-		super(movementSpeed, collBox, size, xoffset, yoffset);
-		
-		setCurrentWeapon(new Melee(this, 10));
+		super(movementSpeed, collBox, size, xoffset, yoffset);		
 	}
 
 	public void getPushed(Enemy e){
