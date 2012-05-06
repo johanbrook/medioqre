@@ -77,10 +77,11 @@ public class AudioController implements IEventHandler {
 	 */
 
 	public void playerWalk() {
-		soundSys.newSource(false, "playerWalk", lib.getFXSound("walk"), false,
-				game.getPlayer().getPosition().x, game.getPlayer()
-						.getPosition().y, 1.0f,
+		soundSys.newSource(false, "playerWalk", lib.getFXSound("walk"), "walk.wav" , false,
+				1f,1f, 1.0f,
 				SoundSystemConfig.ATTENUATION_NONE, 0.5f);
+		
+		soundSys.play("playerWalk");
 	}
 
 	public void stopPlayerWalk() {
@@ -112,7 +113,7 @@ public class AudioController implements IEventHandler {
 	}
 
 	public void playWeaponSound(Class<?> input) {
-	
+
 	}
 
 	@Override
@@ -133,13 +134,13 @@ public class AudioController implements IEventHandler {
 
 				// Player Walking
 				if (evt.getProperty() == Event.Property.DID_MOVE
-						&& !soundSys.playing("walk")) {
+						&& !soundSys.playing("playerWalk")) {
 					playerWalk();
 
 				}
 
 				if (evt.getProperty() == Event.Property.DID_STOP) {
-					 stopPlayerWalk();
+					stopPlayerWalk();
 				}
 
 				// Pickup Items
@@ -171,7 +172,6 @@ public class AudioController implements IEventHandler {
 
 		// Weapons
 		if (evt.getValue() instanceof model.weapon.AbstractWeapon) {
-			
 
 		}
 
@@ -218,12 +218,13 @@ public class AudioController implements IEventHandler {
 	}
 
 	public String soundCode(Entity e) {
-		return e.hashCode() + "";
+		return "sc_" + e.hashCode();
 	}
 
 	public void playStartUpSound() {
-		soundSys.quickPlay(false, lib.getFXSound("startUpSound"), false, 1.0f,
-				1.0f, 1.0f, SoundSystemConfig.ATTENUATION_NONE, 0.5f);
+		soundSys.newSource(false, "startUpSound", lib.getStartUpSound(),
+				"startUpSound.wav", false, 0.5f, 0.5f, 1f, 1, 1f);
+		soundSys.play("startUpSound");
 	}
 
 }
