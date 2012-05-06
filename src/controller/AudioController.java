@@ -95,11 +95,6 @@ public class AudioController implements IEventHandler {
 		soundSys.cleanup();
 	}
 
-	public void reInit() {
-		shutdown();
-		soundSys = new SoundSystem();
-	}
-
 	public void update() {
 
 		soundSys.setListenerPosition(game.getPlayer().getPosition().x, game
@@ -117,8 +112,7 @@ public class AudioController implements IEventHandler {
 	}
 
 	public void playWeaponSound(Class<?> input) {
-		soundSys.quickPlay(true, SoundLibrary.getWeaponSound(new model.weapon.MachineGun(new Object())), false, 1,
-				1, 1, 1, 0);
+	
 	}
 
 	@Override
@@ -177,7 +171,7 @@ public class AudioController implements IEventHandler {
 
 		// Weapons
 		if (evt.getValue() instanceof model.weapon.AbstractWeapon) {
-			playWeaponSound(evt.getValue().getClass());
+			
 
 		}
 

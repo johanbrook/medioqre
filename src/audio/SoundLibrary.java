@@ -19,10 +19,10 @@ import event.Event.Property;
 
 public class SoundLibrary {
 
-	public static void main(String[] mamma){		
-		System.out.println(c.getResource("sounds/fx/walk.wav").toString().substring(5));
-	}
-	
+//	public static void main(String[] mamma){		
+//		System.out.println(c.getResource("sounds/fx/walk.wav").toString().substring(5));
+//	}
+//	
 	
 	private final Map<String, String> fxSoundLibrary = initializeFXSoundLibrary();
 	private static final Map<Integer, String> backgroundMusicLibrary = initializeBackgroundMusicLibrary();
