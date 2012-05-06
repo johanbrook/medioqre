@@ -11,13 +11,10 @@ import model.weapon.Projectile.Range;
 
 public class Grenade extends AbstractWeapon {
 
-	private final static int INITIAL_AMMO = 4;
-	private final static int DAMAGE = 10;
-	
 	private Projectile projectile;
 	
-	public Grenade(AbstractCharacter owner) {
-		super(owner, INITIAL_AMMO);
+	public Grenade(AbstractCharacter owner, int ammo) {
+		super(owner, ammo);
 	}
 	
 

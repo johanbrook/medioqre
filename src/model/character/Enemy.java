@@ -20,7 +20,7 @@ public class Enemy extends AbstractCharacter {
 	public Enemy(int movementSpeed, Rectangle collBox, Dimension size, int xoffset, int yoffset) {
 		super(movementSpeed, collBox, size, xoffset, yoffset);
 		
-		setCurrentWeapon(new Melee(this));
+		setCurrentWeapon(new Melee(this, 10));
 	}
 
 	public void getPushed(Enemy e){
