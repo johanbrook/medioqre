@@ -107,7 +107,10 @@ public class AudioController implements IEventHandler {
 
 	}
 
-	public void playWeaponSound(Class<?> input) {
+	public void playWeaponSound(Class<?> wType) {
+
+		String m = wType.toString();
+		System.out.println(m);
 
 	}
 
@@ -166,8 +169,8 @@ public class AudioController implements IEventHandler {
 		}
 
 		// Weapons
-		if (evt.getValue() instanceof model.weapon.AbstractWeapon) {
-
+		if (evt.getProperty() == Event.Property.FIRED_WEAPON_SUCCESS) {
+			playWeaponSound(game.getPlayer().getCurrentWeapon().getClass());
 		}
 
 		// FX
@@ -175,12 +178,12 @@ public class AudioController implements IEventHandler {
 	}
 
 	private void playZombiewalk(Enemy e) {
-		
-		 soundSys.newSource(true, soundCode(e), lib.getFXSound("walk"),
-		 "walk.wav", true, (float)1, (float)1, (float)1,
-		 SoundSystemConfig.ATTENUATION_ROLLOFF, 0.5f);
 
-		 soundSys.play(soundCode(e));
+		soundSys.newSource(true, soundCode(e), lib.getFXSound("walk"),
+				"walk.wav", true, (float) 1, (float) 1, (float) 1,
+				SoundSystemConfig.ATTENUATION_ROLLOFF, 0.5f);
+
+		soundSys.play(soundCode(e));
 
 	}
 
