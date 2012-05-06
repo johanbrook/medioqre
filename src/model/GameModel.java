@@ -36,12 +36,12 @@ import event.Messager;
 public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 
 	private Messager messager = new Messager();
-	
+
 	private Player player;
 	private List<Enemy> enemies;
 
 	private List<CollidableObject> objects;
-	
+
 	// Portals
 	private Portal[] portals;
 	private List<CollidableObject> portalVictims;
@@ -76,58 +76,58 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 		case DID_STOP:
 			this.player.stop(); 
 			break;
-			
+
 		case DID_FIRE:
 			Projectile projectile = this.player.attack();
 			if (projectile != null){
 				projectile.addReceiver(this);
 				this.objects.add(projectile);
 				System.out.println("Did add projectile of type: "+projectile.getOwner().getClass().getSimpleName());
-				
+
 			}else {
 				System.out.println("Out of ammo");
 			}
 			break;
-			
+
 		case CHANGED_DIRECTION:
-			
+
 			this.player.start();
 			this.player.setDirection((Direction) evt.getValue());
 			break;
-			
+
 		case WAS_DESTROYED:
-			
-			
+
+
 			if(evt.getValue() instanceof Projectile) {
 				Projectile p = (Projectile) evt.getValue();
 				if(p.getOwner() instanceof PortalGun) {
 					PortalGun g = (PortalGun) p.getOwner();
-					
+
 					deployPortal(g.getMode(), p.getPosition());
 				}
 			}
-			
+
 			if(evt.getValue() instanceof Enemy) {
 				this.enemies.remove(evt.getValue());
 				this.messager.sendMessage(evt);
 				checkEnemiesLeft();
-				
+
 			} else if (evt.getValue() instanceof Player){
 				gameOver();
 			}
 			this.objects.remove(evt.getValue());
 			System.out.println(evt.getValue().getClass().getSimpleName() + " was destroyed");
 			break;
-			
+
 		case DID_ATTACK:
 			Projectile enemyProjectile = (Projectile) evt.getValue();
 			enemyProjectile.addReceiver(this);
 			this.objects.add(enemyProjectile);
 			break;
-		
+
 		case CHANGED_WEAPON:
 			int slot = (Integer) evt.getValue();
-			
+
 			if(this.player.getCurrentWeapon() instanceof PortalGun && slot == 3) {
 				PortalGun g = (PortalGun) this.player.getCurrentWeapon();
 				g.switchMode();
@@ -135,17 +135,17 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 			else{
 				this.player.setCurrentWeapon(slot);
 			}
-			
+
 			break;
 		}
 	}
-	
+
 	public void newGame(){
 		initPlayer();
 		this.messager.sendMessage(new Event(Event.Property.NEW_GAME,this));
 	}
 
-	
+
 	private void gameOver(){
 		EventBus.INSTANCE.publish(new Event(Event.Property.GAME_OVER, this));
 		this.objects.clear();
@@ -157,14 +157,14 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 
 		initEnemies(2*this.currentLevel);
 		addItems(5);
-		
+
 		Event evt = new Event(Property.NEW_WAVE, this.enemies);
 		this.messager.sendMessage(evt);
 		EventBus.INSTANCE.publish(evt);
 	}
 
 	private void addItems(int amount) {
-		
+
 		for(int i = 0; i < amount; i++) {
 			AmmoCrate tempAmmo = new AmmoCrate(30, 30+i*2, 30+i*2);
 			tempAmmo.addReceiver(this);
@@ -180,14 +180,14 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 
 	private void initEnemies(int amount) {
 		this.enemies.clear();
-		
+
 		for (int i = 0; i < amount; i++) {
 			Enemy temp = new Enemy(10, 10, 20+i*2, 20+i*2);
 			temp.addReceiver(this);
 			this.enemies.add(temp);
 			this.objects.add(temp);
 		}
-		
+
 		System.out.println("** Enemies added");
 	}
 
@@ -198,22 +198,22 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 		this.player.addReceiver(this);
 	}
 
-	
+
 	private void deployPortal(Mode mode, Point position) {
-		
+
 		for(int i = 0; i < this.portals.length; i++) {
-			
+
 			if(this.portals[i] == null) {
 				Portal p = new Portal(mode, new Rectangle(position.x, position.y, 20, 20), new Dimension(20, 20), 0, 0);
 				EventBus.INSTANCE.publish(new Event(Property.PORTAL_CREATED, p));
 				this.objects.add(p);
 				this.portals[i] = p;
-				
+
 				if(i == 1) {
 					p.setSisterPortal(this.portals[0]);
 					this.portals[0].setSisterPortal(p);
 				}
-				
+
 				return;
 			}
 			else if(this.portals[i].getMode() == mode) {
@@ -255,15 +255,16 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 
 			if(t != w && t.isColliding(w)) {
 				
+
 				Direction currentDirection = t.getDirection();				
 				Direction blockedDirection = t.getDirectionOfObject(w);
-				
+
 				if(t instanceof Projectile && !(w instanceof ICollectableItem || w instanceof Portal)) {
 					t.destroy();
-					
+
 					if (w instanceof AbstractCharacter){
 						((AbstractCharacter) w).takeDamage(((Projectile) t).getDamage());
-						
+
 						System.out.println(w.getClass().getSimpleName()+" was hit, now has " + ((AbstractCharacter) w).getHealth() + " hp");
 					}
 
@@ -271,35 +272,40 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 				} 
 				else if (w instanceof ICollectableItem && t instanceof Player){
 					((ICollectableItem) w).pickedUpBy( ((Player) t));
-					
+
 					if (w instanceof AmmoCrate)
 						System.out.println("Picked up AmmoCrate, current ammo: " + this.player.getCurrentWeapon().getCurrentAmmo());
 					if (w instanceof MedPack)
 						System.out.println("Picked up MedPack, current HP: " + this.player.getHealth());
 
 				}
-				
+
 				if(w instanceof Portal) {
 					Portal p = (Portal) w;
-					
+
 					if(p.getSisterPortal() != null) {
-						
+
 						if(!this.portalVictims.contains(t)) {
 							// Teleport
 							t.setPosition(p.getSisterPortal().getPosition());
 							this.portalVictims.add(t);
 						}
 					}
-					
+
 				}
-				
-				
-				
+
+
+
 				if(!(w instanceof ICollectableItem) && !(w instanceof Portal)) {
 					if(directionIsBlocked(currentDirection, blockedDirection)){
 						
-						t.stop();
-					}
+							t.stop();
+							
+							if (t instanceof Enemy && w instanceof Enemy){
+								((Enemy)w).getPushed((Enemy)t);
+							}
+						}
+					
 					else {
 						//w.start();
 					}
@@ -386,8 +392,8 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 		moveEntities(dt);
 		checkIfLeftPortal();
 	}
-	
-	
+
+
 	private void checkIfLeftPortal() {
 		for(CollidableObject obj : this.portalVictims) {
 			boolean isColliding = false;
@@ -401,7 +407,7 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 		}
 	}
 
-	
+
 	private void checkEnemiesLeft() {
 		if(this.enemies.isEmpty()) {
 			this.newWave();
