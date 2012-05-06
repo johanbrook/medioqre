@@ -50,7 +50,7 @@ public class AIController implements IMessageSender, IMessageListener {
 //			this.pathfinder.initWalls(           ObjectFactory.getWalls()     );
 			break;
 		case NEW_WAVE:
-			this.setEnemies((List<Enemy>) evt.getValue() );
+			this.setEnemies(((GameModel) evt.getValue()).getEnemies());
 			break;
 
 		case WAS_DESTROYED:
