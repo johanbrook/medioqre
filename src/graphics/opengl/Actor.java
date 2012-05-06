@@ -8,6 +8,9 @@ import javax.media.opengl.GLAutoDrawable;
 
 import model.CollidableObject;
 import model.Entity;
+import model.item.AmmoCrate;
+import model.item.ICollectableItem;
+import model.item.MedPack;
 import model.weapon.Portal;
 import model.weapon.PortalGun;
 import model.weapon.Projectile;
@@ -15,6 +18,8 @@ import model.weapon.Projectile;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import quicktime.streaming.MediaParams;
 
 import core.GLRenderableObject;
 import core.JSONSerializable;
@@ -246,45 +251,54 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 
 			if (this.object instanceof Entity) {
 				Entity entity = (Entity) this.object;
-				
-				switch (entity.getDirection()) {
-				case SOUTH:
-					animation = entity.isMoving() ? "moveS" : "stopS";
-					break;
-				case SOUTH_WEST:
-					animation = entity.isMoving() ? "moveSW" : "stopSW";
-					break;
-				case WEST:
-					animation = entity.isMoving() ? "moveW" : "stopW";
-					break;
-				case NORTH_WEST:
-					animation = entity.isMoving() ? "moveNW" : "stopNW";
-					break;
-				case NORTH:
-					animation = entity.isMoving() ? "moveN" : "stopN";
-					break;
-				case NORTH_EAST:
-					animation = entity.isMoving() ? "moveNE" : "stopNE";
-					break;
-				case EAST:
-					animation = entity.isMoving() ? "moveE" : "stopE";
-					break;
-				case SOUTH_EAST:
-					animation = entity.isMoving() ? "moveSE" : "stopSE";
-					break;
+
+				if (entity instanceof model.character.AbstractCharacter) {
+					switch (entity.getDirection()) {
+					case SOUTH:
+						animation = entity.isMoving() ? "moveS" : "stopS";
+						break;
+					case SOUTH_WEST:
+						animation = entity.isMoving() ? "moveSW" : "stopSW";
+						break;
+					case WEST:
+						animation = entity.isMoving() ? "moveW" : "stopW";
+						break;
+					case NORTH_WEST:
+						animation = entity.isMoving() ? "moveNW" : "stopNW";
+						break;
+					case NORTH:
+						animation = entity.isMoving() ? "moveN" : "stopN";
+						break;
+					case NORTH_EAST:
+						animation = entity.isMoving() ? "moveNE" : "stopNE";
+						break;
+					case EAST:
+						animation = entity.isMoving() ? "moveE" : "stopE";
+						break;
+					case SOUTH_EAST:
+						animation = entity.isMoving() ? "moveSE" : "stopSE";
+						break;
+					}
+				} else if (entity instanceof Projectile) {
+					Projectile p = (Projectile) this.object;
+					animation = "default";
+				}
+			} else if (this.object instanceof Portal) {
+				Portal p = (Portal) this.object;
+
+				if (p.getMode() == PortalGun.Mode.BLUE)
+					animation = "blue";
+				else if (p.getMode() == PortalGun.Mode.ORANGE)
+					animation = "orange";
+			} else if (this.object instanceof ICollectableItem) {
+				ICollectableItem iCi = (ICollectableItem) this.object;
+				if (iCi instanceof AmmoCrate) {
+					animation = "ammopack";
+				} else if (iCi instanceof MedPack) {
+					animation = "medpack";
 				}
 			}
-			if (this.object instanceof Portal) {
-				Portal p = (Portal) this.object;
-				
-				animation = "default";
-			}
-			if (this.object instanceof Projectile) {
-				Projectile p = (Projectile) this.object;
-				
-				animation = "default";
-			}
-			
+
 			this.setCurrentAnimation(animation);
 			this.rectangle.setX(this.object.getPosition().x);
 			this.rectangle.setY(this.object.getPosition().y);
