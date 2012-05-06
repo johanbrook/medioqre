@@ -96,9 +96,6 @@ public class AudioController implements IEventHandler {
 		soundSys.setListenerPosition(game.getPlayer().getPosition().x, game
 				.getPlayer().getPosition().y, AudioConstants.zROLLOFF);
 
-		soundSys.setPosition("walk", game.getPlayer().getPosition().x, game
-				.getPlayer().getPosition().y, 1);
-
 		for (Enemy e : game.getEnemies()) {
 			soundSys.setPosition(soundCode(e), e.getPosition().x,
 					e.getPosition().y, 1);
@@ -109,9 +106,15 @@ public class AudioController implements IEventHandler {
 
 	public void playWeaponSound(Class<?> wType) {
 
-		String m = wType.toString();
-		System.out.println(m);
+		String filename = wType.getName().substring(13) + ".wav";
+		System.out.println(filename);
 
+		soundSys.newSource(false, "playerWeaponSound",
+				lib.getWeaponSound(wType), filename, false, 1f, 1f, 1.0f,
+				SoundSystemConfig.ATTENUATION_NONE, 0.5f);
+		soundSys.setVolume("playerWeaponSound", AudioConstants.WEAPON_VOLUME);
+
+		soundSys.play("playerWeaponSound");
 	}
 
 	@Override
