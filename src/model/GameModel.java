@@ -96,14 +96,14 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 			break;
 			
 		case WAS_DESTROYED:
-			this.objects.remove(evt.getValue());
+			
 			
 			if(evt.getValue() instanceof Projectile) {
 				Projectile p = (Projectile) evt.getValue();
 				if(p.getOwner() instanceof PortalGun) {
 					PortalGun g = (PortalGun) p.getOwner();
 					
-					deployPortal(g.getMode(), g.getOwner().getPosition());
+					deployPortal(g.getMode(), p.getPosition());
 				}
 			}
 			
@@ -115,7 +115,7 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 			} else if (evt.getValue() instanceof Player){
 				gameOver();
 			}
-			
+			this.objects.remove(evt.getValue());
 			System.out.println(evt.getValue().getClass().getSimpleName() + " was destroyed");
 			break;
 			
