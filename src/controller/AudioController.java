@@ -1,10 +1,5 @@
 package controller;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import javax.swing.JOptionPane;
-
 import audio.AudioConstants;
 import audio.SoundLibrary;
 
@@ -77,10 +72,10 @@ public class AudioController implements IEventHandler {
 	 */
 
 	public void playerWalk() {
-		soundSys.newSource(false, "playerWalk", lib.getFXSound("walk"), "walk.wav" , false,
-				1f,1f, 1.0f,
+		soundSys.newSource(false, "playerWalk", lib.getFXSound("walk"),
+				"walk.wav", false, 1f, 1f, 1.0f,
 				SoundSystemConfig.ATTENUATION_NONE, 0.5f);
-		
+
 		soundSys.play("playerWalk");
 	}
 
@@ -180,16 +175,12 @@ public class AudioController implements IEventHandler {
 	}
 
 	private void playZombiewalk(Enemy e) {
+		
+		 soundSys.newSource(true, soundCode(e), lib.getFXSound("walk"),
+		 "walk.wav", true, (float)1, (float)1, (float)1,
+		 SoundSystemConfig.ATTENUATION_ROLLOFF, 0.5f);
 
-		// soundSys.newSource(true, soundCode(e),
-		// lib.getFXSound("walk"), true, 1, 1, 1,
-		// SoundSystemConfig.ATTENUATION_ROLLOFF, 0.5f);
-
-		// soundSys.newSource(true, soundCode(e), lib.getFXSound("walk"),
-		// "walk.wav", true, (float)1, (float)1, (float)1,
-		// SoundSystemConfig.ATTENUATION_ROLLOFF, 0.5f);
-
-		// soundSys.play(soundCode(e));
+		 soundSys.play(soundCode(e));
 
 	}
 

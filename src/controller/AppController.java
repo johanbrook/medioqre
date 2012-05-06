@@ -42,6 +42,7 @@ public class AppController implements Runnable{
 		((IMessageSender) this.game).addReceiver((IMessageListener) this.ai);
 		
 		this.audio = AudioController.getInstance();
+		audio.setGame(game);
 	}
 	
 	
@@ -67,6 +68,7 @@ public class AppController implements Runnable{
 //			TimerTool.start("Update");
 			this.ai.updateAI(dt);
 			this.game.update(dt);
+			audio.update();
 //			TimerTool.stop();
 			
 			
