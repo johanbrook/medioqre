@@ -90,7 +90,7 @@ public class ObjectFactory {
 							player.getJSONObject("position").getInt("y"));
 			
 			p.setHealth(player.getInt("health"));
-			
+			p.setWeaponBelt(newWeaponBelt(p));
 			
 			return p;
 			

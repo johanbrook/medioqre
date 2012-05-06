@@ -27,10 +27,10 @@ public class Player extends AbstractCharacter {
 	 */
 	public Player(int speed, Rectangle box, Dimension size, int offsetX, int offsetY){
 		super(speed, box, size, offsetX, offsetY);
-
-		this.weaponbelt = ObjectFactory.newWeaponBelt(this);
-
-		setCurrentWeapon(MachineGun.class);
+	}
+	
+	public void setWeaponBelt(List<AbstractWeapon> weapons) {
+		this.weaponbelt = weapons;
 	}
 	
 	/**
