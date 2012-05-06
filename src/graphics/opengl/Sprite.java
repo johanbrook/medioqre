@@ -193,7 +193,7 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 	
 	// ************* Interface methods *************
 	@Override
-	public void render(Rectangle object, Rectangle target, GLAutoDrawable canvas)
+	public void render(Rectangle object, Rectangle target, GLAutoDrawable canvas, int zIndex)
 	{
 		if (object != null && object.intersectsRectangle(target)) {
 
@@ -232,16 +232,16 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 			gl.glColor3f(1.0f, 1.0f, 1.0f);
 			
 			gl.glTexCoord2f(tX1, tY1);
-			gl.glVertex2f(rX1, -rY2);
+			gl.glVertex3f(rX1, -rY2, ((float) -zIndex) / 10000f);
 
 			gl.glTexCoord2f(tX2, tY1);
-			gl.glVertex2f(rX2, -rY2);
+			gl.glVertex3f(rX2, -rY2, ((float) -zIndex ) / 10000f);
 
 			gl.glTexCoord2f(tX2, tY2);
-			gl.glVertex2f(rX2, -rY1);
+			gl.glVertex3f(rX2, -rY1, ((float) -zIndex ) / 10000f);
 
 			gl.glTexCoord2f(tX1, tY2);
-			gl.glVertex2f(rX1, -rY1);
+			gl.glVertex3f(rX1, -rY1, ((float) -zIndex ) / 10000f);
 
 			gl.glEnd();
 		}

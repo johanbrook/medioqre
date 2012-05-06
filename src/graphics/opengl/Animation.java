@@ -146,10 +146,10 @@ public class Animation implements JSONSerializable, GLRenderableObject {
 
 	// ************* Interface methods *************
 	@Override
-	public void render(Rectangle object, Rectangle target, GLAutoDrawable canvas)
+	public void render(Rectangle object, Rectangle target, GLAutoDrawable canvas, int zIndex)
 	{
 		this.currentSprite = this.frames[(int) ((this.timePassed / this.durationMillis) * (double) (this.frames.length))];
-		this.currentSprite.render(object, target, canvas);
+		this.currentSprite.render(object, target, canvas, zIndex);
 	}
 
 	@Override

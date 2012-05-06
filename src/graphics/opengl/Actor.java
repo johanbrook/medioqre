@@ -379,10 +379,10 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	}
 
 	@Override
-	public void render(Rectangle object, Rectangle target, GLAutoDrawable canvas)
+	public void render(Rectangle object, Rectangle target, GLAutoDrawable canvas, int zIndex)
 	{
 		if (this.currentAnimation != null)
-			this.currentAnimation.render(object, target, canvas);
+			this.currentAnimation.render(object, target, canvas, this.getY());
 	}
 
 	@Override
