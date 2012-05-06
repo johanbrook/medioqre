@@ -31,15 +31,10 @@ public class TestCollidableObject {
 	private CollidableObject obj;
 	private AbstractCharacter player;
 	
-	@BeforeClass
-	public static void before() {
-		Logger.setLogginEnabled(true);
-	}
-	
 	@Before
 	public void setUp() throws Exception {
-		this.obj = new Player();	// I chose Player since then the sizes would be the same
-		this.player = new Player();
+		this.obj = new Player(30, new Rectangle(20, 20), new Dimension(20, 48), 0, 16);	// I chose Player since then the sizes would be the same
+		this.player = new Player(30, new Rectangle(20, 20), new Dimension(20, 48), 0, 16);
 	}
 
 	@Test

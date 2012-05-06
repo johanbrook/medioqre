@@ -8,7 +8,15 @@ package event;
 
 import static org.junit.Assert.*;
 
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.util.Arrays;
+
 import model.character.Player;
+import model.weapon.AbstractWeapon;
+import model.weapon.Grenade;
+import model.weapon.MachineGun;
+import model.weapon.Melee;
 import model.weapon.Sword;
 
 import org.junit.After;
@@ -25,11 +33,13 @@ public class TestEventBus {
 	@Before
 	public void setUp() throws Exception {
 		this.handler = new Subscriber();
-		this.publisher = new Player();
+		this.publisher = new Player(30, new Rectangle(20, 20), new Dimension(20, 48), 0, 16);
+		AbstractWeapon[] weapons = new AbstractWeapon[] {new Melee(this.publisher, -1)};
+		this.publisher.setWeaponBelt(Arrays.asList(weapons));
 		
 		EventBus.INSTANCE.register(this.handler);
 		
-		this.publisher.setCurrentWeapon(Sword.class);
+		this.publisher.setCurrentWeapon(Melee.class);
 	}
 
 	@Test

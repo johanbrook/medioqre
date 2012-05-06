@@ -29,6 +29,11 @@ public class Player extends AbstractCharacter {
 		super(speed, box, size, offsetX, offsetY);
 	}
 	
+	/**
+	 * Set the current weapon belt of the player.
+	 * 
+	 * @param weapons The weapon belt list
+	 */
 	public void setWeaponBelt(List<AbstractWeapon> weapons) {
 		this.weaponbelt = weapons;
 	}

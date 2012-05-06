@@ -8,11 +8,17 @@ package model;
 
 import static org.junit.Assert.*;
 
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.util.Arrays;
+
 import model.character.Player;
 import model.weapon.*;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import factory.ObjectFactory;
 
 
 
@@ -22,7 +28,16 @@ public class TestPlayer {
 	
 	@Before
 	public void setUp() throws Exception {
-		this.player = new Player();
+		this.player = new Player(30, new Rectangle(20, 20), new Dimension(20, 48), 0, 16);
+	
+		AbstractWeapon[] weapons = new AbstractWeapon[] {new MachineGun(player, 300), new Grenade(player, 4), new Melee(player, -1)};
+		this.player.setWeaponBelt(Arrays.asList(weapons));
+		this.player.setCurrentWeapon(MachineGun.class);
+	}
+	
+	@Test
+	public void testHasWeapon() {
+		assertNotNull(this.player.getCurrentWeapon());
 	}
 	
 	@Test
@@ -60,8 +75,8 @@ public class TestPlayer {
 	
 	@Test
 	public void testSetCurrentWeapon(){
-		AbstractWeapon w = new Sword(this.player);
-		this.player.setCurrentWeapon(Sword.class);
+		AbstractWeapon w = new Melee(this.player, -1);
+		this.player.setCurrentWeapon(Melee.class);
 		
 		assertEquals(w, this.player.getCurrentWeapon());
 	}
