@@ -37,6 +37,8 @@ import model.Entity;
 import model.GameModel;
 import model.character.Enemy;
 import model.character.Player;
+import model.weapon.Portal;
+import model.weapon.PortalGun;
 
 import core.Rectangle;
 import core.Size;
@@ -65,7 +67,7 @@ public class ViewController implements IEventHandler, GLEventListener {
 
 	// Actors
 	private Actor							player;
-	private Map<CollidableObject, Actor>	enemies		= new IdentityHashMap<CollidableObject, Actor>();	;
+	private Map<CollidableObject, Actor>	enemies		= new IdentityHashMap<CollidableObject, Actor>();
 	private Map<CollidableObject, Actor>	projectiles	= new IdentityHashMap<CollidableObject, Actor>();
 	private Map<CollidableObject, Actor>	items		= new IdentityHashMap<CollidableObject, Actor>();
 
@@ -174,6 +176,31 @@ public class ViewController implements IEventHandler, GLEventListener {
 						(CollidableObject) evt.getValue());
 
 				this.projectiles.put((CollidableObject) evt.getValue(), newA);
+				this.screen.addDrawableToLayer(newA, 1);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		if (evt.getProperty() == Event.Property.PORTAL_CREATED) {
+			Portal p = (Portal) evt.getValue();
+			Actor newA;
+			try {
+				if (p.getMode() == PortalGun.Mode.BLUE) {
+				newA = new Actor(
+						new JSONObject(
+								ResourceLoader
+										.loadJSONStringFromResources("portal1.actor")),
+						(CollidableObject) p);
+				} else {
+					newA = new Actor(
+							new JSONObject(
+									ResourceLoader
+											.loadJSONStringFromResources("portal2.actor")),
+							(CollidableObject) p);
+				}
+				this.items.put((CollidableObject) p, newA);
 				this.screen.addDrawableToLayer(newA, 1);
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
