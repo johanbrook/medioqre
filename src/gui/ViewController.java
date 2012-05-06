@@ -39,6 +39,7 @@ import model.character.Enemy;
 import model.character.Player;
 import model.item.AmmoCrate;
 import model.item.ICollectableItem;
+import model.item.MedPack;
 import model.weapon.MachineGun;
 import model.weapon.Portal;
 import model.weapon.PortalGun;
@@ -71,9 +72,9 @@ public class ViewController implements IEventHandler, GLEventListener {
 
 	// Actors
 	private Actor							player;
-	private Map<CollidableObject, Actor>	enemies		= new IdentityHashMap<CollidableObject, Actor>();
-	private Map<CollidableObject, Actor>	projectiles	= new IdentityHashMap<CollidableObject, Actor>();
-	private Map<CollidableObject, Actor>	items		= new IdentityHashMap<CollidableObject, Actor>();
+	private Map<CollidableObject, Actor>	enemies  = new IdentityHashMap<CollidableObject, Actor>();;
+	private Map<CollidableObject, Actor>	projectiles  = new IdentityHashMap<CollidableObject, Actor>();;
+	private Map<CollidableObject, Actor>	items  = new IdentityHashMap<CollidableObject, Actor>();;
 
 	// Tools
 	private GraphicalFPSMeter				fpsmeter;
@@ -129,17 +130,12 @@ public class ViewController implements IEventHandler, GLEventListener {
 				List<CollidableObject> entities = ((GameModel) evt.getValue())
 						.getObjects();
 
-				for (CollidableObject e : entities) {
-					if (e instanceof Player) {
-						this.player = new Actor(
-								new JSONObject(
-										ResourceLoader
-												.loadJSONStringFromResources("frank.actor")),
-								gm.getPlayer());
-						this.player.setCurrentAnimation("moveS");
-						this.screen.addDrawableToLayer(this.player, 1);
-					}
-				}
+				this.player = new Actor(new JSONObject(
+						ResourceLoader
+								.loadJSONStringFromResources("frank.actor")),
+						gm.getPlayer());
+				this.player.setCurrentAnimation("moveS");
+				this.screen.addDrawableToLayer(this.player, 1);
 
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -147,6 +143,16 @@ public class ViewController implements IEventHandler, GLEventListener {
 			this.doneLoading = true;
 		} else if (evt.getProperty() == Event.Property.NEW_WAVE) {
 
+			for (Actor actor : this.projectiles.values()) {
+				this.screen.removeDrawableFromLayer(actor);
+			}
+			for (Actor actor : this.enemies.values()) {
+				this.screen.removeDrawableFromLayer(actor);
+			}
+			for (Actor actor : this.items.values()) {
+				this.screen.removeDrawableFromLayer(actor);
+			}
+			
 			List<CollidableObject> entities = (List) ((GameModel) evt
 					.getValue()).getObjects();
 			for (CollidableObject e : entities) {
@@ -182,7 +188,6 @@ public class ViewController implements IEventHandler, GLEventListener {
 			if (evt.getValue() instanceof Projectile) {
 				Projectile p = (Projectile) evt.getValue();
 
-				
 				if (p.getOwner() instanceof MachineGun) {
 					Actor newA;
 					try {
@@ -221,6 +226,8 @@ public class ViewController implements IEventHandler, GLEventListener {
 			if (evt.getValue() instanceof CollidableObject) {
 				CollidableObject o = (CollidableObject) evt.getValue();
 
+				if (o instanceof AmmoCrate || o instanceof MedPack) System.out.println("Destroying medpack or ammo crate");
+				
 				this.screen.removeDrawableFromLayer(this.enemies.remove(o));
 				this.screen.removeDrawableFromLayer(this.projectiles.remove(o));
 				this.screen.removeDrawableFromLayer(this.items.remove(o));
