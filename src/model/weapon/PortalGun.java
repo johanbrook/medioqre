@@ -11,6 +11,8 @@ import model.weapon.Projectile.Range;
 
 public class PortalGun extends AbstractWeapon {
 
+	private Projectile projectile;
+	
 	public enum Mode {
 		BLUE, ORANGE;
 	}
@@ -37,5 +39,10 @@ public class PortalGun extends AbstractWeapon {
 	@Override
 	public Projectile getProjectile() {
 		return new Projectile(this, 10, 10, 0, Range.SHORT_RANGE, 10);
+	}
+	
+	@Override
+	public void setProjectile(Projectile projectile) {
+		this.projectile = projectile;
 	}
 }

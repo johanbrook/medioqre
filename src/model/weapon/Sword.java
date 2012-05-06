@@ -14,6 +14,8 @@ public class Sword extends AbstractWeapon {
 	private final static int INITIAL_AMMO = -1;
 	private final static int DAMAGE = 10;
 	
+	private Projectile projectile;
+	
 	public Sword(AbstractCharacter owner) {
 		super(owner, INITIAL_AMMO);
 	}
@@ -31,4 +33,8 @@ public class Sword extends AbstractWeapon {
 		return new Projectile(this, 10, 10, DAMAGE, Range.SHORT_RANGE, 30);
 	}
 
+	@Override
+	public void setProjectile(Projectile projectile) {
+		this.projectile = projectile;
+	}
 }

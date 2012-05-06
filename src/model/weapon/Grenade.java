@@ -14,6 +14,8 @@ public class Grenade extends AbstractWeapon {
 	private final static int INITIAL_AMMO = 4;
 	private final static int DAMAGE = 10;
 	
+	private Projectile projectile;
+	
 	public Grenade(AbstractCharacter owner) {
 		super(owner, INITIAL_AMMO);
 	}
@@ -33,4 +35,8 @@ public class Grenade extends AbstractWeapon {
 		return new Projectile(this, 10, 10, 10, Range.MEDIUM_RANGE, 30);
 	}
 	
+	@Override
+	public void setProjectile(Projectile projectile) {
+		this.projectile = projectile;
+	}
 }

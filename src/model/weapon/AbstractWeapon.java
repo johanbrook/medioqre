@@ -87,5 +87,13 @@ public abstract class AbstractWeapon {
 	 * @return The projectile.
 	 */
 	public abstract Projectile getProjectile();
+	
+	
+	/**
+	 * Set the associated projectile for this weapon.
+	 * 
+	 * @param projectile The projectile
+	 */
+	public abstract void setProjectile(Projectile projectile);
 
 }
