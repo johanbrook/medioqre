@@ -23,7 +23,7 @@ public class Enemy extends AbstractCharacter {
 	}
 
 	public Enemy(int movementSpeed, int damage, int x, int y) {
-		super(movementSpeed, new Rectangle(x, y, 16, 16), new Dimension(20,20), 0, 16);
+		super(movementSpeed, new Rectangle(x, y, 28, 48), new Dimension(20,20), 0, 16);
 
 		setCurrentWeapon(new Melee(this));
 	}	
