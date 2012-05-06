@@ -21,6 +21,11 @@ public interface IGameModel {
 	public void update(double delta);
 	
 	/**
+	 * Initiates a new game
+	 */
+	public void newGame();
+	
+	/**
 	 * Get the player
 	 * 
 	 * @return The player

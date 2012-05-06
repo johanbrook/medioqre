@@ -1,6 +1,5 @@
 package model.weapon;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -9,20 +8,10 @@ import java.util.List;
  * The weapon belt class
  * 
  * @author Johan
- * @deprecated 2012-04-26
  */
 public class WeaponBelt {
 	private List<AbstractWeapon> weapons;
 	
-	/**
-	 * Create a new weapon belt with the four standard weapons (machine gun, grenade,
-	 * sword and portal gun).
-	 */
-	public WeaponBelt() {
-//		AbstractWeapon[] temp = {new MachineGun(this), new Sword(this), new Grenade(this)};
-		
-//		this.weapons = new LinkedList<AbstractWeapon>(Arrays.asList(temp));
-	}
 	
 	/**
 	 * Create a new weapon belt from a collection of weapons.

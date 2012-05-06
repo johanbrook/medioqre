@@ -7,6 +7,13 @@ import model.character.Enemy;
 import model.weapon.Projectile;
 import constants.Direction;
 
+/**
+ * Class for representing a player. Each AIPlayer will control one enemy. Keeps track of shortest path between the two, current cooldown and how many updates
+ * have gone since the enemy was last updated.
+ * @author jesperpersson
+ *
+ */
+
 public class AIPlayer {
 	private Enemy unit;
 	private List <Point> path;

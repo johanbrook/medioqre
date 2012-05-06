@@ -8,7 +8,9 @@ package model;
 
 import static org.junit.Assert.*;
 
+import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.sql.Savepoint;
 
 
@@ -43,8 +45,11 @@ public class TestCollidableObject {
 	@Test
 	public void testIsColliding() {
 		
-		CollidableObject collidingObject1 = new Wall(10,10);	// The obj wxh is 16x16, and the wall wxh is 10x10
-		CollidableObject collidingObject2 = new Wall(15,15);
+		CollidableObject collidingObject1 = new ConcreteCollidableObject(
+				new Rectangle(10, 10, 10, 10), new Dimension(10, 10), 0, 0);	// The obj wxh is 16x16, and the wall wxh is 10x10
+		
+		CollidableObject collidingObject2 = new ConcreteCollidableObject(
+				new Rectangle(15, 15, 10, 10), new Dimension(10, 10), 0, 0);
 						
 		assertTrue(this.obj.isColliding(collidingObject1));
 		assertTrue(this.obj.isColliding(collidingObject2));
@@ -52,7 +57,7 @@ public class TestCollidableObject {
 	
 	@Test
 	public void testIsNotColliding() {
-		CollidableObject safeObject = new Wall(30,30);
+		CollidableObject safeObject = new ConcreteCollidableObject(new Rectangle(30, 30, 10, 10), new Dimension(10, 10), 0, 0);
 				
 		assertFalse(this.obj.isColliding(safeObject));
 	}

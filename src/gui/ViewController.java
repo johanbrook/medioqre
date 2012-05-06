@@ -37,6 +37,8 @@ import model.Entity;
 import model.GameModel;
 import model.character.Enemy;
 import model.character.Player;
+import model.weapon.Portal;
+import model.weapon.PortalGun;
 
 import core.Rectangle;
 import core.Size;
@@ -55,22 +57,22 @@ import graphics.opengl.Actor;
 public class ViewController implements IEventHandler, GLEventListener {
 
 	// State
-	private boolean				doneLoading	= false;
+	private boolean							doneLoading	= false;
 
 	// Screen
-	private Screen				screen;
+	private Screen							screen;
 
 	// Map
-	private TileMap				tilemap;
+	private TileMap							tilemap;
 
 	// Actors
-	private Actor				player;
-	private Map<Entity, Actor>	enemies;
-	private Map<Entity, Actor>	projectiles;
-	private Map<Entity, Actor>	items;
+	private Actor							player;
+	private Map<CollidableObject, Actor>	enemies		= new IdentityHashMap<CollidableObject, Actor>();
+	private Map<CollidableObject, Actor>	projectiles	= new IdentityHashMap<CollidableObject, Actor>();
+	private Map<CollidableObject, Actor>	items		= new IdentityHashMap<CollidableObject, Actor>();
 
 	// Tools
-	private GraphicalFPSMeter	fpsmeter;
+	private GraphicalFPSMeter				fpsmeter;
 
 	public ViewController(KeyListener listener, int screenWidth,
 			int screenHeight)
@@ -92,7 +94,6 @@ public class ViewController implements IEventHandler, GLEventListener {
 		canvas.requestFocusInWindow();
 		canvas.addKeyListener(listener);
 		canvas.addGLEventListener(this);
-		
 
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
@@ -106,14 +107,6 @@ public class ViewController implements IEventHandler, GLEventListener {
 		anim.start();
 	}
 
-	
-
-	public void render(double dt)
-	{
-		// fpsmeter.tick();
-		// System.out.println("fps: " + this.fpsmeter.currentFPS);
-	}
-
 	@Override
 	public void onEvent(Event evt)
 	{
@@ -121,7 +114,7 @@ public class ViewController implements IEventHandler, GLEventListener {
 			GameModel gm = (GameModel) evt.getValue();
 			try {
 				this.tilemap = ResourceLoader
-						.loadTileMapFromResources("test.png");
+						.loadTileMapFromResources("test2.png");
 				this.tilemap.setTileSheet(ResourceLoader
 						.loadTileSheetFromResource("tiles.tilesheet"));
 				this.tilemap.setViewPortSize(new Size(48 * 12, 48 * 20));
@@ -129,21 +122,11 @@ public class ViewController implements IEventHandler, GLEventListener {
 
 				this.screen.addDrawableToLayer(this.tilemap, 0);
 
-				this.enemies = new IdentityHashMap<Entity, Actor>();
-
 				List<CollidableObject> entities = ((GameModel) evt.getValue())
 						.getObjects();
 
 				for (CollidableObject e : entities) {
-					if (e instanceof Enemy) {
-						Actor newA = new Actor(
-								new JSONObject(
-										ResourceLoader
-												.loadJSONStringFromResources("walker1.actor")),
-								(Entity) e);
-						this.enemies.put((Entity) e, newA);
-						this.screen.addDrawableToLayer(newA, 1);
-					} else if (e instanceof Player) {
+					if (e instanceof Player) {
 						this.player = new Actor(
 								new JSONObject(
 										ResourceLoader
@@ -159,6 +142,81 @@ public class ViewController implements IEventHandler, GLEventListener {
 			}
 			this.doneLoading = true;
 		}
+
+		if (evt.getProperty() == Event.Property.NEW_WAVE) {
+
+			List<CollidableObject> entities = (List) evt.getValue();
+			for (CollidableObject e : entities) {
+				if (e instanceof Enemy) {
+					Actor newA;
+					try {
+						newA = new Actor(
+								new JSONObject(
+										ResourceLoader
+												.loadJSONStringFromResources("walker1.actor")),
+								(Entity) e);
+						this.enemies.put((Entity) e, newA);
+						this.screen.addDrawableToLayer(newA, 1);
+					} catch (JSONException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+
+				}
+			}
+		}
+
+		if (evt.getProperty() == Event.Property.FIRED_WEAPON_SUCCESS) {
+			Actor newA;
+			try {
+				newA = new Actor(
+						new JSONObject(
+								ResourceLoader
+										.loadJSONStringFromResources("machinegun_projectile.actor")),
+						(CollidableObject) evt.getValue());
+
+				this.projectiles.put((CollidableObject) evt.getValue(), newA);
+				this.screen.addDrawableToLayer(newA, 1);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		if (evt.getProperty() == Event.Property.PORTAL_CREATED) {
+			Portal p = (Portal) evt.getValue();
+			Actor newA;
+			try {
+				if (p.getMode() == PortalGun.Mode.BLUE) {
+				newA = new Actor(
+						new JSONObject(
+								ResourceLoader
+										.loadJSONStringFromResources("portal1.actor")),
+						(CollidableObject) p);
+				} else {
+					newA = new Actor(
+							new JSONObject(
+									ResourceLoader
+											.loadJSONStringFromResources("portal2.actor")),
+							(CollidableObject) p);
+				}
+				this.items.put((CollidableObject) p, newA);
+				this.screen.addDrawableToLayer(newA, 1);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		if (evt.getProperty() == Event.Property.WAS_DESTROYED) {
+			if (evt.getValue() instanceof CollidableObject) {
+				CollidableObject o = (CollidableObject) evt.getValue();
+
+				this.screen.removeDrawableFromLayer(this.enemies.remove(o));
+				this.screen.removeDrawableFromLayer(this.projectiles.remove(o));
+				this.screen.removeDrawableFromLayer(this.items.remove(o));
+			}
+		}
+
 	}
 
 	@Override
@@ -172,7 +230,8 @@ public class ViewController implements IEventHandler, GLEventListener {
 
 		// TimerTool.start("GL-Screen");
 		if (doneLoading) {
-			this.screen.setViewPort(this.player.getEntity().getPosition());
+			this.screen.setViewPort(this.player.getCollidableObject()
+					.getPosition());
 			this.screen.render(this.screen.getBounds(),
 					this.screen.getBounds(), arg0);
 		}

@@ -6,7 +6,11 @@ import java.util.TreeMap;
 
 import javax.media.opengl.GLAutoDrawable;
 
+import model.CollidableObject;
 import model.Entity;
+import model.weapon.Portal;
+import model.weapon.PortalGun;
+import model.weapon.Projectile;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,17 +31,17 @@ import core.Rectangle;
 public class Actor implements JSONSerializable, GLRenderableObject {
 
 	// Animation
-	private Animation currentAnimation;
-	private Map<String, Animation> animations;
+	private Animation				currentAnimation;
+	private Map<String, Animation>	animations;
 
 	// Name
-	private String name;
+	private String					name;
 
 	// Position
-	private Rectangle rectangle;
+	private Rectangle				rectangle;
 
 	// Entity
-	private Entity entity;
+	private CollidableObject		object;
 
 	// ************* Getters *************
 	/**
@@ -121,9 +125,9 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	 * 
 	 * @return The entity.
 	 */
-	public Entity getEntity()
+	public CollidableObject getCollidableObject()
 	{
-		return this.entity;
+		return this.object;
 	}
 
 	// ************* Setters *************
@@ -180,7 +184,8 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	public void setCurrentAnimation(String animationName)
 	{
 		Animation newAnimation = this.animations.get(animationName);
-		this.currentAnimation = newAnimation != null ? newAnimation : this.currentAnimation;
+		this.currentAnimation = newAnimation != null ? newAnimation
+				: this.currentAnimation;
 	}
 
 	/**
@@ -211,9 +216,9 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	 * @param e
 	 *            The Entity.
 	 */
-	public void setEntity(Entity e)
+	public void setObject(CollidableObject o)
 	{
-		this.entity = e;
+		this.object = o;
 	}
 
 	// ************* Animations *************
@@ -236,38 +241,53 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	@Override
 	public void update(double dt)
 	{
-		if (this.entity != null) {
+		if (this.object != null) {
 			String animation = "";
-			
-			switch (this.entity.getDirection()) {
-			case SOUTH:
-				animation = this.entity.isMoving() ? "moveS" : "stopS";
-				break;
-			case SOUTH_WEST:
-				animation = this.entity.isMoving() ? "moveSW" : "stopSW";
-				break;
-			case WEST:
-				animation = this.entity.isMoving() ? "moveW" : "stopW";
-				break;
-			case NORTH_WEST:
-				animation = this.entity.isMoving() ? "moveNW" : "stopNW";
-				break;
-			case NORTH:
-				animation = this.entity.isMoving() ? "moveN" : "stopN";
-				break;
-			case NORTH_EAST:
-				animation = this.entity.isMoving() ? "moveNE" : "stopNE";
-				break;
-			case EAST:
-				animation = this.entity.isMoving() ? "moveE" : "stopE";
-				break;
-			case SOUTH_EAST:
-				animation = this.entity.isMoving() ? "moveSE" : "stopSE";
-				break;	
+
+			if (this.object instanceof Entity) {
+				Entity entity = (Entity) this.object;
+				
+				switch (entity.getDirection()) {
+				case SOUTH:
+					animation = entity.isMoving() ? "moveS" : "stopS";
+					break;
+				case SOUTH_WEST:
+					animation = entity.isMoving() ? "moveSW" : "stopSW";
+					break;
+				case WEST:
+					animation = entity.isMoving() ? "moveW" : "stopW";
+					break;
+				case NORTH_WEST:
+					animation = entity.isMoving() ? "moveNW" : "stopNW";
+					break;
+				case NORTH:
+					animation = entity.isMoving() ? "moveN" : "stopN";
+					break;
+				case NORTH_EAST:
+					animation = entity.isMoving() ? "moveNE" : "stopNE";
+					break;
+				case EAST:
+					animation = entity.isMoving() ? "moveE" : "stopE";
+					break;
+				case SOUTH_EAST:
+					animation = entity.isMoving() ? "moveSE" : "stopSE";
+					break;
+				}
 			}
+			if (this.object instanceof Portal) {
+				Portal p = (Portal) this.object;
+				
+				animation = "default";
+			}
+			if (this.object instanceof Projectile) {
+				Projectile p = (Projectile) this.object;
+				
+				animation = "default";
+			}
+			
 			this.setCurrentAnimation(animation);
-			this.rectangle.setX(this.entity.getPosition().x);
-			this.rectangle.setY(this.entity.getPosition().y);
+			this.rectangle.setX(this.object.getPosition().x);
+			this.rectangle.setY(this.object.getPosition().y);
 		}
 		if (this.currentAnimation != null)
 			this.currentAnimation.update(dt);
@@ -338,10 +358,10 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	 * @param e
 	 *            Entity.
 	 */
-	public Actor(JSONObject o, Entity e)
+	public Actor(JSONObject jo, CollidableObject co)
 	{
-		this(o);
-		this.entity = e;
+		this(jo);
+		this.object = co;
 	}
 
 	@Override

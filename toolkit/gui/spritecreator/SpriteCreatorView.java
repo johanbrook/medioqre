@@ -38,15 +38,17 @@ import java.awt.event.KeyEvent;
 import java.awt.event.InputEvent;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 
 public class SpriteCreatorView extends JFrame implements GLEventListener,
 		ActionListener {
 
-	private Actor player;
-	private Rectangle rect = new Rectangle(2 * 64, 1 * 64, 64, 64);
-	private Rectangle target = new Rectangle(0, 0, 5 * 64, 3 * 64);
+	private Actor		player;
+	private Rectangle	rect	= new Rectangle(2 * 64, 1 * 64, 64, 64);
+	private Rectangle	target	= new Rectangle(0, 0, 5 * 64, 3 * 64);
+	private File		currentFile;
 
 	public SpriteCreatorView()
 	{
@@ -54,7 +56,6 @@ public class SpriteCreatorView extends JFrame implements GLEventListener,
 		GLProfile glP = GLProfile.getDefault();
 		GLCapabilities glC = new GLCapabilities(glP);
 		GLCanvas canvas = new GLCanvas(glC);
-		canvas.setBackground(Color.LIGHT_GRAY);
 
 		canvas.addGLEventListener(this);
 
@@ -121,17 +122,36 @@ public class SpriteCreatorView extends JFrame implements GLEventListener,
 
 	private void reloadSprite(Actor newPlayer)
 	{
-		// synchronized (this.player) {
-		// System.out.println("Selected animation: "+this.animationEdit.getSelectedAnimation());
-		// newPlayer.setAnimation(this.animationEdit.getSelectedAnimation());
-		// this.player = newPlayer;
-		// }
 	}
 
-	private void saveState()
+	private void saveState(File file)
 	{
-		System.out.println("Actor: "
-				+ this.actorEdit.getSelectedActor().serialize().toString());
+		if (file == null) {
+			JFileChooser chooser = new JFileChooser();
+			int input = chooser.showSaveDialog(getParent());
+			if (input == JFileChooser.APPROVE_OPTION) {
+				this.currentFile = chooser.getSelectedFile();
+			}
+
+			if (this.currentFile != null) {
+				FileWriter writer = null;
+				try {
+					writer = new FileWriter(this.currentFile);
+					writer.write(this.actorEdit.getSelectedActor().serialize()
+							.toString());
+
+				} catch (IOException e) {
+					e.printStackTrace();
+				} finally {
+					if (writer != null)
+						try {
+							writer.close();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+				}
+			}
+		}
 	}
 
 	public static void main(String[] args)
@@ -139,7 +159,7 @@ public class SpriteCreatorView extends JFrame implements GLEventListener,
 		new SpriteCreatorView();
 	}
 
-	long lastTime = System.nanoTime();
+	long	lastTime	= System.nanoTime();
 
 	@Override
 	public void display(GLAutoDrawable arg0)
@@ -224,9 +244,9 @@ public class SpriteCreatorView extends JFrame implements GLEventListener,
 		}
 	}
 
-	private ActorEdit actorEdit;
-	private AnimationEdit animationEdit;
-	private SpriteEdit spriteEdit;
+	private ActorEdit		actorEdit;
+	private AnimationEdit	animationEdit;
+	private SpriteEdit		spriteEdit;
 
 	private void initEditViewGUI()
 	{
@@ -273,7 +293,7 @@ public class SpriteCreatorView extends JFrame implements GLEventListener,
 			@Override
 			public void actionPerformed(ActionEvent arg0)
 			{
-				saveState();
+				saveState(null);
 			}
 		});
 	}

@@ -69,16 +69,20 @@ public class Screen implements GLRenderableObject {
 
 	public boolean removeDrawableFromLayer(GLRenderableObject ro)
 	{
-		// if (ro == null)
-		// return false;
-		// if (this.layers == null)
-		// return false;
-		//
-		// for (int i = 0; i < this.layers.length; i++) {
-		// if (this.layers[i].remove(ro))
-		// return true;
-		// }
-		return false;
+		boolean retVal = false;
+		 if (ro == null || this.layers == null)
+			 return retVal;
+		
+		  
+		 for (int i = 0; i < this.layers.length; i++) {
+			for (int j = 0; j < this.layers[i].length; j++) {
+				if (this.layers[i][j] == ro) {
+					this.layers[i][j] = null;
+					retVal = true;
+				}
+			}
+		 }
+		return retVal;
 	}
 
 	public void setViewPort(Point p)

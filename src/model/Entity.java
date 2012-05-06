@@ -118,6 +118,15 @@ public abstract class Entity extends CollidableObject  {
 		return this.movementSpeed;
 	}
 	
+	/**
+	 * Set the movement speed of the entity.
+	 * 
+	 * @param movementSpeed The movement speed
+	 */
+	public void setMovementSpeed(int movementSpeed)
+	{
+		this.movementSpeed = movementSpeed;
+	}
 	
 	@Override
 	public String toString() {
