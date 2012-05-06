@@ -183,7 +183,7 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 		this.enemies.clear();
 
 		for (int i = 0; i < amount; i++) {
-			Enemy temp = new Enemy(10, 10, 20+i*2, 20+i*2);
+			Enemy temp = new Enemy(10, new Rectangle(20+i*2, 20+i*2, 28, 48), new Dimension(20,20), 0, 16);
 			temp.addReceiver(this);
 			this.enemies.add(temp);
 			this.objects.add(temp);

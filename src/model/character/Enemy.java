@@ -16,17 +16,12 @@ import event.Event.Property;
 import event.EventBus;
 
 public class Enemy extends AbstractCharacter {
-
-
-	public Enemy(int movementSpeed, int damage) {
-		this(movementSpeed, damage, 0, 0);
-	}
-
-	public Enemy(int movementSpeed, int damage, int x, int y) {
-		super(movementSpeed, new Rectangle(x, y, 28, 48), new Dimension(20,20), 0, 16);
-
+	
+	public Enemy(int movementSpeed, Rectangle collBox, Dimension size, int xoffset, int yoffset) {
+		super(movementSpeed, collBox, size, xoffset, yoffset);
+		
 		setCurrentWeapon(new Melee(this));
-	}	
+	}
 
 	public void getPushed(Enemy e){
 		if (!e.isMoving()){
