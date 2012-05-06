@@ -23,7 +23,6 @@ public class Projectile extends Entity {
 	private AbstractWeapon owner;
 	
 	private double distanceTravelled;
-	private Point startPos;
 	
 	/**
 	 * A enum for ranges.
@@ -83,8 +82,10 @@ public class Projectile extends Entity {
 		
 		setPosition(x, y);
 		setDirection(this.owner.getOwner().getDirection());	
-		
-		this.startPos = this.getPosition();
+	}
+	
+	public Projectile(Projectile p) {
+		this(p.owner, p.getCollisionBox().width, p.getCollisionBox().height, p.damage, p.range, p.getMovementSpeed());
 	}
 	
 	/**
@@ -134,7 +135,7 @@ public class Projectile extends Entity {
 	
 	@Override
 	public String toString() {
-		return super.toString() + " [owner/type:"+this.owner+"]";
+		return super.toString() + " [owner/type:"+this.owner+"] [range: "+this.range +"] [damage: "+this.damage+"]";
 	}
 	
 	@Override
