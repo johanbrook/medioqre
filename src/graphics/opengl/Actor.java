@@ -275,13 +275,14 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 				}
 			}
 			if (this.object instanceof Portal) {
+				Portal p = (Portal) this.object;
 				
+				animation = "default";
 			}
 			if (this.object instanceof Projectile) {
 				Projectile p = (Projectile) this.object;
 				
 				animation = "default";
-				
 			}
 			
 			this.setCurrentAnimation(animation);
