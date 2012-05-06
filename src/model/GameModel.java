@@ -46,15 +46,14 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 	private Portal[] portals;
 	private List<CollidableObject> portalVictims;
 
-	private int currentLevel;
-	private final double LEVEL_MULTIPLIER = 1.5;
+	private int currentWave;
 
 	/**
 	 * Create a new model for a game. 
 	 * 
 	 */
 	public GameModel() {
-		this.currentLevel = 0;
+		this.currentWave = 0;
 
 		// Use CopyOnWriteArrayList since we do concurrent reads/writes, and
 		// need them to be synchronized behind the scenes. Slightly more costly,
@@ -154,9 +153,9 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 	}
 
 	public void newWave() {
-		this.currentLevel++;
+		this.currentWave++;
 
-		initEnemies(2*this.currentLevel);
+		initEnemies(2*this.currentWave);
 		addItems(1);
 		
 		Event evt = new Event(Property.NEW_WAVE, this);
