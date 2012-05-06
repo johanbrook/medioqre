@@ -155,7 +155,7 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 	public void newWave() {
 		this.currentLevel++;
 
-		initEnemies(0);
+		initEnemies(2*this.currentLevel);
 		addItems(5);
 		
 		Event evt = new Event(Property.NEW_WAVE, this.enemies);
@@ -205,6 +205,7 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 			
 			if(this.portals[i] == null) {
 				Portal p = new Portal(mode, new Rectangle(position.x, position.y, 20, 20), new Dimension(20, 20), 0, 0);
+				EventBus.INSTANCE.publish(new Event(Property.PORTAL_CREATED, p));
 				this.objects.add(p);
 				this.portals[i] = p;
 				
