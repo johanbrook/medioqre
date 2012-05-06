@@ -293,7 +293,7 @@ public class SpriteCreatorView extends JFrame implements GLEventListener,
 			@Override
 			public void actionPerformed(ActionEvent arg0)
 			{
-				saveState(currentFile);
+				saveState(null);
 			}
 		});
 	}
