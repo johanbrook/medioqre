@@ -1,0 +1,1 @@
+{"animations":[{"duration":1000,"frames":[{"height":8,"texture":"gameobjects","width":8,"y":64,"x":8}],"name":"medpack"},{"duration":1000,"frames":[{"height":8,"texture":"gameobjects","width":8,"y":64,"x":0}],"name":"ammopack"}],"height":32,"width":32,"name":"gameitem","y":64,"x":128}
