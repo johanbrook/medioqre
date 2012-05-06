@@ -37,8 +37,12 @@ import model.Entity;
 import model.GameModel;
 import model.character.Enemy;
 import model.character.Player;
+import model.item.AmmoCrate;
+import model.item.ICollectableItem;
+import model.weapon.MachineGun;
 import model.weapon.Portal;
 import model.weapon.PortalGun;
+import model.weapon.Projectile;
 
 import core.Rectangle;
 import core.Size;
@@ -141,11 +145,10 @@ public class ViewController implements IEventHandler, GLEventListener {
 				e.printStackTrace();
 			}
 			this.doneLoading = true;
-		}
+		} else if (evt.getProperty() == Event.Property.NEW_WAVE) {
 
-		if (evt.getProperty() == Event.Property.NEW_WAVE) {
-
-			List<CollidableObject> entities = (List) evt.getValue();
+			List<CollidableObject> entities = (List) ((GameModel) evt
+					.getValue()).getObjects();
 			for (CollidableObject e : entities) {
 				if (e instanceof Enemy) {
 					Actor newA;
@@ -155,59 +158,66 @@ public class ViewController implements IEventHandler, GLEventListener {
 										ResourceLoader
 												.loadJSONStringFromResources("walker1.actor")),
 								(Entity) e);
-						this.enemies.put((Entity) e, newA);
+						this.enemies.put(e, newA);
 						this.screen.addDrawableToLayer(newA, 1);
 					} catch (JSONException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-
+				} else if (e instanceof ICollectableItem) {
+					Actor newA;
+					try {
+						newA = new Actor(
+								new JSONObject(
+										ResourceLoader
+												.loadJSONStringFromResources("gameitems.actor")),
+								e);
+						this.items.put(e, newA);
+						this.screen.addDrawableToLayer(newA, 1);
+					} catch (JSONException e1) {
+						e1.printStackTrace();
+					}
 				}
 			}
-		}
+		} else if (evt.getProperty() == Event.Property.FIRED_WEAPON_SUCCESS) {
+			if (evt.getValue() instanceof Projectile) {
+				Projectile p = (Projectile) evt.getValue();
 
-		if (evt.getProperty() == Event.Property.FIRED_WEAPON_SUCCESS) {
-			Actor newA;
-			try {
-				newA = new Actor(
-						new JSONObject(
-								ResourceLoader
-										.loadJSONStringFromResources("machinegun_projectile.actor")),
-						(CollidableObject) evt.getValue());
+				
+				if (p.getOwner() instanceof MachineGun) {
+					Actor newA;
+					try {
+						newA = new Actor(
+								new JSONObject(
+										ResourceLoader
+												.loadJSONStringFromResources("machinegun_projectile.actor")),
+								(CollidableObject) evt.getValue());
 
-				this.projectiles.put((CollidableObject) evt.getValue(), newA);
-				this.screen.addDrawableToLayer(newA, 1);
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+						this.projectiles.put((CollidableObject) evt.getValue(),
+								newA);
+						this.screen.addDrawableToLayer(newA, 1);
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+
 			}
-		}
-		
-		if (evt.getProperty() == Event.Property.PORTAL_CREATED) {
+
+		} else if (evt.getProperty() == Event.Property.PORTAL_CREATED) {
 			Portal p = (Portal) evt.getValue();
 			Actor newA;
 			try {
-				if (p.getMode() == PortalGun.Mode.BLUE) {
-				newA = new Actor(
-						new JSONObject(
-								ResourceLoader
-										.loadJSONStringFromResources("portal1.actor")),
+				newA = new Actor(new JSONObject(
+						ResourceLoader
+								.loadJSONStringFromResources("portal.actor")),
 						(CollidableObject) p);
-				} else {
-					newA = new Actor(
-							new JSONObject(
-									ResourceLoader
-											.loadJSONStringFromResources("portal2.actor")),
-							(CollidableObject) p);
-				}
 				this.items.put((CollidableObject) p, newA);
 				this.screen.addDrawableToLayer(newA, 1);
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
-		if (evt.getProperty() == Event.Property.WAS_DESTROYED) {
+		} else if (evt.getProperty() == Event.Property.WAS_DESTROYED) {
 			if (evt.getValue() instanceof CollidableObject) {
 				CollidableObject o = (CollidableObject) evt.getValue();
 
@@ -216,7 +226,6 @@ public class ViewController implements IEventHandler, GLEventListener {
 				this.screen.removeDrawableFromLayer(this.items.remove(o));
 			}
 		}
-
 	}
 
 	@Override
