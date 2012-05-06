@@ -53,7 +53,7 @@ public class TileCanvas extends GLCanvas implements GLEventListener {
 		
 		
 		if (this.currentTileMap != null) {
-			this.currentTileMap.render(this.currentTileMap.getBounds(), target, arg0);
+			this.currentTileMap.render(this.currentTileMap.getBounds(), target, arg0, 0);
 			
 		} else {
 			

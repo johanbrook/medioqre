@@ -119,9 +119,9 @@ public class ViewController implements IEventHandler, GLEventListener {
 			GameModel gm = (GameModel) evt.getValue();
 			try {
 				this.tilemap = ResourceLoader
-						.loadTileMapFromResources("test2.png");
+						.loadTileMapFromResources("test_lvl.png");
 				this.tilemap.setTileSheet(ResourceLoader
-						.loadTileSheetFromResource("tiles.tilesheet"));
+						.loadTileSheetFromResource("barberset.tilesheet"));
 				this.tilemap.setViewPortSize(new Size(48 * 12, 48 * 20));
 				this.tilemap.setTileSize(new Size(48, 48));
 
@@ -243,13 +243,15 @@ public class ViewController implements IEventHandler, GLEventListener {
 
 		GL2 gl = arg0.getGL().getGL2();
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
+		gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
+		gl.glClear(GL2.GL_ALPHA_BITS);
 
 		// TimerTool.start("GL-Screen");
 		if (doneLoading) {
 			this.screen.setViewPort(this.player.getCollidableObject()
 					.getPosition());
 			this.screen.render(this.screen.getBounds(),
-					this.screen.getBounds(), arg0);
+					this.screen.getBounds(), arg0, 0);
 		}
 		// TimerTool.stop();
 	}
@@ -262,6 +264,9 @@ public class ViewController implements IEventHandler, GLEventListener {
 		gl.glEnable(GL.GL_TEXTURE_2D);
 		gl.glTexEnvf(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE,
 				GL2.GL_MODULATE);
+		gl.glEnable(GL.GL_DEPTH_TEST);
+		gl.glDepthFunc(GL.GL_LESS);
+		gl.glEnable(GL2.GL_ALPHA_TEST);
 	}
 
 	@Override

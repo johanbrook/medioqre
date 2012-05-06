@@ -10,7 +10,7 @@ public interface GLRenderableObject {
 	 * @param target The rectangle representing the surface to draw to. 
 	 * @param canvas The canvas to draw to.
 	 */
-	public void render(Rectangle object, Rectangle target, GLAutoDrawable canvas);
+	public void render(Rectangle object, Rectangle target, GLAutoDrawable canvas, int zIndex);
 	
 	/**
 	 * Updates the state of the GLRenderableObject.

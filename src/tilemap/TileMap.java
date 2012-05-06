@@ -92,7 +92,7 @@ public class TileMap implements GLRenderableObject {
 	
 	
 	@Override
-	public void render(Rectangle object, Rectangle target, GLAutoDrawable canvas)
+	public void render(Rectangle object, Rectangle target, GLAutoDrawable canvas, int zIndex)
 	{		
 		if (this.tileRenderRect == null) this.tileRenderRect = new Rectangle(0, 0, 0, 0);
 		for (int x = 0; x < this.tiles.length; x++) {
@@ -102,7 +102,7 @@ public class TileMap implements GLRenderableObject {
 				tileRenderRect.setWidth(tileSize.getWidth());
 				tileRenderRect.setHeight(tileSize.getHeight());
 				
-				this.tileSheet.getTile(this.tiles[x][y]).render(tileRenderRect, target, canvas);
+				this.tileSheet.getTile(this.tiles[x][y]).render(tileRenderRect, target, canvas, 0);
 			}
 		}
 	}

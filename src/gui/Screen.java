@@ -92,7 +92,7 @@ public class Screen implements GLRenderableObject {
 	}
 
 	@Override
-	public void render(Rectangle object, Rectangle target, GLAutoDrawable canvas)
+	public void render(Rectangle object, Rectangle target, GLAutoDrawable canvas, int zIndex)
 	{
 		if (layers == null)
 			return;
@@ -103,7 +103,7 @@ public class Screen implements GLRenderableObject {
 		if (renderRect == null)
 			this.renderRect = new Rectangle(0, 0, 0, 0);
 
-		for (int i = 0; i < layers.length; i++) {
+		for (int i = layers.length-1; i >= 0; i--) {
 			GLRenderableObject[] tmpLayer = layers[i];
 			if (tmpLayer != null) {
 				for (GLRenderableObject glR : tmpLayer) {
@@ -122,7 +122,7 @@ public class Screen implements GLRenderableObject {
 							this.renderRect.setWidth(width);
 							this.renderRect.setHeight(height);
 
-							glR.render(this.renderRect, this.screenSize, canvas);
+							glR.render(this.renderRect, this.screenSize, canvas, zIndex);
 						}
 					}
 				}

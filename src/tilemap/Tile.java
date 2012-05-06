@@ -56,11 +56,11 @@ public class Tile implements JSONSerializable, GLRenderableObject{
 	}
 	
 	@Override
-	public void render(Rectangle object, Rectangle target, GLAutoDrawable canvas)
+	public void render(Rectangle object, Rectangle target, GLAutoDrawable canvas, int zIndex)
 	{
 		
 		if (this.sprite != null)
-			this.sprite.render(object, target, canvas);
+			this.sprite.render(object, target, canvas, 0);
 	}
 
 	@Override
