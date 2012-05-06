@@ -13,6 +13,8 @@ import event.Event;
 import event.EventBus;
 import event.IMessageListener;
 import event.IMessageSender;
+import factory.Level;
+import factory.ObjectFactory;
 import gui.ViewController;
 import model.GameModel;
 import model.IGameModel;
@@ -46,6 +48,7 @@ public class AppController implements Runnable{
 	
 	
 	public void init() {
+		ObjectFactory.setLevel(new Level());
 		this.game.newGame();
 		this.game.newWave();
 		new Thread(this).start();
