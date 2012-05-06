@@ -258,7 +258,7 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 				Direction currentDirection = t.getDirection();				
 				Direction blockedDirection = t.getDirectionOfObject(w);
 				
-				if(t instanceof Projectile && !(w instanceof ICollectableItem)) {
+				if(t instanceof Projectile && !(w instanceof ICollectableItem || w instanceof Portal)) {
 					t.destroy();
 					
 					if (w instanceof AbstractCharacter){

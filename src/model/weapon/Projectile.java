@@ -117,9 +117,10 @@ public class Projectile extends Entity {
 	/**
 	 * Refresh the distance travelled.
 	 */
-	public void updateDistanceTravelled() {
-		this.distanceTravelled = Math.abs(this.getPosition().x - this.startPos.x) + 
-				Math.abs(this.getPosition().y - this.startPos.y);
+	public void updateDistanceTravelled(double dt) {
+		int x = (int) (this.getDirection().getXRatio() * (double) this.getMovementSpeed() * dt);		
+		int y = (int) (this.getDirection().getYRatio() * (double) this.getMovementSpeed() * dt);
+		this.distanceTravelled += Math.abs(x) + Math.abs(y);
 	}
 	
 	/**
@@ -139,8 +140,8 @@ public class Projectile extends Entity {
 	@Override
 	public void move(double dt) {
 		super.move(dt);
-		
-		this.updateDistanceTravelled();
+
+		this.updateDistanceTravelled(dt);
 	}
 	
 }
