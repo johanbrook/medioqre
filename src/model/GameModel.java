@@ -107,6 +107,7 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 				}
 			}
 
+			this.objects.remove(evt.getValue());
 			if(evt.getValue() instanceof Enemy) {
 				this.enemies.remove(evt.getValue());
 				this.messager.sendMessage(evt);
@@ -115,7 +116,7 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 			} else if (evt.getValue() instanceof Player){
 				gameOver();
 			}
-			this.objects.remove(evt.getValue());
+			
 			System.out.println(evt.getValue().getClass().getSimpleName() + " was destroyed");
 			break;
 
@@ -156,7 +157,7 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 		this.currentLevel++;
 
 		initEnemies(2*this.currentLevel);
-		addItems(5);
+		addItems(1);
 		
 		Event evt = new Event(Property.NEW_WAVE, this);
 		this.messager.sendMessage(evt);
