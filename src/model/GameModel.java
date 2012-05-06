@@ -157,8 +157,8 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 
 		initEnemies(2*this.currentLevel);
 		addItems(5);
-
-		Event evt = new Event(Property.NEW_WAVE, this.enemies);
+		
+		Event evt = new Event(Property.NEW_WAVE, this);
 		this.messager.sendMessage(evt);
 		EventBus.INSTANCE.publish(evt);
 	}
