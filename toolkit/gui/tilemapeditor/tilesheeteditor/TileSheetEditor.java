@@ -20,7 +20,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
 
-import math.HexTool;
+import math.Util;
 
 import org.apache.commons.io.IOUtils;
 import org.json.JSONException;
@@ -250,9 +250,9 @@ public class TileSheetEditor implements GLEventListener {
 				tile.getSprite().setY(Integer.valueOf(tfY.getText()));
 				tile.getSprite().setWidth(Integer.valueOf(tfWidth.getText()));
 				tile.getSprite().setHeight(Integer.valueOf(tfHeight.getText()));
-				tile.setType(HexTool.intFromHexString(tfType.getText()));
+				tile.setType(Util.intFromHexString(tfType.getText()));
 				tile.setCollidable(chbxColl.isSelected());
-				System.out.println("Int: "+HexTool.intFromHexString(tfType.getText()));
+				System.out.println("Int: "+Util.intFromHexString(tfType.getText()));
 			}
 		}
 	}

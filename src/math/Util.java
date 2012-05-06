@@ -1,7 +1,20 @@
 package math;
 
-public class HexTool {
+public class Util {
 
+	/**
+	 * Fibonacci implementation (recursive).
+	 * 
+	 * @param n 
+	 * @return The Fibonacci number for n
+	 */
+	public static int fib(int n) {
+		if(n == 1 || n == 0) {
+			return n;
+		}
+		return fib(n - 1) + fib(n - 2);
+	}
+	
 	public static int intFromHexString(String hexString) {
 		char[] chars = hexString.toLowerCase().toCharArray();
 		
