@@ -6,7 +6,6 @@ import audio.SoundLibrary;
 import model.Entity;
 import model.IGameModel;
 import model.character.Enemy;
-import model.weapon.Melee;
 import event.Event;
 import event.EventBus;
 import event.IEventHandler;
@@ -37,6 +36,11 @@ public class AudioController implements IEventHandler {
 
 	private int bgmID = 1;
 
+	/**
+	 * Returns the AudioController instance
+	 * 
+	 * @return AudioController instance.
+	 */
 	public static AudioController getInstance() {
 		if (sharedInstance == null) {
 			sharedInstance = new AudioController();
@@ -46,6 +50,9 @@ public class AudioController implements IEventHandler {
 		return sharedInstance;
 	}
 
+	/**
+	 * Creates the audiocontroller and links it to System audio.
+	 */
 	private AudioController() {
 
 		// Link to system sound
@@ -73,6 +80,10 @@ public class AudioController implements IEventHandler {
 	 * ____________SFX_____________
 	 */
 
+	/**
+	 * Plays sound effect for player walk. No Attenuation and always center
+	 * panned
+	 */
 	public void playerWalk() {
 		soundSys.newSource(false, "playerWalk", lib.getFXSound("walk"),
 				"walk.wav", false, 1f, 1f, 1.0f,
@@ -81,17 +92,25 @@ public class AudioController implements IEventHandler {
 		soundSys.play("playerWalk");
 	}
 
+	/**
+	 * Stops player's walk sound.
+	 */
+
 	public void stopPlayerWalk() {
 		soundSys.stop("playerWalk");
 	}
 
-	/*
+	/**
 	 * Clear audio buffer and turn off audio engine MUST BE DONE BEFORE GAME
 	 * SHUTDOWN!
 	 */
 	public void shutdown() {
 		soundSys.cleanup();
 	}
+
+	/**
+	 * Audio update method, sets listener position and positions sound sources.
+	 */
 
 	public void update() {
 
@@ -106,6 +125,12 @@ public class AudioController implements IEventHandler {
 
 	}
 
+	/**
+	 * Plays sound effects for weapons given their class.
+	 * 
+	 * @param wType
+	 *            weapon type (Class)
+	 */
 	public void playWeaponSound(Class<?> wType) {
 		soundSys.newSource(false, "playerWeaponSound",
 				lib.getWeaponSound(wType), lib.getWeaponId(wType), false, 1f,
@@ -114,6 +139,10 @@ public class AudioController implements IEventHandler {
 
 		soundSys.play("playerWeaponSound");
 	}
+
+	/**
+	 * Plays sound effects based on events
+	 */
 
 	@Override
 	public void onEvent(Event evt) {
@@ -166,15 +195,15 @@ public class AudioController implements IEventHandler {
 
 				if (evt.getProperty() == Event.Property.DID_MOVE
 						&& !soundSys.playing(soundCode(e))) {
-					playZombiewalk(e);
+					playEnemyWalk(e);
 				}
 
 				if (evt.getProperty() == Event.Property.WAS_DESTROYED) {
-					removeZombieSounds(e);
+					removeEnemySounds(e);
 				}
 
 				if (evt.getProperty() == Event.Property.DID_STOP) {
-					stopZombiewalk(e);
+					stopEnemyWalk(e);
 				}
 			}
 
@@ -189,15 +218,21 @@ public class AudioController implements IEventHandler {
 
 	}
 
+	/**
+	 * Plays background music
+	 */
 	private void playBGM() {
-		Integer id = 1;
-
-		soundSys.backgroundMusic("BGM", lib.getBGMURL(id),
-				lib.getBGMIdentifyer(id), true);
+		soundSys.backgroundMusic("BGM", lib.getBGMURL(bgmID),
+				lib.getBGMId(bgmID), true);
 		soundSys.play("BGM");
 	}
 
-	private void playZombiewalk(Enemy e) {
+	/**
+	 * Plays walk sound effect for Enemies
+	 * 
+	 * @param e Enemy
+	 */
+	private void playEnemyWalk(Enemy e) {
 
 		soundSys.newSource(true, soundCode(e), lib.getFXSound("walk"),
 				"walk.wav", true, (float) 1, (float) 1, (float) 1,
@@ -207,34 +242,38 @@ public class AudioController implements IEventHandler {
 
 	}
 
-	private void stopZombiewalk(Enemy e) {
+	/**
+	 * Stops walk sounds for a given Enemy
+	 * 
+	 * @param e Enemy 
+	 */
+	
+	private void stopEnemyWalk(Enemy e) {
 		soundSys.stop(soundCode(e));
 	}
 
-	private void removeZombieSounds(Enemy e) {
+	/**
+	 * Removes the sound system source for Enemies destroyed
+	 * 
+	 * @param e Enemy
+	 */
+	private void removeEnemySounds(Enemy e) {
 		soundSys.removeSource(soundCode(e));
 	}
 
-	public float getBGMVolume() {
-		return BGM_VOLUME;
-	}
-
-	public void setVolume(float f) {
-		BGM_VOLUME = f;
-	}
-
-	public float getFXVolume() {
-		return FX_VOLUME;
-	}
-
-	public void setFXVolume(float f) {
-		FX_VOLUME = f;
-	}
-
+	/**
+	 * Generates a code for sound sources based on hashCode
+	 * 
+	 * @param e Entity to create code for
+	 * @return Soundcode for e
+	 */
 	public String soundCode(Entity e) {
 		return "sc_" + e.hashCode();
 	}
 
+	/**
+	 * Plays start up sound. Used only by launcher.
+	 */
 	public void playStartUpSound() {
 		soundSys.newSource(false, "startUpSound", lib.getStartUpSound(),
 				"startUpSound.wav", false, 0.5f, 0.5f, 1f, 1, 1f);
