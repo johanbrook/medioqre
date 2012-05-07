@@ -1,88 +1,133 @@
 package audio;
 
+import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import event.Event;
-import event.Event.Property;
-
-/*
+/**
  * Sound library for Frank the Tank
  * 
- * @author Chris
+ * @author chrisnordqvist
  * 
  */
 
 public class SoundLibrary {
 
-	private static final Map<String, String> fxSoundLibrary = initializeFXSoundLibrary();
-	private static final Map<Integer, String> backgroundMusicLibrary = initializeBackgroundMusicLibrary();
-	private static final Map<Class, String> weaponSoundLibrary = initializeWeaponSoundLibrary();
+	private final Map<String, URL> fxSoundLibrary = initializeFXSoundLibrary();
+	private final Map<Class<?>, URL> weaponSoundLibrary = initializeWeaponSoundLibrary();
+	private final Map<Integer, URL> bgmLibrary = initializeBGMLibrary();
+	private static ClassLoader c = SoundLibrary.class.getClassLoader();
 
-	// FX Sound Library
-	private static Map<String, String> initializeFXSoundLibrary() {
-		Map<String, String> fx = new HashMap<String, String>();
+	/**
+	 * Initializes FX Sound Library
+	 * 
+	 * @return fxSoundLibrary
+	 */
+	private Map<String, URL> initializeFXSoundLibrary() {
+		Map<String, URL> fx = new HashMap<String, URL>();
 
-		fx.put("walk", "http://theboxofficial.com/work/move.wav");
-			
-			
+		fx.put("walk", c.getResource("sounds/fx/walk.wav"));
+		fx.put("startUpSound", c.getResource("sounds/fx/walk.wav"));
+
 		return Collections.unmodifiableMap(fx);
 	}
 
-	// Weapon Sound Library
-	private static Map<Class, String> initializeWeaponSoundLibrary() {
-		Map<Class, String> weapon = new HashMap<Class, String>();
-		
-		weapon.put(model.weapon.MachineGun.class, "http://theboxofficial.com/work/gun.wav");
-		weapon.put(model.weapon.Grenade.class, "Grenade.... BOOOOM");
-		weapon.put(model.weapon.Sword.class, "Swordfight!");
-		weapon.put(model.weapon.PortalGun.class, "Portal fires!");
-		weapon.put(model.weapon.Melee.class, "Zombie Melee");
-		
-		
-		
+	/**
+	 * Initializes Weapon Sound Library
+	 * 
+	 * @return weaponSoundLibrary
+	 */
+	private Map<Class<?>, URL> initializeWeaponSoundLibrary() {
+		Map<Class<?>, URL> weapon = new HashMap<Class<?>, URL>();
+
+		weapon.put(model.weapon.MachineGun.class,
+				c.getResource("sounds/weapon/machineGun.wav"));
+		weapon.put(model.weapon.Grenade.class,
+				c.getResource("sounds/weapon/grenade.wav"));
+		weapon.put(model.weapon.Sword.class,
+				c.getResource("sounds/weapon/sword.wav"));
+		weapon.put(model.weapon.PortalGun.class,
+				c.getResource("sounds/weapon/portalGun.wav"));
+
 		return Collections.unmodifiableMap(weapon);
 	}
 
-	// Background Music Library
-	private static Map<Integer, String> initializeBackgroundMusicLibrary() {
-		Map<Integer, String> bgm = new HashMap<Integer, String>();
-
-		bgm.put(1, "http://theboxofficial.com/work/frankTheTank.wav");
-		bgm.put(2, "http://theboxofficial.com/work/1bar.wav");
-		bgm.put(3, "bgm.wav");
-		bgm.put(4, "http://theboxofficial.com/work/half.wav");
-
-		return Collections.unmodifiableMap(bgm);
-	}
-
-	
-	
-	/*
-	 * Returns the file path for any given sound in the library as a String. If
-	 * sound code is invalid, null is given back.
+	/**
+	 * Initializes Background Music Library
+	 * 
+	 * @return bgmLibrary
 	 */
+	private Map<Integer, URL> initializeBGMLibrary() {
+		Map<Integer, URL> bgml = new HashMap<Integer, URL>();
 
-	public static String getWeaponSound(Class code) {
+		bgml.put(1, c.getResource("sounds/bgm/frankTheTank.wav"));
 
-		return weaponSoundLibrary.get(code);
-
+		return Collections.unmodifiableMap(bgml);
 	}
 
-	public static String getBackgroundMusic(int id) {
-
-		return backgroundMusicLibrary.get(id);
-
-	}
-	
-	public static int getBGMLibrarySize(){
-		return backgroundMusicLibrary.size();
-	}
-
-	public static String getFXSound(String code) {
+	/**
+	 * Gets URL for a given FX Sound
+	 * 
+	 * @param code
+	 *            library identifier for sound
+	 * @return URL with path to sound
+	 */
+	public URL getFXSound(String code) {
 		return fxSoundLibrary.get(code);
 	}
-	
+
+	/**
+	 * Gets URL for a given Weapon Sound
+	 * 
+	 * @param type
+	 *            weapon class
+	 * @return URL with path to sound
+	 */
+	public URL getWeaponSound(Class<?> type) {
+		return weaponSoundLibrary.get(type);
+	}
+
+	/**
+	 * Gets filename identifier for Weapon Sound
+	 * 
+	 * @param type
+	 *            weapon class
+	 * @return String with filename
+	 */
+	public String getWeaponId(Class<?> type) {
+		return weaponSoundLibrary.get(type).toString().substring(13);
+	}
+
+	/**
+	 * Gets URL for Background Music
+	 * 
+	 * @param code
+	 *            BGM id
+	 * @return URL with path to sound
+	 */
+	public URL getBGMURL(Integer code) {
+		return bgmLibrary.get(code);
+	}
+
+	/**
+	 * Gets filename identifier for Background music
+	 * 
+	 * @param code
+	 *            BGM id
+	 * @return String with filename
+	 */
+	public String getBGMId(Integer code) {
+		return bgmLibrary.get(code).toString().substring(14);
+	}
+
+	/**
+	 * Gets startup sound for launcher
+	 * 
+	 * @return URL to Startup Sound
+	 */
+	public URL getStartUpSound() {
+		return fxSoundLibrary.get("startUpSound");
+	}
 
 }

@@ -1,24 +1,20 @@
 package controller;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import javax.swing.JOptionPane;
-
-import audio.SoundLibrary;
-
 import model.Entity;
-import model.character.Player;
-
-import event.Event;
-import event.EventBus;
-import event.IEventHandler;
-
+import model.IGameModel;
+import model.character.Enemy;
+import model.weapon.Melee;
+import model.weapon.Projectile;
 import paulscode.sound.SoundSystem;
 import paulscode.sound.SoundSystemConfig;
 import paulscode.sound.SoundSystemException;
 import paulscode.sound.codecs.CodecWav;
 import paulscode.sound.libraries.LibraryJavaSound;
+import audio.AudioConstants;
+import audio.SoundLibrary;
+import event.Event;
+import event.EventBus;
+import event.IEventHandler;
 
 /**
  * Audio Engine
@@ -30,10 +26,18 @@ import paulscode.sound.libraries.LibraryJavaSound;
 public class AudioController implements IEventHandler {
 
 	private static AudioController sharedInstance;
-	private SoundSystem soundSys;
+	private static SoundSystem soundSys;
+	private IGameModel game;
+	private static SoundLibrary lib = new SoundLibrary();
+	private double playerMaxHealth;
 
 	private int bgmID = 1;
 
+	/**
+	 * Returns the AudioController instance
+	 * 
+	 * @return AudioController instance.
+	 */
 	public static AudioController getInstance() {
 		if (sharedInstance == null) {
 			sharedInstance = new AudioController();
@@ -43,109 +47,57 @@ public class AudioController implements IEventHandler {
 		return sharedInstance;
 	}
 
+	/**
+	 * Creates the audiocontroller and links it to System audio.
+	 */
 	private AudioController() {
-		// Link to JavaSound
-		try {
-			SoundSystemConfig.addLibrary(LibraryJavaSound.class);
-		} catch (SoundSystemException e) {
-		}
 
-		// Link to Wav Codec
+		// Link to system sound
 		try {
+
+			SoundSystemConfig.addLibrary(LibraryJavaSound.class);
+
+			// Link to Wav Codec
 			SoundSystemConfig.setCodec("wav", CodecWav.class);
+
 		} catch (SoundSystemException e) {
 		}
 
 		// Initialize Sound Engine
 		soundSys = new SoundSystem();
+		// soundSys.setListenerOrientation(1, 1, 0, 1, 1, 1);
 
 	}
 
-	/*
-	 * ____________BGM_____________
-	 */
-
-	public void playBGM() {
-
-		String filename = SoundLibrary.getBackgroundMusic(bgmID);
-		System.out.println(filename);
-
-		URL url;
-		try {
-			url = new URL("file:///" + SoundSystemConfig.getSoundFilesPackage()
-					+ filename);
-
-			soundSys.backgroundMusic("Background Music", url, filename, true);
-
-			JOptionPane.showMessageDialog(null, url);
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
-
-	}
-
-	public void nextBGM() {
-
-		if (bgmID == SoundLibrary.getBGMLibrarySize()) {
-			bgmID = 1;
-		} else {
-			bgmID++;
-		}
-
-		this.playBGM();
-
-	}
-
-	public void decrementPitchBGM(float decrementBy) {
-
-		float newValue = soundSys.getPitch("Background Music") - decrementBy;
-		soundSys.setPitch("Background Music", newValue);
-
-		System.out.println("Pitch decreased by: " + decrementBy);
-	}
-
-	public void incrementPitchBGM(float incrementBy) {
-
-		float newValue = soundSys.getPitch("Background Music") + incrementBy;
-		soundSys.setPitch("Background Music", newValue);
-
-		System.out.println("Pitch increased by: " + incrementBy);
-
-	}
-
-	public void setPitchBGM(float newValue) {
-
-		soundSys.setPitch("Background Music", newValue);
-		System.out.println("Pitch set to: " + newValue);
-
-	}
-
-	public void restorePitchBGM() {
-		soundSys.setPitch("Background Music", (float) 1.0);
+	public void setGame(IGameModel game) {
+		this.game = game;
 	}
 
 	/*
 	 * ____________SFX_____________
 	 */
 
-	public void playSoundFX(String code, boolean toLoop) {
+	/**
+	 * Plays sound effect for player walk. No Attenuation and always center
+	 * panned
+	 */
+	public void playerWalk() {
+		soundSys.newSource(false, "playerWalk", lib.getFXSound("walk"),
+				"walk.wav", false, 1f, 1f, 1.0f,
+				SoundSystemConfig.ATTENUATION_NONE, 0.5f);
 
-		soundSys.newSource(false, code, SoundLibrary.getFXSound(code),
-				toLoop, 0, 1, 1, 1, 1);
-
-		soundSys.play(code);
-
-		// soundSys.quickPlay(true, SoundLibrary.getWeaponSound(code), toLoop,
-		// 0,
-		// 1, 1, 1, 2);
-
+		soundSys.play("playerWalk");
 	}
 
-	public void stopFX(String code) {
-		soundSys.stop(code);
+	/**
+	 * Stops player's walk sound.
+	 */
+
+	public void stopPlayerWalk() {
+		soundSys.stop("playerWalk");
 	}
 
-	/*
+	/**
 	 * Clear audio buffer and turn off audio engine MUST BE DONE BEFORE GAME
 	 * SHUTDOWN!
 	 */
@@ -153,46 +105,188 @@ public class AudioController implements IEventHandler {
 		soundSys.cleanup();
 	}
 
-	public void reInit() {
-		shutdown();
-		soundSys = new SoundSystem();
-	}
+	/**
+	 * Audio update method, sets listener position and positions sound sources.
+	 */
 
 	public void update() {
 
+		soundSys.setListenerPosition(game.getPlayer().getPosition().x, game
+				.getPlayer().getPosition().y, AudioConstants.zROLLOFF);
+
+		for (Enemy e : game.getEnemies()) {
+			soundSys.setPosition(soundCode(e), e.getPosition().x,
+					e.getPosition().y, 1);
+
+		}
+
 	}
+
+	/**
+	 * Plays sound effects for weapons given their class.
+	 * 
+	 * @param wType
+	 *            weapon type (Class)
+	 */
+	public void playPlayerWeaponSound(Class<?> wType) {
+		soundSys.newSource(false, "playerWeaponSound",
+				lib.getWeaponSound(wType), lib.getWeaponId(wType), false, 1f,
+				1f, 1.0f, SoundSystemConfig.ATTENUATION_NONE, 0.5f);
+		soundSys.setVolume("playerWeaponSound", AudioConstants.WEAPON_VOLUME);
+
+		soundSys.play("playerWeaponSound");
+	}
+
+	/**
+	 * Plays sound effects based on events
+	 */
 
 	@Override
 	public void onEvent(Event evt) {
 
+
 		// Initialize
-		
-		
-		//Entities
+		if (evt.getProperty() == Event.Property.INIT_MODEL) {
+			playerMaxHealth = game.getPlayer().getHealth();
+
+			if (!soundSys.playing("Background Music")) {
+				playBGM();
+			}
+		}
+
+		// Entities
 		if (evt.getValue() instanceof Entity) {
 			Entity p = (Entity) evt.getValue();
 
+			// Player
 			if (p instanceof model.character.Player) {
 
-				if (evt.getProperty() == Event.Property.DID_MOVE) {
-					if (!soundSys.playing("walk"))
-						playSoundFX("walk", true);
+				// Player Walking
+				if (evt.getProperty() == Event.Property.DID_MOVE
+						&& !soundSys.playing("playerWalk")) {
+					playerWalk();
 				}
 
 				if (evt.getProperty() == Event.Property.DID_STOP) {
-					stopFX("walk");
+					stopPlayerWalk();
+				}
+
+				// Pickup Items
+				if (evt.getProperty() == Event.Property.PICKED_UP_ITEM) {
+					// TODO Pickupljud!
+				}
+
+				// Was hit
+				if (evt.getProperty() == Event.Property.WAS_DAMAGED) {
+					float f = (float) (game.getPlayer().getHealth() / playerMaxHealth);
+					f = (float) (f * 0.5 + 0.5);
+
+					if (f > 1)
+						f = 1f;
+
+					soundSys.setPitch("BGM", f);
+				}
+
+
+
+			}
+
+			// Enemies
+			if (p instanceof model.character.Enemy) {
+				Enemy e = (Enemy) evt.getValue();
+
+				if (evt.getProperty() == Event.Property.DID_MOVE
+						&& !soundSys.playing(soundCode(e))) {
+					playEnemyWalk(e);
+				}
+
+				if (evt.getProperty() == Event.Property.WAS_DESTROYED) {
+					removeEnemySounds(e);
+				}
+
+				if (evt.getProperty() == Event.Property.DID_STOP) {
+					stopEnemyWalk(e);
+				}
+			}
+
+		}
+
+		// Weapons
+		if (evt.getProperty() == Event.Property.FIRED_WEAPON_SUCCESS) {
+
+			if (evt.getValue() instanceof Projectile){
+
+				Projectile p = ((Projectile) evt.getValue());
+				if (!(p.getOwner() instanceof Melee)){
+					playPlayerWeaponSound(game.getPlayer().getCurrentWeapon().getClass());
 				}
 			}
 		}
-		
-		
-		//Weapons
-		
-		
-		
-		//FX
-		
-		
+
+		// FX
+
+	}
+
+	/**
+	 * Plays background music
+	 */
+	private void playBGM() {
+		soundSys.backgroundMusic("BGM", lib.getBGMURL(bgmID),
+				lib.getBGMId(bgmID), true);
+		soundSys.play("BGM");
+	}
+
+	/**
+	 * Plays walk sound effect for Enemies
+	 * 
+	 * @param e Enemy
+	 */
+	private void playEnemyWalk(Enemy e) {
+
+		soundSys.newSource(true, soundCode(e), lib.getFXSound("walk"),
+				"walk.wav", true, (float) 1, (float) 1, (float) 1,
+				SoundSystemConfig.ATTENUATION_ROLLOFF, 0.5f);
+
+		soundSys.play(soundCode(e));
+
+	}
+
+	/**
+	 * Stops walk sounds for a given Enemy
+	 * 
+	 * @param e Enemy 
+	 */
+
+	private void stopEnemyWalk(Enemy e) {
+		soundSys.stop(soundCode(e));
+	}
+
+	/**
+	 * Removes the sound system source for Enemies destroyed
+	 * 
+	 * @param e Enemy
+	 */
+	private void removeEnemySounds(Enemy e) {
+		soundSys.removeSource(soundCode(e));
+	}
+
+	/**
+	 * Generates a code for sound sources based on hashCode
+	 * 
+	 * @param e Entity to create code for
+	 * @return Soundcode for e
+	 */
+	public String soundCode(Entity e) {
+		return "sc_" + e.hashCode();
+	}
+
+	/**
+	 * Plays start up sound. Used only by launcher.
+	 */
+	public void playStartUpSound() {
+		soundSys.newSource(false, "startUpSound", lib.getStartUpSound(),
+				"startUpSound.wav", false, 0.5f, 0.5f, 1f, 1, 1f);
+		soundSys.play("startUpSound");
 	}
 
 }

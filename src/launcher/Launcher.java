@@ -14,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import controller.AppController;
+import controller.AudioController;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -59,6 +60,9 @@ public class Launcher extends JFrame {
 		getContentPane().add(optionsPanel);
 		setVisible(true);
 
+		AudioController audio = AudioController.getInstance();
+		audio.playStartUpSound();
+		
 	}
 	
 	public void drawOptionPanel(){
