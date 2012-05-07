@@ -107,13 +107,9 @@ public class AudioController implements IEventHandler {
 	}
 
 	public void playWeaponSound(Class<?> wType) {
-
-		String filename = wType.getName().substring(13) + ".wav";
-		System.out.println(filename);
-
 		soundSys.newSource(false, "playerWeaponSound",
-				lib.getWeaponSound(wType), filename, false, 1f, 1f, 1.0f,
-				SoundSystemConfig.ATTENUATION_NONE, 0.5f);
+				lib.getWeaponSound(wType), lib.getWeaponId(wType), false, 1f,
+				1f, 1.0f, SoundSystemConfig.ATTENUATION_NONE, 0.5f);
 		soundSys.setVolume("playerWeaponSound", AudioConstants.WEAPON_VOLUME);
 
 		soundSys.play("playerWeaponSound");
@@ -125,7 +121,7 @@ public class AudioController implements IEventHandler {
 		// Initialize
 		if (evt.getProperty() == Event.Property.INIT_MODEL) {
 			playerMaxHealth = game.getPlayer().getHealth();
-			
+
 			if (!soundSys.playing("Background Music")) {
 				playBGM();
 			}
@@ -157,9 +153,8 @@ public class AudioController implements IEventHandler {
 				// Was hit
 				if (evt.getProperty() == Event.Property.WAS_DAMAGED) {
 					float f = (float) (game.getPlayer().getHealth() / playerMaxHealth);
-					f = (float) (f*0.5 + 0.5);
-					System.out.println(f);
-					
+					f = (float) (f * 0.5 + 0.5);
+
 					soundSys.setPitch("BGM", f);
 				}
 

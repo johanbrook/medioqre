@@ -18,7 +18,7 @@ public class SoundLibrary {
 	// System.out.println(c.getResource("sounds/fx/walk.wav").toString().substring(5));
 	// }
 	//
- 
+
 	private final Map<String, URL> fxSoundLibrary = initializeFXSoundLibrary();
 	private final Map<Class<?>, URL> weaponSoundLibrary = initializeWeaponSoundLibrary();
 	private final Map<Integer, URL> bgmLibrary = initializeBGMLibrary();
@@ -54,25 +54,28 @@ public class SoundLibrary {
 		return Collections.unmodifiableMap(bgml);
 	}
 
-	
 	public URL getFXSound(String code) {
 		return fxSoundLibrary.get(code);
 	}
-	
+
 	public URL getWeaponSound(Class<?> type) {
 		return weaponSoundLibrary.get(type);
+	}
+
+	public String getWeaponId(Class<?> type) {
+		return weaponSoundLibrary.get(type).toString().substring(13);
 	}
 
 	public URL getBGMURL(Integer code) {
 		return bgmLibrary.get(code);
 	}
-	
+
 	public String getBGMIdentifyer(Integer code) {
 		return bgmLibrary.get(code).toString().substring(14);
 	}
-	
+
 	public URL getStartUpSound() {
-		return c.getResource("sounds/fx/startUpSound.wav");
+		return fxSoundLibrary.get("startUpSound");
 	}
 
 }
