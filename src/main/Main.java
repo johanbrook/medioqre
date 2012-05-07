@@ -28,7 +28,7 @@ public class Main {
 		if(os.indexOf("mac") != -1) OSXOptions();
 		
 		
-		new Launcher();
+		(new AppController()).init();
 	}
 	
 	
