@@ -11,6 +11,7 @@ public class Level implements JSONSerializable {
 	private String	enemyData		= "gamedata/enemy.json";
 	private String	itemData		= "gamedata/items.json";
 	private String	weaponData		= "gamedata/weapons.json";
+	private String worldData		= "gamedata/world.json";
 	private String	levelData		= "gamedata/levels/default.json";
 
 	// View part
@@ -62,6 +63,11 @@ public class Level implements JSONSerializable {
 	public String getLevelData() 
 	{
 		return this.levelData;
+	}
+	
+	public String getWorldData() 
+	{
+		return this.worldData;
 	}
 
 	public String getActorsData()

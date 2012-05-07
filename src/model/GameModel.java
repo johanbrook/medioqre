@@ -210,7 +210,8 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 		for(int i = 0; i < this.portals.length; i++) {
 
 			if(this.portals[i] == null) {
-				Portal p = new Portal(mode, new Rectangle(position.x, position.y, 20, 20), new Dimension(20, 20), 0, 0);
+//				Portal p = new Portal(mode, new Rectangle(position.x, position.y, 20, 20), new Dimension(20, 20), 0, 0);
+				Portal p = ObjectFactory.newPortal(mode, position);
 				EventBus.INSTANCE.publish(new Event(Property.PORTAL_CREATED, p));
 				this.objects.add(p);
 				this.portals[i] = p;

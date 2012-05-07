@@ -4,6 +4,7 @@ import graphics.opengl.Actor;
 import gui.Screen;
 
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,6 +27,8 @@ import model.item.ICollectableItem;
 import model.weapon.AbstractWeapon;
 import model.weapon.MachineGun;
 import model.weapon.Melee;
+import model.weapon.Portal;
+import model.weapon.PortalGun.Mode;
 import model.weapon.Projectile;
 import model.weapon.Projectile.Range;
 
@@ -35,6 +38,7 @@ public class ObjectFactory {
 	private static JSONObject player; 
 	private static JSONObject enemy;
 	private static JSONArray weapons;
+	private static JSONObject world;
 	
 	private static JSONObject levelData;
 
@@ -44,6 +48,7 @@ public class ObjectFactory {
 			 player = new JSONObject(ResourceLoader.loadJSONStringFromResources(level.getPlayerData()));
 			 enemy = new JSONObject(ResourceLoader.loadJSONStringFromResources(level.getEnemyData()));
 			 weapons = new JSONArray(ResourceLoader.loadJSONStringFromResources(level.getWeaponData()));
+			 world = new JSONObject(ResourceLoader.loadJSONStringFromResources(level.getWorldData()));
 			 
 			 levelData = new JSONObject(ResourceLoader.loadJSONStringFromResources(level.getLevelData()));
 		 
@@ -231,6 +236,27 @@ public class ObjectFactory {
 		
 		return null;
 	}
+	
+	
+	public static Portal newPortal(Mode mode, Point position) {
+		try {
+			JSONObject portal = world.getJSONObject("portal");
+			JSONObject bounds = portal.getJSONObject("bounds");
+			
+			Portal p = new Portal(	mode,
+									new Rectangle(position.x, position.y, bounds.getInt("boxWidth"), bounds.getInt("boxHeight")),
+									new Dimension(bounds.getInt("width"), bounds.getInt("height")),
+									bounds.getInt("offsetX"), bounds.getInt("offsetY"));
+			
+			return p;
+			
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
 
 	// View objects
 
