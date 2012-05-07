@@ -1,20 +1,20 @@
 package controller;
 
-import audio.AudioConstants;
-import audio.SoundLibrary;
-
 import model.Entity;
 import model.IGameModel;
 import model.character.Enemy;
-import event.Event;
-import event.EventBus;
-import event.IEventHandler;
-
+import model.weapon.Melee;
+import model.weapon.Projectile;
 import paulscode.sound.SoundSystem;
 import paulscode.sound.SoundSystemConfig;
 import paulscode.sound.SoundSystemException;
 import paulscode.sound.codecs.CodecWav;
 import paulscode.sound.libraries.LibraryJavaSound;
+import audio.AudioConstants;
+import audio.SoundLibrary;
+import event.Event;
+import event.EventBus;
+import event.IEventHandler;
 
 /**
  * Audio Engine
@@ -128,7 +128,7 @@ public class AudioController implements IEventHandler {
 	 * @param wType
 	 *            weapon type (Class)
 	 */
-	public void playWeaponSound(Class<?> wType) {
+	public void playPlayerWeaponSound(Class<?> wType) {
 		soundSys.newSource(false, "playerWeaponSound",
 				lib.getWeaponSound(wType), lib.getWeaponId(wType), false, 1f,
 				1f, 1.0f, SoundSystemConfig.ATTENUATION_NONE, 0.5f);
@@ -143,6 +143,7 @@ public class AudioController implements IEventHandler {
 
 	@Override
 	public void onEvent(Event evt) {
+
 
 		// Initialize
 		if (evt.getProperty() == Event.Property.INIT_MODEL) {
@@ -179,13 +180,13 @@ public class AudioController implements IEventHandler {
 				if (evt.getProperty() == Event.Property.WAS_DAMAGED) {
 					float f = (float) (game.getPlayer().getHealth() / playerMaxHealth);
 					f = (float) (f * 0.5 + 0.5);
-					
+
 					if (f > 1)
 						f = 1f;
 
 					soundSys.setPitch("BGM", f);
 				}
-				
+
 
 
 			}
@@ -212,7 +213,14 @@ public class AudioController implements IEventHandler {
 
 		// Weapons
 		if (evt.getProperty() == Event.Property.FIRED_WEAPON_SUCCESS) {
-			playWeaponSound(game.getPlayer().getCurrentWeapon().getClass());
+
+			if (evt.getValue() instanceof Projectile){
+
+				Projectile p = ((Projectile) evt.getValue());
+				if (!(p.getOwner() instanceof Melee)){
+					playPlayerWeaponSound(game.getPlayer().getCurrentWeapon().getClass());
+				}
+			}
 		}
 
 		// FX
@@ -248,7 +256,7 @@ public class AudioController implements IEventHandler {
 	 * 
 	 * @param e Enemy 
 	 */
-	
+
 	private void stopEnemyWalk(Enemy e) {
 		soundSys.stop(soundCode(e));
 	}
