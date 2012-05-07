@@ -199,9 +199,7 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 
 			GL2 gl = canvas.getGL().getGL2();
 
-			if (this.texture == null)
-				this.texture = SharedTextures.getSharedTextures().getTexture(
-						this.textureName);
+			this.texture = SharedTextures.getSharedTextures().bindTexture(this.textureName, canvas);
 
 			float tX1 = (float) this.rectangle.getX() / (float) texture.getWidth();
 			float tX2 = ((float) this.rectangle.getX() + (float) this.rectangle.getWidth())
@@ -219,9 +217,6 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 			float rY2 = (float) (2.0f * object.getY() - (float) target
 					.getHeight()) / (float) target.getHeight();
 			
-
-			
-			
 			gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER,
 					GL.GL_NEAREST);
 			gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER,
@@ -231,7 +226,6 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 //			gl.glEnable(GL.GL_BLEND);
 //			gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 			
-			this.texture.bind(gl);
 			gl.glBegin(GL2.GL_QUADS);
 			gl.glColor3f(1.0f, 1.0f, 1.0f);
 			
