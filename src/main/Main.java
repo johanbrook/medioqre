@@ -39,7 +39,12 @@ public class Main {
 		if(os.indexOf("mac") != -1) OSXOptions();
 		
 		
-		(new AppController()).init();
+		if(MODE == PRODUCTION){
+			new Launcher();
+		}
+		else{
+			new AppController().init();
+		}
 	}
 
 	private static void OSXOptions() {
