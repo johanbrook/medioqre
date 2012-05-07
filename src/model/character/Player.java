@@ -38,6 +38,16 @@ public class Player extends AbstractCharacter {
 		this.weaponbelt = weapons;
 	}
 	
+	
+	/**
+	 * Get the weapon inventory.
+	 * 
+	 * @return The list of weapon
+	 */
+	public List<AbstractWeapon> getWeaponBelt() {
+		return this.weaponbelt;
+	}
+	
 	/**
 	 * Set the current weapon from the player's weapon belt slot.
 	 * 
@@ -45,9 +55,6 @@ public class Player extends AbstractCharacter {
 	 */
 	public void setCurrentWeapon(int slot) {
 		setCurrentWeapon(this.weaponbelt.get(slot));
-		
-		EventBus.INSTANCE.publish( new Event(Property.CHANGED_WEAPON, getCurrentWeapon()) );
-		System.out.println("Current weapon is " + getCurrentWeapon());
 	}
 	
 	/**

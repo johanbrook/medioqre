@@ -49,6 +49,7 @@ public abstract class AbstractCharacter extends Entity {
 	public void setCurrentWeapon(AbstractWeapon w) {
 		this.currentWeapon = w;
 		EventBus.INSTANCE.publish(new Event(Property.CHANGED_WEAPON, this));
+		System.out.println("Current weapon is " + getCurrentWeapon());
 	}
 	
 	/**
