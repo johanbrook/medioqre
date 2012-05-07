@@ -31,9 +31,6 @@ public class AudioController implements IEventHandler {
 	private static SoundLibrary lib = new SoundLibrary();
 	private double playerMaxHealth;
 
-	private static float BGM_VOLUME = 1;
-	private static float FX_VOLUME = 1;
-
 	private int bgmID = 1;
 
 	/**
@@ -167,7 +164,6 @@ public class AudioController implements IEventHandler {
 				if (evt.getProperty() == Event.Property.DID_MOVE
 						&& !soundSys.playing("playerWalk")) {
 					playerWalk();
-
 				}
 
 				if (evt.getProperty() == Event.Property.DID_STOP) {
@@ -183,9 +179,14 @@ public class AudioController implements IEventHandler {
 				if (evt.getProperty() == Event.Property.WAS_DAMAGED) {
 					float f = (float) (game.getPlayer().getHealth() / playerMaxHealth);
 					f = (float) (f * 0.5 + 0.5);
+					
+					if (f > 1)
+						f = 1f;
 
 					soundSys.setPitch("BGM", f);
 				}
+				
+
 
 			}
 

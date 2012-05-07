@@ -39,12 +39,18 @@ public class SoundLibrary {
 	 * @return weaponSoundLibrary
 	 */
 	private Map<Class<?>, URL> initializeWeaponSoundLibrary() {
-		Map<Class<?>, URL> fx = new HashMap<Class<?>, URL>();
+		Map<Class<?>, URL> weapon = new HashMap<Class<?>, URL>();
 
-		fx.put(model.weapon.MachineGun.class,
+		weapon.put(model.weapon.MachineGun.class,
 				c.getResource("sounds/weapon/machineGun.wav"));
+		weapon.put(model.weapon.Grenade.class,
+				c.getResource("sounds/weapon/grenade.wav"));
+		weapon.put(model.weapon.Sword.class,
+				c.getResource("sounds/weapon/sword.wav"));
+		weapon.put(model.weapon.PortalGun.class,
+				c.getResource("sounds/weapon/portalGun.wav"));
 
-		return Collections.unmodifiableMap(fx);
+		return Collections.unmodifiableMap(weapon);
 	}
 
 	/**
