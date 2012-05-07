@@ -85,7 +85,7 @@ public class AudioController implements IEventHandler {
 		soundSys.newSource(false, "playerWalk", lib.getFXSound("walk"),
 				"walk.wav", false, 1f, 1f, 1.0f,
 				SoundSystemConfig.ATTENUATION_NONE, 0.5f);
-
+		soundSys.setVolume("playerWalk", AudioConstants.FX_VOLUME);
 		soundSys.play("playerWalk");
 	}
 
@@ -114,7 +114,6 @@ public class AudioController implements IEventHandler {
 		soundSys.setListenerPosition(game.getPlayer().getPosition().x, game
 				.getPlayer().getPosition().y, AudioConstants.zROLLOFF);
 
-
 	}
 
 	/**
@@ -124,12 +123,16 @@ public class AudioController implements IEventHandler {
 	 *            weapon type (Class)
 	 */
 	public void playPlayerWeaponSound(Class<?> wType) {
-		soundSys.newSource(false, "playerWeaponSound",
-				lib.getWeaponSound(wType), lib.getWeaponId(wType), false, 1f,
-				1f, 1.0f, SoundSystemConfig.ATTENUATION_NONE, 0.5f);
-		soundSys.setVolume("playerWeaponSound", AudioConstants.WEAPON_VOLUME);
+		if (!(AudioConstants.FX_VOLUME == 0.0)) {
 
-		soundSys.play("playerWeaponSound");
+			soundSys.newSource(false, "playerWeaponSound",
+					lib.getWeaponSound(wType), lib.getWeaponId(wType), false,
+					1f, 1f, 1.0f, SoundSystemConfig.ATTENUATION_NONE, 0.0f);
+
+			soundSys.setVolume("playerWeaponSound", AudioConstants.FX_VOLUME);
+
+			soundSys.play("playerWeaponSound");
+		}
 	}
 
 	/**
@@ -138,7 +141,6 @@ public class AudioController implements IEventHandler {
 
 	@Override
 	public void onEvent(Event evt) {
-
 
 		// Initialize
 		if (evt.getProperty() == Event.Property.INIT_MODEL) {
@@ -166,7 +168,6 @@ public class AudioController implements IEventHandler {
 					stopPlayerWalk();
 				}
 
-
 				// Was hit
 				if (evt.getProperty() == Event.Property.WAS_DAMAGED) {
 					float f = (float) (game.getPlayer().getHealth() / playerMaxHealth);
@@ -177,8 +178,6 @@ public class AudioController implements IEventHandler {
 
 					soundSys.setPitch("BGM", f);
 				}
-
-
 
 			}
 
@@ -205,18 +204,18 @@ public class AudioController implements IEventHandler {
 		// Weapons
 		if (evt.getProperty() == Event.Property.FIRED_WEAPON_SUCCESS) {
 
-			if (evt.getValue() instanceof Projectile){
+			if (evt.getValue() instanceof Projectile) {
 
 				Projectile p = ((Projectile) evt.getValue());
-				if (!(p.getOwner() instanceof Melee)){
-					playPlayerWeaponSound(game.getPlayer().getCurrentWeapon().getClass());
+				if (!(p.getOwner() instanceof Melee)) {
+					playPlayerWeaponSound(game.getPlayer().getCurrentWeapon()
+							.getClass());
 				}
 			}
 		}
 
 		// FX
-		
-		
+
 		// Pickup Items
 		if (evt.getProperty() == Event.Property.PICKED_UP_ITEM) {
 			float f = (float) (game.getPlayer().getHealth() / playerMaxHealth);
@@ -235,13 +234,15 @@ public class AudioController implements IEventHandler {
 	private void playBGM() {
 		soundSys.backgroundMusic("BGM", lib.getBGMURL(bgmID),
 				lib.getBGMId(bgmID), true);
+		soundSys.setVolume("BGM", AudioConstants.BGM_Volume);
 		soundSys.play("BGM");
 	}
 
 	/**
 	 * Plays walk sound effect for Enemies
 	 * 
-	 * @param e Enemy
+	 * @param e
+	 *            Enemy
 	 */
 	private void playEnemyWalk(Enemy e) {
 
@@ -256,7 +257,8 @@ public class AudioController implements IEventHandler {
 	/**
 	 * Stops walk sounds for a given Enemy
 	 * 
-	 * @param e Enemy 
+	 * @param e
+	 *            Enemy
 	 */
 
 	private void stopEnemyWalk(Enemy e) {
@@ -266,7 +268,8 @@ public class AudioController implements IEventHandler {
 	/**
 	 * Removes the sound system source for Enemies destroyed
 	 * 
-	 * @param e Enemy
+	 * @param e
+	 *            Enemy
 	 */
 	private void removeEnemySounds(Enemy e) {
 		soundSys.removeSource(soundCode(e));
@@ -275,7 +278,8 @@ public class AudioController implements IEventHandler {
 	/**
 	 * Generates a code for sound sources based on hashCode
 	 * 
-	 * @param e Entity to create code for
+	 * @param e
+	 *            Entity to create code for
 	 * @return Soundcode for e
 	 */
 	public String soundCode(Entity e) {
