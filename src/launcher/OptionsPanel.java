@@ -5,9 +5,7 @@ import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Dimension;
 
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.JToggleButton;
+
 import javax.swing.JCheckBox;
 import javax.swing.JSlider;
 import javax.swing.JLabel;
@@ -21,7 +19,11 @@ import javax.swing.DefaultComboBoxModel;
 
 public class OptionsPanel extends JPanel {
 	
-	Launcher launcher;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3031517145290968619L;
+	private Launcher launcher;
 	
 	
 	public OptionsPanel(Launcher frame) {
@@ -70,11 +72,11 @@ public class OptionsPanel extends JPanel {
 		fxSlider.setMinorTickSpacing(1);
 		fxSlider.setMaximum(10);
 		
-		JLabel lblNewLabel = new JLabel("Music Volume");
-		lblNewLabel.setBounds(20, 80, 340, 16);
-		soundPanel.add(lblNewLabel);
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setForeground(Color.WHITE);
+		JLabel musicVolumeLabel = new JLabel("Music Volume");
+		musicVolumeLabel.setBounds(20, 80, 340, 16);
+		soundPanel.add(musicVolumeLabel);
+		musicVolumeLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		musicVolumeLabel.setForeground(Color.WHITE);
 		
 		JLabel lblFxVolume = new JLabel("FX Volume");
 		lblFxVolume.setBounds(20, 143, 340, 16);
@@ -88,10 +90,10 @@ public class OptionsPanel extends JPanel {
 		lblSound.setBounds(30, 20, 200, 24);
 		soundPanel.add(lblSound);
 		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Easy", "Medium", "Hard"}));
-		comboBox.setBounds(30, 100, 170, 27);
-		add(comboBox);
+		JComboBox difficultyBox = new JComboBox();
+		difficultyBox.setModel(new DefaultComboBoxModel(new String[] {"Easy", "Medium", "Hard"}));
+		difficultyBox.setBounds(30, 100, 170, 27);
+		add(difficultyBox);
 		
 		JLabel lblDifficulty = new JLabel("Difficulty");
 		lblDifficulty.setHorizontalAlignment(SwingConstants.CENTER);
