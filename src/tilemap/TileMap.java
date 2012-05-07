@@ -4,6 +4,7 @@ import graphics.tools.PixelCastingTool;
 
 import java.util.Random;
 
+import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
 import core.GLRenderableObject;
@@ -62,7 +63,7 @@ public class TileMap implements GLRenderableObject {
 		return this.tileMapSize;
 	}
 
-	public void fillPizelArrayWithTiles(int[] arrayToFill)
+	public void fillPixelArrayWithTiles(int[] arrayToFill)
 	{
 		int rows = this.tiles == null ? 0 : this.tiles.length;
 		int cols = rows > 0 ? this.tiles[0].length : 0;
@@ -90,11 +91,36 @@ public class TileMap implements GLRenderableObject {
 		this.tileSize = size;
 	}
 	
+	public void setTile(int xPos, int yPos, int tileType)
+	{
+		if (this.tiles != null && this.tiles.length > xPos) {
+			if (this.tiles[xPos] != null && this.tiles[xPos].length > yPos) {
+				this.tiles[xPos][yPos] = tileType;
+			}
+		}
+	}
+
+	public int getTile(int xPos, int yPos)
+	{
+		if (this.tiles != null && this.tiles.length > xPos) {
+			if (this.tiles[xPos] != null && this.tiles[xPos].length > yPos) {
+				return this.tiles[xPos][yPos];
+			}
+		}
+		throw new ArrayIndexOutOfBoundsException();
+	}
+	public Size getTileSize()
+	{
+		return this.tileSize;
+	}
 	
 	@Override
-	public void render(Rectangle object, Rectangle target, GLAutoDrawable canvas)
+	public void render(Rectangle object, Rectangle target, GLAutoDrawable canvas, int zIndex)
 	{		
 		if (this.tileRenderRect == null) this.tileRenderRect = new Rectangle(0, 0, 0, 0);
+
+		if (this.tileSheet == null) return;
+		
 		for (int x = 0; x < this.tiles.length; x++) {
 			for (int y = 0; y < this.tiles[x].length; y++) {
 				tileRenderRect.setX(x * tileSize.getWidth()+object.getX());
@@ -102,7 +128,12 @@ public class TileMap implements GLRenderableObject {
 				tileRenderRect.setWidth(tileSize.getWidth());
 				tileRenderRect.setHeight(tileSize.getHeight());
 				
-				this.tileSheet.getTile(this.tiles[x][y]).render(tileRenderRect, target, canvas);
+				if (this.tileSheet.getTile(this.tiles[x][y]) == null) {
+					System.out.println("Trying to render a tile that is null!: "+this.tiles[x][y]);
+					return;
+				}
+				
+				this.tileSheet.getTile(this.tiles[x][y]).render(tileRenderRect, target, canvas, 0);
 			}
 		}
 	}

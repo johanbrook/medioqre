@@ -5,6 +5,7 @@ import gui.tilemapeditor.subviews.TileCanvas;
 import gui.tilemapeditor.subviews.TileInspector;
 import gui.tilemapeditor.subviews.TileSelector;
 import gui.tilemapeditor.tilesheeteditor.TileSheetEditor;
+import gui.tilemapeditor.util.TileSelectorListener;
 
 import javax.imageio.ImageIO;
 import javax.media.opengl.GLCapabilities;
@@ -68,6 +69,8 @@ public class TileMapEditor extends JFrame {
 
 	private TileCanvas tileCanvas;
 
+	private TileSelector	tileSelector;
+
 	public static void main(String[] args)
 	{
 		new TileMapEditor();
@@ -95,7 +98,7 @@ public class TileMapEditor extends JFrame {
 			
 			int[] pixels = ((DataBufferInt)img.getRaster().getDataBuffer()).getData();
 						
-			this.currentTileMap.fillPizelArrayWithTiles(pixels);
+			this.currentTileMap.fillPixelArrayWithTiles(pixels);
 					
 			try {
 				ImageIO.write(img, "png", file);
@@ -115,10 +118,11 @@ public class TileMapEditor extends JFrame {
 				.showInputDialog("Number of rows: "));
 		int columns = Integer.valueOf(JOptionPane
 				.showInputDialog("Number of columns: "));
-		
+			
 		TileSheet t = this.currentTileSheet == null ? new TileSheet() : this.currentTileSheet;
 		
 		this.currentTileMap = new TileMap(rows, columns, t, null);
+		this.currentTileMap.randomizeTileMap();
 
 		this.tileCanvas.setTileMap(this.currentTileMap);
 
@@ -188,6 +192,9 @@ public class TileMapEditor extends JFrame {
 			
 			// Update Logic
 			this.currentTileMap.setTileSheet(this.currentTileSheet);
+		}
+		if (this.currentTileSheet != null && this.tileSelector != null) {
+			this.tileSelector.setTileSheet(this.currentTileSheet);
 		}
 	}
 
@@ -343,8 +350,10 @@ public class TileMapEditor extends JFrame {
 
 		// Creating tile selector and adding it to
 		// split pane
-		TileSelector tileSelector = new TileSelector();
-		splitPane_1.setRightComponent(tileSelector);
+		
+		this.tileSelector = new TileSelector(glC);
+		this.tileSelector.addTileSelectorListener(this.tileCanvas);
+		splitPane_1.setRightComponent(this.tileSelector);
 
 		// Creating tile inspector
 		TileInspector tileInspector = new TileInspector();

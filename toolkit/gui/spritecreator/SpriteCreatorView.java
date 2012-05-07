@@ -173,7 +173,7 @@ public class SpriteCreatorView extends JFrame implements GLEventListener,
 
 		if (this.player != null && this.player.getCurrentAnimation() != null) {
 			this.player.getCurrentAnimation().update(dt);
-			this.player.render(this.rect, this.target, arg0);
+			this.player.render(this.rect, this.target, arg0, 0);
 		}
 	}
 

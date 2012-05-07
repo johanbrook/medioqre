@@ -193,15 +193,13 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 	
 	// ************* Interface methods *************
 	@Override
-	public void render(Rectangle object, Rectangle target, GLAutoDrawable canvas)
+	public void render(Rectangle object, Rectangle target, GLAutoDrawable canvas, int zIndex)
 	{
 		if (object != null && object.intersectsRectangle(target)) {
 
 			GL2 gl = canvas.getGL().getGL2();
 
-			if (this.texture == null)
-				this.texture = SharedTextures.getSharedTextures().getTexture(
-						this.textureName);
+			this.texture = SharedTextures.getSharedTextures().bindTexture(this.textureName, canvas);
 
 			float tX1 = (float) this.rectangle.getX() / (float) texture.getWidth();
 			float tX2 = ((float) this.rectangle.getX() + (float) this.rectangle.getWidth())
@@ -219,31 +217,31 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 			float rY2 = (float) (2.0f * object.getY() - (float) target
 					.getHeight()) / (float) target.getHeight();
 			
-
-			gl.glEnable(GL.GL_BLEND);
-			gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 			gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER,
 					GL.GL_NEAREST);
 			gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER,
 					GL.GL_NEAREST);
-
-			this.texture.bind(gl);
+			gl.glAlphaFunc(GL2.GL_GREATER, 0.10f);
+			
+//			gl.glEnable(GL.GL_BLEND);
+//			gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+			
 			gl.glBegin(GL2.GL_QUADS);
 			gl.glColor3f(1.0f, 1.0f, 1.0f);
 			
 			gl.glTexCoord2f(tX1, tY1);
-			gl.glVertex2f(rX1, -rY2);
+			gl.glVertex3f(rX1, -rY2, ((float) -zIndex) / 10000f);
 
 			gl.glTexCoord2f(tX2, tY1);
-			gl.glVertex2f(rX2, -rY2);
+			gl.glVertex3f(rX2, -rY2, ((float) -zIndex ) / 10000f);
 
 			gl.glTexCoord2f(tX2, tY2);
-			gl.glVertex2f(rX2, -rY1);
+			gl.glVertex3f(rX2, -rY1, ((float) -zIndex ) / 10000f);
 
 			gl.glTexCoord2f(tX1, tY2);
-			gl.glVertex2f(rX1, -rY1);
+			gl.glVertex3f(rX1, -rY1, ((float) -zIndex ) / 10000f);
 
-			gl.glEnd();
+			gl.glEnd(); 
 		}
 	}
 
