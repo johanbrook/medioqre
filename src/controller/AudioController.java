@@ -30,6 +30,7 @@ public class AudioController implements IEventHandler {
 	private static SoundSystem soundSys;
 	private IGameModel game;
 	private static SoundLibrary lib = new SoundLibrary();
+	private double playerMaxHealth;
 
 	private static float BGM_VOLUME = 1;
 	private static float FX_VOLUME = 1;
@@ -122,9 +123,12 @@ public class AudioController implements IEventHandler {
 	public void onEvent(Event evt) {
 
 		// Initialize
-		if (evt.getProperty() == Event.Property.INIT_MODEL
-				&& !soundSys.playing("Background Music")) {
+		if (evt.getProperty() == Event.Property.INIT_MODEL) {
+			playerMaxHealth = game.getPlayer().getHealth();
+			
+			if (!soundSys.playing("Background Music")) {
 				playBGM();
+			}
 		}
 
 		// Entities
@@ -150,8 +154,15 @@ public class AudioController implements IEventHandler {
 					// TODO Pickupljud!
 				}
 
-				
-				
+				// Was hit
+				if (evt.getProperty() == Event.Property.WAS_DAMAGED) {
+					float f = (float) (game.getPlayer().getHealth() / playerMaxHealth);
+					f = (float) (f*0.5 + 0.5);
+					System.out.println(f);
+					
+					soundSys.setPitch("BGM", f);
+				}
+
 			}
 
 			// Enemies
@@ -176,7 +187,7 @@ public class AudioController implements IEventHandler {
 
 		// Weapons
 		if (evt.getProperty() == Event.Property.FIRED_WEAPON_SUCCESS) {
-				playWeaponSound(game.getPlayer().getCurrentWeapon().getClass());
+			playWeaponSound(game.getPlayer().getCurrentWeapon().getClass());
 		}
 
 		// FX
@@ -186,7 +197,8 @@ public class AudioController implements IEventHandler {
 	private void playBGM() {
 		Integer id = 1;
 
-		soundSys.backgroundMusic("BGM", lib.getBGMURL(id), lib.getBGMIdentifyer(id), true);
+		soundSys.backgroundMusic("BGM", lib.getBGMURL(id),
+				lib.getBGMIdentifyer(id), true);
 		soundSys.play("BGM");
 	}
 
