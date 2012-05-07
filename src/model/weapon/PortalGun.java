@@ -30,6 +30,7 @@ public class PortalGun extends AbstractWeapon {
 	
 	public void switchMode() {
 		this.mode = (this.mode == Mode.BLUE) ? Mode.ORANGE : Mode.BLUE;
+		System.out.println("Current portal gun mode: "+this.mode);
 	}
 
 	public Mode getMode() {
