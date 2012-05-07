@@ -6,6 +6,7 @@ import audio.SoundLibrary;
 import model.Entity;
 import model.IGameModel;
 import model.character.Enemy;
+import model.weapon.Melee;
 import event.Event;
 import event.EventBus;
 import event.IEventHandler;
@@ -123,7 +124,7 @@ public class AudioController implements IEventHandler {
 		// Initialize
 		if (evt.getProperty() == Event.Property.INIT_MODEL
 				&& !soundSys.playing("Background Music")) {
-
+				playBGM();
 		}
 
 		// Entities
@@ -149,6 +150,8 @@ public class AudioController implements IEventHandler {
 					// TODO Pickupljud!
 				}
 
+				
+				
 			}
 
 			// Enemies
@@ -173,11 +176,18 @@ public class AudioController implements IEventHandler {
 
 		// Weapons
 		if (evt.getProperty() == Event.Property.FIRED_WEAPON_SUCCESS) {
-			playWeaponSound(game.getPlayer().getCurrentWeapon().getClass());
+				playWeaponSound(game.getPlayer().getCurrentWeapon().getClass());
 		}
 
 		// FX
 
+	}
+
+	private void playBGM() {
+		Integer id = 1;
+
+		soundSys.backgroundMusic("BGM", lib.getBGMURL(id), lib.getBGMIdentifyer(id), true);
+		soundSys.play("BGM");
 	}
 
 	private void playZombiewalk(Enemy e) {

@@ -5,11 +5,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import model.weapon.AbstractWeapon;
-
-import event.Event;
-import event.Event.Property;
-
 /*
  * Sound library for Frank the Tank
  * 
@@ -23,9 +18,10 @@ public class SoundLibrary {
 	// System.out.println(c.getResource("sounds/fx/walk.wav").toString().substring(5));
 	// }
 	//
-
+ 
 	private final Map<String, URL> fxSoundLibrary = initializeFXSoundLibrary();
 	private final Map<Class<?>, URL> weaponSoundLibrary = initializeWeaponSoundLibrary();
+	private final Map<Integer, URL> bgmLibrary = initializeBGMLibrary();
 	private static ClassLoader c = SoundLibrary.class.getClassLoader();
 
 	// FX Sound Library
@@ -33,7 +29,7 @@ public class SoundLibrary {
 		Map<String, URL> fx = new HashMap<String, URL>();
 
 		fx.put("walk", c.getResource("sounds/fx/walk.wav"));
-		fx.put("startUpSound", c.getResource("sounds/fx/startUpSound.wav"));
+		fx.put("startUpSound", c.getResource("sounds/fx/walk.wav"));
 
 		return Collections.unmodifiableMap(fx);
 	}
@@ -48,8 +44,18 @@ public class SoundLibrary {
 		return Collections.unmodifiableMap(fx);
 	}
 
-	public URL getFXSound(String code) {
+	// BGM Library
+	private Map<Integer, URL> initializeBGMLibrary() {
+		Map<Integer, URL> bgml = new HashMap<Integer, URL>();
 
+		bgml.put(1, c.getResource("sounds/bgm/frankTheTank.wav"));
+		bgml.put(2, c.getResource("sounds/fx/walk.wav"));
+
+		return Collections.unmodifiableMap(bgml);
+	}
+
+	
+	public URL getFXSound(String code) {
 		return fxSoundLibrary.get(code);
 	}
 	
@@ -57,6 +63,14 @@ public class SoundLibrary {
 		return weaponSoundLibrary.get(type);
 	}
 
+	public URL getBGMURL(Integer code) {
+		return bgmLibrary.get(code);
+	}
+	
+	public String getBGMIdentifyer(Integer code) {
+		return bgmLibrary.get(code).toString().substring(14);
+	}
+	
 	public URL getStartUpSound() {
 		return c.getResource("sounds/fx/startUpSound.wav");
 	}
