@@ -222,11 +222,13 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 
 			gl.glEnable(GL.GL_BLEND);
 			gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+			
 			gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER,
 					GL.GL_NEAREST);
 			gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER,
 					GL.GL_NEAREST);
-
+			gl.glAlphaFunc(GL2.GL_GREATER, 0.99f);
+			
 			this.texture.bind(gl);
 			gl.glBegin(GL2.GL_QUADS);
 			gl.glColor3f(1.0f, 1.0f, 1.0f);
@@ -243,7 +245,7 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 			gl.glTexCoord2f(tX1, tY2);
 			gl.glVertex3f(rX1, -rY1, ((float) -zIndex ) / 10000f);
 
-			gl.glEnd();
+			gl.glEnd(); 
 		}
 	}
 
