@@ -2,9 +2,12 @@ package datamanagement;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.media.opengl.GLAutoDrawable;
+import javax.media.opengl.GLContext;
 import javax.media.opengl.GLException;
 
 import com.jogamp.opengl.util.texture.Texture;
@@ -23,34 +26,45 @@ public class SharedTextures {
 	
 	// Instance
 	private String spriteBaseURL;
-	private Map<String, Texture> textures;
+	private IdentityHashMap<GLAutoDrawable,TreeMap<String, Texture>> textures;
 	
 	private SharedTextures()
 	{
-		this.textures = new TreeMap<String, Texture>();
+		this.textures = new IdentityHashMap<GLAutoDrawable, TreeMap<String,Texture>>();
 		this.spriteBaseURL = (String) "res/spritesheets/images/";
 	}
 	
-	public Texture getTexture(String textureName) {
-		Texture t = this.textures.get(textureName);
+	public Texture bindTexture(String textureName, GLAutoDrawable arg0) {
+		if (this.textures == null) {
+			this.textures = new IdentityHashMap<GLAutoDrawable, TreeMap<String,Texture>>();
+		}
+		
+		TreeMap<String, Texture> threadTextures = this.textures.get(arg0);
+		
+		if (threadTextures == null) {
+			threadTextures = new TreeMap<String, Texture>();
+			this.textures.put(arg0, threadTextures);
+		}
+		
+		Texture t = threadTextures.get(textureName);
+		
 		if (t == null) {
-			
 			try {
 				t = TextureIO.newTexture(new File(spriteBaseURL+textureName+".png"), false);
-				if (t != null) {
-					this.textures.put(textureName, t);
-					System.out.println("Loaded texture: "+textureName);
-				} else {
-					System.out.println("Texture: "+textureName+" could not be loaded!");
-				}
+				threadTextures.put(textureName, t);
 			} catch (GLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}			
+			}
 		}
+		
+		
+		
+		t.bind(arg0.getGL());
+		
 		return t;
 	}
 }
