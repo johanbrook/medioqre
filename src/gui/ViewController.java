@@ -1,37 +1,30 @@
 package gui;
 
-import graphics.bitmap.Bitmap;
-import graphics.bitmap.BitmapTool;
-import graphics.bitmap.font.BitmapFont;
-import gui.animation.Actor;
-import gui.animation.Animation;
-import gui.tilemap.TileMap;
-
-import java.awt.Canvas;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.event.KeyListener;
-import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.IdentityHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
+import javax.media.opengl.GLAutoDrawable;
+import javax.media.opengl.GLCapabilities;
+import javax.media.opengl.GLEventListener;
+import javax.media.opengl.GLProfile;
+import javax.media.opengl.awt.GLCanvas;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-import constants.Direction;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import datamanager.resourceloader.ResourceManager;
+import com.jogamp.opengl.util.Animator;
+import com.jogamp.opengl.util.FPSAnimator;
 
-import sun.font.FontFamily;
+import tilemap.TileMap;
 import tools.GraphicalFPSMeter;
-import tools.Logger;
 import tools.TimerTool;
 
 import event.Event;
@@ -39,10 +32,26 @@ import event.EventBus;
 import event.IEventHandler;
 import event.Event.Property;
 
+import model.CollidableObject;
 import model.Entity;
 import model.GameModel;
 import model.character.Enemy;
 import model.character.Player;
+import model.item.AmmoCrate;
+import model.item.ICollectableItem;
+import model.item.MedPack;
+import model.weapon.MachineGun;
+import model.weapon.Portal;
+import model.weapon.PortalGun;
+import model.weapon.Projectile;
+
+import core.Rectangle;
+import core.Size;
+import datamanagement.ResourceLoader;
+import event.Event;
+import event.EventBus;
+import event.IEventHandler;
+import graphics.opengl.Actor;
 
 /**
  * A GUI-Interface in BASIC so we can track the IP-address.
@@ -50,243 +59,219 @@ import model.character.Player;
  * @author Barber
  * 
  */
-public class ViewController implements IEventHandler {
+public class ViewController implements IEventHandler, GLEventListener {
+
+	// State
+	private boolean							doneLoading	= false;
 
 	// Screen
-	private final int SCREEN_WIDTH;
-	private final int SCREEN_HEIGHT;
-	private BufferStrategy bufferStrategy;
-	private Canvas canvas;
-	private Actor player;
-	private Map<Entity, Actor> enemies;
-	private Map<Entity, Actor> projectiles;
-	private TileMap gameMap;
-	private Bitmap screen;
-	private BitmapFont fpsBitmap;
-	private BufferedImage screenImage;
-	private Bitmap collisionBoxBox;
+	private Screen							screen;
 
-	private GraphicalFPSMeter fpsmeter;
+	// Map
+	private TileMap							tilemap;
+
+	// Actors
+	private Actor							player;
+	private Map<CollidableObject, Actor>	enemies  = new IdentityHashMap<CollidableObject, Actor>();;
+	private Map<CollidableObject, Actor>	projectiles  = new IdentityHashMap<CollidableObject, Actor>();;
+	private Map<CollidableObject, Actor>	items  = new IdentityHashMap<CollidableObject, Actor>();;
+
+	// Tools
+	private GraphicalFPSMeter				fpsmeter;
 
 	public ViewController(KeyListener listener, int screenWidth,
-			int screenHeight) {
+			int screenHeight)
+	{
 		EventBus.INSTANCE.register(this);
 
-		SCREEN_WIDTH = screenWidth;
-		SCREEN_HEIGHT = screenHeight;
-
-		screenImage = new BufferedImage(SCREEN_WIDTH, SCREEN_HEIGHT,
-				BufferedImage.TYPE_INT_ARGB);
-
-		screen = new Bitmap(SCREEN_WIDTH, SCREEN_HEIGHT,
-				BitmapTool.getARGBarrayFromDataBuffer(screenImage.getRaster(),
-						SCREEN_WIDTH, SCREEN_HEIGHT));
-
-		collisionBoxBox = new Bitmap(16, 16);
-		collisionBoxBox.clear(0xffff99ff);
-
 		this.fpsmeter = new GraphicalFPSMeter();
-		this.fpsBitmap = new BitmapFont("");
 
-		initScene();
+		this.screen = new Screen(0, 0, screenWidth, screenHeight);
 
 		// Creating the frame
-		Canvas canvas = new Canvas();
-		canvas.setIgnoreRepaint(true);
-		canvas.setPreferredSize(new Dimension(screenWidth, screenHeight));
+		GLProfile glP = GLProfile.getDefault();
+		GLCapabilities glC = new GLCapabilities(glP);
+		GLCanvas canvas = new GLCanvas(glC);
 
 		// Creating the frame
 		JFrame frame = new JFrame("Frank The Tank");
-		frame.setIgnoreRepaint(true);
 		canvas.setFocusable(true);
 		canvas.requestFocusInWindow();
 		canvas.addKeyListener(listener);
+		canvas.addGLEventListener(this);
 
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 		frame.add(canvas);
-		frame.setVisible(true);
-
-		// Setup the canvas and frame
-		canvas.createBufferStrategy(2);
-		this.bufferStrategy = canvas.getBufferStrategy();
-		this.canvas = canvas;
+		frame.setPreferredSize(new Dimension(screenWidth, screenHeight));
 		frame.pack();
+		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
-	}
 
-	private void initScene() {
-		try {
-			this.gameMap = new TileMap("res/images/levels/l2.bmp");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void render(double dt) {
-		do {
-			do {
-				Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
-
-				if (this.player != null) {
-					int x = (int) player.getPosition().getX() - SCREEN_WIDTH
-							/ 2;
-					int y = (int) player.getPosition().getY() - SCREEN_HEIGHT
-							/ 2;
-					int w = SCREEN_WIDTH;
-					int h = SCREEN_HEIGHT;
-					gameMap.blitVisibleTilesToBitmap(screen, new Rectangle(x,
-							y, w, h));
-				}
-
-				if (this.enemies != null) {
-					for (Actor eActor : this.enemies.values()) {
-						if (eActor != null) {
-							eActor.update(dt);
-							if (eActor.getCurrentFrame() != null) {
-								screen.blit(
-										eActor.getCurrentFrame(),
-										eActor.getPosition().x
-												- this.player.getPosition().x
-												+ SCREEN_WIDTH / 2,
-										eActor.getPosition().y
-												- this.player.getPosition().y
-												+ SCREEN_HEIGHT / 2);
-
-								int x = eActor.getPosition().x
-										- this.player.getPosition().x
-										+ SCREEN_WIDTH / 2
-										+ eActor.getEntity().getOffsetX();
-								int y = eActor.getPosition().y
-										- this.player.getPosition().y
-										+ SCREEN_HEIGHT / 2
-										+ eActor.getEntity().getOffsetY();
-								// screen.blit(collisionBoxBox, x, y);
-							}
-						}
-					}
-				}
-
-				if (this.projectiles != null) {
-					for (Actor eActor : this.projectiles.values()) {
-						if (eActor != null) {
-							eActor.update(dt);
-							if (eActor.getCurrentFrame() != null) {
-								screen.blit(
-										eActor.getCurrentFrame(),
-										eActor.getPosition().x
-												- this.player.getPosition().x
-												+ SCREEN_WIDTH / 2,
-										eActor.getPosition().y
-												- this.player.getPosition().y
-												+ SCREEN_HEIGHT / 2);
-
-								int x = eActor.getPosition().x
-										- this.player.getPosition().x
-										+ SCREEN_WIDTH / 2
-										+ eActor.getEntity().getOffsetX();
-								int y = eActor.getPosition().y
-										- this.player.getPosition().y
-										+ SCREEN_HEIGHT / 2
-										+ eActor.getEntity().getOffsetY();
-								// screen.blit(collisionBoxBox, x, y);
-							}
-						}
-					}
-				}
-				
-				if (player != null) {
-					player.update(dt);
-
-					if (player.getCurrentFrame() != null) {
-						screen.blit(player.getCurrentFrame(), SCREEN_WIDTH / 2,
-								SCREEN_HEIGHT / 2);
-						int x = SCREEN_WIDTH / 2
-								+ this.player.getEntity().getOffsetX();
-						int y = SCREEN_HEIGHT / 2
-								+ this.player.getEntity().getOffsetY();
-						// screen.blit(collisionBoxBox, x, y);
-
-					} else
-						System.out.println("Playerimage is null!");
-				}
-
-				fpsmeter.tick();
-				fpsBitmap.setText("fps: " + this.fpsmeter.currentFPS);
-				screen.blit(fpsBitmap.getBitmap(), 5, 5);
-
-				g.drawImage(screenImage, 0, 0, this.canvas.getWidth(),
-						this.canvas.getHeight(), null);
-
-				g.dispose();
-			} while (bufferStrategy.contentsRestored());
-			bufferStrategy.show();
-		} while (bufferStrategy.contentsLost());
+		FPSAnimator anim = new FPSAnimator(canvas, 60);
+		anim.start();
 	}
 
 	@Override
-	public void onEvent(Event evt) {
-
+	public void onEvent(Event evt)
+	{
 		if (evt.getProperty() == Event.Property.INIT_MODEL) {
-			if (evt.getValue() instanceof GameModel) {
-				this.enemies = new IdentityHashMap<Entity, Actor>();
-				List<Entity> entities = ((GameModel) evt.getValue())
-						.getEntities();
-				Actor[] actors = ResourceManager.loadActors();
-				Actor pActor = actors[0];
-				Actor eActor = actors[1];
-				for (Entity e : entities) {
-					if (e instanceof Enemy) {
-						Actor newE = eActor.clone();
-						newE.setEntity(e);
-						this.enemies.put(e, newE);
-					} else if (e instanceof Player) {
-						Actor newA = pActor.clone();
-						newA.setEntity(e);
-						this.player = newA;
+			GameModel gm = (GameModel) evt.getValue();
+			try {
+				this.tilemap = ResourceLoader
+						.loadTileMapFromResources("test2.png");
+				this.tilemap.setTileSheet(ResourceLoader
+						.loadTileSheetFromResource("tiles.tilesheet"));
+				this.tilemap.setViewPortSize(new Size(48 * 12, 48 * 20));
+				this.tilemap.setTileSize(new Size(48, 48));
+
+				this.screen.addDrawableToLayer(this.tilemap, 0);
+
+				List<CollidableObject> entities = ((GameModel) evt.getValue())
+						.getObjects();
+
+				this.player = new Actor(new JSONObject(
+						ResourceLoader
+								.loadJSONStringFromResources("spritesheets/json/frank.actor")),
+						gm.getPlayer());
+				this.player.setCurrentAnimation("moveS");
+				this.screen.addDrawableToLayer(this.player, 1);
+
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			this.doneLoading = true;
+		} else if (evt.getProperty() == Event.Property.NEW_WAVE) {
+
+			for (Actor actor : this.projectiles.values()) {
+				this.screen.removeDrawableFromLayer(actor);
+			}
+			for (Actor actor : this.enemies.values()) {
+				this.screen.removeDrawableFromLayer(actor);
+			}
+			for (Actor actor : this.items.values()) {
+				this.screen.removeDrawableFromLayer(actor);
+			}
+			
+			List<CollidableObject> entities = (List) ((GameModel) evt
+					.getValue()).getObjects();
+			for (CollidableObject e : entities) {
+				if (e instanceof Enemy) {
+					Actor newA;
+					try {
+						newA = new Actor(
+								new JSONObject(
+										ResourceLoader
+												.loadJSONStringFromResources("spritesheets/json/walker1.actor")),
+								(Entity) e);
+						this.enemies.put(e, newA);
+						this.screen.addDrawableToLayer(newA, 1);
+					} catch (JSONException e1) {
+						e1.printStackTrace();
+					}
+				} else if (e instanceof ICollectableItem) {
+					Actor newA;
+					try {
+						newA = new Actor(
+								new JSONObject(
+										ResourceLoader
+												.loadJSONStringFromResources("spritesheets/json/gameitems.actor")),
+								e);
+						this.items.put(e, newA);
+						this.screen.addDrawableToLayer(newA, 1);
+					} catch (JSONException e1) {
+						e1.printStackTrace();
 					}
 				}
 			}
-		}
+		} else if (evt.getProperty() == Event.Property.FIRED_WEAPON_SUCCESS) {
+			if (evt.getValue() instanceof Projectile) {
+				Projectile p = (Projectile) evt.getValue();
 
-		if (evt.getValue() instanceof Entity) {
-			Entity p = (Entity) evt.getValue();
+				if (p.getOwner() instanceof MachineGun) {
+					Actor newA;
+					try {
+						newA = new Actor(
+								new JSONObject(
+										ResourceLoader
+												.loadJSONStringFromResources("spritesheets/json/machinegun_projectile.actor")),
+								(CollidableObject) evt.getValue());
 
-			if (p instanceof model.weapon.Projectile) {
+						this.projectiles.put((CollidableObject) evt.getValue(),
+								newA);
+						this.screen.addDrawableToLayer(newA, 1);
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+
+			}
+
+		} else if (evt.getProperty() == Event.Property.PORTAL_CREATED) {
+			Portal p = (Portal) evt.getValue();
+			Actor newA;
+			try {
+				newA = new Actor(new JSONObject(
+						ResourceLoader
+								.loadJSONStringFromResources("spritesheets/json/portal.actor")),
+						(CollidableObject) p);
+				this.items.put((CollidableObject) p, newA);
+				this.screen.addDrawableToLayer(newA, 1);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else if (evt.getProperty() == Event.Property.WAS_DESTROYED) {
+			if (evt.getValue() instanceof CollidableObject) {
+				CollidableObject o = (CollidableObject) evt.getValue();
+
+				if (o instanceof AmmoCrate || o instanceof MedPack) System.out.println("Destroying medpack or ammo crate");
 				
-				if (evt.getProperty() == Event.Property.FIRED_WEAPON_SUCCESS) {
-					System.out.println("Derp");
-					
-					if (this.projectiles == null)
-						this.projectiles = new IdentityHashMap<Entity, Actor>();
-					
-					Actor tmp = this.player.clone();
-					tmp.setEntity(p);
-					this.enemies.put(p, tmp);
-				}
+				this.screen.removeDrawableFromLayer(this.enemies.remove(o));
+				this.screen.removeDrawableFromLayer(this.projectiles.remove(o));
+				this.screen.removeDrawableFromLayer(this.items.remove(o));
 			}
-
-			if (p instanceof model.character.Player) {
-				if (this.player == null)
-					return;
-				if (evt.getProperty() == Event.Property.DID_MOVE) {
-					player.startMoving();
-				} else if (evt.getProperty() == Event.Property.DID_STOP) {
-					player.stopMoving();
-				}
-			}
-			if (p instanceof model.character.Enemy) {
-				if (this.enemies == null)
-					return;
-				if (this.enemies.get(p) == null)
-					return;
-				if (evt.getProperty() == Event.Property.DID_MOVE) {
-					enemies.get(p).startMoving();
-				} else if (evt.getProperty() == Event.Property.DID_STOP) {
-					enemies.get(p).stopMoving();
-				}
-			}
-
 		}
+	}
+
+	@Override
+	public void display(GLAutoDrawable arg0)
+	{
+		fpsmeter.tick();
+		// System.out.println("fps: " + this.fpsmeter.currentFPS);
+
+		GL2 gl = arg0.getGL().getGL2();
+		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
+
+		// TimerTool.start("GL-Screen");
+		if (doneLoading) {
+			this.screen.setViewPort(this.player.getCollidableObject()
+					.getPosition());
+			this.screen.render(this.screen.getBounds(),
+					this.screen.getBounds(), arg0);
+		}
+		// TimerTool.stop();
+	}
+
+	@Override
+	public void init(GLAutoDrawable arg0)
+	{
+		GL2 gl = arg0.getGL().getGL2();
+		gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		gl.glEnable(GL.GL_TEXTURE_2D);
+		gl.glTexEnvf(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE,
+				GL2.GL_MODULATE);
+	}
+
+	@Override
+	public void dispose(GLAutoDrawable arg0)
+	{
+	}
+
+	@Override
+	public void reshape(GLAutoDrawable arg0, int arg1, int arg2, int arg3,
+			int arg4)
+	{
 	}
 }

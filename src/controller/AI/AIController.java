@@ -1,11 +1,13 @@
 package controller.AI;
 
 import java.awt.Point;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.CopyOnWriteArrayList;
 
+import model.GameModel;
 import model.character.Enemy;
+import model.character.Player;
 import model.weapon.Projectile;
 import constants.Direction;
 import event.Event;
@@ -19,35 +21,52 @@ import event.Messager;
  * @author jesperpersson
  *
  */
-public class AIController implements IMessageSender{
+public class AIController implements IMessageSender, IMessageListener {
 
 	private List <AIPlayer> enemies;
 	private PathFinder pathfinder;
 	private int width, height;
 	private Point playerPos,playerTile;
+	private Player player;
 	private Messager messager = new Messager();
 
-	public AIController (int rows, int columns, int width, int height) {
-		this(new ArrayList <Enemy>(), rows, columns, width, height);
-	}
 
-	public AIController (List<Enemy> enemies, int rows, int columns, int width, int height){
+	public AIController (int rows, int columns, int width, int height){
 		this.pathfinder = new PathFinder(rows, columns);
 		this.width = width;
 		this.height = height;
-		this.enemies = new ArrayList <AIPlayer>();
-		for (int i = 0; i < enemies.size(); i++) {
-			this.enemies.add(new AIPlayer(enemies.get(i)));
+		this.enemies = new CopyOnWriteArrayList<AIPlayer>();
+	}
+
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void onMessage(Event evt) {
+		System.out.println("Something happened! AI: "+evt.getProperty());
+
+		switch(evt.getProperty()) {
+		case NEW_GAME:
+			player = ((GameModel) evt.getValue() ).getPlayer();
+//			this.pathfinder.initWalls(           ObjectFactory.getWalls()     );
+			break;
+		case NEW_WAVE:
+			this.setEnemies(((GameModel) evt.getValue()).getEnemies());
+			break;
+
+		case WAS_DESTROYED:
+			this.removeEnemy((Enemy) evt.getValue());
+			break;
 		}
 	}
 
 	/**
-	 * For each existing enemy, will update that enemies direction in order to reach the player in shortest amount of time possible
-	 * @param playerPos
+	 * Updates each enemy the AIController keeps track of.
+	 * @param dt Time since last update
 	 */
-	public void updateAI(double dt, Point playerPos){
+	public void updateAI(double dt){
+		this.playerPos = player.getPosition();
 		playerTile = calculateTile(playerPos);
-		this.playerPos = playerPos;
+		
 
 		if (playerTile.x >= 0 && playerTile.y >=0 &&
 				playerTile.x < 48 && playerTile.y < 48){
@@ -73,7 +92,7 @@ public class AIController implements IMessageSender{
 
 		aiPlayer.setDistance(Math.abs(aiPlayer.getEnemy().getPosition().x - playerPos.x) + Math.abs(aiPlayer.getEnemy().getPosition().y
 				- playerPos.y));
-		
+
 		handleAttack(aiPlayer,dt);
 		if (aiPlayer.getCount() < (aiPlayer.getDistance()/15) + enemies.size()/15){
 			aiPlayer.updateCount();
@@ -86,8 +105,6 @@ public class AIController implements IMessageSender{
 				aiPlayer.setPath(pathfinder.getPath(enemyTile, playerTile));
 				if (aiPlayer.getPath() != null){
 
-					
-
 					//Update direction of the enemy depending on what the current path is.
 
 					//If path is longer than 2 tiles, just calculate the direction from the path
@@ -97,11 +114,7 @@ public class AIController implements IMessageSender{
 
 						//If path is shorter, manually inserts enemy and player positions and walk straight towards them, they should be to close for there to
 						//be any kind of obsticle in the way.
-						aiPlayer.getPath().clear();
-						aiPlayer.getPath().add(playerPos);
-						aiPlayer.getPath().add(aiPlayer.getEnemy().getPosition());
-						aiPlayer.updateEnemy(calculateDirection(aiPlayer.getPath()));
-
+					aiPlayer.getEnemy().setDirection(findLineToPlayer(aiPlayer));
 					}
 				}else {
 					aiPlayer.getEnemy().setDirection(randomDir());
@@ -110,7 +123,12 @@ public class AIController implements IMessageSender{
 		}
 	}//end updateEnemy
 
-
+	
+	/**
+	 * If enemy is in range of player, will try to send projectiles into the game. The AIPlayer keeps track of cooldown.
+	 * @param ai AIPlayer in control of this specific enemy
+	 * @param dt time since last update
+	 */
 	private void handleAttack(AIPlayer ai, double dt){
 		if (ai.inRange()) {
 			if (!ai.inCooldown(dt)){
@@ -120,7 +138,19 @@ public class AIController implements IMessageSender{
 		}else {
 			ai.resetCooldown();
 		}
-
+	}
+	
+	/**
+	 * Given a AIPlayer, will return the direction towards the player, not taking any walls or other collidables into consideration
+	 * @param aiPlayer
+	 * @return
+	 */
+	private Direction findLineToPlayer(AIPlayer aiPlayer){
+		aiPlayer.getPath().clear();
+		aiPlayer.getPath().add(playerPos);
+		aiPlayer.getPath().add(aiPlayer.getEnemy().getPosition());
+		return(calculateDirection(aiPlayer.getPath()));
+		
 	}
 
 
@@ -168,8 +198,8 @@ public class AIController implements IMessageSender{
 	 */
 	public void setEnemies(List<Enemy> enemies) {
 		this.enemies.clear();
-		for (int i = 0; i< enemies.size();i++){
-			this.enemies.add(new AIPlayer (enemies.get(i)));
+		for (Enemy e : enemies){
+			this.enemies.add(new AIPlayer(e));
 		}
 	}
 
@@ -186,12 +216,12 @@ public class AIController implements IMessageSender{
 	 * @param enemy
 	 */
 	public void removeEnemy(Enemy enemy){
-		for (AIPlayer ai : enemies){
+		for (AIPlayer ai : this.enemies){
 			if (ai.getEnemy() == enemy){
 				this.enemies.remove(ai);
 			}
 		}
-			
+
 	}
 
 	/**
@@ -257,5 +287,6 @@ public class AIController implements IMessageSender{
 		this.messager.addListener(listener);
 
 	}
+
 
 }

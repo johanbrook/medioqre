@@ -1,11 +1,16 @@
+package event;
+
 /**
-*	IMessageSender.java
+*	A message sender.
 *
 *	@author Johan
 */
-
-package event;
-
 public interface IMessageSender {
+	
+	/**
+	 * Add a receiver, "listener".
+	 * 
+	 * @param listener The receiver
+	 */
 	public void addReceiver(IMessageListener listener);
 }

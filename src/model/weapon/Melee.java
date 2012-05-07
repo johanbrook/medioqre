@@ -11,11 +11,10 @@ import model.weapon.Projectile.Range;
 
 public class Melee extends AbstractWeapon {
 	
-	private final static int INITIAL_AMMO = -1;
-	private final static int DAMAGE = 10;
+	private Projectile projectile;
 	
-	public Melee(AbstractCharacter owner) {
-		super(owner, INITIAL_AMMO);
+	public Melee(AbstractCharacter owner, int ammo) {
+		super(owner, ammo);
 	}
 
 	public boolean equals(Object o) {
@@ -29,6 +28,11 @@ public class Melee extends AbstractWeapon {
 	public Projectile getProjectile() {
 		// TODO Auto-generated method stub
 		return new Projectile(this, 10, 10, 10, Range.SHORT_RANGE, 40);
+	}
+	
+	@Override
+	public void setProjectile(Projectile projectile) {
+		this.projectile = projectile;
 	}
 
 }

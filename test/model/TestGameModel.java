@@ -17,6 +17,8 @@ import event.Event;
 import event.Event.Property;
 import event.EventBus;
 import event.IEventHandler;
+import factory.Level;
+import factory.ObjectFactory;
 import model.Entity;
 
 public class TestGameModel implements IEventHandler {
@@ -26,7 +28,10 @@ public class TestGameModel implements IEventHandler {
 	
 	@Before
 	public void setUp() throws Exception {
+		ObjectFactory.setLevel(new Level());
 		this.game = new GameModel();
+		this.game.newGame();
+		this.game.newWave();
 		EventBus.INSTANCE.register(this);
 	}
 

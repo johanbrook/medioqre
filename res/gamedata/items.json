@@ -1,0 +1,29 @@
+[	
+	{
+		"type": "MedPack",
+		"amount": 10,
+		"amountMultiplier": 2,
+		"bounds": {
+			"boxWidth": 16,
+			"height": 20,
+			"offsetY": 16,
+			"offsetX": 0,
+			"width": 20,
+			"boxHeight": 16
+		}
+	},
+	
+	{
+		"type": "AmmoCrate",
+		"amount": 10,
+		"amountMultiplier": 2,
+		"bounds": {
+			"boxWidth": 16,
+			"height": 20,
+			"offsetY": 16,
+			"offsetX": 0,
+			"width": 20,
+			"boxHeight": 16
+		}
+	}
+]

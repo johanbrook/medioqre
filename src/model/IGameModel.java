@@ -21,6 +21,11 @@ public interface IGameModel {
 	public void update(double delta);
 	
 	/**
+	 * Initiates a new game
+	 */
+	public void newGame();
+	
+	/**
 	 * Get the player
 	 * 
 	 * @return The player
@@ -35,9 +40,15 @@ public interface IGameModel {
 	public List<Enemy> getEnemies();
 	
 	/**
-	 * Get all the entities in the game
+	 * Get all the objects in the game
 	 * 
-	 * @return The entities
+	 * @return The objects
 	 */
-	public List<Entity> getEntities();
+	public List<CollidableObject> getObjects();
+	
+	/**
+	 * Initialize a new wave/round.
+	 * 
+	 */
+	public void newWave();
 }

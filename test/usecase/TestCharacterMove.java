@@ -8,11 +8,12 @@ package usecase;
 
 import static org.junit.Assert.*;
 
+import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.Rectangle;
 
 
 import model.character.*;
-import model.character.AbstractCharacter;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -30,7 +31,7 @@ public class TestCharacterMove {
 	
 	@Before
 	public void setUp() throws Exception {
-		this.player = new Player();
+		this.player = new Player(30, new Rectangle(20, 20), new Dimension(20, 48), 0, 16);
 		int playerSpeed = this.player.getMovementSpeed();
 		this.playerMovement = (int) ((int) playerSpeed * DELTA);
 		this.player.setPosition(0, 0);

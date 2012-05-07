@@ -1,0 +1,5 @@
+{
+	"initialNumberOfEnemies": 5,
+	"tilesheet": "tiles.tilesheet",
+	"levelbitmap": "test2.png"
+}

@@ -1,7 +1,6 @@
 package controller.AI;
 
 import java.awt.Point;
-
 import java.util.List;
 
 import model.character.Enemy;
@@ -9,9 +8,8 @@ import model.weapon.Projectile;
 import constants.Direction;
 
 /**
- * Class for representing a virtual player. Every AIPlayer will keep track of one enemy.
- * Capable of keeping track of distance to player, path to player, a cooldown counter as well as a interval for attacks, an iq for sorting,
- *  and a update count to keep track of when to update path.
+ * Class for representing a player. Each AIPlayer will control one enemy. Keeps track of shortest path between the two, current cooldown and how many updates
+ * have gone since the enemy was last updated.
  * @author jesperpersson
  *
  */

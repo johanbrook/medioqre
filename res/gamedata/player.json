@@ -1,0 +1,17 @@
+{
+	"startingWeapon": "MachineGun",
+	"speed": 30,
+	"health": 100,
+	"position": {
+		"x": 1000,
+		"y": 100
+	},
+	"bounds": {
+		"boxWidth": 16,
+		"height": 20,
+		"offsetY": 16,
+		"offsetX": 0,
+		"width": 20,
+		"boxHeight": 16
+	}
+}

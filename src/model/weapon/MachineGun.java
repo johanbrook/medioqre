@@ -10,12 +10,11 @@ import model.character.AbstractCharacter;
 import model.weapon.Projectile.Range;
 
 public class MachineGun extends AbstractWeapon {
-
-	private final static int INITIAL_AMMO = 300;
-	private final static int DAMAGE = 10;
 	
-	public MachineGun(AbstractCharacter owner){
-		super(owner, INITIAL_AMMO);
+	private Projectile projectile;
+	
+	public MachineGun(AbstractCharacter owner, int ammo){
+		super(owner, ammo);
 	}
 	
 
@@ -30,5 +29,10 @@ public class MachineGun extends AbstractWeapon {
 	@Override
 	public Projectile getProjectile() {
 		return new Projectile(this, 10, 10, 10, Range.FAR_RANGE, 40);
+	}
+	
+	@Override
+	public void setProjectile(Projectile projectile) {
+		this.projectile = projectile;
 	}
 }

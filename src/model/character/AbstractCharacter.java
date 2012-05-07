@@ -41,12 +41,22 @@ public abstract class AbstractCharacter extends Entity {
 		this.setDirection(Direction.SOUTH);
 	}
 	
-	
+	/**
+	 * Set the current weapon.
+	 * 
+	 * @param w The weapon
+	 */
 	public void setCurrentWeapon(AbstractWeapon w) {
 		this.currentWeapon = w;
 		EventBus.INSTANCE.publish(new Event(Property.CHANGED_WEAPON, this));
+		System.out.println("Current weapon is " + getCurrentWeapon());
 	}
 	
+	/**
+	 * Get the current weapon.
+	 * 
+	 * @return The weapon
+	 */
 	public AbstractWeapon getCurrentWeapon(){
 		return this.currentWeapon;
 	}
@@ -77,10 +87,20 @@ public abstract class AbstractCharacter extends Entity {
 		return this.health;
 	}
 	
+	/**
+	 * Add health.
+	 * 
+	 * @param amount The amount
+	 */
 	public void addHealth(int amount) {
 		setHealth(getHealth() + amount);
 	}
 	
+	/**
+	 * Set the health.
+	 * 
+	 * @param amount The new health
+	 */
 	public void setHealth(int amount) {
 		this.health = amount;
 	}
@@ -98,6 +118,6 @@ public abstract class AbstractCharacter extends Entity {
 	
 	@Override
 	public String toString() {
-		return "["+this.getClass()+"] "+super.toString() + " [hp:"+this.health+"]";
+		return super.toString() + " [hp:"+this.health+"]";
 	}
 }

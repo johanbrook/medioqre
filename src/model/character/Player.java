@@ -9,9 +9,12 @@ package model.character;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+
+import event.Event;
+import event.EventBus;
+import event.Event.Property;
+import factory.ObjectFactory;
 import model.weapon.*;
 
 
@@ -19,19 +22,51 @@ public class Player extends AbstractCharacter {
 	
 	private List<AbstractWeapon> weaponbelt;
 	
-	public Player(){
-		super(30, new Rectangle(16, 16), new Dimension(20,20), 0, 16);
-
-		AbstractWeapon[] temp = {new MachineGun(this), new Sword(this), new Grenade(this)};
-		this.weaponbelt = new ArrayList<AbstractWeapon>(Arrays.asList(temp));
-
-		setCurrentWeapon(MachineGun.class);
+	/**
+	 * Create a new player.
+	 */
+	public Player(int speed, Rectangle box, Dimension size, int offsetX, int offsetY){
+		super(speed, box, size, offsetX, offsetY);
 	}
 	
+	/**
+	 * Set the current weapon belt of the player.
+	 * 
+	 * @param weapons The weapon belt list
+	 */
+	public void setWeaponBelt(List<AbstractWeapon> weapons) {
+		this.weaponbelt = weapons;
+	}
+	
+	
+	/**
+	 * Get the weapon inventory.
+	 * 
+	 * @return The list of weapon
+	 */
+	public List<AbstractWeapon> getWeaponBelt() {
+		return this.weaponbelt;
+	}
+	
+	/**
+	 * Set the current weapon from the player's weapon belt slot.
+	 * 
+	 * @param slot The slot number
+	 */
 	public void setCurrentWeapon(int slot) {
-		setCurrentWeapon(this.weaponbelt.get(slot));
+		try {
+			setCurrentWeapon(this.weaponbelt.get(slot));
+		}
+		catch(IndexOutOfBoundsException e) {
+			System.err.println("Couldn't find a weapon for that slot!");
+		}
 	}
 	
+	/**
+	 * Set the current weapon based on the weapon type.
+	 * 
+	 * @param type The type
+	 */
 	public void setCurrentWeapon(Class<? extends AbstractWeapon> type) {
 		setCurrentWeapon(getWeaponFromBelt(type));
 	}

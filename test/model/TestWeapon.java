@@ -8,6 +8,9 @@ package model;
 
 import static org.junit.Assert.*;
 
+import java.awt.Dimension;
+import java.awt.Rectangle;
+
 import model.character.Player;
 import model.weapon.*;
 
@@ -25,11 +28,11 @@ public class TestWeapon {
 	
 	@Before
 	public void setUp() throws Exception {
-		Player p = new Player();
-		this.machineGun = new MachineGun(p);
-		this.grenade = new Grenade(p);
-		this.sword = new Sword(p);
-		this.melee = new Melee(p);
+		Player p = new Player(30, new Rectangle(20, 20), new Dimension(20, 48), 0, 16);
+		this.machineGun = new MachineGun(p, 300);
+		this.grenade = new Grenade(p, 4);
+		this.sword = new Sword(p, -1);
+		this.melee = new Melee(p, -1);
 	}
 	
 	@Test

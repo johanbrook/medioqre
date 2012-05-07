@@ -24,7 +24,6 @@ public class AStarTile {
 		open = false;
 		closed = false;
 		this.neighbors = new ArrayList<AStarTile>();
-		//TODO make sure to check if the place in the gameworld is a collidable, set status on this Tile accordingly
 		}
 
 	
@@ -82,7 +81,7 @@ public class AStarTile {
 			this.g = g;
 			if (this.h > 0) {
 			//Updates the value of F, since F is dependent on the constant value of h and G.
-			setF();
+			updateF();
 		}
 	}
 
@@ -90,7 +89,7 @@ public class AStarTile {
 		this.h = (Math.abs(this.row - stop.getRow()) + Math.abs(this.column- stop.getColumn()));
 	}
 
-	public void setF() {
+	public void updateF() {
 		this.f = this.h + this.g;
 	}
 
@@ -106,6 +105,11 @@ public class AStarTile {
 		neighbors.add(tile);
 	}
 
+	/**
+	 *  Checks whether this tile is diagonal to the specified tile.
+	 * @param tile
+	 * @return 
+	 */
 	public boolean isDiagonal(AStarTile tile) {
 		return (this.getRow() != tile.getRow() && this.getColumn() != tile
 				.getColumn());

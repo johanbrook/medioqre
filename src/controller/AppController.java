@@ -12,13 +12,21 @@ import controller.navigation.NavigationController;
 import event.Event;
 import event.EventBus;
 import event.IMessageListener;
+import event.IMessageSender;
+import factory.Level;
+import factory.ObjectFactory;
 import gui.ViewController;
 import model.GameModel;
 import model.IGameModel;
 
 public class AppController implements Runnable{
 	
-	public static final int FPS = 300;
+	public static final int FPS = 60;
+	
+	public static final int PRODUCTION = 0;
+	public static final int DEBUG = 1;
+	public static int MODE = PRODUCTION;
+	
 	private static final double DELTA_RATIO = 10E7;
 	
 	private IGameModel game;
@@ -28,26 +36,30 @@ public class AppController implements Runnable{
 	private NavigationController navigation;
 		
 	public AppController(){
-		System.out.println("Initializing main controller ...");
+		String mode = (MODE == PRODUCTION) ? "production" : "debug";
+		System.out.println("Initializing main controller in "+ mode +" mode ...");
 		
 		this.game = new GameModel();
 		this.navigation = new NavigationController();
 		
 		this.view = new ViewController(this.navigation, 20*32, 12*32);
-		this.ai = new AIController(this.game.getEnemies(), 48, 48, 32, 32);
+		this.ai = new AIController(48, 48, 32, 32);
 		
 		this.navigation.addReceiver((IMessageListener) this.game);
-		
 		this.ai.addReceiver((IMessageListener) this.game);
+		((IMessageSender) this.game).addReceiver((IMessageListener) this.ai);
 		
 //		this.audio = AudioController.getInstance();
-		
-		
+	}
+	
+	
+	public void init() {
+		ObjectFactory.setLevel(new Level());
+		this.game.newGame();
+		this.game.newWave();
+		new Thread(this).start();
+				
 		EventBus.INSTANCE.publish(new Event(Event.Property.INIT_MODEL, this.game));
-		
-		Thread t = new Thread(this);
-		t.start();
-		
 	}
 
 	
@@ -62,12 +74,8 @@ public class AppController implements Runnable{
 			
 			double dt = (double) updateLength / DELTA_RATIO;
 //			TimerTool.start("Update");
-			this.ai.updateAI(dt, this.game.getPlayer().getPosition());
+			this.ai.updateAI(dt);
 			this.game.update(dt);
-//			TimerTool.stop();
-			
-//			TimerTool.start("Rendering");
-			this.view.render(dt);
 //			TimerTool.stop();
 			
 			
