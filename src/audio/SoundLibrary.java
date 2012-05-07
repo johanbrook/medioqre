@@ -62,7 +62,6 @@ public class SoundLibrary {
 		Map<Integer, URL> bgml = new HashMap<Integer, URL>();
 
 		bgml.put(1, c.getResource("sounds/bgm/frankTheTank.wav"));
-		bgml.put(2, c.getResource("sounds/fx/walk.wav"));
 
 		return Collections.unmodifiableMap(bgml);
 	}
