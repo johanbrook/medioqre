@@ -4,9 +4,13 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
 
+import controller.AppController;
+
 
 import launcher.Launcher;
-import controller.AppController;
+import static controller.AppController.MODE;
+import static controller.AppController.PRODUCTION;
+import static controller.AppController.DEBUG;
 
 /**
  * Main class. Application entry point.
@@ -23,12 +27,21 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		
-		String os = System.getProperty("os.name").toLowerCase();
+		if(args.length > 0 && "--debug".equals(args[0])) {
+			MODE = DEBUG; 
+		}
 		
+		String os = System.getProperty("os.name").toLowerCase();	
 		if(os.indexOf("mac") != -1) OSXOptions();
 		
 		
-		new Launcher();
+		if(MODE == PRODUCTION){
+			new Launcher();
+		}
+		else{
+			new AppController().init();
+		}
+			
 	}
 	
 	

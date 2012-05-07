@@ -22,6 +22,11 @@ import model.IGameModel;
 public class AppController implements Runnable{
 	
 	public static final int FPS = 60;
+	
+	public static final int PRODUCTION = 0;
+	public static final int DEBUG = 1;
+	public static int MODE = PRODUCTION;
+	
 	private static final double DELTA_RATIO = 10E7;
 	
 	private IGameModel game;
@@ -31,7 +36,8 @@ public class AppController implements Runnable{
 	private NavigationController navigation;
 		
 	public AppController(){
-		System.out.println("Initializing main controller ...");
+		String mode = (MODE == PRODUCTION) ? "production" : "debug";
+		System.out.println("Initializing main controller in "+ mode +" mode ...");
 		
 		this.game = new GameModel();
 		this.navigation = new NavigationController();
