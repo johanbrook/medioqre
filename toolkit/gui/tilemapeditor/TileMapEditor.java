@@ -68,6 +68,8 @@ public class TileMapEditor extends JFrame {
 
 	private TileCanvas tileCanvas;
 
+	private TileSelector	tileSelector;
+
 	public static void main(String[] args)
 	{
 		new TileMapEditor();
@@ -188,6 +190,9 @@ public class TileMapEditor extends JFrame {
 			
 			// Update Logic
 			this.currentTileMap.setTileSheet(this.currentTileSheet);
+		}
+		if (this.currentTileSheet != null && this.tileSelector != null) {
+			this.tileSelector.setTileSheet(this.currentTileSheet);
 		}
 	}
 
@@ -343,8 +348,8 @@ public class TileMapEditor extends JFrame {
 
 		// Creating tile selector and adding it to
 		// split pane
-		TileSelector tileSelector = new TileSelector();
-		splitPane_1.setRightComponent(tileSelector);
+		this.tileSelector = new TileSelector(glC);
+		splitPane_1.setRightComponent(this.tileSelector);
 
 		// Creating tile inspector
 		TileInspector tileInspector = new TileInspector();
