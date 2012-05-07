@@ -34,8 +34,9 @@ public class Launcher extends JFrame {
 
 	private static final long serialVersionUID = -3189420915172593199L;
 
-	JPanel panel;
-
+	JPanel mainPanel;
+	JPanel optionsPanel;
+	
 	public Launcher() {
 		setResizable(false);
 
@@ -48,65 +49,28 @@ public class Launcher extends JFrame {
 				(screenSize.height / 2) - (launcherSize.height / 2),
 				launcherSize.width, launcherSize.height);
 
-		panel = new AnimatedBackgoundPanel(16, 10, 640, 400);
-		panel.setVisible(true);
-		
-		panel.setLayout(null);
-		
-		
-		JButton frank = new JButton("");
-		frank.setIcon(new ImageIcon(Launcher.class
-				.getResource("/images/launcher/frank.png")));
-		frank.setFocusable(false);
-		frank.setBorderPainted(false);
-		frank.setBounds(4, 117	, 224, 294);
-		panel.add(frank);
-		
-		JButton logo = new JButton("");
-		logo.setIcon(new ImageIcon(Launcher.class
-				.getResource("/images/launcher/logo.png")));
-		logo.setFocusable(false);
-		logo.setBorderPainted(false);
-		logo.setBounds(220, 11, 392, 212);
-		panel.add(logo);
-		
-		JButton startButton = new JButton("");
-		startButton.setIcon(new ImageIcon(Launcher.class
-				.getResource("/images/launcher/startButton.png")));
-		startButton.setFocusable(false);
-		startButton.setBorderPainted(false);
-		startButton.setBounds(300, 260, 239, 26);
-		panel.add(startButton);
-		
-		JButton optionsButton = new JButton("");
-		optionsButton.setIcon(new ImageIcon(Launcher.class
-				.getResource("/images/launcher/optionsButton.png")));
-		optionsButton.setFocusable(false);
-		optionsButton.setBorderPainted(false);
-		optionsButton.setBounds(300, 320, 239, 26);
-		panel.add(optionsButton);
-		
-		
-		startButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				dispose();
+		mainPanel = new LauncherMainPanel(16, 10, 640, 400, this);
+		mainPanel.setVisible(true);
 
-				// Create main game
-				AppController game = new AppController();
-				game.init();
-			}
-		});
+		optionsPanel = new OptionsPanel(this);
+		optionsPanel.setVisible(false);
 		
-		optionsButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				//TODO Build options like a boss!
-				System.out.println("Options pressed!");
-			}
-		});
-		
-		
-		getContentPane().add(panel);
+		getContentPane().add(mainPanel);
+		getContentPane().add(optionsPanel);
 		setVisible(true);
 
 	}
+	
+	public void drawOptionPanel(){
+		mainPanel.setVisible(false);
+		optionsPanel.setVisible(true);
+		
+	}
+	
+	public void drawMainPanel(){
+		mainPanel.setVisible(true);
+		optionsPanel.setVisible(false);
+		
+	}
+	
 }

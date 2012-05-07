@@ -4,7 +4,8 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
 
-import controller.AppController;
+import launcher.Launcher;
+import static tools.Logger.*;
 
 
 import launcher.Launcher;
@@ -42,12 +43,12 @@ public class Main {
 			new AppController().init();
 		}
 			
-	}
-	
-	
-	private static void OSXOptions() {
-		System.setProperty("apple.laf.useScreenMenuBar", "true");
-		System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Frank The Tank");
+			com.apple.eawt.Application app = com.apple.eawt.Application.getApplication();
+			URL dockIconURL = Main.class.getResource("/images/launcher/appicon.png");
+			Image icon = Toolkit.getDefaultToolkit().createImage(dockIconURL);
+			app.setDockIconImage(icon);
+			
+		}
 		
 		com.apple.eawt.Application app = com.apple.eawt.Application.getApplication();
 		URL dockIconURL = Main.class.getResource("/images/launcher/appicon.png");
