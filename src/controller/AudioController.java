@@ -166,10 +166,6 @@ public class AudioController implements IEventHandler {
 					stopPlayerWalk();
 				}
 
-				// Pickup Items
-				if (evt.getProperty() == Event.Property.PICKED_UP_ITEM) {
-					// TODO Pickupljud!
-				}
 
 				// Was hit
 				if (evt.getProperty() == Event.Property.WAS_DAMAGED) {
@@ -219,7 +215,18 @@ public class AudioController implements IEventHandler {
 		}
 
 		// FX
+		
+		
+		// Pickup Items
+		if (evt.getProperty() == Event.Property.PICKED_UP_ITEM) {
+			float f = (float) (game.getPlayer().getHealth() / playerMaxHealth);
+			f = (float) (f * 0.5 + 0.5);
 
+			if (f > 1)
+				f = 1f;
+
+			soundSys.setPitch("BGM", f);
+		}
 	}
 
 	/**
