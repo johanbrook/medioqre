@@ -196,6 +196,10 @@ public class ObjectFactory {
 				AbstractWeapon weapon = createWeaponFromString(wp.getString("type"),
 										new Object[] {owner, wp.getInt("ammo")});
 				
+				if(weapon == null) {
+					continue;
+				}
+
 				Projectile projectile = newProjectile(weapon, wp);
 				
 				weapon.setProjectile(projectile);

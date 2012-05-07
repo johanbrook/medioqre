@@ -54,7 +54,12 @@ public class Player extends AbstractCharacter {
 	 * @param slot The slot number
 	 */
 	public void setCurrentWeapon(int slot) {
-		setCurrentWeapon(this.weaponbelt.get(slot));
+		try {
+			setCurrentWeapon(this.weaponbelt.get(slot));
+		}
+		catch(IndexOutOfBoundsException e) {
+			System.err.println("Couldn't find a weapon for that slot!");
+		}
 	}
 	
 	/**
