@@ -114,11 +114,6 @@ public class AudioController implements IEventHandler {
 		soundSys.setListenerPosition(game.getPlayer().getPosition().x, game
 				.getPlayer().getPosition().y, AudioConstants.zROLLOFF);
 
-		for (Enemy e : game.getEnemies()) {
-			soundSys.setPosition(soundCode(e), e.getPosition().x,
-					e.getPosition().y, 1);
-
-		}
 
 	}
 
@@ -197,15 +192,15 @@ public class AudioController implements IEventHandler {
 
 				if (evt.getProperty() == Event.Property.DID_MOVE
 						&& !soundSys.playing(soundCode(e))) {
-					playEnemyWalk(e);
+
 				}
 
 				if (evt.getProperty() == Event.Property.WAS_DESTROYED) {
-					removeEnemySounds(e);
+
 				}
 
 				if (evt.getProperty() == Event.Property.DID_STOP) {
-					stopEnemyWalk(e);
+
 				}
 			}
 
