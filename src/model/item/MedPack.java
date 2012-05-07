@@ -27,8 +27,8 @@ public class MedPack extends CollidableObject implements ICollectableItem {
 	 * @param x The x coordinate
 	 * @param y The y coordinate
 	 */
-	public MedPack(int amount, int x, int y) {
-		super(new Rectangle(x, y, 10, 10), new Dimension(32, 32), 0, 0);
+	public MedPack(int amount, int x, int y, int width, int height) {
+		super(new Rectangle(x, y, width, height), new Dimension(width, height), 0, 0);
 		this.amount = amount;
 	}
 

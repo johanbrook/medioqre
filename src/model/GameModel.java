@@ -168,14 +168,18 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 	private void addItems(int amount) {
 
 		for(int i = 0; i < amount; i++) {
-			AmmoCrate tempAmmo = new AmmoCrate(30, 30+i*2, 30+i*2);
-			tempAmmo.addReceiver(this);
+			List<CollidableObject> items = ObjectFactory.newItemsForWave(this.currentWave);
+			
+			System.out.println("Items received");
+			System.out.println(items);
+			
+			for(CollidableObject item : items) {
+				item.addReceiver(this);
+			}
 
-			MedPack tempMed = new MedPack(25, 50+i*5, 50+i*5);
-			tempMed.addReceiver(this);
-
-			this.objects.add(tempAmmo);
-			this.objects.add(tempMed);
+			this.objects.addAll(items);
+			
+			System.out.println("** "+items.size() + " items added");
 
 		}
 	}

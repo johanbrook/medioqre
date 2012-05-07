@@ -9,12 +9,14 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.CollidableObject;
 import model.ConcreteCollidableObject;
 import model.Entity;
 import model.character.AbstractCharacter;
 import model.character.Enemy;
 import model.character.Player;
 import model.item.ICollectableItem;
+import model.item.MedPack;
 import model.weapon.AbstractWeapon;
 import model.weapon.Grenade;
 import model.weapon.Portal;
@@ -35,6 +37,7 @@ public class ObjectFactory {
 	private static JSONObject player; 
 	private static JSONObject enemy;
 	private static JSONArray weapons;
+	private static JSONArray items;
 	private static JSONObject world;
 
 	private static JSONObject levelData;
@@ -45,6 +48,7 @@ public class ObjectFactory {
 			player = new JSONObject(ResourceLoader.loadJSONStringFromResources(level.getPlayerData()));
 			enemy = new JSONObject(ResourceLoader.loadJSONStringFromResources(level.getEnemyData()));
 			weapons = new JSONArray(ResourceLoader.loadJSONStringFromResources(level.getWeaponData()));
+			items = new JSONArray(ResourceLoader.loadJSONStringFromResources(level.getItemData()));
 			world = new JSONObject(ResourceLoader.loadJSONStringFromResources(level.getWorldData()));
 
 			levelData = new JSONObject(ResourceLoader.loadJSONStringFromResources(level.getLevelData()));
@@ -163,9 +167,31 @@ public class ObjectFactory {
 		return enemies;
 	}
 
-	public static List<ICollectableItem> newItemsForWave(int waveNumber)
-	{
-		return null;
+	public static List<CollidableObject> newItemsForWave(int waveNumber) {
+		
+		List<CollidableObject> itemList = new ArrayList<CollidableObject>();
+		
+		try {
+			for(int i = 0; i < items.length(); i++) {
+				JSONObject it = items.getJSONObject(i);
+				JSONObject bounds = it.getJSONObject("bounds");
+				CollidableObject item = createItemFromString(it.getString("type"), 
+															new Object[] {	it.getInt("amount"),
+																			10, 10,
+																			bounds.getInt("width"),
+																			bounds.getInt("height")} );
+				if(item == null) {
+					continue;
+				}
+				
+				itemList.add(item);
+			}
+		}
+		catch(JSONException e) {
+			System.err.println("Couldn't load items! "+e.getMessage());
+		}
+		
+		return itemList;
 	}
 
 	public static List<ConcreteCollidableObject> newWalls() {
@@ -346,5 +372,19 @@ public class ObjectFactory {
 		Object obj = createObjectFromString("model.weapon."+type, new Class[]{AbstractCharacter.class, int.class}, objectParams);
 
 		return (AbstractWeapon) obj;
+	}
+	
+	/**
+	 * Create an item dynamically from a name.
+	 * 
+	 * @param type The type of item. Must match property "type" in the "items.json" file
+	 * @param objectParams The parameters to send to the constructor
+	 * @return A 'type' instance with the type ICollectableItem
+	 */
+	public static CollidableObject createItemFromString(String type, Object[] objectParams) {
+		Object obj = createObjectFromString("model.item."+type, 
+				new Class[]{int.class, int.class, int.class, int.class, int.class}, objectParams);
+
+		return (CollidableObject) obj;
 	}
 }
