@@ -8,6 +8,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import model.CollidableObject;
 import model.ConcreteCollidableObject;
@@ -170,14 +171,19 @@ public class ObjectFactory {
 	public static List<CollidableObject> newItemsForWave(int waveNumber) {
 		
 		List<CollidableObject> itemList = new ArrayList<CollidableObject>();
+		Random random = new Random();
 		
 		try {
 			for(int i = 0; i < items.length(); i++) {
+				
+				int x = random.nextInt(1000);
+				int y = random.nextInt(1000);
+				
 				JSONObject it = items.getJSONObject(i);
 				JSONObject bounds = it.getJSONObject("bounds");
 				CollidableObject item = createItemFromString(it.getString("type"), 
 															new Object[] {	it.getInt("amount"),
-																			10, 10,
+																			x, y,
 																			bounds.getInt("width"),
 																			bounds.getInt("height")} );
 				if(item == null) {
