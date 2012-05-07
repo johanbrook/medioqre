@@ -176,8 +176,8 @@ public class ObjectFactory {
 		try {
 			for(int i = 0; i < items.length(); i++) {
 				
-				int x = random.nextInt(1000);
-				int y = random.nextInt(1000);
+				int x = random.nextInt(levelData.getInt("width"));
+				int y = random.nextInt(levelData.getInt("height"));
 				
 				JSONObject it = items.getJSONObject(i);
 				JSONObject bounds = it.getJSONObject("bounds");
