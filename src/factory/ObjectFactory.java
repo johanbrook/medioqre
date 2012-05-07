@@ -6,17 +6,8 @@ import gui.Screen;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import datamanagement.ResourceLoader;
-
-import tilemap.TileMap;
 
 import model.ConcreteCollidableObject;
 import model.Entity;
@@ -25,38 +16,44 @@ import model.character.Enemy;
 import model.character.Player;
 import model.item.ICollectableItem;
 import model.weapon.AbstractWeapon;
-import model.weapon.MachineGun;
-import model.weapon.Melee;
+import model.weapon.Grenade;
 import model.weapon.Portal;
 import model.weapon.PortalGun.Mode;
 import model.weapon.Projectile;
 import model.weapon.Projectile.Range;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import tilemap.TileMap;
+import datamanagement.ResourceLoader;
+
 public class ObjectFactory {
-	
+
 	private static Level level;
 	private static JSONObject player; 
 	private static JSONObject enemy;
 	private static JSONArray weapons;
 	private static JSONObject world;
-	
+
 	private static JSONObject levelData;
 
-	
+
 	private static void initJSONObjects() {
-		 try {
-			 player = new JSONObject(ResourceLoader.loadJSONStringFromResources(level.getPlayerData()));
-			 enemy = new JSONObject(ResourceLoader.loadJSONStringFromResources(level.getEnemyData()));
-			 weapons = new JSONArray(ResourceLoader.loadJSONStringFromResources(level.getWeaponData()));
-			 world = new JSONObject(ResourceLoader.loadJSONStringFromResources(level.getWorldData()));
-			 
-			 levelData = new JSONObject(ResourceLoader.loadJSONStringFromResources(level.getLevelData()));
-		 
-		 } catch (JSONException e) {
-			 System.err.println("Couldn't initialize all JSON objects: "+e.getMessage());
-		 }
+		try {
+			player = new JSONObject(ResourceLoader.loadJSONStringFromResources(level.getPlayerData()));
+			enemy = new JSONObject(ResourceLoader.loadJSONStringFromResources(level.getEnemyData()));
+			weapons = new JSONArray(ResourceLoader.loadJSONStringFromResources(level.getWeaponData()));
+			world = new JSONObject(ResourceLoader.loadJSONStringFromResources(level.getWorldData()));
+
+			levelData = new JSONObject(ResourceLoader.loadJSONStringFromResources(level.getLevelData()));
+
+		} catch (JSONException e) {
+			System.err.println("Couldn't initialize all JSON objects: "+e.getMessage());
+		}
 	}
-	
+
 	/**
 	 * Set the level
 	 * 
@@ -67,7 +64,7 @@ public class ObjectFactory {
 		ObjectFactory.level = level;
 		initJSONObjects();
 	}
-	
+
 	/**
 	 * Get the current loaded level
 	 * 
@@ -82,23 +79,23 @@ public class ObjectFactory {
 	public static Player newPlayer()
 	{
 		try {
-			
+
 			JSONObject bounds = player.getJSONObject("bounds");
-			
+
 			Player p = new Player(
 					player.getInt("speed"),
 					new Rectangle(bounds.getInt("boxWidth"), bounds.getInt("boxHeight")),
 					new Dimension(bounds.getInt("width"), bounds.getInt("height")),
 					bounds.getInt("offsetX"), bounds.getInt("offsetY"));
-					
+
 			p.setPosition(	player.getJSONObject("position").getInt("x"), 
-							player.getJSONObject("position").getInt("y"));
-			
+					player.getJSONObject("position").getInt("y"));
+
 			p.setHealth(player.getInt("health"));
 			p.setWeaponBelt(newWeaponBelt(p));
-			
+
 			return p;
-			
+
 		} catch (JSONException e) {
 			System.err.println("Couldn't initialize player from JSON object");
 			e.printStackTrace();
@@ -112,7 +109,7 @@ public class ObjectFactory {
 	 * @return The enemy
 	 */
 	public static Enemy newEnemy() {
-		
+
 		try {
 			JSONObject bounds = enemy.getJSONObject("bounds");
 			Enemy en = new Enemy(enemy.getInt("speed"), 
@@ -121,40 +118,40 @@ public class ObjectFactory {
 					bounds.getInt("offsetX"), bounds.getInt("offsetY"));
 
 			en.setHealth(enemy.getInt("health"));
-			
+
 			return en;
 		} catch (JSONException e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
 		}
-		
+
 		return null;
 	}
-	
-	
+
+
 	public static List<Enemy> newEnemiesForWave(int waveNumber) {
-		
+
 		System.out.println("Current wave: "+waveNumber);
 		List<Enemy> enemies = new ArrayList<Enemy>();
-		
+
 		int enemiesToAdd = math.Util.fib(waveNumber);
 		System.out.println("Fib for wave nr "+waveNumber+": "+enemiesToAdd);
-		
+
 		try {
-			
+
 			for(int i = 0; i < enemiesToAdd; i++) {
 
 				Enemy e = newEnemy();
-				
+
 				JSONObject weaponObj = enemy.getJSONObject("weapon");
-				
+
 				AbstractWeapon melee = createWeaponFromString(weaponObj.getString("type"), new Object[]{e, weaponObj.getInt("ammo")});
-				
+
 				Projectile projectile = newProjectile(melee, weaponObj);
-				
+
 				melee.setProjectile(projectile);
 				e.setCurrentWeapon(melee);
-				
+
 				enemies.add(e);
 			}
 		}
@@ -162,7 +159,7 @@ public class ObjectFactory {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
 		}
-		
+
 		return enemies;
 	}
 
@@ -175,7 +172,7 @@ public class ObjectFactory {
 		return null;
 	}
 
-	
+
 	/**
 	 * Create a weapon list from the weapons specified in the weapons JSON file.
 	 * 
@@ -185,19 +182,28 @@ public class ObjectFactory {
 	 * @return A list of weapons with corresponding projectiles
 	 */
 	public static List<AbstractWeapon> newWeaponBelt(AbstractCharacter owner) {
-		
+
 		List<AbstractWeapon> weaponsList = new ArrayList<AbstractWeapon>();
-		
+
 		try {
 
 			for(int i = 0; i < weapons.length(); i++) {
 				JSONObject wp = weapons.getJSONObject(i);
-				
+
 				AbstractWeapon weapon = createWeaponFromString(wp.getString("type"),
-										new Object[] {owner, wp.getInt("ammo")});
-				
+						new Object[] {owner, wp.getInt("ammo")});
+				if (weapon instanceof Grenade){
+					if (!wp.isNull("radius")){
+						((Grenade) weapon).setRadius(wp.getInt("radius"));
+
+					}
+					if (!wp.isNull("splashDamageFactor")){
+						((Grenade) weapon).setSplashDamageFactor(wp.getInt("splashDamageFactor"));
+					}
+				}
+
 				Projectile projectile = newProjectile(weapon, wp);
-				
+
 				weapon.setProjectile(projectile);
 				weaponsList.add(weapon);
 			}
@@ -209,54 +215,54 @@ public class ObjectFactory {
 		catch(Exception e) {
 			System.err.println(e.getMessage());
 		}
-		
-		
+
+
 		return weaponsList;
 	}
-	
-	
+
+
 	public static Projectile newProjectile(AbstractWeapon pwner, JSONObject parent) {
-		
+
 		try {
 			JSONObject projTemplate = parent.getJSONObject("projectile");
-			
+
 			Projectile projectile = new Projectile(	pwner, 
 					projTemplate.getJSONObject("bounds").getInt("width"), 
 					projTemplate.getJSONObject("bounds").getInt("height"), 
 					projTemplate.getInt("damage"), 
 					Range.valueOf(projTemplate.getString("range")), 
 					projTemplate.getInt("speed"));
-			
+
 			return projectile;
-			
+
 		} catch (JSONException e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
 		}
-		
+
 		return null;
 	}
-	
-	
+
+
 	public static Portal newPortal(Mode mode, Point position) {
 		try {
 			JSONObject portal = world.getJSONObject("portal");
 			JSONObject bounds = portal.getJSONObject("bounds");
-			
+
 			Portal p = new Portal(	mode,
-									new Rectangle(position.x, position.y, bounds.getInt("boxWidth"), bounds.getInt("boxHeight")),
-									new Dimension(bounds.getInt("width"), bounds.getInt("height")),
-									bounds.getInt("offsetX"), bounds.getInt("offsetY"));
-			
+					new Rectangle(position.x, position.y, bounds.getInt("boxWidth"), bounds.getInt("boxHeight")),
+					new Dimension(bounds.getInt("width"), bounds.getInt("height")),
+					bounds.getInt("offsetX"), bounds.getInt("offsetY"));
+
 			return p;
-			
+
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		
+
 		return null;
 	}
-	
+
 
 	// View objects
 
@@ -281,10 +287,10 @@ public class ObjectFactory {
 	{
 		return null;
 	}
-	
-	
+
+
 	// Helpers
-	
+
 	/**
 	 * Create an object dynamically from a name and constructor parameters.
 	 * 
@@ -295,12 +301,12 @@ public class ObjectFactory {
 	 */
 	@SuppressWarnings("rawtypes")
 	public static Object createObjectFromString(String name, Class[] constructorParams, Object[] objectParams) {
-		
+
 		try {
 			Class cl = Class.forName(name);
 			@SuppressWarnings("unchecked")
 			java.lang.reflect.Constructor co = cl.getConstructor(constructorParams);
-			
+
 			return (Object) co.newInstance(objectParams);
 		}
 		catch(ClassNotFoundException e) {
@@ -318,11 +324,11 @@ public class ObjectFactory {
 		catch(Exception e) {
 			System.err.println("Couldn't create instance of class "+ name);
 		}
-		
+
 		return null;
 	}
-	
-	
+
+
 	/**
 	 * Create a weapon dynamically from a name.
 	 * 
@@ -332,7 +338,7 @@ public class ObjectFactory {
 	 */
 	public static AbstractWeapon createWeaponFromString(String type, Object[] objectParams) {
 		Object obj = createObjectFromString("model.weapon."+type, new Class[]{AbstractCharacter.class, int.class}, objectParams);
-		
+
 		return (AbstractWeapon) obj;
 	}
 }
