@@ -73,11 +73,12 @@ public class Projectile extends Entity {
 		
 		AbstractCharacter p = this.owner.getOwner();
 		
-		int x = p.getPosition().x-10;
-		int y = p.getPosition().y+20;
+		int x = p.getPosition().x;
+		int y = p.getPosition().y;
 		
 		if(p.getDirection() == Direction.SOUTH) {
-			y = (int) p.getCollisionBox().getMaxY();
+			System.out.println("DIR: south");
+			y += (int) p.getSize().height;
 		}
 		
 		setPosition(x, y);
