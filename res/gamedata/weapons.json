@@ -16,6 +16,8 @@
 	
 	{
 		"type": "Grenade",
+		"radius": 70,
+		"splashDamageFactor": 3,
 		"ammo": 4,
 		"slot": 2,
 		"projectile": {
