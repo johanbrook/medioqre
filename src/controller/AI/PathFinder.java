@@ -35,7 +35,11 @@ public class PathFinder {
 		generateNeighbors();
 	}
 	
-	
+	/**
+	 * Given a boolean-representation of the gameboard, where every wall is set as True, will update the logicList accordingly. Will make sure no path 
+	 * can go through wall-tiles.
+	 * @param gameBoard
+	 */
 	public void initWalls(boolean [][] gameBoard){
 		for (int i = 0; i < this.rows; i++) {
 			for (int l = 0; l < this.columns; l++) {
