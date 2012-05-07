@@ -33,8 +33,8 @@ public class TestCollectableItem {
 	
 	@Before
 	public void setUp() throws Exception {
-		this.medpack = new MedPack(30, 1, 1);
-		this.ammocrate = new AmmoCrate(30, 1, 1);
+		this.medpack = new MedPack(30, 1, 1, 10, 10);
+		this.ammocrate = new AmmoCrate(30, 1, 1, 10, 10);
 		this.player = new Player(30, new Rectangle(20, 20), new Dimension(20, 48), 0, 16);
 		AbstractWeapon[] weapons = new AbstractWeapon[] {new MachineGun(player, 300), new Grenade(player, 4), new Melee(player, -1)};
 		this.player.setWeaponBelt(Arrays.asList(weapons));
