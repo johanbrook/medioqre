@@ -18,7 +18,6 @@ public class AIPlayer {
 	private Enemy unit;
 	private List <Point> path;
 	private int iq,updateCount,distance;
-	private final int ATTACK_RANGE = 35;
 	private double cooldown, attackInterval;
 	
 	public AIPlayer (Enemy unit){
@@ -124,7 +123,8 @@ public class AIPlayer {
 	 * @return
 	 */
 	public boolean inRange(){
-		return this.distance < ATTACK_RANGE;
+		double range = this.unit.getCurrentWeapon().getProjectile().getRange().getDistance();
+		return this.distance < range;
 	}
 	
 	/**

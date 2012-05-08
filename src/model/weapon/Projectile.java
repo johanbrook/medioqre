@@ -33,14 +33,14 @@ public class Projectile extends Entity {
 	public enum Range {
 		SHORT_RANGE(40), MEDIUM_RANGE(200), FAR_RANGE(1500);
 		
-		private final double distance;
+		private final int distance;
 		
 		/**
 		 * Create new range.
 		 * 
 		 * @param distance The distance
 		 */
-		Range(double distance) {
+		Range(int distance) {
 			this.distance = distance;
 		}
 		
@@ -48,7 +48,7 @@ public class Projectile extends Entity {
 		 * Get the distance.
 		 * @return The distance
 		 */
-		public double getDistance() {
+		public int getDistance() {
 			return this.distance;
 		}
 	}
