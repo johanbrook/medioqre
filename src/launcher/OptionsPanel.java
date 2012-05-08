@@ -79,8 +79,7 @@ public class OptionsPanel extends JPanel {
 			public void stateChanged(ChangeEvent e) {
 				JSlider fxTemp = (JSlider)e.getSource();
 				AudioConstants.FX_VOLUME = (float)(fxTemp.getValue()/10.0);
-				
-				System.out.println(AudioConstants.FX_VOLUME);
+
 			}
 		});
 		fxSlider.setBounds(20, 156, 340, 38);
