@@ -85,7 +85,7 @@ public class AudioController implements IEventHandler {
 		soundSys.newSource(false, "playerWalk", lib.getFXSound("walk"),
 				"walk.wav", false, 1f, 1f, 1.0f,
 				SoundSystemConfig.ATTENUATION_NONE, 0.5f);
-		soundSys.setVolume("playerWalk", AudioConstants.FX_VOLUME);
+		soundSys.setVolume("playerWalk", AudioConstants.getFXVolume());
 		soundSys.play("playerWalk");
 	}
 
@@ -123,13 +123,13 @@ public class AudioController implements IEventHandler {
 	 *            weapon type (Class)
 	 */
 	public void playPlayerWeaponSound(Class<?> wType) {
-		if (AudioConstants.FX_VOLUME != 0.0) {
+		if (AudioConstants.getFXVolume() != 0.0) {
 
 			soundSys.newSource(false, "playerWeaponSound",
 					lib.getWeaponSound(wType), lib.getWeaponId(wType), false,
 					1f, 1f, 1.0f, SoundSystemConfig.ATTENUATION_NONE, 0.0f);
 
-			soundSys.setVolume("playerWeaponSound", AudioConstants.FX_VOLUME);
+			soundSys.setVolume("playerWeaponSound", AudioConstants.getFXVolume());
 
 			soundSys.play("playerWeaponSound");
 		}
@@ -234,7 +234,7 @@ public class AudioController implements IEventHandler {
 	private void playBGM() {
 		soundSys.backgroundMusic("BGM", lib.getBGMURL(bgmID),
 				lib.getBGMId(bgmID), true);
-		soundSys.setVolume("BGM", AudioConstants.BGM_Volume);
+		soundSys.setVolume("BGM", AudioConstants.getBGMVolume());
 		soundSys.play("BGM");
 	}
 

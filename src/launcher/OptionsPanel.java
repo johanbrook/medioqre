@@ -64,7 +64,7 @@ public class OptionsPanel extends JPanel {
 		musicSlider.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				JSlider temp = (JSlider)e.getSource();
-				AudioConstants.BGM_Volume = (float)(temp.getValue()/10.0);
+				AudioConstants.setBGMVolume((float)(temp.getValue()/10.0));
 			}
 		});
 		musicSlider.setBounds(20, 93, 340, 38);
@@ -78,7 +78,7 @@ public class OptionsPanel extends JPanel {
 		fxSlider.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				JSlider fxTemp = (JSlider)e.getSource();
-				AudioConstants.FX_VOLUME = (float)(fxTemp.getValue()/10.0);
+				AudioConstants.setFXVolume((float)(fxTemp.getValue()/10.0));
 
 			}
 		});
