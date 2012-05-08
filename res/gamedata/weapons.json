@@ -5,9 +5,9 @@
 		"ammoMultiplier": 2,
 		"slot": 1,
 		"projectile": {
-			"damage": 10,
+			"damage": 15,
 			"range": "FAR_RANGE",
-			"speed": 40,
+			"speed": 50,
 			"bounds": {
 				"height": 10,
 				"width": 10,
@@ -19,11 +19,11 @@
 		"type": "Grenade",
 		"radius": 70,
 		"ammoMultiplier": 0.1,
-		"splashDamageFactor": 3,
+		"splashDamageFactor": 2,
 		"ammo": 4,
 		"slot": 2,
 		"projectile": {
-			"damage": 40,
+			"damage": 75,
 			"range": "MEDIUM_RANGE",
 			"speed": 30,
 			"bounds": {
