@@ -2,8 +2,8 @@ package model;
 
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import model.character.AbstractCharacter;
@@ -113,6 +113,7 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 				this.enemies.remove(evt.getValue());
 				this.messager.sendMessage(evt);
 				checkEnemiesLeft();
+				randomizeItem();
 
 			} else if (evt.getValue() instanceof Player){
 				gameOver();
@@ -141,6 +142,33 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 			break;
 		}
 	}
+
+	private void randomizeItem() {
+		Random random = new Random();
+		int rand = random.nextInt(100);
+		if (rand < ObjectFactory.getItemSpawnChance()) {
+			newAmmoCrate();
+			newMedPack();
+		}
+		
+	
+	}
+	
+	private void newAmmoCrate(){
+		CollidableObject item = ObjectFactory.newItem("AmmoCrate");
+		item.addReceiver(this);
+		this.objects.add(item);
+		System.out.println("************** AmmoCrate added! *************");
+	}
+	
+	private void newMedPack(){
+		CollidableObject item = ObjectFactory.newItem("MedPack");
+		item.addReceiver(this);
+		this.objects.add(item);
+		System.out.println("****************** MedPack added! *****************");
+		
+	}
+
 
 	public void newGame(){
 		initPlayer();
