@@ -123,7 +123,7 @@ public class AudioController implements IEventHandler {
 	 *            weapon type (Class)
 	 */
 	public void playPlayerWeaponSound(Class<?> wType) {
-		if (!(AudioConstants.FX_VOLUME == 0.0)) {
+		if (AudioConstants.FX_VOLUME != 0.0) {
 
 			soundSys.newSource(false, "playerWeaponSound",
 					lib.getWeaponSound(wType), lib.getWeaponId(wType), false,
