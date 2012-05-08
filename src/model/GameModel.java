@@ -158,30 +158,27 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 		this.currentWave++;
 
 		initEnemies();
-		addItems(1);
+		addItems();
 
 		Event evt = new Event(Property.NEW_WAVE, this);
 		this.messager.sendMessage(evt);
 		EventBus.INSTANCE.publish(evt);
 	}
 
-	private void addItems(int amount) {
-
-		for(int i = 0; i < amount; i++) {
-			List<CollidableObject> items = ObjectFactory.newItemsForWave(this.currentWave);
-			
-			System.out.println("Items received");
-			System.out.println(items);
-			
-			for(CollidableObject item : items) {
-				item.addReceiver(this);
-			}
-
-			this.objects.addAll(items);
-			
-			System.out.println("** "+items.size() + " items added");
-
+	private void addItems() {
+		List<CollidableObject> items = ObjectFactory.newItemsForWave(this.currentWave);
+		
+		System.out.println("Items received");
+		System.out.println(items);
+		
+		for(CollidableObject item : items) {
+			item.addReceiver(this);
 		}
+
+		this.objects.addAll(items);
+		
+		System.out.println("** "+items.size() + " items added");
+
 	}
 
 	private void initEnemies() {
