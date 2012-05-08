@@ -91,6 +91,16 @@ public class Projectile extends Entity {
 			case WEST: 
 				y += (int) p.getSize().height / 2;
 				break;
+			case NORTH_EAST:
+				x += (int) p.getSize().width;
+				break;
+			case SOUTH_EAST:
+				x += (int) p.getSize().width;
+				y += (int) p.getSize().height / 2;
+				break;
+			case SOUTH_WEST:
+				y += (int) p.getSize().height / 2;
+				break;
 		}
 		
 		setPosition(x, y);
