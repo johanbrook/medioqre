@@ -25,8 +25,13 @@ public class Sword extends AbstractWeapon {
 	}
 
 	@Override
-	public Projectile getProjectile() {
+	public Projectile createProjectile() {
 		return new Projectile(this.projectile);
+	}
+	
+	@Override
+	public Projectile getProjectile() {
+		return this.projectile;
 	}
 
 	@Override

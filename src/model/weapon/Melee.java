@@ -26,6 +26,11 @@ public class Melee extends AbstractWeapon {
 
 	@Override
 	public Projectile getProjectile() {
+		return this.projectile;
+	}
+	
+	@Override
+	public Projectile createProjectile() {
 		return new Projectile(this.projectile);
 	}
 	

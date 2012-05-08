@@ -25,9 +25,13 @@ public class MachineGun extends AbstractWeapon {
 		return true;
 	}
 
-
 	@Override
 	public Projectile getProjectile() {
+		return this.projectile;
+	}
+
+	@Override
+	public Projectile createProjectile() {
 		return new Projectile(this.projectile);
 	}
 	

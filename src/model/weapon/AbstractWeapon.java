@@ -62,7 +62,7 @@ public abstract class AbstractWeapon {
 	 * @return The projectile from this weapon.
 	 */
 	public Projectile fire() {
-		Projectile p = this.getProjectile();
+		Projectile p = this.createProjectile();
 
 		if (this.ammo != 0){
 			if(this.ammo != -1)
@@ -80,16 +80,24 @@ public abstract class AbstractWeapon {
 	
 	@Override
 	public String toString() {
-		return "["+this.getClass().getSimpleName() + " [ammo:"+this.ammo+"]]";
+		return "["+this.getClass().getSimpleName() + "[owner:"+this.owner.getClass().getSimpleName()+"] [ammo:"+this.ammo+"]]";
 	}
 
 	/**
-	 * Get the associated projectile from this weapon.
+	 * Create a new projectile from this weapon. Note that the returned projectile
+	 * is a new instance.
 	 * 
 	 * @return The projectile.
 	 */
-	public abstract Projectile getProjectile();
+	public abstract Projectile createProjectile();
 	
+	
+	/**
+	 * Get the associated projectile from this weapon.
+	 * 
+	 * @return The projectile
+	 */
+	public abstract Projectile getProjectile();
 	
 	/**
 	 * Set the associated projectile for this weapon.
