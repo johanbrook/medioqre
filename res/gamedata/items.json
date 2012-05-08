@@ -1,7 +1,7 @@
 [	
 	{
 		"type": "MedPack",
-		"amount": 10,
+		"amount": 20,
 		"amountMultiplier": 2,
 		"bounds": {
 			"width": 16,
@@ -11,7 +11,7 @@
 	
 	{
 		"type": "AmmoCrate",
-		"amount": 10,
+		"amount": 20,
 		"amountMultiplier": 2,
 		"bounds": {
 			"width": 16,

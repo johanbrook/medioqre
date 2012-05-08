@@ -2,6 +2,7 @@
 	{
 		"type": "MachineGun",
 		"ammo": 300,
+		"ammoMultiplier": 2,
 		"slot": 1,
 		"projectile": {
 			"damage": 10,
@@ -17,6 +18,7 @@
 	{
 		"type": "Grenade",
 		"radius": 70,
+		"ammoMultiplier": 2,
 		"splashDamageFactor": 3,
 		"ammo": 4,
 		"slot": 2,
@@ -34,6 +36,7 @@
 	{
 		"type": "Melee",
 		"ammo": -1,
+		"ammoMultiplier": 0,
 		"slot": 3,
 		"projectile": {
 			"damage": 100,
@@ -49,6 +52,7 @@
 	{
 		"type": "PortalGun",
 		"ammo": -1,
+		"ammoMultiplier": 0,
 		"slot": 4,
 		"projectile": {
 			"damage": 0,

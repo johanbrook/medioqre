@@ -15,6 +15,7 @@ public abstract class AbstractWeapon {
 
 	private int ammo;
 	private AbstractCharacter owner;
+	private double ammoMultiplier;
 
 	/**
 	 * Create a new weapon with an owner and initial ammo.
@@ -95,5 +96,21 @@ public abstract class AbstractWeapon {
 	 * @param projectile The projectile
 	 */
 	public abstract void setProjectile(Projectile projectile);
+
+	/**
+	 * get the ammo multiplier
+	 * @return the ammoFactor
+	 */
+	public double getAmmoMultiplier() {
+		return ammoMultiplier;
+	}
+
+	/**
+	 * Set the ammo multiplier
+	 * @param ammoMultiplier
+	 */
+	public void setammoMultiplier(double ammoMultiplier) {
+		this.ammoMultiplier = ammoMultiplier;
+	}
 
 }
