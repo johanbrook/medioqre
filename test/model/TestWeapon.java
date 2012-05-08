@@ -29,10 +29,10 @@ public class TestWeapon {
 	@Before
 	public void setUp() throws Exception {
 		Player p = new Player(30, new Rectangle(20, 20), new Dimension(20, 48), 0, 16);
-		this.machineGun = new MachineGun(p, 300);
-		this.grenade = new Grenade(p, 4);
-		this.sword = new Sword(p, -1);
-		this.melee = new Melee(p, -1);
+		this.machineGun = new MachineGun(p, 300, 2);
+		this.grenade = new Grenade(p, 4, 0.1);
+		this.sword = new Sword(p, -1,0);
+		this.melee = new Melee(p, -1,0);
 	}
 	
 	@Test

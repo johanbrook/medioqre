@@ -18,7 +18,7 @@
 	{
 		"type": "Grenade",
 		"radius": 70,
-		"ammoMultiplier": 2,
+		"ammoMultiplier": 0.1,
 		"splashDamageFactor": 3,
 		"ammo": 4,
 		"slot": 2,

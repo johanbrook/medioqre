@@ -13,8 +13,8 @@ public class Sword extends AbstractWeapon {
 	
 	private Projectile projectile;
 	
-	public Sword(AbstractCharacter owner, int ammo) {
-		super(owner, ammo);
+	public Sword(AbstractCharacter owner, int ammo, double ammoMultiplier) {
+		super(owner, ammo, ammoMultiplier);
 	}
 
 	public boolean equals(Object o) {

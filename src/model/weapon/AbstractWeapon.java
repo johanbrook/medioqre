@@ -23,9 +23,10 @@ public abstract class AbstractWeapon {
 	 * @param owner The owner
 	 * @param initialAmmo The ammo
 	 */
-	public AbstractWeapon(AbstractCharacter owner, int initialAmmo) {
+	public AbstractWeapon(AbstractCharacter owner, int initialAmmo, double ammoMultiplier) {
 		this.ammo = initialAmmo;
 		this.owner = owner;
+		this.ammoMultiplier = ammoMultiplier;
 	}
 
 	/**
@@ -52,7 +53,7 @@ public abstract class AbstractWeapon {
 	 * @param amount The amount
 	 */
 	public void addAmmo(int amount) {
-		this.ammo += amount;
+		this.ammo += amount * ammoMultiplier;
 	}
 
 	/**

@@ -34,7 +34,7 @@ public class TestProjectile {
 		this.owner.setPosition(10, 10);
 		this.owner.setDirection(Direction.EAST);
 		
-		this.projectile = new Projectile(new MachineGun(this.owner, 300), 10, 10, 30, Range.FAR_RANGE, 30); 
+		this.projectile = new Projectile(new MachineGun(this.owner, 300,2), 10, 10, 30, Range.FAR_RANGE, 30); 
 	}
 
 //	@Test

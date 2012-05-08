@@ -13,8 +13,8 @@ public class MachineGun extends AbstractWeapon {
 	
 	private Projectile projectile;
 	
-	public MachineGun(AbstractCharacter owner, int ammo){
-		super(owner, ammo);
+	public MachineGun(AbstractCharacter owner, int ammo, double ammoMultiplier){
+		super(owner, ammo, ammoMultiplier);
 	}
 	
 

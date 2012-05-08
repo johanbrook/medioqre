@@ -13,8 +13,8 @@ public class Melee extends AbstractWeapon {
 	
 	private Projectile projectile;
 	
-	public Melee(AbstractCharacter owner, int ammo) {
-		super(owner, ammo);
+	public Melee(AbstractCharacter owner, int ammo, double ammoMultiplier) {
+		super(owner, ammo, ammoMultiplier);
 	}
 
 	public boolean equals(Object o) {

@@ -4,6 +4,7 @@
 	"weapon": {
 		"type": "Melee",
 		"ammo": -1,
+		"ammoMultiplier": 0,
 		"slot": 3,
 		"projectile": {
 			"damage": 100,

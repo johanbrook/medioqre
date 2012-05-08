@@ -14,8 +14,8 @@ public class Grenade extends AbstractWeapon {
 	private Projectile projectile;
 	private int radius, splashDamageFactor;
 	
-	public Grenade(AbstractCharacter owner, int ammo) {
-		super(owner, ammo);
+	public Grenade(AbstractCharacter owner, int ammo, double ammoMultiplier) {
+		super(owner, ammo, ammoMultiplier);
 	}
 	
 
@@ -25,6 +25,7 @@ public class Grenade extends AbstractWeapon {
 		
 		return true;
 	}
+	
 
 
 	@Override

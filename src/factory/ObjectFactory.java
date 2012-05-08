@@ -150,7 +150,7 @@ public class ObjectFactory {
 
 				JSONObject weaponObj = enemy.getJSONObject("weapon");
 
-				AbstractWeapon melee = createWeaponFromString(weaponObj.getString("type"), new Object[]{e, weaponObj.getInt("ammo")});
+				AbstractWeapon melee = createWeaponFromString(weaponObj.getString("type"), new Object[]{e, weaponObj.getInt("ammo"), weaponObj.getDouble("ammoMultiplier")});
 
 				Projectile projectile = newProjectile(melee, weaponObj);
 
@@ -223,7 +223,7 @@ public class ObjectFactory {
 				JSONObject wp = weapons.getJSONObject(i);
 
 				AbstractWeapon weapon = createWeaponFromString(wp.getString("type"),
-										new Object[] {owner, wp.getInt("ammo")}
+										new Object[] {owner, wp.getInt("ammo"), wp.getDouble("ammoMultiplier")}
 										);
 				
 				if(weapon == null) {
@@ -375,7 +375,7 @@ public class ObjectFactory {
 	 * @return A 'type' instance with the type AbstractWeapon
 	 */
 	public static AbstractWeapon createWeaponFromString(String type, Object[] objectParams) {
-		Object obj = createObjectFromString("model.weapon."+type, new Class[]{AbstractCharacter.class, int.class}, objectParams);
+		Object obj = createObjectFromString("model.weapon."+type, new Class[]{AbstractCharacter.class, int.class, double.class}, objectParams);
 
 		return (AbstractWeapon) obj;
 	}
