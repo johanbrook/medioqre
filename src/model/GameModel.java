@@ -101,7 +101,12 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 				if(p.getOwner() instanceof PortalGun) {
 					PortalGun g = (PortalGun) p.getOwner();
 
-					deployPortal(g.getMode(), p.getPosition());
+					// Always position new portals in the middle of where the portal
+					// projectile landed:
+					int x = (int) p.getPosition().x + p.getCollisionBox().width / 2;
+					int y = (int) p.getPosition().y + p.getCollisionBox().height / 2;
+					
+					deployPortal(g.getMode(), new Point(x, y));
 
 				}else if (p.getOwner() instanceof Grenade){
 					doSplashDamage(p);
@@ -243,8 +248,8 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 		for(int i = 0; i < this.portals.length; i++) {
 
 			if(this.portals[i] == null) {
-				//				Portal p = new Portal(mode, new Rectangle(position.x, position.y, 20, 20), new Dimension(20, 20), 0, 0);
 				Portal p = ObjectFactory.newPortal(mode, position);
+				p.center();
 				EventBus.INSTANCE.publish(new Event(Property.PORTAL_CREATED, p));
 				this.objects.add(p);
 				this.portals[i] = p;
@@ -257,7 +262,7 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 				return;
 			}
 			else if(this.portals[i].getMode() == mode) {
-				this.portals[i].setPosition(position);
+				this.portals[i].setPositionFromCenter(position);
 				return;
 			}
 		}
