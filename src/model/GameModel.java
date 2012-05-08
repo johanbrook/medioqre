@@ -2,6 +2,7 @@ package model;
 
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -273,12 +274,19 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 			
 			Grenade grenade = ((Grenade) p.getOwner());
 			int radius = grenade.getRadius();
-			Rectangle splash = new Rectangle(p.getPosition().x - radius/2, p.getPosition().y - radius/2, radius,radius);
+			int distance = Math.abs(this.player.getPosition().x - p.getPosition().x) + Math.abs(this.player.getPosition().y - p.getPosition().y);
+			if (distance < radius) {
+				this.player.takeDamage(p.getDamage()/grenade.getSplashDamageFactor());
+				log("Player was hit by Grenade splash! Took: " + p.getDamage()/grenade.getSplashDamageFactor() + " damage! Now has " + player.getHealth() + " hp left!");
+			}
+			
 			for (Enemy e : this.enemies){
-				if (splash.intersects(e.getCollisionBox())){
-					
+				distance = Math.abs(e.getPosition().x - p.getPosition().x) + Math.abs(e.getPosition().y
+						- p.getPosition().y);
+				if (distance < radius) {
 					e.takeDamage(p.getDamage()/grenade.getSplashDamageFactor());
-					log("Enemy was hit by Grenade splash! Took: " + p.getDamage()/grenade.getSplashDamageFactor() + " damage! Now has " + e.getHealth() + " hp left");
+					log("Enemy was hit by Grenade splash! Took " + p.getDamage()/grenade.getSplashDamageFactor() + " damage! Now has " + e.getHealth() + " hp left!");
+					
 				}
 			}
 		}
