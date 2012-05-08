@@ -190,7 +190,8 @@ public class ViewController implements IEventHandler, GLEventListener {
 			if (evt.getValue() instanceof Projectile) {
 				Projectile p = (Projectile) evt.getValue();
 
-				if (p.getOwner() instanceof MachineGun) {
+				if(true) {
+//				if (p.getOwner() instanceof MachineGun) {
 					Actor newA;
 					try {
 						newA = new Actor(

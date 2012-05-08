@@ -10,6 +10,8 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+import tools.Logger;
+
 import constants.Direction;
 
 import model.Entity;
@@ -83,16 +85,22 @@ public class Projectile extends Entity {
 				break;
 			case NORTH:
 				x += (int) p.getSize().width / 2;
+				y -= p.getCollisionBox().height;
 				break;
 			case EAST:
 				x += (int) p.getSize().width;
 				y += (int) p.getSize().height / 2;
 				break;
 			case WEST: 
+				x -= p.getCollisionBox().width;
 				y += (int) p.getSize().height / 2;
 				break;
 			case NORTH_EAST:
 				x += (int) p.getSize().width;
+				break;
+			case NORTH_WEST:
+				x -= p.getCollisionBox().width;
+				y -= p.getCollisionBox().height;
 				break;
 			case SOUTH_EAST:
 				x += (int) p.getSize().width;
@@ -106,6 +114,8 @@ public class Projectile extends Entity {
 		
 		setPosition(x, y);
 		setDirection(p.getDirection());	
+		
+		Logger.log("Projectile created: "+this.toString());
 	}
 	
 	public Projectile(Projectile p) {
