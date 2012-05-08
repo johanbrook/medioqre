@@ -6,9 +6,15 @@
 
 package controller;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import static tools.Logger.*;
+
 import tools.TimerTool;
 import controller.AI.AIController;
 import controller.navigation.NavigationController;
+import datamanagement.ResourceLoader;
 import event.Event;
 import event.EventBus;
 import event.IMessageListener;
@@ -51,6 +57,14 @@ public class AppController implements Runnable{
 		
 		this.audio = AudioController.getInstance();
 		audio.setGame(game);
+		
+		try {
+			String loggingFormat = ResourceLoader.parseJSONFromPath("gamedata/world.json").getString("loggingFormat");
+			tools.Logger.getInstance().setTimestampFormat(loggingFormat);
+			
+		} catch (JSONException e) {
+			err("Couldn't load timestamp format from file! "+e.getMessage());
+		}
 	}
 	
 	

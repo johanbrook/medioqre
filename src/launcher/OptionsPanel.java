@@ -16,6 +16,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
+
+import audio.AudioConstants;
 
 public class OptionsPanel extends JPanel {
 	
@@ -57,6 +61,12 @@ public class OptionsPanel extends JPanel {
 		soundPanel.setLayout(null);
 		
 		JSlider musicSlider = new JSlider();
+		musicSlider.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				JSlider temp = (JSlider)e.getSource();
+				AudioConstants.BGM_Volume = (float)(temp.getValue()/10.0);
+			}
+		});
 		musicSlider.setBounds(20, 93, 340, 38);
 		soundPanel.add(musicSlider);
 		musicSlider.setPaintLabels(true);
@@ -65,6 +75,13 @@ public class OptionsPanel extends JPanel {
 		musicSlider.setPaintTicks(true);
 		
 		JSlider fxSlider = new JSlider();
+		fxSlider.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				JSlider fxTemp = (JSlider)e.getSource();
+				AudioConstants.FX_VOLUME = (float)(fxTemp.getValue()/10.0);
+
+			}
+		});
 		fxSlider.setBounds(20, 156, 340, 38);
 		soundPanel.add(fxSlider);
 		fxSlider.setPaintTicks(true);

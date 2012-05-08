@@ -43,10 +43,10 @@ public class TestCollectableItem {
 
 	@Test
 	public void testPlayerPicksUpMedpack() {
-		int initialHealth = this.player.getHealth();
+		this.player.setHealth(50);
 		this.medpack.pickedUpBy(player);
 		
-		assertEquals(initialHealth + 30, this.player.getHealth());
+		assertEquals(80, this.player.getHealth());
 	}
 	
 	@Test

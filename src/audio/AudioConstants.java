@@ -15,5 +15,5 @@ public class AudioConstants {
 
 	
 	public static float BGM_Volume = 0.7f;
-	public static float WEAPON_VOLUME = 0.8f;
+	public static float FX_VOLUME = 0.8f;
 }

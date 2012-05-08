@@ -30,8 +30,7 @@ public class Grenade extends AbstractWeapon {
 
 	@Override
 	public Projectile getProjectile() {
-		// TODO Implement correctly
-		return new Projectile(this, 10, 10, 75, Range.MEDIUM_RANGE, 30);
+		return new Projectile(this.projectile);
 	}
 	
 	@Override

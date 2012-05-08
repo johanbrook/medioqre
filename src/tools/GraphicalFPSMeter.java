@@ -3,6 +3,8 @@ package tools;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+
+import controller.AppController;
 import static tools.Logger.*;
 
 /**
@@ -17,7 +19,6 @@ import static tools.Logger.*;
 public class GraphicalFPSMeter {
 
 	private String label;
-	private boolean shouldLogFPS;
 
 	private double timeLastFrame;
 	private double timeThisSecond;
@@ -31,7 +32,7 @@ public class GraphicalFPSMeter {
 	 */
 	public GraphicalFPSMeter()
 	{
-		this("FPS", true);
+		this("FPS");
 	}
 
 	/**
@@ -39,13 +40,10 @@ public class GraphicalFPSMeter {
 	 * 
 	 * @param label
 	 *            The label before the frame rate
-	 * @param shouldLogFPS
-	 *            If the FPS should print to system out each second
 	 */
-	public GraphicalFPSMeter(String label, boolean shouldLogFPS)
+	public GraphicalFPSMeter(String label)
 	{
 		this.label = label;
-		this.shouldLogFPS = shouldLogFPS;
 
 		this.timeLastFrame = System.nanoTime();
 		this.timeThisSecond = 0;
@@ -81,7 +79,9 @@ public class GraphicalFPSMeter {
 			this.currentFPS = framesThisSecond;
 			framesThisSecond = 0;
 			timeThisSecond = 0;
-			if (shouldLogFPS) System.out.println(this.label+": "+this.currentFPS);
+			
+			if (AppController.MODE == AppController.DEBUG) 
+				System.out.println(this.label+": "+this.currentFPS);
 			
 		} else {
 			timeThisSecond += dt;

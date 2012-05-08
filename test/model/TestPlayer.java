@@ -14,6 +14,7 @@ import java.util.Arrays;
 
 import model.character.Player;
 import model.weapon.*;
+import model.weapon.Projectile.Range;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -33,6 +34,11 @@ public class TestPlayer {
 		AbstractWeapon[] weapons = new AbstractWeapon[] {new MachineGun(player, 300,2), new Grenade(player, 4,0.1), new Melee(player, -1, 0)};
 		this.player.setWeaponBelt(Arrays.asList(weapons));
 		this.player.setCurrentWeapon(MachineGun.class);
+		
+		for(AbstractWeapon w : this.player.getWeaponBelt()) {
+			Projectile p = new Projectile(w, 10, 10, 10, Range.FAR_RANGE, 30);
+			w.setProjectile(p);
+		}
 	}
 	
 	@Test
@@ -67,10 +73,25 @@ public class TestPlayer {
 	
 	@Test
 	public void testAddHealth() {
-		int initialHealth = this.player.getHealth();
+		this.player.setHealth(50);
 		this.player.addHealth(10);
 		
-		assertEquals(initialHealth + 10, this.player.getHealth());
+		assertEquals(60, this.player.getHealth());
+	}
+	
+	@Test
+	public void testAddTooMuchHealth() {
+		this.player.setHealth(this.player.getMaxHealth() - 10);
+		this.player.addHealth(20);
+		
+		assertEquals(this.player.getMaxHealth(), this.player.getHealth());
+	}
+	
+	@Test
+	public void testAddToMaximumHealth() {
+		this.player.addHealth(10);
+		
+		assertEquals(this.player.getMaxHealth(), this.player.getHealth());
 	}
 	
 	@Test

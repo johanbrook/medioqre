@@ -39,7 +39,7 @@ public class PortalGun extends AbstractWeapon {
 
 	@Override
 	public Projectile getProjectile() {
-		return new Projectile(this, 10, 10, 0, Range.SHORT_RANGE, 10);
+		return new Projectile(this.projectile);
 	}
 	
 	@Override
