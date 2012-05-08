@@ -57,7 +57,7 @@ import tilemap.Tile;
 import tilemap.TileMap;
 import tilemap.TileSheet;
 
-public class TileMapEditor extends JFrame {
+public class TileMapEditor extends JFrame implements TileSelectorListener {
 
 	private File currentFile;
 
@@ -170,6 +170,11 @@ public class TileMapEditor extends JFrame {
 
 	private void clearTileMap()
 	{
+		if (this.tileSelector == null) return;
+		if (this.tileSelector.getSelectedTile() == null) return;
+		if (this.currentTileMap == null) return;
+		
+		this.currentTileMap.clearTileMap(this.tileSelector.getSelectedTile().getType());
 		System.out.println("Clearing tilemap.");
 	}
 
@@ -267,7 +272,7 @@ public class TileMapEditor extends JFrame {
 		JSeparator separator_4 = new JSeparator();
 		mnFile.add(separator_4);
 
-		JMenuItem mntmClear = new JMenuItem("Clear Tiles");
+		JMenuItem mntmClear = new JMenuItem("Clear With Active Tile");
 		mnFile.add(mntmClear);
 		mntmClear.addActionListener(new ActionListener() {
 			@Override
@@ -338,6 +343,7 @@ public class TileMapEditor extends JFrame {
 		// Creating left split pane
 		// Containing Canvas + tile selector
 		JSplitPane splitPane_1 = new JSplitPane();
+		splitPane_1.setEnabled(false);
 		splitPane_1.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		splitPane_1.setDividerSize(3);
 
@@ -352,7 +358,7 @@ public class TileMapEditor extends JFrame {
 		// split pane
 		
 		this.tileSelector = new TileSelector(glC);
-		this.tileSelector.addTileSelectorListener(this.tileCanvas);
+		this.tileSelector.addTileSelectorListener(this);
 		splitPane_1.setRightComponent(this.tileSelector);
 
 		// Creating tile inspector
@@ -470,6 +476,12 @@ public class TileMapEditor extends JFrame {
 		this.pack();
 		this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		this.setVisible(true);
+	}
+
+	@Override
+	public void didSelectTile(Tile selectedTile)
+	{
+		this.tileCanvas.didSelectTile(selectedTile);
 	}
 
 }
