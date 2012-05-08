@@ -42,7 +42,6 @@ public class AIController implements IMessageSender, IMessageListener {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void onMessage(Event evt) {
-		System.out.println("Something happened! AI: "+evt.getProperty());
 
 		switch(evt.getProperty()) {
 		case NEW_GAME:

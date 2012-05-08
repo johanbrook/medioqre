@@ -1,23 +1,17 @@
 package tools;
 
+import controller.AppController;
+
 /**
  *	Logger class
+ *
+ *	<p>Only logs messages to the system out if app is in debug mode</p>
  * 
  *	@author Johan
- *	@deprecated 2012-05-04 Not used.
  */
 public final class Logger {
 	
-	public static final int LOG_ALL = 1;
-	public static final int LOG_CONTROL = 2;
-	public static final int LOG_GUI = 3;
-	public static final int LOG_STATS = 4;
-	public static final int LOG_EVENTS = 5;
-	
 	private static Logger instance;
-	private static boolean logging = false;
-	
-	private static int logMode = LOG_ALL;
 	
 	private Logger() {}
 	
@@ -35,42 +29,26 @@ public final class Logger {
 	
 	
 	/**
-	 * Log a message to the stdout.
+	 * Log an object to the system out.
 	 * 
-	 * @param message The message
-	 * @param type The logging type
-	 * @pre isLogginEnabled() == true
+	 * @param msg The object to print
+	 * @pre AppController.MODE == AppController.DEBUG
 	 */
-	
-
-	
-	
-	/**
-	 * Enable logging.
-	 * 
-	 * @param cond Set to 'true' to enable logging to the stdout
-	 */
-	public static void setLogginEnabled(boolean cond) {
-		logging = cond;
-	}
-	
-	
-	/**
-	 * Get the logging status.
-	 * 
-	 * @return True if logging is enabled
-	 */
-	public static boolean isLogginEnabled() {
-		return logging;
+	public static void log(Object msg) {
+		if(AppController.MODE == AppController.DEBUG) {
+			System.out.println(msg);
+		}
 	}
 	
 	/**
-	 * Add a log mode.
+	 * Log an error to the system out.
 	 * 
-	 * @param type The logging type
+	 * @param msg The object to log as error
+	 * @pre AppController.MODE == AppController.DEBUG
 	 */
-	public static void setLogMode(int type) {
-		logMode = type;
+	public static void err(Object msg) {
+		if(AppController.MODE == AppController.DEBUG) {
+			System.err.println(msg);
+		}
 	}
-	
 }

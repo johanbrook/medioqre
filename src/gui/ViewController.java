@@ -23,6 +23,8 @@ import org.json.JSONObject;
 import com.jogamp.opengl.util.Animator;
 import com.jogamp.opengl.util.FPSAnimator;
 
+import controller.AppController;
+
 import tilemap.TileMap;
 import tools.GraphicalFPSMeter;
 import tools.TimerTool;
@@ -219,15 +221,12 @@ public class ViewController implements IEventHandler, GLEventListener {
 				this.items.put((CollidableObject) p, newA);
 				this.screen.addDrawableToLayer(newA, 1);
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		} else if (evt.getProperty() == Event.Property.WAS_DESTROYED) {
 			if (evt.getValue() instanceof CollidableObject) {
 				CollidableObject o = (CollidableObject) evt.getValue();
 
-				if (o instanceof AmmoCrate || o instanceof MedPack) System.out.println("Destroying medpack or ammo crate");
-				
 				this.screen.removeDrawableFromLayer(this.enemies.remove(o));
 				this.screen.removeDrawableFromLayer(this.projectiles.remove(o));
 				this.screen.removeDrawableFromLayer(this.items.remove(o));
@@ -239,21 +238,20 @@ public class ViewController implements IEventHandler, GLEventListener {
 	public void display(GLAutoDrawable arg0)
 	{
 		fpsmeter.tick();
-		// System.out.println("fps: " + this.fpsmeter.currentFPS);
 
 		GL2 gl = arg0.getGL().getGL2();
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
 		gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
 		gl.glClear(GL2.GL_ALPHA_BITS);
 
-		// TimerTool.start("GL-Screen");
+//		 TimerTool.start("GL-Screen");
 		if (doneLoading) {
 			this.screen.setViewPort(this.player.getCollidableObject()
 					.getPosition());
 			this.screen.render(this.screen.getBounds(),
 					this.screen.getBounds(), arg0, 0);
 		}
-		// TimerTool.stop();
+//		 TimerTool.stop();
 	}
 
 	@Override

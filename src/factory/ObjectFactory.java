@@ -10,14 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static tools.Logger.*;
+
 import model.CollidableObject;
 import model.ConcreteCollidableObject;
 import model.Entity;
 import model.character.AbstractCharacter;
 import model.character.Enemy;
 import model.character.Player;
-import model.item.ICollectableItem;
-import model.item.MedPack;
 import model.weapon.AbstractWeapon;
 import model.weapon.Grenade;
 import model.weapon.Portal;
@@ -55,7 +55,7 @@ public class ObjectFactory {
 			levelData = new JSONObject(ResourceLoader.loadJSONStringFromResources(level.getLevelData()));
 
 		} catch (JSONException e) {
-			System.err.println("Couldn't initialize all JSON objects: "+e.getMessage());
+			err("Couldn't initialize all JSON objects: "+e.getMessage());
 		}
 	}
 
@@ -102,7 +102,7 @@ public class ObjectFactory {
 			return p;
 
 		} catch (JSONException e) {
-			System.err.println("Couldn't initialize player from JSON object");
+			err("Couldn't initialize player from JSON object");
 			e.printStackTrace();
 		}
 		return null;
@@ -126,7 +126,7 @@ public class ObjectFactory {
 
 			return en;
 		} catch (JSONException e) {
-			System.err.println(e.getMessage());
+			err(e.getMessage());
 			e.printStackTrace();
 		}
 
@@ -136,11 +136,8 @@ public class ObjectFactory {
 
 	public static List<Enemy> newEnemiesForWave(int waveNumber) {
 
-		System.out.println("Current wave: "+waveNumber);
 		List<Enemy> enemies = new ArrayList<Enemy>();
-
 		int enemiesToAdd = math.Util.fib(waveNumber);
-		System.out.println("Fib for wave nr "+waveNumber+": "+enemiesToAdd);
 
 		try {
 
@@ -161,7 +158,7 @@ public class ObjectFactory {
 			}
 		}
 		catch(JSONException e) {
-			System.err.println(e.getMessage());
+			err(e.getMessage());
 			e.printStackTrace();
 		}
 
@@ -194,7 +191,7 @@ public class ObjectFactory {
 			}
 		}
 		catch(JSONException e) {
-			System.err.println("Couldn't load items! "+e.getMessage());
+			err("Couldn't load items! "+e.getMessage());
 		}
 		
 		return itemList;
@@ -247,10 +244,10 @@ public class ObjectFactory {
 
 		}
 		catch(JSONException e) {
-			System.err.println("Couldn't load weapons from file: "+e.getMessage());
+			err("Couldn't load weapons from file: "+e.getMessage());
 		}
 		catch(Exception e) {
-			System.err.println(e.getMessage());
+			err(e.getMessage());
 		}
 
 
@@ -273,7 +270,7 @@ public class ObjectFactory {
 			return projectile;
 
 		} catch (JSONException e) {
-			System.err.println(e.getMessage());
+			err(e.getMessage());
 			e.printStackTrace();
 		}
 
@@ -347,19 +344,19 @@ public class ObjectFactory {
 			return (Object) co.newInstance(objectParams);
 		}
 		catch(ClassNotFoundException e) {
-			System.err.println("Couldn't find class: "+e.getMessage());
+			err("Couldn't find class: "+e.getMessage());
 		}
 		catch(InstantiationException e) {
-			System.err.println("Class must be concrete: "+e);
+			err("Class must be concrete: "+e);
 		}
 		catch(NoSuchMethodException e) {
-			System.err.println("Constructor doesn't exist or is not public: "+e.getMessage());
+			err("Constructor doesn't exist or is not public: "+e.getMessage());
 		}
 		catch(IllegalArgumentException e) {
-			System.err.println("Illegal argument passed to class: "+e);
+			err("Illegal argument passed to class: "+e);
 		}
 		catch(Exception e) {
-			System.err.println("Couldn't create instance of class "+ name);
+			err("Couldn't create instance of class "+ name);
 		}
 
 		return null;

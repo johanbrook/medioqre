@@ -2,9 +2,9 @@ package model;
 
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import static tools.Logger.log;
 
 import model.character.AbstractCharacter;
 import model.character.Enemy;
@@ -80,10 +80,10 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 			if (projectile != null){
 				projectile.addReceiver(this);
 				this.objects.add(projectile);
-				System.out.println("Did add projectile of type: "+projectile.getOwner().getClass().getSimpleName());
+				log("Did add projectile of type: "+projectile.getOwner().getClass().getSimpleName());
 
 			}else {
-				System.out.println("Out of ammo");
+				log("Out of ammo");
 			}
 			break;
 
@@ -118,7 +118,7 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 				gameOver();
 			}
 
-			System.out.println(evt.getValue().getClass().getSimpleName() + " was destroyed");
+			log(evt.getValue().getClass().getSimpleName() + " was destroyed");
 			break;
 
 		case DID_ATTACK:
@@ -163,13 +163,15 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 		Event evt = new Event(Property.NEW_WAVE, this);
 		this.messager.sendMessage(evt);
 		EventBus.INSTANCE.publish(evt);
+		
+		log("New wave: "+this.currentWave);
 	}
 
 	private void addItems() {
 		List<CollidableObject> items = ObjectFactory.newItemsForWave(this.currentWave);
 		
-		System.out.println("Items received");
-		System.out.println(items);
+		log("Items received");
+		log(items);
 		
 		for(CollidableObject item : items) {
 			item.addReceiver(this);
@@ -177,7 +179,7 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 
 		this.objects.addAll(items);
 		
-		System.out.println("** "+items.size() + " items added");
+		log("** "+items.size() + " items added");
 
 	}
 
@@ -187,8 +189,8 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 
 		List<Enemy> tempEnemies = ObjectFactory.newEnemiesForWave(this.currentWave);
 
-		System.out.println("Enemies received");
-		System.out.println(tempEnemies);
+		log("Enemies received");
+		log(tempEnemies);
 
 		for(Enemy temp : tempEnemies) {
 			temp.addReceiver(this);
@@ -197,7 +199,7 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 		this.enemies.addAll(tempEnemies);
 		this.objects.addAll(tempEnemies);
 
-		System.out.println("** "+ tempEnemies.size() +" enemies added");
+		log("** "+ tempEnemies.size() +" enemies added");
 	}
 
 	private void initPlayer() {
@@ -243,7 +245,7 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 				if (splash.intersects(e.getCollisionBox())){
 					
 					e.takeDamage(p.getDamage()/grenade.getSplashDamageFactor());
-					System.out.println("Enemy was hit by Grenade splash! Took: " + p.getDamage()/grenade.getSplashDamageFactor() + " damage! Now has " + e.getHealth() + " hp left");
+					log("Enemy was hit by Grenade splash! Took: " + p.getDamage()/grenade.getSplashDamageFactor() + " damage! Now has " + e.getHealth() + " hp left");
 				}
 			}
 		}
@@ -292,7 +294,7 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 					if (w instanceof AbstractCharacter){
 						((AbstractCharacter) w).takeDamage(((Projectile) t).getDamage());
 
-						System.out.println(w.getClass().getSimpleName()+" was hit, now has " + ((AbstractCharacter) w).getHealth() + " hp");
+						log(w.getClass().getSimpleName()+" was hit, now has " + ((AbstractCharacter) w).getHealth() + " hp");
 					}
 
 
@@ -301,9 +303,9 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 					((ICollectableItem) w).pickedUpBy( ((Player) t));
 
 					if (w instanceof AmmoCrate)
-						System.out.println("Picked up AmmoCrate, current ammo: " + this.player.getCurrentWeapon().getCurrentAmmo());
+						log("Picked up AmmoCrate, current ammo: " + this.player.getCurrentWeapon().getCurrentAmmo());
 					if (w instanceof MedPack)
-						System.out.println("Picked up MedPack, current HP: " + this.player.getHealth());
+						log("Picked up MedPack, current HP: " + this.player.getHealth());
 
 				}
 

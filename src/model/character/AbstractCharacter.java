@@ -2,6 +2,7 @@ package model.character;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
+import static tools.Logger.log;
 
 import constants.Direction;
 
@@ -50,7 +51,7 @@ public abstract class AbstractCharacter extends Entity {
 	public void setCurrentWeapon(AbstractWeapon w) {
 		this.currentWeapon = w;
 		EventBus.INSTANCE.publish(new Event(Property.CHANGED_WEAPON, this));
-		System.out.println("Current weapon is " + getCurrentWeapon());
+		log("Current weapon is " + getCurrentWeapon());
 	}
 	
 	/**
