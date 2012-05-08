@@ -235,6 +235,7 @@ public class AudioController implements IEventHandler {
 		soundSys.backgroundMusic("BGM", lib.getBGMURL(bgmID),
 				lib.getBGMId(bgmID), true);
 		soundSys.setVolume("BGM", AudioConstants.getBGMVolume());
+		System.out.println("BGM VOLUME IN AUDIOCONTROLLER: " + AudioConstants.getBGMVolume());
 		soundSys.play("BGM");
 	}
 

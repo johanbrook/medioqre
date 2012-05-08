@@ -13,7 +13,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import audio.AudioConstants;
 import controller.AppController;
+import javax.swing.JLabel;
 
 public class LauncherMainPanel extends JPanel implements ActionListener {
 
@@ -34,10 +36,11 @@ public class LauncherMainPanel extends JPanel implements ActionListener {
 
 	public LauncherMainPanel(int rows, int cols, int width, int height,
 			Launcher container) {
+		setBounds(new Rectangle(0, 0, 640, 400));
 		launcher = container;
 		setLayout(null);
 
-		setBounds(0, 0, width, height);
+		setBounds(0, 0, 790, 509);
 
 		this.rows = rows;
 		this.cols = cols;
@@ -110,6 +113,12 @@ public class LauncherMainPanel extends JPanel implements ActionListener {
 		setBackground(new Color(0, 0, 0));
 
 		timer = new Timer(delay, this);
+		
+		JLabel testLabel = new JLabel("New label");
+		testLabel.setForeground(Color.WHITE);
+		testLabel.setBounds(43, 26, 94, 51);
+		testLabel.setText(AudioConstants.getBGMVolume() + "");
+		add(testLabel);
 		timer.start();
 
 	}
@@ -154,5 +163,4 @@ public class LauncherMainPanel extends JPanel implements ActionListener {
 		repaint();
 
 	}
-
 }
