@@ -9,6 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
+import static tools.Logger.*;
 import javax.imageio.ImageIO;
 
 import org.apache.commons.io.IOUtils;
@@ -21,6 +22,19 @@ import tilemap.TileSheet;
 public class ResourceLoader {
 	
 	
+	public static JSONObject parseJSONFromPath(String pathToJsonFile) {
+		
+		try {
+			String json = loadJSONStringFromResources(pathToJsonFile);
+			return new JSONObject(json);
+		}
+		catch(JSONException e) {
+			err("Couldn't parse JSON from file! "+e.getMessage());
+		}
+		
+		return null;
+	}
+	
 	public static String loadJSONStringFromStream(InputStream s) {
 		if(s == null) {
 			throw new IllegalArgumentException("Input stream can't be null");
@@ -30,7 +44,7 @@ public class ResourceLoader {
 			return IOUtils.toString(s);
 
 		} catch (IOException e) {
-			System.err.println(e.getMessage());
+			err(e.getMessage());
 			e.printStackTrace();
 		}
 		
@@ -43,7 +57,7 @@ public class ResourceLoader {
 			return loadJSONStringFromStream(new FileInputStream(new File(absolutePath)));
 			
 		} catch (FileNotFoundException e) {
-			System.err.println(e.getMessage());
+			err(e.getMessage());
 			e.printStackTrace();
 		}
 		
@@ -60,7 +74,6 @@ public class ResourceLoader {
 	public static TileMap loadTileMapFromAbsolutePath(String absolutePath)
 	{
 		try {
-			System.out.println(absolutePath);
 			BufferedImage img = ImageIO.read(new FileInputStream(new File(absolutePath)));
 			
 			int[] pixels = PixelCastingTool.getARGBarrayFromDataBuffer(img.getRaster(), img.getWidth(), img.getHeight());
@@ -69,13 +82,13 @@ public class ResourceLoader {
 			
 			return tileMap;
 		} catch (FileNotFoundException e) {
-			System.err.println(e.getMessage());
+			err(e.getMessage());
 			e.printStackTrace();
 		} catch (IOException e) {
-			System.err.println(e.getMessage());
+			err(e.getMessage());
 			e.printStackTrace();
 		}
-		System.out.println("Could not load: " + absolutePath);
+		err("Could not load: " + absolutePath);
 		
 		return null;
 	}
@@ -92,13 +105,13 @@ public class ResourceLoader {
 			
 			return tileMap;
 		} catch (FileNotFoundException e) {
-			System.err.println(e.getMessage());
+			err(e.getMessage());
 			e.printStackTrace();
 		} catch (IOException e) {
-			System.err.println(e.getMessage());
+			err(e.getMessage());
 			e.printStackTrace();
 		}
-		System.out.println("Could not load: " + resource);
+		err("Could not load: " + resource);
 		
 		return null;
 	}
@@ -129,10 +142,10 @@ public class ResourceLoader {
 			String load = IOUtils.toString(input);
 			return new TileSheet(new JSONObject(load));
 		} catch (IOException e) {
-			System.err.println(e.getMessage());
+			err(e.getMessage());
 			e.printStackTrace();
 		} catch (JSONException e) {
-			System.err.println(e.getMessage());
+			err(e.getMessage());
 			e.printStackTrace();
 		}
 		return null;

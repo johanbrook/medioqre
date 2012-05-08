@@ -17,7 +17,7 @@ import datamanagement.ResourceLoader;
 public final class Logger {
 	
 	private static Logger instance;
-	private static String logFormat;
+	private static String logFormat = "H:m:s";
 	
 	
 	private Logger() {}

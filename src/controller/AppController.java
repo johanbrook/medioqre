@@ -59,11 +59,11 @@ public class AppController implements Runnable{
 		audio.setGame(game);
 		
 		try {
-			String loggingFormat = new JSONObject(ResourceLoader.loadJSONStringFromResources("gamedata/world.json")).getString("loggingFormat");
+			String loggingFormat = ResourceLoader.parseJSONFromPath("gamedata/world.json").getString("loggingFormat");
 			tools.Logger.getInstance().setTimestampFormat(loggingFormat);
-		}
-		catch(JSONException e) {
-			err("Couldn't set the timestamp format! "+e.getMessage());
+			
+		} catch (JSONException e) {
+			err("Couldn't load timestamp format from file! "+e.getMessage());
 		}
 	}
 	
