@@ -76,13 +76,35 @@ public class Projectile extends Entity {
 		int x = p.getPosition().x;
 		int y = p.getPosition().y;
 		
-		if(p.getDirection() == Direction.SOUTH) {
-			System.out.println("DIR: south");
-			y += (int) p.getSize().height;
+		switch(p.getDirection()) {
+			case SOUTH:
+				y += (int) p.getSize().height;
+				x += (int) p.getSize().width / 2;
+				break;
+			case NORTH:
+				x += (int) p.getSize().width / 2;
+				break;
+			case EAST:
+				x += (int) p.getSize().width;
+				y += (int) p.getSize().height / 2;
+				break;
+			case WEST: 
+				y += (int) p.getSize().height / 2;
+				break;
+			case NORTH_EAST:
+				x += (int) p.getSize().width;
+				break;
+			case SOUTH_EAST:
+				x += (int) p.getSize().width;
+				y += (int) p.getSize().height / 2;
+				break;
+			case SOUTH_WEST:
+				y += (int) p.getSize().height / 2;
+				break;
 		}
 		
 		setPosition(x, y);
-		setDirection(this.owner.getOwner().getDirection());	
+		setDirection(p.getDirection());	
 	}
 	
 	public Projectile(Projectile p) {

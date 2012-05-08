@@ -26,8 +26,7 @@ public class Melee extends AbstractWeapon {
 
 	@Override
 	public Projectile getProjectile() {
-		// TODO Auto-generated method stub
-		return new Projectile(this, 10, 10, 10, Range.SHORT_RANGE, 40);
+		return new Projectile(this.projectile);
 	}
 	
 	@Override

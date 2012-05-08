@@ -223,8 +223,7 @@ public class ObjectFactory {
 				JSONObject wp = weapons.getJSONObject(i);
 
 				AbstractWeapon weapon = createWeaponFromString(wp.getString("type"),
-										new Object[] {owner, wp.getInt("ammo")}
-										);
+										new Object[] {owner, wp.getInt("ammo")});
 				
 				if(weapon == null) {
 					continue;

@@ -4,9 +4,8 @@
 	"weapon": {
 		"type": "Melee",
 		"ammo": -1,
-		"slot": 3,
 		"projectile": {
-			"damage": 100,
+			"damage": 10,
 			"range":  "SHORT_RANGE",
 			"speed": 100,
 			"bounds": {
