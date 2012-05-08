@@ -1,4 +1,5 @@
 {
+	"loggingFormat": "H:m:s",
 	"portal": {
 		"bounds": {
 			"width": 20,

@@ -1,6 +1,11 @@
 package tools;
 
+import org.json.JSONObject;
+
+import com.sun.jmx.snmp.Timestamp;
+
 import controller.AppController;
+import datamanagement.ResourceLoader;
 
 /**
  *	Logger class
@@ -12,19 +17,34 @@ import controller.AppController;
 public final class Logger {
 	
 	private static Logger instance;
+	private static String logFormat;
+	
 	
 	private Logger() {}
+	
+	public void setTimestampFormat(String format) {
+		logFormat = format;
+	}
 	
 	/**
 	 * Get the Logger instance.
 	 * 
 	 * @return This instance
 	 */
-	public Logger getInstance() {
+	public static Logger getInstance() {
 		if(instance == null)
 			instance = new Logger();
 		
 		return instance;
+	}
+	
+	
+	private static Object addTimestamp(Object msg) {
+		java.util.Calendar calendar = java.util.Calendar.getInstance();
+		java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(calendar.getTime().getTime());
+		String stamp = new java.text.SimpleDateFormat(logFormat).format(currentTimestamp);
+		
+		return "["+ stamp +"] " + msg;
 	}
 	
 	
@@ -36,7 +56,7 @@ public final class Logger {
 	 */
 	public static void log(Object msg) {
 		if(AppController.MODE == AppController.DEBUG) {
-			System.out.println(msg);
+			System.out.println(addTimestamp(msg));
 		}
 	}
 	
@@ -48,7 +68,7 @@ public final class Logger {
 	 */
 	public static void err(Object msg) {
 		if(AppController.MODE == AppController.DEBUG) {
-			System.err.println(msg);
+			System.err.println(addTimestamp(msg));
 		}
 	}
 }
