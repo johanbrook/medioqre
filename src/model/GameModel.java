@@ -158,14 +158,12 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 		CollidableObject item = ObjectFactory.newItem("AmmoCrate");
 		item.addReceiver(this);
 		this.objects.add(item);
-		System.out.println("************** AmmoCrate added! *************");
 	}
 	
 	private void newMedPack(){
 		CollidableObject item = ObjectFactory.newItem("MedPack");
 		item.addReceiver(this);
 		this.objects.add(item);
-		System.out.println("****************** MedPack added! *****************");
 		
 	}
 
