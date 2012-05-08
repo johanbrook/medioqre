@@ -40,7 +40,8 @@ public class TileSelector extends GLCanvas implements GLEventListener, TileSelec
 	private int			tileHeight;
 	private final int	margin	= 2;
 	private Tile activeTile;
-	private Tile[][] tiles;
+	private Tile[] tiles;
+	private int colSize;
 
 	private TileSelectorListener listener;
 	
@@ -49,7 +50,7 @@ public class TileSelector extends GLCanvas implements GLEventListener, TileSelec
 		super(glC);
 		this.addGLEventListener(this);
 
-		FPSAnimator animator = new FPSAnimator(this, 10);
+		FPSAnimator animator = new FPSAnimator(this, 2);
 		animator.start();
 
 		this.addMouseListener(new MouseListener() {
@@ -83,15 +84,10 @@ public class TileSelector extends GLCanvas implements GLEventListener, TileSelec
 				
 				int x = arg0.getPoint().x / (tileHeight + margin);
 				int y = arg0.getPoint().y / (tileWidth + margin);
-				if (tiles != null && tiles.length > 0 && tiles.length <= y) {
-					if(tiles[y] != null && tiles[y].length <= x) {
-						listener.didSelectTile(tiles[y][x]);
-					}
+				if (tiles.length > y * colSize + x) {
+					activeTile = tiles[y * colSize + x];
+					listener.didSelectTile(activeTile);
 				}
-				
-				listener.didSelectTile(new Tile(null, -1, false));
-				
-				System.out.println("Position: " + x + "," + y);
 			}
 		});
 		this.addComponentListener(new ComponentListener() {
@@ -122,12 +118,35 @@ public class TileSelector extends GLCanvas implements GLEventListener, TileSelec
 	public void setTileSheet(TileSheet tileSheet)
 	{
 		this.tileSheet = tileSheet;
+		
+		if (this.tileSheet == null)
+			return;
+
+		
+		this.tileWidth = 64;
+		this.tileHeight = 64;
+		colSize = this.getWidth() / this.tileWidth;
+		
+		int tiles = 0;
+		this.tiles = new Tile[this.tileSheet.getTiles().size()];
+		for (Tile t : this.tileSheet.getTiles()) {
+		
+			this.tiles[tiles] = t;
+			
+			tiles++;
+		}		
+		
 		this.updateGui();
 	}
 	
 	public void addTileSelectorListener(TileSelectorListener listener) 
 	{
 		this.listener = listener;
+	}
+	
+	public Tile getSelectedTile()
+	{
+		return this.activeTile;
 	}
 	
 	private void updateGui()
@@ -140,34 +159,33 @@ public class TileSelector extends GLCanvas implements GLEventListener, TileSelec
 	{
 		GL2 gl = arg0.getGL().getGL2();
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
-
-		if (this.tileSheet == null)
-			return;
-
-		int rowSize = 10;
-		int tiles = 0;
-		this.object.setX(0);
-		this.object.setY(0);
-
+	
 		this.target.setX(0);
 		this.target.setY(0);
-		this.target.setWidth(arg0.getWidth());
-		this.target.setHeight(arg0.getHeight());
+		this.target.setWidth(this.getWidth());
+		this.target.setHeight(this.getHeight());
 		
-		for (Tile t : this.tileSheet.getTiles()) {
-			this.tileWidth = 64;//t.getSprite().getWidth();
-			this.tileHeight = 64;//t.getSprite().getHeight();
-
-			this.object.setX((tiles % rowSize) * (this.tileWidth + this.margin));
-			this.object.setWidth(this.tileWidth);
-			this.object.setY((tiles / rowSize) * (this.tileHeight + this.margin));
-			this.object.setHeight(this.tileHeight);
-
-			t.render(object, target, arg0, 0);
-			tiles++;
-//			System.out.println("Derp:" + tiles);
+		if (this.tiles == null) return;
+		this.colSize = this.getWidth() / this.tileWidth;
+		
+		for (int y = 0; y <= this.tiles.length / this.colSize; y++) {
+			for (int x = 0; x < this.colSize; x++) {
+				if (y * this.colSize + x < this.tiles.length) {
+					this.object.setX(x * (this.tileWidth + this.margin));
+					this.object.setY(y * (this.tileHeight + this.margin));
+					this.object.setWidth(this.tileWidth);
+					this.object.setHeight(this.tileWidth);
+					
+					this.tiles[y * this.colSize + x].render(object, target, this, 0);
+				}
+			}
 		}
-		System.out.println("Thread: " +Thread.currentThread().getId());
+		
+
+		
+		
+
+		
 	}
 
 	@Override

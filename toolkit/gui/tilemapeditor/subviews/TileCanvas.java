@@ -26,14 +26,16 @@ import com.jogamp.opengl.util.texture.TextureIO;
 import core.Rectangle;
 import core.Size;
 
-public class TileCanvas extends GLCanvas implements GLEventListener, TileSelectorListener {
+public class TileCanvas extends GLCanvas implements GLEventListener, TileSelectorListener, MouseMotionListener , MouseListener{
 	
 	private TileMap currentTileMap;
-	private int activeTile;
-	private int stashTile;
+	private Tile activeTile;
+	private Tile stashTile;
+	private Rectangle stashTilePosition = new Rectangle(0,0,0,0);
 	
-	Rectangle object = new Rectangle(0,0,1,1);
-	Rectangle target = new Rectangle(0,0,0,0);
+	private Rectangle object = new Rectangle(0,0,1,1);
+	private Rectangle target = new Rectangle(0,0,0,0);
+	
 	
 	public TileCanvas()
 	{
@@ -47,51 +49,8 @@ public class TileCanvas extends GLCanvas implements GLEventListener, TileSelecto
 		FPSAnimator animator = new FPSAnimator(this, 10);
 		animator.start();
 		
-		this.addMouseListener(new MouseListener() {
-			
-			@Override
-			public void mouseReleased(MouseEvent arg0)
-			{}
-			@Override
-			public void mousePressed(MouseEvent arg0)
-			{}
-			@Override
-			public void mouseExited(MouseEvent arg0)
-			{}
-			@Override
-			public void mouseEntered(MouseEvent arg0)
-			{}
-			@Override
-			public void mouseClicked(MouseEvent arg0)
-			{
-				System.out.println("Clicked: "+arg0.getPoint());
-			}
-		});
-		this.addMouseMotionListener(new MouseMotionListener() {
-		
-		@Override
-		public void mouseMoved(MouseEvent arg0)
-		{
-			if (currentTileMap == null) return;
-			
-			int x = (int)(((float)arg0.getPoint().x / (float)getWidth()) * (float)currentTileMap.getTileMapSize().getWidth());
-			int y = (int)(((float)arg0.getPoint().y / (float)getHeight()) * (float)currentTileMap.getTileMapSize().getHeight());
-			
-			/*
-			stashTile = currentTileMap.getTile(x, y);
-			currentTileMap.setTile(x, y, activeTile);
-			*/
-			
-			System.out.println("TilemapSize: " + currentTileMap.getTileMapSize().getWidth()+","+currentTileMap.getTileMapSize().getHeight());
-			System.out.println("Mouse at: "+x+","+y);
-			System.out.println("Mouse at: "+arg0.getPoint());
-		}
-		
-		@Override
-		public void mouseDragged(MouseEvent arg0)
-		{	
-		}
-	});
+		this.addMouseListener(this);
+		this.addMouseMotionListener(this);
 		
 	}
 
@@ -133,12 +92,7 @@ public class TileCanvas extends GLCanvas implements GLEventListener, TileSelecto
 //			
 //			gl.glEnd();
 //			
-			System.out.println("Thread: " +Thread.currentThread().getId());
-			
 			this.currentTileMap.render(this.object, this.target, arg0, 0);
-			
-			System.out.println("TilemapSize: "+this.currentTileMap.getTileMapSize());
-		
 		} else {
 			
 			gl.glBegin(GL2.GL_QUADS);
@@ -180,6 +134,76 @@ public class TileCanvas extends GLCanvas implements GLEventListener, TileSelecto
 	@Override
 	public void didSelectTile(Tile selectedTile)
 	{
-		this.activeTile = selectedTile.getType();
+		this.activeTile = selectedTile;
 	}
+
+	@Override
+	public void mouseDragged(MouseEvent arg0)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseMoved(MouseEvent arg0)
+	{
+		if (currentTileMap == null) {
+			System.out.println("1");
+			return;
+		}
+		if (activeTile == null) {
+			System.out.println("2");
+			return;
+		}
+		
+		int x = (int)(((float)arg0.getPoint().x / (float)getWidth()) * (float)currentTileMap.getTileMapSize().getWidth());
+		int y = (int)(((float)arg0.getPoint().y / (float)getHeight()) * (float)currentTileMap.getTileMapSize().getHeight());
+		
+		if (x == this.stashTilePosition.getX() && y == this.stashTilePosition.getY()) return;
+		
+		Tile tmpTile = this.stashTile;
+		this.stashTile = currentTileMap.getTileSheet().getTile(currentTileMap.getTileTypeFor(x, y));
+		
+		this.currentTileMap.setTileTypeFor(x, y, activeTile.getType());
+		if (tmpTile != null) {
+			this.currentTileMap.setTileTypeFor(this.stashTilePosition.getX(), this.stashTilePosition.getY(), tmpTile.getType());
+		}
+		this.stashTilePosition.setX(x);
+		this.stashTilePosition.setY(y);
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e)
+	{
+		if (currentTileMap == null) {
+			System.out.println("1");
+			return;
+		}
+		if (activeTile == null) {
+			System.out.println("2");
+			return;
+		}
+		
+		int x = (int)(((float)e.getPoint().x / (float)getWidth()) * (float)currentTileMap.getTileMapSize().getWidth());
+		int y = (int)(((float)e.getPoint().y / (float)getHeight()) * (float)currentTileMap.getTileMapSize().getHeight());
+		
+		this.currentTileMap.setTileTypeFor(x, y, activeTile.getType());
+		this.stashTile = null;
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e)
+	{}
+
+	@Override
+	public void mouseExited(MouseEvent e)
+	{}
+
+	@Override
+	public void mousePressed(MouseEvent e)
+	{}
+
+	@Override
+	public void mouseReleased(MouseEvent e)
+	{}
+
 }
