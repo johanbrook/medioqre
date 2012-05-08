@@ -79,6 +79,10 @@ public class TileMap implements GLRenderableObject {
 	{
 		this.tileSheet = tileSheet;
 	}
+	public TileSheet getTileSheet()
+	{
+		return this.tileSheet;
+	}
 	public void setViewPortSize(Size size)
 	{
 		if (this.tileViewPort == null) this.tileViewPort = new Rectangle(0, 0, 0, 0);
@@ -91,7 +95,7 @@ public class TileMap implements GLRenderableObject {
 		this.tileSize = size;
 	}
 	
-	public void setTile(int xPos, int yPos, int tileType)
+	public void setTileTypeFor(int xPos, int yPos, int tileType)
 	{
 		if (this.tiles != null && this.tiles.length > xPos) {
 			if (this.tiles[xPos] != null && this.tiles[xPos].length > yPos) {
@@ -100,7 +104,7 @@ public class TileMap implements GLRenderableObject {
 		}
 	}
 
-	public int getTile(int xPos, int yPos)
+	public int getTileTypeFor(int xPos, int yPos)
 	{
 		if (this.tiles != null && this.tiles.length > xPos) {
 			if (this.tiles[xPos] != null && this.tiles[xPos].length > yPos) {
@@ -109,6 +113,7 @@ public class TileMap implements GLRenderableObject {
 		}
 		throw new ArrayIndexOutOfBoundsException();
 	}
+	
 	public Size getTileSize()
 	{
 		return this.tileSize;
