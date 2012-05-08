@@ -18,8 +18,6 @@ import model.Entity;
 import model.character.AbstractCharacter;
 import model.character.Enemy;
 import model.character.Player;
-import model.item.ICollectableItem;
-import model.item.MedPack;
 import model.weapon.AbstractWeapon;
 import model.weapon.Grenade;
 import model.weapon.Portal;
@@ -198,6 +196,32 @@ public class ObjectFactory {
 		
 		return itemList;
 	}
+	
+	public static CollidableObject newItem (String type){
+		Random random = new Random();
+	
+		
+		for (int i = 0; i < items.length(); i++) {
+			try {
+				if (items.getJSONObject(i).getString("type").equals(type)){
+					int x = random.nextInt(levelData.getInt("width"));
+					int y = random.nextInt(levelData.getInt("height"));
+					
+					JSONObject it = items.getJSONObject(i);
+					JSONObject bounds = it.getJSONObject("bounds");
+					
+					return createItemFromString(it.getString("type"), new Object[] {	it.getInt("amount"), 
+						x, y,
+						bounds.getInt("width"),
+						bounds.getInt("height")} );
+					
+				}
+			} catch (JSONException e) {
+				System.err.println("Couldn't load item of type "+ type + "! "+e.getMessage());
+			}
+		}
+		return null;
+	}
 
 	public static List<ConcreteCollidableObject> newWalls() {
 		return null;
@@ -323,6 +347,15 @@ public class ObjectFactory {
 	public static boolean[][] getCollidables()
 	{
 		return null;
+	}
+	
+	public static int getItemSpawnChance (){
+		try {
+			return world.getInt("itemSpawnChance");
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return 0;
 	}
 
 

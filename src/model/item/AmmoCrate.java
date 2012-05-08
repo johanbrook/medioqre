@@ -10,6 +10,7 @@ import event.Event.Property;
 
 import model.CollidableObject;
 import model.character.Player;
+import model.weapon.AbstractWeapon;
 
 /**
 *	An ammo crate.
@@ -35,7 +36,10 @@ public class AmmoCrate extends CollidableObject implements ICollectableItem {
 
 	@Override
 	public void pickedUpBy(Player source) {
-		source.getCurrentWeapon().addAmmo(this.amount);
+		for (AbstractWeapon weapon : source.getWeaponBelt()){
+			weapon.addAmmo(this.amount);
+		}
+		
 		EventBus.INSTANCE.publish(new Event(Property.PICKED_UP_ITEM, this));
 		this.destroy();
 	}
