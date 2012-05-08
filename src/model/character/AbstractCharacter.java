@@ -24,6 +24,7 @@ import model.weapon.Projectile;
 public abstract class AbstractCharacter extends Entity {
 
 	private int health;
+	private int maxHealth;
 	private AbstractWeapon currentWeapon;
 	
 	/**
@@ -37,7 +38,7 @@ public abstract class AbstractCharacter extends Entity {
 	 */
 	public AbstractCharacter(int movementSpeed, Rectangle collBox, Dimension size, int xoffset, int yoffset) {
 		super(collBox, size, xoffset, yoffset, movementSpeed);
-		this.health = 100;
+		this.health = this.maxHealth = 100;
 		this.setDirection(Direction.SOUTH);
 	}
 	
@@ -79,7 +80,7 @@ public abstract class AbstractCharacter extends Entity {
 	}
 	
 	/**
-	 * Get the character's health
+	 * Get the character's current health
 	 * 
 	 * @return The health
 	 */
@@ -90,19 +91,39 @@ public abstract class AbstractCharacter extends Entity {
 	/**
 	 * Add health.
 	 * 
+	 * <p>Will never make the health higher than the original max health. If the health and the amount
+	 * specified are together higher than the max health, the new health will be the max health.</p>
+	 * 
 	 * @param amount The amount
 	 */
 	public void addHealth(int amount) {
-		setHealth(getHealth() + amount);
+		if(this.health < this.maxHealth){
+			if(this.health + amount > this.maxHealth) {
+				this.health = this.maxHealth;
+			}
+			else {
+				this.health += amount;
+			}
+		}
 	}
 	
 	/**
-	 * Set the health.
+	 * Set the health. Bypasses the maximum health, i.e. you're able to set
+	 * the health higher than the maximum health.
 	 * 
 	 * @param amount The new health
 	 */
 	public void setHealth(int amount) {
 		this.health = amount;
+	}
+	
+	/**
+	 * Get the maximum, or starting, health for this character as it was set on init.
+	 * 
+	 * @return The starting health
+	 */
+	public int getMaxHealth() {
+		return this.maxHealth;
 	}
 	
 	/**

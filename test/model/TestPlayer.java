@@ -80,6 +80,21 @@ public class TestPlayer {
 	}
 	
 	@Test
+	public void testAddTooMuchHealth() {
+		this.player.setHealth(this.player.getMaxHealth() - 10);
+		this.player.addHealth(20);
+		
+		assertEquals(this.player.getMaxHealth(), this.player.getHealth());
+	}
+	
+	@Test
+	public void testAddToMaximumHealth() {
+		this.player.addHealth(10);
+		
+		assertEquals(this.player.getMaxHealth(), this.player.getHealth());
+	}
+	
+	@Test
 	public void testSetCurrentWeapon(){
 		AbstractWeapon w = new Melee(this.player, -1);
 		this.player.setCurrentWeapon(Melee.class);
