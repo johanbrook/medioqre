@@ -53,8 +53,9 @@ public class TestCollectableItem {
 	public void testPlayerPicksUpAmmo() {
 		int ammo = this.player.getCurrentWeapon().getCurrentAmmo();
 		this.ammocrate.pickedUpBy(player);
+		int newAmmo = (int) ((int) ammo + 30 * this.player.getCurrentWeapon().getAmmoMultiplier());
 		
-		assertEquals(ammo + 30, this.player.getCurrentWeapon().getCurrentAmmo());
+		assertEquals(newAmmo, this.player.getCurrentWeapon().getCurrentAmmo());
 	}
 
 }

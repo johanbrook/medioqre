@@ -47,8 +47,9 @@ public class TestWeapon {
 	public void addAmmo() {
 		int initialAmmo = this.machineGun.getCurrentAmmo();
 		this.machineGun.addAmmo(10);
+		int newAmmo = (int) (initialAmmo + 10 * this.machineGun.getAmmoMultiplier());
 		
-		assertEquals(initialAmmo + 10, this.machineGun.getCurrentAmmo());
+		assertEquals(newAmmo, this.machineGun.getCurrentAmmo());
 	}
 
 	@Test
