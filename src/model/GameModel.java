@@ -317,24 +317,25 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 				Direction blockedDirection = t.getDirectionOfObject(w);
 
 				if(t instanceof Projectile && !(w instanceof ICollectableItem || w instanceof Portal)) {
-					t.destroy();
-
-					if (w instanceof AbstractCharacter){
-						((AbstractCharacter) w).takeDamage(((Projectile) t).getDamage());
-
-						log(w.getClass().getSimpleName()+" was hit, now has " + ((AbstractCharacter) w).getHealth() + " hp");
+					
+					// If an enemy's projectile hit another enemy, don't withdraw damage
+					// I.e. if the projectile's weapon's owner is an enemy, and the target is
+					// an enemy, don't do anything.
+					if(! ( ((Projectile) t).getOwner().getOwner() instanceof Enemy &&
+						w instanceof Enemy )) {
+						
+						// If the projectile hit the player
+						if (w instanceof AbstractCharacter){
+							((AbstractCharacter) w).takeDamage(((Projectile) t).getDamage());
+	
+							log(w.getClass().getSimpleName()+" was hit, now has " + ((AbstractCharacter) w).getHealth() + " hp");
+						}
 					}
-
-
+					
+					t.destroy();
 				} 
 				else if (w instanceof ICollectableItem && t instanceof Player){
 					((ICollectableItem) w).pickedUpBy( ((Player) t));
-
-					if (w instanceof AmmoCrate)
-						log("Picked up AmmoCrate, current ammo: " + this.player.getCurrentWeapon().getCurrentAmmo());
-					if (w instanceof MedPack)
-						log("Picked up MedPack, current HP: " + this.player.getHealth());
-
 				}
 
 				if(w instanceof Portal) {
