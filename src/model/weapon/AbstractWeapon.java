@@ -16,6 +16,8 @@ public abstract class AbstractWeapon {
 	private int ammo;
 	private AbstractCharacter owner;
 	private double ammoMultiplier;
+	
+	private double fireInterval, cooldown;
 
 	/**
 	 * Create a new weapon with an owner and initial ammo.
@@ -23,10 +25,12 @@ public abstract class AbstractWeapon {
 	 * @param owner The owner
 	 * @param initialAmmo The ammo
 	 */
-	public AbstractWeapon(AbstractCharacter owner, int initialAmmo, double ammoMultiplier) {
+	public AbstractWeapon(AbstractCharacter owner, int initialAmmo, double ammoMultiplier, double fireInterval) {
 		this.ammo = initialAmmo;
 		this.owner = owner;
 		this.ammoMultiplier = ammoMultiplier;
+		this.fireInterval = fireInterval;
+		this.cooldown = 0;
 	}
 
 	/**
@@ -76,6 +80,25 @@ public abstract class AbstractWeapon {
 			return null;
 		}
 	}
+	
+	/**
+	 * subtracts dt from the current cooldown, if cooldown is zero or below, resets the cooldown and returns false, else returns true.
+	 * @param dt
+	 * @return
+	 */
+	 public boolean inCooldown(double dt){
+		 this.cooldown -= dt;
+		 if (this.cooldown <= 0){
+			 this.cooldown = this.fireInterval;
+			 return false;
+		 }else {
+			 return true;
+		 }
+	 }
+	 
+	 public void resetCooldown(){
+		 this.cooldown = this.fireInterval;
+	 }
 	
 	
 	@Override
