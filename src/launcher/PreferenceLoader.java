@@ -10,7 +10,7 @@ public class PreferenceLoader
 	
 	private PreferenceLoader(){
 		try {
-	        prefs = Preferences.userRoot().node("");
+	        prefs = Preferences.userNodeForPackage(PreferenceLoader.class);
 	    }
 	    catch (SecurityException disabled) {
 	
