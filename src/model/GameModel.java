@@ -179,6 +179,9 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 	public void newGame(){
 		initPlayer();
 		this.messager.sendMessage(new Event(Event.Property.NEW_GAME,this));
+		for (CollidableObject co : ObjectFactory.newWalls()) {
+			this.objects.add(co);
+		}
 	}
 
 
