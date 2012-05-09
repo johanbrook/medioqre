@@ -10,51 +10,89 @@ import org.json.JSONObject;
 import core.GLRenderableObject;
 import core.JSONSerializable;
 import core.Rectangle;
-
+/**
+ * A class used to represent a game tile.
+ * 
+ * @author John Barbero Unenge
+ *
+ */
 public class Tile implements JSONSerializable, GLRenderableObject{
 
 	private Sprite sprite;
 	private int type;
 	boolean collidable;
 	
-	
+	/**
+	 * Creates a tile with the given Sprite, type and whether it's collidable or not.
+	 * 
+	 * @param sprite The sprite
+	 * @param type The type
+	 * @param collidable Whether it's collidable or not
+	 */
 	public Tile(Sprite sprite, int type, boolean collidable)
 	{
 		this.type = type;
 		this.sprite = sprite;
 	}
 	
-	public boolean isCollidable()
-	{
-		return this.collidable;
-	}
-	public void setCollidable(boolean collidable)
-	{
-		this.collidable = collidable;
-	}
-	
+	/**
+	 * Creates a tile from a JSONObject.
+	 * 
+	 * @param o The JSONObject to use for creating the tile
+	 */
 	public Tile(JSONObject o)
 	{
 		this.deserialize(o);
 	}
 	
 	// Setters
+	/**
+	 * Set whether the tile should be collidable.
+	 * 
+	 * @param collidable True or false
+	 */
+	public void setCollidable(boolean collidable)
+	{
+		this.collidable = collidable;
+	}
+	
 	public void setType(int type)
 	{
 		this.type = type;
 	}
 	
 	// Getters 
+	/**
+	 * Get the type of the tile.
+	 * 
+	 * @return The type
+	 */
 	public int getType()
 	{
 		return this.type;
 	}
 	
+	/**
+	 * Get the sprite of the tile.
+	 * 
+	 * @return The sprite
+	 */
 	public Sprite getSprite()
 	{
 		return this.sprite;
 	}
 	
+	/**
+	 * Returns whether it's collidable or not.
+	 * 
+	 * @return True or false
+	 */
+	public boolean isCollidable()
+	{
+		return this.collidable;
+	}
+	
+	// Interface methods
 	@Override
 	public void render(Rectangle object, Rectangle target, GLAutoDrawable canvas, int zIndex)
 	{

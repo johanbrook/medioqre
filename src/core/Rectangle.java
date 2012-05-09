@@ -1,5 +1,11 @@
 package core;
 
+/**
+ * A light weight rectangle class.
+ * 
+ * @author John Barbero Unenge
+ *
+ */
 public class Rectangle {
 
 	private int x;

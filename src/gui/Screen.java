@@ -10,6 +10,15 @@ import javax.media.opengl.GLDrawable;
 import core.GLRenderableObject;
 import core.Rectangle;
 
+/**
+ * A class used for drawing on screen.
+ * 
+ * It supports multiple layers and its viewport can be moved around 
+ * for rendering a certain part of the scene.
+ * 
+ * @author John Barbero Unenge
+ *
+ */
 public class Screen implements GLRenderableObject {
 
 	private GLRenderableObject[][] layers;
@@ -17,17 +26,36 @@ public class Screen implements GLRenderableObject {
 	private Rectangle renderRect;
 	private Point screenOffset;
 
+	/**
+	 * Creates a screen with the given screensize.
+	 * 
+	 * @param screenSize The screensize
+	 */
 	public Screen(Rectangle screenSize)
 	{
 		this.screenSize = screenSize;
 		this.screenOffset = new Point(0, 0);
 	}
 
+	/**
+	 * Creates a screen with the given screensize.
+	 * 
+	 * @param x The x position of the screen
+	 * @param y The y position of the screen
+	 * @param width The width of the screen
+	 * @param height The height of the screen
+	 */
 	public Screen(int x, int y, int width, int height)
 	{
 		this(new Rectangle(x, y, width, height));
 	}
 
+	/**
+	 * Adds a GLRenderableObject to the layer at the given z index.
+	 * 
+	 * @param ro GLRenderableObject to add to the layer
+	 * @param zIndex The zIndex to add it to
+	 */
 	public void addDrawableToLayer(GLRenderableObject ro, int zIndex)
 	{
 		// If there are no layers at all
@@ -67,6 +95,12 @@ public class Screen implements GLRenderableObject {
 		this.layers[zIndex][firstEmoty] = ro;
 	}
 
+	/**
+	 * Remove a GLRenderableObject from the screen.
+	 * 
+	 * @param ro The GLRenderableObject to remove
+	 * @return A boolean representing if the GLRenderableObject was found or not 
+	 */
 	public boolean removeDrawableFromLayer(GLRenderableObject ro)
 	{
 		boolean retVal = false;
@@ -85,6 +119,11 @@ public class Screen implements GLRenderableObject {
 		return retVal;
 	}
 
+	/**
+	 * Set the viewport of the screen a given point.
+	 * 
+	 * @param p The point to set the viewport
+	 */
 	public void setViewPort(Point p)
 	{
 		this.screenOffset.setLocation(p.x - this.screenSize.getWidth() / 2, p.y

@@ -13,6 +13,12 @@ import static tools.Logger.*;
 import core.JSONSerializable;
 import datamanagement.ResourceLoader;
 
+/**
+ * A class used to package all resources used in one level.
+ * 
+ * @author John Barbero Unenge and Johan Brook
+ *
+ */
 public class Level implements JSONSerializable {
 	
 	// Default paths
@@ -88,11 +94,20 @@ public class Level implements JSONSerializable {
 	
 	// Getters
 	
-	
+	/**
+	 * Get the file path to the actors data.
+	 * 
+	 * @return An array of file paths
+	 */
 	public String[] getActorsData() {
 		return this.actorsData;
 	}
 	
+	/**
+	 * Get the file path to the tilemap data.
+	 * 
+	 * @return The file path
+	 */
 	public String getTileMapData() {
 		return this.tileMapData;
 	}

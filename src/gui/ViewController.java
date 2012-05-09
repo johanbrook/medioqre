@@ -57,9 +57,11 @@ import factory.ObjectFactory;
 import graphics.opengl.Actor;
 
 /**
- * A GUI-Interface in BASIC so we can track the IP-address.
+ * The ViewController for FrankTheTank.
  * 
- * @author Barber
+ * It handles events from the model and passes them on, adds and removes actors.
+ * 
+ * @author John Barbero Unenge
  * 
  */
 public class ViewController implements IEventHandler, GLEventListener {
@@ -80,6 +82,13 @@ public class ViewController implements IEventHandler, GLEventListener {
 	// Tools
 	private GraphicalFPSMeter				fpsmeter;
 
+	/**
+	 * Creates the ViewController with a given width and height, and adds the given KeyLister to itself.
+	 * 
+	 * @param listener The keylistener
+	 * @param screenWidth The frame width
+	 * @param screenHeight The frame height
+	 */
 	public ViewController(KeyListener listener, int screenWidth,
 			int screenHeight)
 	{

@@ -2,6 +2,12 @@ package core;
 
 import javax.media.opengl.GLAutoDrawable;
 
+/**
+ * An interface used by anything that should be rendered using OpenGL.
+ * 
+ * @author John Barbero Unenge
+ *
+ */
 public interface GLRenderableObject {
 
 	/**

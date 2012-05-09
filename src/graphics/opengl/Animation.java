@@ -15,7 +15,7 @@ import core.Rectangle;
  * 
  * It cycles through an array of frames.
  * 
- * @author Barber
+ * @author John Barbero Unenge
  * 
  */
 public class Animation implements JSONSerializable, GLRenderableObject {

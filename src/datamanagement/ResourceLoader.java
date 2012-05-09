@@ -22,9 +22,11 @@ import tilemap.TileMap;
 import tilemap.TileSheet;
 
 /**
- * A set of helper methods for loading resources and JSON files
+ * A set of helper methods for loading resources and JSON files. 
  * 
- * @author Barber and Johan
+ * JSON strings and JSON objects are only loaded from file once and then cached to minimize disk operations.
+ * 
+ * @author John Barbero Unenge and Johan Brook
  *
  */
 public class ResourceLoader {
@@ -33,6 +35,14 @@ public class ResourceLoader {
 	private static Map<String, String>		relativeJSONStrings;
 	private static Map<String, String>		absoluteJSONStrings;
 
+	/**
+	 * Loads and parses a JSON-file from the resources folder.
+	 * 
+	 * The object is cached for future use.
+	 * 
+	 * @param pathToJsonFile The relative file path to the JSON file.
+	 * @return A JSON object. Returns null if resource can't be found.
+	 */
 	public static JSONObject parseJSONFromPath(String pathToJsonFile)
 	{
 
@@ -57,6 +67,12 @@ public class ResourceLoader {
 		return jsonObject;
 	}
 
+	/**
+	 * Loads a JSON file from an inputstream.
+	 * 
+	 * @param s The inputstream.
+	 * @return A JSON string. Returns null if resource can't be found.
+	 */
 	public static String loadJSONStringFromStream(InputStream s)
 	{
 		if (s == null) {
@@ -74,6 +90,14 @@ public class ResourceLoader {
 		return null;
 	}
 
+	/**
+	 * Loads a JSON file from an absolute file path.
+	 * 
+	 * The string is cached for future use.
+	 * 
+	 * @param absolutePath The absolute path to the JSON file.
+	 * @return A JSON string. Returns null if resource can't be found.
+	 */
 	public static String loadJSONStringFromAbsolutePath(String absolutePath)
 	{
 		if (absolutePath == null)
@@ -95,6 +119,14 @@ public class ResourceLoader {
 		return jsonString;
 	}
 
+	/**
+	 * Loads a JSON file from the resource folder.
+	 * 
+	 * The string is cached for future use.
+	 * 
+	 * @param resource The relative path to the JSON file.
+	 * @return A JSON string. Returns null if resource can't be found.
+	 */
 	public static String loadJSONStringFromResources(String resource)
 	{
 		if (relativeJSONStrings == null) relativeJSONStrings = new HashMap<String, String>();
@@ -109,6 +141,15 @@ public class ResourceLoader {
 		return jsonString;
 	}
 
+	/**
+	 * Loads a tilemap from an absolute file path. NOTE: No tilesheet is selected 
+	 * meaning that it will not render until that has been done.
+	 * 
+	 * The file to load should be a ARGB .png-file.
+	 * 
+	 * @param absolutePath The absolute file path to the map. 
+	 * @return A tilemap created from the file. Returns null if resource can't be found.
+	 */
 	public static TileMap loadTileMapFromAbsolutePath(String absolutePath)
 	{
 		try {
@@ -135,7 +176,16 @@ public class ResourceLoader {
 
 		return null;
 	}
-
+	
+	/**
+	 * Loads a tilemap the resource folder. NOTE: No tilesheet is selected 
+	 * meaning that it will not render until that has been done.
+	 * 
+	 * The file to load should be a ARGB .png-file.
+	 * 
+	 * @param resource The name of the resource to load (will be taken from spritesheets/levels/)
+	 * @return A tilemap created from the file. Returns null if resource can't be found.
+	 */
 	public static TileMap loadTileMapFromResources(String resource)
 	{
 		try {
@@ -163,6 +213,12 @@ public class ResourceLoader {
 		return null;
 	}
 
+	/**
+	 * Loads a tilesheet from an absolute file path.
+	 * 
+	 * @param absolutePath An absolute file path to the tilesheet.
+	 * @return A tilesheet. Returns null if resource can't be found.
+	 */
 	public static TileSheet loadTileSheetFromAbsolutePath(String absolutePath)
 	{
 		try {
@@ -183,6 +239,12 @@ public class ResourceLoader {
 		return null;
 	}
 
+	/**
+	 * Loads a tilesheet from the resources folder.
+	 * 
+	 * @param resource The name of the resource to load (will be taken from spritesheets/json/)
+	 * @return A tilesheet. Returns null if resource can't be found.
+	 */
 	public static TileSheet loadTileSheetFromResource(String resource)
 	{
 		try {

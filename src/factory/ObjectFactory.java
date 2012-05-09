@@ -35,6 +35,14 @@ import datamanagement.ResourceLoader;
 
 import tilemap.TileMap;
 
+/**
+ * A class used to create all files in FrankTheTank.
+ * 
+ * It should load all its files from JSON.
+ * 
+ * @author John Barbero Unenge and Johan Brook.
+ *
+ */
 public class ObjectFactory {
 
 	private static Level level;
@@ -157,6 +165,11 @@ public class ObjectFactory {
 
 	// Model objects
 
+	/**
+	 * Creates a new Player.
+	 * 
+	 * @return A new Player
+	 */
 	public static Player newPlayer()
 	{
 		try {
@@ -467,6 +480,15 @@ public class ObjectFactory {
 
 	// View objects
 
+	/**
+	 * Creates a new Actor.
+	 * 
+	 * It checks what kind of CollidableObject is sent and chooses its actor 
+	 * depending on that. 
+	 * 
+	 * @param collidableObject A CollidableObject to follow 
+	 * @return A new Actor
+	 */
 	public static Actor newActor(CollidableObject collidableObject)
 	{
 		Actor newA = null;
@@ -493,6 +515,11 @@ public class ObjectFactory {
 		return newA;
 	}
 
+	/**
+	 * Returns a cached tilemap and sets it tilesheet, viewport and tilesize to the appropriate ones.
+	 * 
+	 * @return A new tilemap
+	 */
 	public static TileMap newTileMap() {
 		try {
 			tileMapInstance.setTileSheet(ResourceLoader.loadTileSheetFromResource(tileMap.getString("tilesheet")));
@@ -504,12 +531,22 @@ public class ObjectFactory {
 		return tileMapInstance;
 	}
 
+	/**
+	 * Not yet implemented.
+	 * 
+	 * @return null
+	 */
 	public static Screen newScreen() {
 		return null;
 	}
 
 	// AI objects
 
+	/**
+	 * Get what tiles are collidable in the tilemap.
+	 * 
+	 * @return A two dimensional array of booleans.
+	 */
 	public static boolean[][] getCollidables() {
 		return ObjectFactory.newTileMap().getCollidables();
 	}

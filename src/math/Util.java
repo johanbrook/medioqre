@@ -1,5 +1,11 @@
 package math;
 
+/**
+ * A helper class with some simple math related methods.
+ * 
+ * @author John Barbero Unenge and Johan Brook
+ *
+ */
 public class Util {
 
 	/**
@@ -15,6 +21,14 @@ public class Util {
 		return fib(n - 1) + fib(n - 2);
 	}
 	
+	/**
+	 * Returns an integer from a hexadecimal string.
+	 * 
+	 * If the string has more information than 32 bits the int will start over from zero.
+	 * 
+	 * @param hexString The hexadecimal string to parse
+	 * @return The int value
+	 */
 	public static int intFromHexString(String hexString) {
 		char[] chars = hexString.toLowerCase().toCharArray();
 		

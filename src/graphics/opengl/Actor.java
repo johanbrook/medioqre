@@ -31,7 +31,7 @@ import core.Rectangle;
  * It's made up by a set of animations that are used to represent different
  * states.
  * 
- * @author Barber
+ * @author John Barbero Unenge
  */
 public class Actor implements JSONSerializable, GLRenderableObject {
 

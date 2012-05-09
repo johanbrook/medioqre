@@ -2,6 +2,12 @@ package core;
 
 import org.json.JSONObject;
 
+/**
+ * An interface for serializing and deserialization to and from JSON.
+ * 
+ * @author John Barbero Unenge
+ *
+ */
 public interface JSONSerializable {
 
 	/**

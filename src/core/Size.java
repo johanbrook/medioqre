@@ -1,5 +1,11 @@
 package core;
 
+/**
+ * A light weight size class.
+ * 
+ * @author John Barbero Unenge
+ *
+ */
 public class Size {
 
 	private int width;

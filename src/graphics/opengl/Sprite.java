@@ -18,7 +18,7 @@ import datamanagement.SharedTextures;
 /**
  * A class used to draw a certain part of a texture.
  * 
- * @author Barber
+ * @author John Barbero Unenge
  * 
  */
 public class Sprite implements JSONSerializable, GLRenderableObject {
@@ -129,6 +129,12 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 		if (this.rectangle != null)
 			this.rectangle.setHeight(height);
 	}
+	
+	/**
+	 * Set the bounds of the sprite.
+	 * 
+	 * @param r The rectangle representing the bounds
+	 */
 	public void setBounds(Rectangle r)
 	{
 		this.rectangle = r;
