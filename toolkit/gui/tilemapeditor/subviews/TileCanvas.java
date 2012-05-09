@@ -46,7 +46,7 @@ public class TileCanvas extends GLCanvas implements GLEventListener, TileSelecto
 	{
 		this.addGLEventListener(this);
 			
-		FPSAnimator animator = new FPSAnimator(this, 10);
+		FPSAnimator animator = new FPSAnimator(this, 60);
 		animator.start();
 		
 		this.addMouseListener(this);
@@ -196,7 +196,30 @@ public class TileCanvas extends GLCanvas implements GLEventListener, TileSelecto
 
 	@Override
 	public void mouseExited(MouseEvent e)
-	{}
+	{
+		if (currentTileMap == null) {
+			System.out.println("1");
+			return;
+		}
+		if (activeTile == null) {
+			System.out.println("2");
+			return;
+		}
+		
+		int x = (int)(((float)e.getPoint().x / (float)getWidth()) * (float)currentTileMap.getTileMapSize().getWidth());
+		int y = (int)(((float)e.getPoint().y / (float)getHeight()) * (float)currentTileMap.getTileMapSize().getHeight());
+		
+		if (x == this.stashTilePosition.getX() && y == this.stashTilePosition.getY()) return;
+		
+		Tile tmpTile = this.stashTile;
+		this.stashTile = null;
+		
+		if (tmpTile != null) {
+			this.currentTileMap.setTileTypeFor(this.stashTilePosition.getX(), this.stashTilePosition.getY(), tmpTile.getType());
+		}
+		this.stashTilePosition.setX(0);
+		this.stashTilePosition.setY(0);
+	}
 
 	@Override
 	public void mousePressed(MouseEvent e)
