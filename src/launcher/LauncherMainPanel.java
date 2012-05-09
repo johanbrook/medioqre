@@ -9,7 +9,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -28,16 +27,16 @@ public class LauncherMainPanel extends JPanel implements ActionListener {
 	private double[][] rnd;
 	private int rows;
 	private int cols;
-	private float delta = 0.1f;
 
 	private Launcher launcher;
 
 	public LauncherMainPanel(int rows, int cols, int width, int height,
 			Launcher container) {
+		setBounds(new Rectangle(0, 0, 640, 400));
 		launcher = container;
 		setLayout(null);
 
-		setBounds(0, 0, width, height);
+		setBounds(0, 0, 790, 509);
 
 		this.rows = rows;
 		this.cols = cols;
@@ -110,6 +109,7 @@ public class LauncherMainPanel extends JPanel implements ActionListener {
 		setBackground(new Color(0, 0, 0));
 
 		timer = new Timer(delay, this);
+		
 		timer.start();
 
 	}
@@ -154,5 +154,4 @@ public class LauncherMainPanel extends JPanel implements ActionListener {
 		repaint();
 
 	}
-
 }
