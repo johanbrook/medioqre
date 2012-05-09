@@ -30,16 +30,16 @@ public class TestWeapon {
 	@Before
 	public void setUp() throws Exception {
 		Player p = new Player(30, new Rectangle(20, 20), new Dimension(20, 48), 0, 16);
-		this.machineGun = new MachineGun(p, 300, 2);
+		this.machineGun = new MachineGun(p, 300, 2, 2);
 		this.machineGun.setProjectile(new Projectile(machineGun, 10, 10, 10, Range.FAR_RANGE, 30));
 		
-		this.grenade = new Grenade(p, 4, 0.1);
+		this.grenade = new Grenade(p, 4, 0.1, 5);
 		this.grenade.setProjectile(new Projectile(grenade, 10, 10, 40, Range.MEDIUM_RANGE, 30));
 		
-		this.sword = new Sword(p, -1, 0);
+		this.sword = new Sword(p, -1, 0, 4);
 		this.sword.setProjectile(new Projectile(sword, 10, 10, 100, Range.SHORT_RANGE, 30));
 		
-		this.melee = new Melee(p, -1, 0);
+		this.melee = new Melee(p, -1, 0, 4);
 		this.melee.setProjectile(new Projectile(melee, 10, 10, 100, Range.SHORT_RANGE, 30));
 	}
 	

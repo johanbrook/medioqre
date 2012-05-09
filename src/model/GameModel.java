@@ -302,7 +302,7 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 				Entity temp = (Entity) t;
 				checkCollisions(temp);
 				if (t instanceof AbstractCharacter){
-					t.update(dt);
+					((AbstractCharacter) t).update(dt);
 				}else {
 					temp.move(dt);
 				}
