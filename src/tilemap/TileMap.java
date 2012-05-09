@@ -24,7 +24,6 @@ public class TileMap implements GLRenderableObject {
 	public TileMap(int rows, int columns, TileSheet tileSheet, int[] pixels)
 	{
 		this.tiles = pixels == null ? new int[columns][rows] : PixelCastingTool.get2dTileMatrixFromPixelArray(columns, rows, pixels);
-		
 		this.tileMapSize = new Size(columns, rows);
 		
 		this.setTileSheet(tileSheet); 
@@ -62,6 +61,12 @@ public class TileMap implements GLRenderableObject {
 		return this.tileMapSize;
 	}
 
+	public Size getSize() {
+		int width = this.tileSheet.getTiles().size() * this.tileMapSize.getWidth();
+		int height = this.tileSheet.getTiles().size() * this.tileMapSize.getHeight();
+		return new Size(width, height);
+	}
+	
 	public void fillPixelArrayWithTiles(int[] arrayToFill)
 	{
 		int rows = this.tiles == null ? 0 : this.tiles.length;

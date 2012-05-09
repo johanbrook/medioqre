@@ -274,8 +274,8 @@ public class ObjectFactory {
 			
 			for(int i = 0; i < items.length(); i++) {
 				
-				int x = random.nextInt(tileMapInstance.getTileMapSize().getWidth());
-				int y = random.nextInt(tileMapInstance.getTileMapSize().getHeight());
+				int x = random.nextInt(tileMapInstance.getSize().getWidth());
+				int y = random.nextInt(tileMapInstance.getSize().getHeight());
 				
 				JSONObject it = items.getJSONObject(i);
 				JSONObject bounds = it.getJSONObject("bounds");
@@ -315,8 +315,8 @@ public class ObjectFactory {
 			try {
 				if (items.getJSONObject(i).getString("type").equals(type)){
 					
-					int x = random.nextInt(tileMapInstance.getTileMapSize().getWidth());
-					int y = random.nextInt(tileMapInstance.getTileMapSize().getHeight());
+					int x = random.nextInt(tileMapInstance.getSize().getWidth());
+					int y = random.nextInt(tileMapInstance.getSize().getHeight());
 					
 					JSONObject it = items.getJSONObject(i);
 					JSONObject bounds = it.getJSONObject("bounds");
@@ -328,7 +328,7 @@ public class ObjectFactory {
 					
 				}
 			} catch (JSONException e) {
-				System.err.println("Couldn't load item of type "+ type + "! "+e.getMessage());
+				err("Couldn't load item of type "+ type + "! "+e.getMessage());
 			}
 		}
 		return null;
