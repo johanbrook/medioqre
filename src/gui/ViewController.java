@@ -53,6 +53,7 @@ import datamanagement.ResourceLoader;
 import event.Event;
 import event.EventBus;
 import event.IEventHandler;
+import factory.ObjectFactory;
 import graphics.opengl.Actor;
 
 /**
@@ -74,9 +75,7 @@ public class ViewController implements IEventHandler, GLEventListener {
 
 	// Actors
 	private Actor							player;
-	private Map<CollidableObject, Actor>	enemies  = new IdentityHashMap<CollidableObject, Actor>();;
-	private Map<CollidableObject, Actor>	projectiles  = new IdentityHashMap<CollidableObject, Actor>();;
-	private Map<CollidableObject, Actor>	items  = new IdentityHashMap<CollidableObject, Actor>();;
+	private Map<CollidableObject, Actor>	actors		= new IdentityHashMap<CollidableObject, Actor>();	;
 
 	// Tools
 	private GraphicalFPSMeter				fpsmeter;
@@ -119,118 +118,48 @@ public class ViewController implements IEventHandler, GLEventListener {
 	{
 		if (evt.getProperty() == Event.Property.INIT_MODEL) {
 			GameModel gm = (GameModel) evt.getValue();
-			try {
-				this.tilemap = ResourceLoader
-						.loadTileMapFromResources("test_lvl.png");
-				this.tilemap.setTileSheet(ResourceLoader
-						.loadTileSheetFromResource("barberset.tilesheet"));
-				this.tilemap.setViewPortSize(new Size(48 * 12, 48 * 20));
-				this.tilemap.setTileSize(new Size(48, 48));
 
-				this.screen.addDrawableToLayer(this.tilemap, 0);
+			this.tilemap = ObjectFactory.newTileMap();
 
-				List<CollidableObject> entities = ((GameModel) evt.getValue())
-						.getObjects();
+			this.screen.addDrawableToLayer(this.tilemap, 0);
 
-				this.player = new Actor(new JSONObject(
-						ResourceLoader
-								.loadJSONStringFromResources("spritesheets/json/frank.actor")),
-						gm.getPlayer());
-				this.player.setCurrentAnimation("moveS");
-				this.screen.addDrawableToLayer(this.player, 1);
+			this.player = ObjectFactory.newActor(gm.getPlayer());
+			this.player.setCurrentAnimation("moveS");
+			this.screen.addDrawableToLayer(this.player, 1);
 
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
 			this.doneLoading = true;
 		} else if (evt.getProperty() == Event.Property.NEW_WAVE) {
 
-			for (Actor actor : this.projectiles.values()) {
-				this.screen.removeDrawableFromLayer(actor);
-			}
-			for (Actor actor : this.enemies.values()) {
-				this.screen.removeDrawableFromLayer(actor);
-			}
-			for (Actor actor : this.items.values()) {
+			for (Actor actor : this.actors.values()) {
 				this.screen.removeDrawableFromLayer(actor);
 			}
 			
 			List<CollidableObject> entities = (List) ((GameModel) evt
 					.getValue()).getObjects();
+			
 			for (CollidableObject e : entities) {
-				if (e instanceof Enemy) {
-					Actor newA;
-					try {
-						newA = new Actor(
-								new JSONObject(
-										ResourceLoader
-												.loadJSONStringFromResources("spritesheets/json/walker1.actor")),
-								(Entity) e);
-						this.enemies.put(e, newA);
-						this.screen.addDrawableToLayer(newA, 1);
-					} catch (JSONException e1) {
-						e1.printStackTrace();
-					}
-				} else if (e instanceof ICollectableItem) {
-					Actor newA;
-					try {
-						newA = new Actor(
-								new JSONObject(
-										ResourceLoader
-												.loadJSONStringFromResources("spritesheets/json/gameitems.actor")),
-								e);
-						this.items.put(e, newA);
-						this.screen.addDrawableToLayer(newA, 1);
-					} catch (JSONException e1) {
-						e1.printStackTrace();
-					}
-				}
+				Actor newA = ObjectFactory.newActor(e);
+				this.actors.put(e, newA);
+				this.screen.addDrawableToLayer(newA, 1);
 			}
 		} else if (evt.getProperty() == Event.Property.FIRED_WEAPON_SUCCESS) {
-			if (evt.getValue() instanceof Projectile) {
-				Projectile p = (Projectile) evt.getValue();
-
-				if(true) {
-//				if (p.getOwner() instanceof MachineGun) {
-					Actor newA;
-					try {
-						newA = new Actor(
-								new JSONObject(
-										ResourceLoader
-												.loadJSONStringFromResources("spritesheets/json/machinegun_projectile.actor")),
-								(CollidableObject) evt.getValue());
-
-						this.projectiles.put((CollidableObject) evt.getValue(),
-								newA);
-						this.screen.addDrawableToLayer(newA, 1);
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-
+			if (evt.getValue() instanceof CollidableObject) {
+				CollidableObject cObj = (CollidableObject) evt.getValue();
+				Actor newA = ObjectFactory.newActor(cObj);
+				this.actors.put(cObj, newA);
+				this.screen.addDrawableToLayer(newA, 1);
 			}
-
 		} else if (evt.getProperty() == Event.Property.PORTAL_CREATED) {
 			Portal p = (Portal) evt.getValue();
-			Actor newA;
-			try {
-				newA = new Actor(new JSONObject(
-						ResourceLoader
-								.loadJSONStringFromResources("spritesheets/json/portal.actor")),
-						(CollidableObject) p);
-				this.items.put((CollidableObject) p, newA);
-				this.screen.addDrawableToLayer(newA, 1);
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
+			Actor newA = ObjectFactory.newActor(p);
+			this.actors.put(p, newA);
+			this.screen.addDrawableToLayer(newA, 1);
 		} else if (evt.getProperty() == Event.Property.WAS_DESTROYED) {
 			if (evt.getValue() instanceof CollidableObject) {
-				CollidableObject o = (CollidableObject) evt.getValue();
+				CollidableObject cObj = (CollidableObject) evt.getValue();
 
-				this.screen.removeDrawableFromLayer(this.enemies.remove(o));
-				this.screen.removeDrawableFromLayer(this.projectiles.remove(o));
-				this.screen.removeDrawableFromLayer(this.items.remove(o));
+				this.screen.removeDrawableFromLayer(this.actors.remove(cObj));
+//				this.actors.remove(cObj);
 			}
 		}
 	}
@@ -245,14 +174,14 @@ public class ViewController implements IEventHandler, GLEventListener {
 		gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
 		gl.glClear(GL2.GL_ALPHA_BITS);
 
-//		 TimerTool.start("GL-Screen");
+		// TimerTool.start("GL-Screen");
 		if (doneLoading) {
 			this.screen.setViewPort(this.player.getCollidableObject()
 					.getPosition());
 			this.screen.render(this.screen.getBounds(),
 					this.screen.getBounds(), arg0, 0);
 		}
-//		 TimerTool.stop();
+		// TimerTool.stop();
 	}
 
 	@Override
