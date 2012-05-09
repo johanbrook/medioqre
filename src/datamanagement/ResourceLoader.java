@@ -130,16 +130,15 @@ public class ResourceLoader {
 	}
 	
 	
-	public static TileMap loadTileMapFromResources(String resource)
-	{
+	public static TileMap loadTileMapFromResources(String resource) {
 		try {			
 			BufferedImage img = ImageIO.read(ClassLoader.getSystemResource("spritesheets/levels/"+resource));
-			
 			int[] pixels = PixelCastingTool.getARGBarrayFromDataBuffer(img.getRaster(), img.getWidth(), img.getHeight());
-			
 			TileMap tileMap = new TileMap(img.getWidth(), img.getHeight(), null, pixels);
 			
+			log("Initialized tilemap from spritesheets/levels/"+resource);
 			return tileMap;
+			
 		} catch (FileNotFoundException e) {
 			err(e.getMessage());
 			e.printStackTrace();
@@ -176,6 +175,8 @@ public class ResourceLoader {
 		try {
 			InputStream input = ClassLoader.getSystemResourceAsStream("spritesheets/json/"+resource);
 			String load = IOUtils.toString(input);
+			
+			log("Initialized tilesheet from spritesheets/json/"+resource);
 			return new TileSheet(new JSONObject(load));
 		} catch (IOException e) {
 			err(e.getMessage());

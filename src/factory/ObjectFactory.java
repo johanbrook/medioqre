@@ -15,7 +15,6 @@ import static tools.Logger.*;
 
 import model.CollidableObject;
 import model.ConcreteCollidableObject;
-import model.Entity;
 import model.character.AbstractCharacter;
 import model.character.Enemy;
 import model.character.Player;
@@ -59,20 +58,27 @@ public class ObjectFactory {
 		try {
 			config = level.getConfig();
 			
+			// Model
+			
 			player = config.getJSONObject("playerConfig");
 			enemy = config.getJSONObject("enemyConfig");
 			items = config.getJSONObject("itemConfig").getJSONArray("items");
 			weapons = config.getJSONObject("weaponConfig").getJSONArray("weapons");
 			
-			String[] actorsString = level.getActorsData();
-
+			// View
+			
+			JSONArray actorsData = config.getJSONObject("actorsConfig").getJSONArray("actors");
 			actors = new JSONArray();
-			for (int i = 0; i < actorsString.length; i++) {
-				actors.put(new JSONObject(ResourceLoader.loadJSONStringFromResources(actorsString[i])));
+			
+			for (int i = 0; i < actorsData.length(); i++) {
+				String json = ResourceLoader.loadJSONStringFromResources(actorsData.getString(i));
+				actors.put(new JSONObject(json));
 			}
 
-			tileMap = new JSONObject(ResourceLoader.loadJSONStringFromResources(level.getTileMapData()));
+			log("Initializing tile map ...");
+			tileMap = config.getJSONObject("tileMapConfig");
 			tileMapInstance = ResourceLoader.loadTileMapFromResources(tileMap.getString("levelbitmap"));
+			
 			
 			log("Config initialized");
 			
@@ -268,9 +274,8 @@ public class ObjectFactory {
 			
 			for(int i = 0; i < items.length(); i++) {
 				
-				//TODO Fix these hardcoded measures!
-				int x = random.nextInt(1000);
-				int y = random.nextInt(1000);
+				int x = random.nextInt(tileMapInstance.getTileMapSize().getWidth());
+				int y = random.nextInt(tileMapInstance.getTileMapSize().getHeight());
 				
 				JSONObject it = items.getJSONObject(i);
 				JSONObject bounds = it.getJSONObject("bounds");
@@ -310,9 +315,8 @@ public class ObjectFactory {
 			try {
 				if (items.getJSONObject(i).getString("type").equals(type)){
 					
-					//TODO Fix these hardcoded measures!
-					int x = random.nextInt(1000);
-					int y = random.nextInt(1000);
+					int x = random.nextInt(tileMapInstance.getTileMapSize().getWidth());
+					int y = random.nextInt(tileMapInstance.getTileMapSize().getHeight());
 					
 					JSONObject it = items.getJSONObject(i);
 					JSONObject bounds = it.getJSONObject("bounds");
@@ -466,7 +470,9 @@ public class ObjectFactory {
 	public static Actor newActor(CollidableObject collidableObject)
 	{
 		Actor newA = null;
+		
 		try {
+			
 			if (collidableObject instanceof Player)
 				newA = new Actor(actors.getJSONObject(0));
 			else if (collidableObject instanceof Enemy)
@@ -498,15 +504,13 @@ public class ObjectFactory {
 		return tileMapInstance;
 	}
 
-	public static Screen newScreen()
-	{
+	public static Screen newScreen() {
 		return null;
 	}
 
 	// AI objects
 
-	public static boolean[][] getCollidables()
-	{
+	public static boolean[][] getCollidables() {
 		return ObjectFactory.newTileMap().getCollidables();
 	}
 	

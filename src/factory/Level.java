@@ -27,6 +27,7 @@ public class Level implements JSONSerializable {
 											"spritesheets/json/portal.act" };
 	
 	private String tileMapData = "spritesheets/levels/level1.lvl";
+	
 	private JSONObject config;
 	private Map<String, String> configFiles;
 	

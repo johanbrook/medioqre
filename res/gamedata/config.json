@@ -15,5 +15,8 @@
 	"playerConfig": 	"gamedata/player.json",
 	"enemyConfig": 		"gamedata/enemy.json",
 	"itemConfig": 		"gamedata/items.json",
-	"weaponConfig": 	"gamedata/weapons.json"
+	"weaponConfig": 	"gamedata/weapons.json",
+	
+	"tileMapConfig": 	"spritesheets/levels/level1.lvl",
+	"actorsConfig": 	"gamedata/actors.json"
 }

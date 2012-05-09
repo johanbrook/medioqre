@@ -1,0 +1,9 @@
+{
+	"actors": [
+		"spritesheets/json/frank.act",
+		"spritesheets/json/walker1.act",
+		"spritesheets/json/gameitems.act",
+		"spritesheets/json/machinegun_projectile.act",
+		"spritesheets/json/portal.act"
+	]
+}
