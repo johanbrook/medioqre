@@ -18,15 +18,12 @@ public class AIPlayer {
 	private Enemy unit;
 	private List <Point> path;
 	private int iq,updateCount,distance;
-	private double cooldown, attackInterval;
 	
 	public AIPlayer (Enemy unit){
 		this.unit = unit;	
 		this.iq = 5;
 		this.updateCount = 0;
 		this.distance = 100;
-		this.cooldown = 0;
-		this.attackInterval = 5;
 		
 	}
 	
@@ -126,42 +123,5 @@ public class AIPlayer {
 		double range = this.unit.getCurrentWeapon().getProjectile().getRange().getDistance();
 		return this.distance < range;
 	}
-	
-	/**
-	 * Adds the dt to the current cooldown, if cooldown is zero or below, resets the cooldown and returns false, else returns true.
-	 * @param dt
-	 * @return
-	 */
-	 public boolean inCooldown(double dt){
-		 this.cooldown -= dt;
-		 if (this.cooldown <= 0){
-			 this.cooldown = attackInterval;
-			 return false;
-		 }else {
-			 return true;
-		 }
-	 }
-	 
-	 /**
-	  * get the Attack interval
-	  * @return the attack interval
-	  */
-	 public double getAttackInterval(){
-		 return this.attackInterval;
-	 }
-	 
-	 /**
-	  * Set the attack interval
-	  * @param a
-	  */
-	 public void setAttackInterval(double a){
-		this.attackInterval = a; 
-	 }
-
-	 /*
-	  * Reset the cooldown of this AIPlayer to 0.
-	  */
-	public void resetCooldown() {
-		this.cooldown = 0;
-	}
 }
+	

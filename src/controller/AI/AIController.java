@@ -130,12 +130,12 @@ public class AIController implements IMessageSender, IMessageListener {
 	 */
 	private void handleAttack(AIPlayer ai, double dt){
 		if (ai.inRange()) {
-			if (!ai.inCooldown(dt)){
+			if (!ai.getEnemy().getCurrentWeapon().inCooldown(dt)){
 				Projectile proj = ai.doAttack();
 				messager.sendMessage(new Event(Event.Property.DID_ATTACK, proj));
 			}
 		}else {
-			ai.resetCooldown();
+			ai.getEnemy().getCurrentWeapon().resetCooldown();
 		}
 	}
 	
