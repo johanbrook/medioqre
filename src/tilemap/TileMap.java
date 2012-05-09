@@ -4,7 +4,6 @@ import graphics.tools.PixelCastingTool;
 
 import java.util.Random;
 
-import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
 import core.GLRenderableObject;
@@ -93,6 +92,8 @@ public class TileMap implements GLRenderableObject {
 	public void setTileSize(Size size)
 	{
 		this.tileSize = size;
+		
+		this.tileRenderRect = new Rectangle(0, 0, this.tileSize.getWidth(), this.tileSize.getHeight());
 	}
 	
 	public void setTileTypeFor(int xPos, int yPos, int tileType)
@@ -141,14 +142,12 @@ public class TileMap implements GLRenderableObject {
 			for (int y = 0; y < this.tiles[x].length; y++) {
 				tileRenderRect.setX(x * tileSize.getWidth()+object.getX());
 				tileRenderRect.setY(y * tileSize.getHeight()+object.getY());
-				tileRenderRect.setWidth(tileSize.getWidth());
-				tileRenderRect.setHeight(tileSize.getHeight());
 				
 				if (this.tileSheet.getTile(this.tiles[x][y]) == null) {
 					System.out.println("Trying to render a tile that is null!: "+this.tiles[x][y]);
 					return;
 				}
-				
+
 				this.tileSheet.getTile(this.tiles[x][y]).render(tileRenderRect, target, canvas, 0);
 			}
 		}
