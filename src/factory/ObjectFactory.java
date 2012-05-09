@@ -60,7 +60,54 @@ public class ObjectFactory {
 		}
 		
 	}
-
+	
+	/**
+	 * Get an integer from the config file based on key.
+	 * 
+	 * @param key The setting
+	 * @return The value
+	 */
+	public static int getConfigInt(String key) {
+		try {
+			return config.getInt(key);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		
+		return -1;
+	}
+	
+	/**
+	 * Get a string from the config file based on key.
+	 * 
+	 * @param key The setting
+	 * @return The value
+	 */
+	public static String getConfigString(String key) {
+		try {
+			return config.getString(key);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * Get a JSONObject from the config file based on key.
+	 * 
+	 * @param key The setting
+	 * @return The value
+	 */
+	public static JSONObject getConfigObject(String key) {
+		try {
+			return config.getJSONObject(key);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	/**
 	 * Set the level
 	 * 
@@ -398,14 +445,6 @@ public class ObjectFactory {
 		return null;
 	}
 	
-	public static int getItemSpawnChance (){
-		try {
-			return config.getInt("itemSpawnChance");
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		return 0;
-	}
 
 
 	// Helpers

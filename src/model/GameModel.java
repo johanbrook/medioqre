@@ -152,7 +152,8 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 	private void randomizeItem() {
 		Random random = new Random();
 		int rand = random.nextInt(100);
-		if (rand < ObjectFactory.getItemSpawnChance()) {
+		
+		if (rand < ObjectFactory.getConfigInt("itemSpawnChance")) {
 			newAmmoCrate();
 			newMedPack();
 		}
