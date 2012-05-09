@@ -69,6 +69,7 @@ public abstract class AbstractWeapon {
 		Projectile p = this.createProjectile();
 
 		if (!inCooldown()){
+			
 			if (this.ammo != 0){
 				if(this.ammo != -1)
 					this.ammo--;
@@ -151,6 +152,22 @@ public abstract class AbstractWeapon {
 	 */
 	public void setammoMultiplier(double ammoMultiplier) {
 		this.ammoMultiplier = ammoMultiplier;
+	}
+	
+	/**
+	 * Set the fireInterval of this weapon. Lestt fireIntervall means faster firerate.
+	 * @param fireInterval
+	 */
+	public void setFireInterval(double fireInterval){
+		this.fireInterval = fireInterval;
+	}
+	
+	/**
+	 * get the fireInterval of this weapon
+	 * @return the fireInterval of this weapon
+	 */
+	public double getFireInterval (){
+		return this.fireInterval;
 	}
 
 }
