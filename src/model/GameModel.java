@@ -106,7 +106,7 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 					// projectile landed:
 					int x = (int) p.getPosition().x + p.getCollisionBox().width / 2;
 					int y = (int) p.getPosition().y + p.getCollisionBox().height / 2;
-					
+
 					deployPortal(g.getMode(), new Point(x, y));
 
 				}else if (p.getOwner() instanceof Grenade){
@@ -156,23 +156,23 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 			newAmmoCrate();
 			newMedPack();
 		}
-		
-	
+
+
 	}
-	
+
 	private void newAmmoCrate(){
 		CollidableObject item = ObjectFactory.newItem("AmmoCrate");
 		item.addReceiver(this);
 		this.objects.add(item);
 		log("** Ammo Crate created **");
 	}
-	
+
 	private void newMedPack(){
 		CollidableObject item = ObjectFactory.newItem("MedPack");
 		item.addReceiver(this);
 		this.objects.add(item);
 		log("** MedPack created **");
-		
+
 	}
 
 
@@ -197,22 +197,22 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 		Event evt = new Event(Property.NEW_WAVE, this);
 		this.messager.sendMessage(evt);
 		EventBus.INSTANCE.publish(evt);
-		
+
 		log("New wave: "+this.currentWave);
 	}
 
 	private void addItems() {
 		List<CollidableObject> items = ObjectFactory.newItemsForWave(this.currentWave);
-		
+
 		log("Items received");
 		log(items);
-		
+
 		for(CollidableObject item : items) {
 			item.addReceiver(this);
 		}
 
 		this.objects.addAll(items);
-		
+
 		log("** "+items.size() + " items added");
 
 	}
@@ -271,7 +271,7 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 
 	private void doSplashDamage(Projectile p) {
 		if (p.getOwner() instanceof Grenade){
-			
+
 			Grenade grenade = ((Grenade) p.getOwner());
 			int radius = grenade.getRadius();
 			int distance = Math.abs(this.player.getPosition().x - p.getPosition().x) + Math.abs(this.player.getPosition().y - p.getPosition().y);
@@ -279,14 +279,14 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 				this.player.takeDamage(p.getDamage()/grenade.getSplashDamageFactor());
 				log("Player was hit by Grenade splash! Took: " + p.getDamage()/grenade.getSplashDamageFactor() + " damage! Now has " + player.getHealth() + " hp left!");
 			}
-			
+
 			for (Enemy e : this.enemies){
 				distance = Math.abs(e.getPosition().x - p.getPosition().x) + Math.abs(e.getPosition().y
 						- p.getPosition().y);
 				if (distance < radius) {
 					e.takeDamage(p.getDamage()/grenade.getSplashDamageFactor());
 					log("Enemy was hit by Grenade splash! Took " + p.getDamage()/grenade.getSplashDamageFactor() + " damage! Now has " + e.getHealth() + " hp left!");
-					
+
 				}
 			}
 		}
@@ -301,7 +301,11 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 			if(t instanceof Entity) {
 				Entity temp = (Entity) t;
 				checkCollisions(temp);
-				temp.move(dt);
+				if (t instanceof AbstractCharacter){
+					t.update(dt);
+				}else {
+					temp.move(dt);
+				}
 			}
 
 			if(t instanceof Projectile){
@@ -330,21 +334,21 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 				Direction blockedDirection = t.getDirectionOfObject(w);
 
 				if(t instanceof Projectile && !(w instanceof ICollectableItem || w instanceof Portal)) {
-					
+
 					// If an enemy's projectile hit another enemy, don't withdraw damage
 					// I.e. if the projectile's weapon's owner is an enemy, and the target is
 					// an enemy, don't do anything.
 					if(! ( ((Projectile) t).getOwner().getOwner() instanceof Enemy &&
-						w instanceof Enemy )) {
-						
+							w instanceof Enemy )) {
+
 						// If the projectile hit the player
 						if (w instanceof AbstractCharacter){
 							((AbstractCharacter) w).takeDamage(((Projectile) t).getDamage());
-	
+
 							log(w.getClass().getSimpleName()+" was hit, now has " + ((AbstractCharacter) w).getHealth() + " hp");
 						}
 					}
-					
+
 					t.destroy();
 				} 
 				else if (w instanceof ICollectableItem && t instanceof Player){
