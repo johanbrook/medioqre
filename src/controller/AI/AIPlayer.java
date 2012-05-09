@@ -1,4 +1,4 @@
-package controller.AI;
+package controller.ai;
 
 import java.awt.Point;
 import java.util.List;

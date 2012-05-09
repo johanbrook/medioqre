@@ -12,7 +12,7 @@ import org.json.JSONObject;
 import static tools.Logger.*;
 
 import tools.TimerTool;
-import controller.AI.AIController;
+import controller.ai.AIController;
 import controller.navigation.NavigationController;
 import datamanagement.ResourceLoader;
 import event.Event;
