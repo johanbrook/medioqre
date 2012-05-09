@@ -16,7 +16,7 @@ public abstract class AbstractWeapon {
 	private int ammo;
 	private AbstractCharacter owner;
 	private double ammoMultiplier;
-	
+
 	private double fireInterval, cooldown;
 
 	/**
@@ -68,44 +68,47 @@ public abstract class AbstractWeapon {
 	public Projectile fire() {
 		Projectile p = this.createProjectile();
 
-		if (this.ammo != 0){
-			if(this.ammo != -1)
-				this.ammo--;
-			
-			EventBus.INSTANCE.publish(new Event(Property.FIRED_WEAPON_SUCCESS, p));
-			return p;
+		if (!inCooldown()){
+			if (this.ammo != 0){
+				if(this.ammo != -1)
+					this.ammo--;
+
+				EventBus.INSTANCE.publish(new Event(Property.FIRED_WEAPON_SUCCESS, p));
+				resetCooldown();
+				return p;
+			}
+
+			else {
+				EventBus.INSTANCE.publish(new Event(Property.FIRED_WEAPON_FAIL, p));
+				return null;
+			}
 		}
 		else {
 			EventBus.INSTANCE.publish(new Event(Property.FIRED_WEAPON_FAIL, p));
 			return null;
 		}
+
 	}
-	
+
 	/**
 	 * subtracts dt from the current cooldown, if cooldown is zero or below, resets the cooldown and returns false, else returns true.
 	 * @param dt
 	 * @return
 	 */
-	 public boolean inCooldown(double dt){
-		 this.cooldown -= dt;
-		 if (this.cooldown <= 0){
-			 this.cooldown = this.fireInterval;
-			 return false;
-		 }else {
-			 return true;
-		 }
-	 }
-	 
-	 public void resetCooldown(){
-		 this.cooldown = this.fireInterval;
-	 }
-	 
-	 public void updateCooldown(double dt){
-		 if (this.cooldown > 0)
-		 this.cooldown -=dt;
-	 }
-	
-	
+	public boolean inCooldown(){
+		return this.cooldown > 0;
+	}
+
+	public void resetCooldown(){
+		this.cooldown = this.fireInterval;
+	}
+
+	public void updateCooldown(double dt){
+		if (this.cooldown > 0)
+			this.cooldown -=dt;
+	}
+
+
 	@Override
 	public String toString() {
 		return "["+this.getClass().getSimpleName() + "[owner:"+this.owner.getClass().getSimpleName()+"] [ammo:"+this.ammo+"]]";
@@ -118,15 +121,15 @@ public abstract class AbstractWeapon {
 	 * @return The projectile.
 	 */
 	public abstract Projectile createProjectile();
-	
-	
+
+
 	/**
 	 * Get the associated projectile from this weapon.
 	 * 
 	 * @return The projectile
 	 */
 	public abstract Projectile getProjectile();
-	
+
 	/**
 	 * Set the associated projectile for this weapon.
 	 * 

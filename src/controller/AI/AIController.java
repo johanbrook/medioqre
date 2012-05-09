@@ -92,6 +92,7 @@ public class AIController implements IMessageSender, IMessageListener {
 		aiPlayer.setDistance(Math.abs(aiPlayer.getEnemy().getPosition().x - playerPos.x) + Math.abs(aiPlayer.getEnemy().getPosition().y
 				- playerPos.y));
 
+		aiPlayer.getEnemy().getCurrentWeapon().updateCooldown(dt);
 		handleAttack(aiPlayer,dt);
 		if (aiPlayer.getCount() < (aiPlayer.getDistance()/15) + enemies.size()/15){
 			aiPlayer.updateCount();
@@ -130,7 +131,7 @@ public class AIController implements IMessageSender, IMessageListener {
 	 */
 	private void handleAttack(AIPlayer ai, double dt){
 		if (ai.inRange()) {
-			if (!ai.getEnemy().getCurrentWeapon().inCooldown(dt)){
+			if (!ai.getEnemy().getCurrentWeapon().inCooldown()){
 				Projectile proj = ai.doAttack();
 				messager.sendMessage(new Event(Event.Property.DID_ATTACK, proj));
 			}
