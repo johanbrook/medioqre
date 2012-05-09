@@ -119,6 +119,17 @@ public class TileMap implements GLRenderableObject {
 		return this.tileSize;
 	}
 	
+	public boolean[][] getCollidables()
+	{
+		boolean[][] collidables = new boolean[this.tileMapSize.getWidth()][this.tileMapSize.getHeight()];
+		for (int y = 0; y < collidables.length; y++) {
+			for (int x = 0; x < collidables[y].length;x++) {
+				collidables[x][y] = this.tileSheet.getTile(this.tiles[x][y]).isCollidable();
+			}
+		}
+		return collidables;
+	}
+	
 	@Override
 	public void render(Rectangle object, Rectangle target, GLAutoDrawable canvas, int zIndex)
 	{		
