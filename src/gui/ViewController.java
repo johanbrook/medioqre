@@ -138,6 +138,8 @@ public class ViewController implements IEventHandler, GLEventListener {
 					.getValue()).getObjects();
 			
 			for (CollidableObject e : entities) {
+				if (e instanceof Player) continue;
+				
 				Actor newA = ObjectFactory.newActor(e);
 				this.actors.put(e, newA);
 				this.screen.addDrawableToLayer(newA, 1);
