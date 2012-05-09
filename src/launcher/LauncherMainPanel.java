@@ -9,13 +9,10 @@ import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import audio.AudioConstants;
 import controller.AppController;
-import javax.swing.JLabel;
 
 public class LauncherMainPanel extends JPanel implements ActionListener {
 
@@ -30,7 +27,6 @@ public class LauncherMainPanel extends JPanel implements ActionListener {
 	private double[][] rnd;
 	private int rows;
 	private int cols;
-	private float delta = 0.1f;
 
 	private Launcher launcher;
 
@@ -114,11 +110,6 @@ public class LauncherMainPanel extends JPanel implements ActionListener {
 
 		timer = new Timer(delay, this);
 		
-		JLabel testLabel = new JLabel("New label");
-		testLabel.setForeground(Color.WHITE);
-		testLabel.setBounds(43, 26, 94, 51);
-		testLabel.setText(AudioConstants.getBGMVolume() + "");
-		add(testLabel);
 		timer.start();
 
 	}

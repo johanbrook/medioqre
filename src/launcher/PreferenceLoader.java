@@ -15,7 +15,6 @@ public class PreferenceLoader
 	    catch (SecurityException disabled) {
 	
 	    }
-	    System.out.println(prefs.getFloat("BGM_VOLUME", 0.8f));
 	};
 	
 	public static PreferenceLoader getInstance(){
