@@ -2,6 +2,12 @@ package datamanagement;
 
 import java.util.prefs.*;
 
+/**
+ * Loads User Preferences
+ * 
+ * @author chrisnordqvist
+ *
+ */
 
 public class PreferenceLoader
 {
@@ -9,12 +15,7 @@ public class PreferenceLoader
 	private Preferences prefs;
 	
 	private PreferenceLoader(){
-		try {
 	        prefs = Preferences.userNodeForPackage(PreferenceLoader.class);
-	    }
-	    catch (SecurityException disabled) {
-	
-	    }
 	};
 	
 	public static PreferenceLoader getInstance(){
