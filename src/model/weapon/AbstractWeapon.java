@@ -150,7 +150,7 @@ public abstract class AbstractWeapon {
 	 * Set the ammo multiplier
 	 * @param ammoMultiplier
 	 */
-	public void setammoMultiplier(double ammoMultiplier) {
+	public void setAmmoMultiplier(double ammoMultiplier) {
 		this.ammoMultiplier = ammoMultiplier;
 	}
 	

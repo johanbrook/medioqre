@@ -1,4 +1,5 @@
-[
+{
+	"weapons": [
 	{
 		"type": "MachineGun",
 		"ammo": 300,
@@ -67,5 +68,5 @@
 				"width": 20,
 			}
 		}
-	}
-]
+	}]
+}

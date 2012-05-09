@@ -106,7 +106,7 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 					// projectile landed:
 					int x = (int) p.getPosition().x + p.getCollisionBox().width / 2;
 					int y = (int) p.getPosition().y + p.getCollisionBox().height / 2;
-
+					
 					deployPortal(g.getMode(), new Point(x, y));
 
 				}else if (p.getOwner() instanceof Grenade){
@@ -152,7 +152,8 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 	private void randomizeItem() {
 		Random random = new Random();
 		int rand = random.nextInt(100);
-		if (rand < ObjectFactory.getItemSpawnChance()) {
+		
+		if (rand < ObjectFactory.getConfigInt("itemSpawnChance")) {
 			newAmmoCrate();
 			newMedPack();
 		}
@@ -208,8 +209,7 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 		List<CollidableObject> items = ObjectFactory.newItemsForWave(this.currentWave);
 
 		log("Items received");
-		log(items);
-
+		
 		for(CollidableObject item : items) {
 			item.addReceiver(this);
 		}
@@ -227,7 +227,6 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 		List<Enemy> tempEnemies = ObjectFactory.newEnemiesForWave(this.currentWave);
 
 		log("Enemies received");
-		log(tempEnemies);
 
 		for(Enemy temp : tempEnemies) {
 			temp.addReceiver(this);
@@ -241,7 +240,7 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 
 	private void initPlayer() {
 		this.player = ObjectFactory.newPlayer();
-		this.player.setCurrentWeapon(0);
+		
 		this.objects.add(this.player);
 		this.player.addReceiver(this);
 	}
