@@ -1,5 +1,6 @@
 package factory;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -7,24 +8,29 @@ import core.JSONSerializable;
 
 public class Level implements JSONSerializable {
 	// Model part
-	private String	playerData		= "gamedata/player.json";
-	private String	enemyData		= "gamedata/enemy.json";
-	private String	itemData		= "gamedata/items.json";
-	private String	weaponData		= "gamedata/weapons.json";
-	private String worldData		= "gamedata/world.json";
-	private String	levelData		= "gamedata/levels/default.json";
+	private String		playerData		= "gamedata/player.json";
+	private String		enemyData		= "gamedata/enemy.json";
+	private String		itemData		= "gamedata/items.json";
+	private String		weaponData		= "gamedata/weapons.json";
+	private String		worldData		= "gamedata/world.json";
+	private String		levelData		= "gamedata/levels/default.json";
 
 	// View part
 	// .act is an abbreviation for actor data
-	private String	actorsData		= "spritesheets/json/frank.act";
-	private String	tileMapData		= "spritesheet/levels/level1.lvl";
-	private String	gameSettings	= "screen.dat";
+	private String[]	actorsData		= { "spritesheets/json/frank.act",
+			"spritesheets/json/walker1.act", "spritesheets/json/gameitems.act",
+			"spritesheets/json/machinegun_projectile.act",
+			"spritesheets/json/portal.act", };
+	private String		tileMapData		= "spritesheets/levels/level1.lvl";
+	
+	private String		gameSettings	= "screen.dat";
 
-	
-	public Level() {}
-	
+	public Level()
+	{
+	}
+
 	public Level(String playerData, String enemyData, String itemData,
-			String weaponData, String actorsData, String levelData,
+			String weaponData, String actorsData[], String levelData,
 			String tileMapData, String gameSettings)
 	{
 		this.playerData = playerData;
@@ -37,9 +43,9 @@ public class Level implements JSONSerializable {
 		this.tileMapData = tileMapData;
 		this.gameSettings = gameSettings;
 	}
-	
+
 	// Getters
-	
+
 	public String getPlayerData()
 	{
 		return this.playerData;
@@ -59,18 +65,19 @@ public class Level implements JSONSerializable {
 	{
 		return this.weaponData;
 	}
-	
-	public String getLevelData() 
+
+	@Deprecated
+	public String getLevelData()
 	{
 		return this.levelData;
 	}
-	
-	public String getWorldData() 
+
+	public String getWorldData()
 	{
 		return this.worldData;
 	}
 
-	public String getActorsData()
+	public String[] getActorsData()
 	{
 		return this.actorsData;
 	}
@@ -80,7 +87,7 @@ public class Level implements JSONSerializable {
 		return this.tileMapData;
 	}
 
-	public String getGameSeString()
+	public String getGameSettingsString()
 	{
 		return this.gameSettings;
 	}
@@ -117,7 +124,12 @@ public class Level implements JSONSerializable {
 			this.weaponData = o.getString("weaponData");
 			this.levelData = o.getString("levelData");
 
-			this.actorsData = o.getString("actorsData");
+			JSONArray array = o.getJSONArray("actorsData");
+			this.actorsData = new String[array.length()];
+			for (int i = 0; i < this.actorsData.length; i++) {
+				this.actorsData[i] = array.getString(i);
+			}
+
 			this.tileMapData = o.getString("tileMapData");
 			this.gameSettings = o.getString("gameSettings");
 		} catch (JSONException e) {
