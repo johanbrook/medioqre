@@ -8,6 +8,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import static tools.Logger.*;
 import javax.imageio.ImageIO;
@@ -26,39 +28,41 @@ import tilemap.TileSheet;
  *
  */
 public class ResourceLoader {
-	
-	/**
-	 * Parses and returns a JSONObject from a file on the given path.
-	 * 
-	 * @param pathToJsonFile The path to the JSON file
-	 * @return A JSONObject on successful parse, otherwise null
-	 */
-	public static JSONObject parseJSONFromPath(String pathToJsonFile) {
-		
-		try {
-			String json = loadJSONStringFromResources(pathToJsonFile);
-			return new JSONObject(json);
+
+	private static Map<String, JSONObject>	relativeJSONObjects;
+	private static Map<String, String>		relativeJSONStrings;
+	private static Map<String, String>		absoluteJSONStrings;
+
+	public static JSONObject parseJSONFromPath(String pathToJsonFile)
+	{
+
+		if (relativeJSONObjects == null)
+			relativeJSONObjects = new HashMap<String, JSONObject>();
+
+		JSONObject jsonObject = relativeJSONObjects.get(pathToJsonFile);
+		if (jsonObject == null) {
+			try {
+				String json = loadJSONStringFromResources(pathToJsonFile);
+				jsonObject = new JSONObject(json);
+
+				relativeJSONObjects.put(pathToJsonFile, jsonObject);
+
+				return jsonObject;
+			} catch (JSONException e) {
+				err("Couldn't parse JSON from file! " + e.getMessage());
+				e.printStackTrace();
+			}
 		}
-		catch(JSONException e) {
-			err("Couldn't parse JSON from file! "+e);
-			e.printStackTrace();
-		}
-		
-		return null;
+
+		return jsonObject;
 	}
-	
-	/**
-	 * Reads a stream.
-	 * 
-	 * @param s An InputStream with data
-	 * @return A String from the stream
-	 * @throws FileNotFoundException If stream is null
-	 */
-	public static String loadJSONStringFromStream(InputStream s) throws FileNotFoundException {
-		if(s == null) {
-			throw new FileNotFoundException("Input stream is null, resource couldn't be found");
+
+	public static String loadJSONStringFromStream(InputStream s)
+	{
+		if (s == null) {
+			throw new IllegalArgumentException("Input stream can't be null");
 		}
-		
+
 		try {
 			return IOUtils.toString(s);
 
@@ -66,55 +70,58 @@ public class ResourceLoader {
 			err(e.getMessage());
 			e.printStackTrace();
 		}
-		
+
 		return null;
 	}
-	
-	/**
-	 * Read a JSON file from an absolute path
-	 * 
-	 * @param absolutePath The path
-	 * @return A String with the JSON contents, or null if the file doesn't exists
-	 */
-	public static String loadJSONStringFromAbsolutePath(String absolutePath) {
+
+	public static String loadJSONStringFromAbsolutePath(String absolutePath)
+	{
+		if (absolutePath == null)
+			absoluteJSONStrings = new HashMap<String, String>();
+
+		String jsonString = absoluteJSONStrings.get(absolutePath);
+		if (jsonString == null) {
+
+			try {
+				jsonString = loadJSONStringFromStream(new FileInputStream(new File(
+						absolutePath)));
+				absoluteJSONStrings.put(absolutePath, jsonString);
+			} catch (FileNotFoundException e) {
+				err(e.getMessage());
+				e.printStackTrace();
+			}
+		}
+
+		return jsonString;
+	}
+
+	public static String loadJSONStringFromResources(String resource)
+	{
+		if (relativeJSONStrings == null) relativeJSONStrings = new HashMap<String, String>();
 		
-		try {
-			return loadJSONStringFromStream(new FileInputStream(new File(absolutePath)));
-			
-		} catch (FileNotFoundException e) {
-			err(e.getMessage());
+		String jsonString = relativeJSONStrings.get(resource);
+		if (jsonString == null) {
+			jsonString = loadJSONStringFromStream(ClassLoader
+					.getSystemResourceAsStream(resource));
+			relativeJSONStrings.put(resource, jsonString);
 		}
 		
-		return null;
+		return jsonString;
 	}
-	
-	
-	/**
-	 * Read a JSON file from a resource
-	 * 
-	 * @param resource The resource (path to the file)
-	 * @return A String with the JSON contents, or null if the resource doesn't exists
-	 */
-	public static String loadJSONStringFromResources(String resource) {
-		try {
-			return loadJSONStringFromStream(ClassLoader.getSystemResourceAsStream(resource));
-			
-		} catch (FileNotFoundException e) {
-			err(e.getMessage());
-		}
-		
-		return null;
-	}
-	
-	
+
 	public static TileMap loadTileMapFromAbsolutePath(String absolutePath)
 	{
 		try {
-			BufferedImage img = ImageIO.read(new FileInputStream(new File(absolutePath)));
-			
-			int[] pixels = PixelCastingTool.getARGBarrayFromDataBuffer(img.getRaster(), img.getWidth(), img.getHeight());
-			
-			TileMap tileMap = new TileMap(img.getWidth(), img.getHeight(), null, pixels);
+			BufferedImage img = ImageIO.read(new FileInputStream(new File(
+					absolutePath)));
+
+			int[] pixels = PixelCastingTool.getARGBarrayFromDataBuffer(
+					img.getRaster(), img.getWidth(), img.getHeight());
+
+			TileMap tileMap = new TileMap(img.getWidth(), img.getHeight(),
+					null, pixels);
+
+			log("Loaded tilemap: " + absolutePath);
 			
 			return tileMap;
 		} catch (FileNotFoundException e) {
@@ -125,18 +132,23 @@ public class ResourceLoader {
 			e.printStackTrace();
 		}
 		err("Could not load: " + absolutePath);
-		
+
 		return null;
 	}
-	
-	
-	public static TileMap loadTileMapFromResources(String resource) {
-		try {			
-			BufferedImage img = ImageIO.read(ClassLoader.getSystemResource("spritesheets/levels/"+resource));
-			int[] pixels = PixelCastingTool.getARGBarrayFromDataBuffer(img.getRaster(), img.getWidth(), img.getHeight());
-			TileMap tileMap = new TileMap(img.getWidth(), img.getHeight(), null, pixels);
-			
-			log("Initialized tilemap from spritesheets/levels/"+resource);
+
+	public static TileMap loadTileMapFromResources(String resource)
+	{
+		try {
+			BufferedImage img = ImageIO.read(ClassLoader
+					.getSystemResource("spritesheets/levels/" + resource));
+
+			int[] pixels = PixelCastingTool.getARGBarrayFromDataBuffer(
+					img.getRaster(), img.getWidth(), img.getHeight());
+
+			TileMap tileMap = new TileMap(img.getWidth(), img.getHeight(),
+					null, pixels);
+
+			log("Loaded tilemap: "+ resource);
 			return tileMap;
 			
 		} catch (FileNotFoundException e) {
@@ -147,17 +159,18 @@ public class ResourceLoader {
 			e.printStackTrace();
 		}
 		err("Could not load: " + resource);
-		
+
 		return null;
 	}
-	
-	
+
 	public static TileSheet loadTileSheetFromAbsolutePath(String absolutePath)
 	{
 		try {
 			InputStream input = new FileInputStream(new File(absolutePath));
-			
+
 			String load = IOUtils.toString(input);
+			
+			log ("Loaded tile sheet: "+absolutePath);
 			return new TileSheet(new JSONObject(load));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -166,17 +179,18 @@ public class ResourceLoader {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		err("Couldn't load tile sheet: "+absolutePath);
 		return null;
 	}
-	
-	
+
 	public static TileSheet loadTileSheetFromResource(String resource)
 	{
 		try {
-			InputStream input = ClassLoader.getSystemResourceAsStream("spritesheets/json/"+resource);
+			InputStream input = ClassLoader
+					.getSystemResourceAsStream("spritesheets/json/" + resource);
 			String load = IOUtils.toString(input);
 			
-			log("Initialized tilesheet from spritesheets/json/"+resource);
+			log("Loaded tile sheet: "+resource);
 			return new TileSheet(new JSONObject(load));
 		} catch (IOException e) {
 			err(e.getMessage());
@@ -185,7 +199,9 @@ public class ResourceLoader {
 			err(e.getMessage());
 			e.printStackTrace();
 		}
+		
+		err("Couldn't load tile sheet: "+resource);
 		return null;
 	}
-	
+
 }
