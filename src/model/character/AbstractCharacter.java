@@ -108,6 +108,11 @@ public abstract class AbstractCharacter extends Entity {
 		}
 	}
 	
+	public void update (double dt){
+		super.move(dt);
+		this.currentWeapon.updateCooldown(dt);
+	}
+	
 	/**
 	 * Set the health. Bypasses the maximum health, i.e. you're able to set
 	 * the health higher than the maximum health.
