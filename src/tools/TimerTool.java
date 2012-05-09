@@ -15,7 +15,7 @@ public class TimerTool {
 
 	public static void stop()
 	{
-		System.out.println(stopToString());
+		log(stopToString());
 	}
 	public static String stopToString()
 	{
@@ -25,5 +25,4 @@ public class TimerTool {
 	{
 		return (System.nanoTime() - startTime);
 	}
-
 }
