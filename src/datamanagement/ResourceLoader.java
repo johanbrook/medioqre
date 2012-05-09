@@ -19,9 +19,20 @@ import org.json.JSONObject;
 import tilemap.TileMap;
 import tilemap.TileSheet;
 
+/**
+ * A set of helper methods for loading resources and JSON files
+ * 
+ * @author Barber and Johan
+ *
+ */
 public class ResourceLoader {
 	
-	
+	/**
+	 * Parses and returns a JSONObject from a file on the given path.
+	 * 
+	 * @param pathToJsonFile The path to the JSON file
+	 * @return A JSONObject on successful parse, otherwise null
+	 */
 	public static JSONObject parseJSONFromPath(String pathToJsonFile) {
 		
 		try {
@@ -36,6 +47,13 @@ public class ResourceLoader {
 		return null;
 	}
 	
+	/**
+	 * Reads a stream.
+	 * 
+	 * @param s An InputStream with data
+	 * @return A String from the stream
+	 * @throws FileNotFoundException If stream is null
+	 */
 	public static String loadJSONStringFromStream(InputStream s) throws FileNotFoundException {
 		if(s == null) {
 			throw new FileNotFoundException("Input stream is null, resource couldn't be found");
@@ -52,6 +70,12 @@ public class ResourceLoader {
 		return null;
 	}
 	
+	/**
+	 * Read a JSON file from an absolute path
+	 * 
+	 * @param absolutePath The path
+	 * @return A String with the JSON contents, or null if the file doesn't exists
+	 */
 	public static String loadJSONStringFromAbsolutePath(String absolutePath) {
 		
 		try {
@@ -65,6 +89,12 @@ public class ResourceLoader {
 	}
 	
 	
+	/**
+	 * Read a JSON file from a resource
+	 * 
+	 * @param resource The resource (path to the file)
+	 * @return A String with the JSON contents, or null if the resource doesn't exists
+	 */
 	public static String loadJSONStringFromResources(String resource) {
 		try {
 			return loadJSONStringFromStream(ClassLoader.getSystemResourceAsStream(resource));

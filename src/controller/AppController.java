@@ -65,7 +65,6 @@ public class AppController implements Runnable{
 		ObjectFactory.setLevel(lev);
 		
 		try {
-			log(lev.getConfig());
 			String loggingFormat = lev.getConfig().getString("loggingFormat");
 			tools.Logger.getInstance().setTimestampFormat(loggingFormat);
 			

@@ -88,7 +88,7 @@ public class ObjectFactory {
 		try {
 
 			JSONObject bounds = player.getJSONObject("bounds");
-
+			
 			Player p = new Player(
 					player.getInt("speed"),
 					new Rectangle(bounds.getInt("boxWidth"), bounds.getInt("boxHeight")),
@@ -142,6 +142,14 @@ public class ObjectFactory {
 	}
 
 
+	/**
+	 * Create a new wave of enemies from a given wave number.
+	 * 
+	 * <p>Uses the Fibonacci sequence to generate the number of enemies for each <code>waveNumber</code></p>
+	 * 
+	 * @param waveNumber The current wave
+	 * @return A list with enemies, complete with weapons and projectiles
+	 */
 	public static List<Enemy> newEnemiesForWave(int waveNumber) {
 
 		List<Enemy> enemies = new ArrayList<Enemy>();
@@ -173,6 +181,12 @@ public class ObjectFactory {
 		return enemies;
 	}
 
+	/**
+	 * Create a new list of items for a given wave.
+	 * 
+	 * @param waveNumber The current wave
+	 * @return A list of items with randomized positions
+	 */
 	public static List<CollidableObject> newItemsForWave(int waveNumber) {
 		
 		List<CollidableObject> itemList = new ArrayList<CollidableObject>();
@@ -207,6 +221,15 @@ public class ObjectFactory {
 		return itemList;
 	}
 	
+	
+	/**
+	 * Create a new item from a given type ("MedPack", "AmmoCrate", etc.).
+	 * 
+	 * <p>Must be referenced in the items config file</p>
+	 * 
+	 * @param type The item type
+	 * @return An item
+	 */
 	public static CollidableObject newItem (String type){
 		Random random = new Random();
 	
@@ -294,6 +317,13 @@ public class ObjectFactory {
 	}
 
 
+	/**
+	 * Create a new projectile from an <code>AbstractWeapon</code> and a <code>JSONObject</code> parent.
+	 * 
+	 * @param pwner The owning weapon
+	 * @param parent The parent JSON object (typically a weapon specified in the config file)
+	 * @return A Projectile
+	 */
 	public static Projectile newProjectile(AbstractWeapon pwner, JSONObject parent) {
 
 		try {
@@ -317,6 +347,13 @@ public class ObjectFactory {
 	}
 
 
+	/**
+	 * Create a new portal.
+	 * 
+	 * @param mode The portal mode
+	 * @param position The position
+	 * @return A Portal
+	 */
 	public static Portal newPortal(Mode mode, Point position) {
 		try {
 			JSONObject portal = config.getJSONObject("portal");

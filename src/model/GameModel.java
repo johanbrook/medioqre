@@ -205,7 +205,6 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 		List<CollidableObject> items = ObjectFactory.newItemsForWave(this.currentWave);
 		
 		log("Items received");
-		log(items);
 		
 		for(CollidableObject item : items) {
 			item.addReceiver(this);
@@ -224,7 +223,6 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 		List<Enemy> tempEnemies = ObjectFactory.newEnemiesForWave(this.currentWave);
 
 		log("Enemies received");
-		log(tempEnemies);
 
 		for(Enemy temp : tempEnemies) {
 			temp.addReceiver(this);
