@@ -1,0 +1,12 @@
+<target name="javadocgenerate">
+        <javadoc packagenames="uk.ac.ed.inf.sdp2012.group7.*"
+            sourcepath="src"
+            destdir="../pcdoc"
+            author="true"
+            version="false"
+            windowtitle="Group 7 PC code">
+        </javadoc>
+        <exec executable="/bin/bash">
+            <arg value="publish.sh"/>
+        </exec>
+    </target>
