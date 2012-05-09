@@ -68,8 +68,8 @@ public class TileMapEditor extends JFrame implements TileSelectorListener {
 	private JMenuItem mntmSaveAs;
 
 	private TileCanvas tileCanvas;
-
 	private TileSelector	tileSelector;
+	private TileInspector tileInspector;
 
 	public static void main(String[] args)
 	{
@@ -362,7 +362,7 @@ public class TileMapEditor extends JFrame implements TileSelectorListener {
 		splitPane_1.setRightComponent(this.tileSelector);
 
 		// Creating tile inspector
-		TileInspector tileInspector = new TileInspector();
+		tileInspector = new TileInspector();
 		tileInspector.setMaximumSize(new Dimension(100, 32767));
 
 		// Adding tile inspector and inne split pane
@@ -380,7 +380,7 @@ public class TileMapEditor extends JFrame implements TileSelectorListener {
 			public void componentResized(ComponentEvent e)
 			{
 				((JSplitPane) e.getComponent()).setDividerLocation(e
-						.getComponent().getWidth() - 200);
+						.getComponent().getWidth() - 220);
 			}
 
 			@Override
@@ -482,6 +482,7 @@ public class TileMapEditor extends JFrame implements TileSelectorListener {
 	public void didSelectTile(Tile selectedTile)
 	{
 		this.tileCanvas.didSelectTile(selectedTile);
+		this.tileInspector.setTile(selectedTile);
 	}
 
 }
