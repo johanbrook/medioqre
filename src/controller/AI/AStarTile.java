@@ -1,4 +1,4 @@
-package controller.AI;
+package controller.ai;
 
 import java.util.ArrayList;
 import java.util.List;
