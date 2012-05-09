@@ -99,6 +99,11 @@ public abstract class AbstractWeapon {
 	 public void resetCooldown(){
 		 this.cooldown = this.fireInterval;
 	 }
+	 
+	 public void updateCooldown(double dt){
+		 if (this.cooldown > 0)
+		 this.cooldown -=dt;
+	 }
 	
 	
 	@Override
