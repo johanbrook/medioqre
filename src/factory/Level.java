@@ -63,13 +63,13 @@ public class Level implements JSONSerializable {
 					
 						this.configFiles.put(configKey, configFile.getString(configKey));
 						configValue = ResourceLoader.parseJSONFromPath(configFile.getString(configKey));
+						log("Loading "+configKey+ " file from "+configFile.get(configKey)+" ...");
 					}
 					else {
 						configValue = configFile.get(configKey);
 					}
 					
 					this.config.put(configKey, configValue);
-					log("Loading "+configKey+ " file from "+configFile.getString(configKey)+" ...");
 					
 				} catch (JSONException e) {
 					err("Couldn't parse nested JSON from path "+configKey);
