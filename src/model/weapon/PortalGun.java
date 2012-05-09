@@ -19,8 +19,8 @@ public class PortalGun extends AbstractWeapon {
 	
 	private Mode mode;
 	
-	public PortalGun(AbstractCharacter owner, int ammo, double ammoMultiplier) {
-		super(owner, ammo, ammoMultiplier);
+	public PortalGun(AbstractCharacter owner, int ammo, double ammoMultiplier, double fireInterval) {
+		super(owner, ammo, ammoMultiplier, fireInterval);
 		this.mode = Mode.BLUE;
 	}
 	

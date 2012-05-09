@@ -13,8 +13,8 @@ public class Grenade extends AbstractWeapon {
 	private Projectile projectile;
 	private int radius, splashDamageFactor;
 	
-	public Grenade(AbstractCharacter owner, int ammo, double ammoMultiplier) {
-		super(owner, ammo, ammoMultiplier);
+	public Grenade(AbstractCharacter owner, int ammo, double ammoMultiplier, double fireInterval) {
+		super(owner, ammo, ammoMultiplier, fireInterval);
 	}
 	
 
