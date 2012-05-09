@@ -196,10 +196,8 @@ public class ObjectFactory {
 
 				JSONObject weaponObj = enemy.getJSONObject("weapon");
 
-				AbstractWeapon melee = createWeaponFromString(
-						weaponObj.getString("type"),
-						new Object[] { e, weaponObj.getInt("ammo"),
-								weaponObj.getDouble("ammoMultiplier") });
+				AbstractWeapon melee = createWeaponFromString(weaponObj.getString("type"), new Object[]{e, weaponObj.getInt("ammo"),
+					weaponObj.getDouble("ammoMultiplier"), weaponObj.getDouble("fireInterval")});
 
 				Projectile projectile = newProjectile(melee, weaponObj);
 
@@ -317,12 +315,11 @@ public class ObjectFactory {
 			for (int i = 0; i < weapons.length(); i++) {
 				JSONObject wp = weapons.getJSONObject(i);
 
-				AbstractWeapon weapon = createWeaponFromString(
-						wp.getString("type"),
-						new Object[] { owner, wp.getInt("ammo"),
-								wp.getDouble("ammoMultiplier") });
-
-				if (weapon == null) {
+				AbstractWeapon weapon = createWeaponFromString(wp.getString("type"),
+										new Object[] {owner, wp.getInt("ammo"), wp.getDouble("ammoMultiplier"), wp.getDouble("fireInterval")}
+										);
+				
+				if(weapon == null) {
 					continue;
 				}
 
@@ -509,13 +506,8 @@ public class ObjectFactory {
 	 *            The parameters to send to the constructor
 	 * @return A 'type' instance with the type AbstractWeapon
 	 */
-	public static AbstractWeapon createWeaponFromString(String type,
-			Object[] objectParams)
-	{
-		Object obj = createObjectFromString(
-				"model.weapon." + type,
-				new Class[] { AbstractCharacter.class, int.class, double.class },
-				objectParams);
+	public static AbstractWeapon createWeaponFromString(String type, Object[] objectParams) {
+		Object obj = createObjectFromString("model.weapon."+type, new Class[]{AbstractCharacter.class, int.class, double.class, double.class}, objectParams);
 
 		return (AbstractWeapon) obj;
 	}

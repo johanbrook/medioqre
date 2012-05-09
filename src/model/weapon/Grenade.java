@@ -7,15 +7,14 @@
 package model.weapon;
 
 import model.character.AbstractCharacter;
-import model.weapon.Projectile.Range;
 
 public class Grenade extends AbstractWeapon {
 
 	private Projectile projectile;
 	private int radius, splashDamageFactor;
 	
-	public Grenade(AbstractCharacter owner, int ammo, double ammoMultiplier) {
-		super(owner, ammo, ammoMultiplier);
+	public Grenade(AbstractCharacter owner, int ammo, double ammoMultiplier, double fireInterval) {
+		super(owner, ammo, ammoMultiplier, fireInterval);
 	}
 	
 
@@ -43,18 +42,34 @@ public class Grenade extends AbstractWeapon {
 		this.projectile = projectile;
 	}
 
+	/**
+	 * Set radius for splash damage.
+	 * @param radius 
+	 */
 	public void setRadius(int radius){
 		this.radius = radius;
 	}
 
+	/**
+	 * get the splash range
+	 * @return the splash range
+	 */
 	public int getRadius() {
 		return this.radius;
 	}
 	
+	/**
+	 * set the factor splash damage. Splash damage 2 means half the weapon damage is done in radius around collision
+	 * @param splashDamamageFactor
+	 */
 	public void setSplashDamageFactor(int splashDamamageFactor){
 		this.splashDamageFactor = splashDamamageFactor;
 	}
 	
+	/**
+	 * get the splash damage factor
+	 * @return the splash damage factor
+	 */
 	public int getSplashDamageFactor(){
 		return this.splashDamageFactor;
 	}

@@ -17,16 +17,20 @@ public abstract class AbstractWeapon {
 	private AbstractCharacter owner;
 	private double ammoMultiplier;
 
+	private double fireInterval, cooldown;
+
 	/**
 	 * Create a new weapon with an owner and initial ammo.
 	 * 
 	 * @param owner The owner
 	 * @param initialAmmo The ammo
 	 */
-	public AbstractWeapon(AbstractCharacter owner, int initialAmmo, double ammoMultiplier) {
+	public AbstractWeapon(AbstractCharacter owner, int initialAmmo, double ammoMultiplier, double fireInterval) {
 		this.ammo = initialAmmo;
 		this.owner = owner;
 		this.ammoMultiplier = ammoMultiplier;
+		this.fireInterval = fireInterval;
+		this.cooldown = 0;
 	}
 
 	/**
@@ -64,20 +68,48 @@ public abstract class AbstractWeapon {
 	public Projectile fire() {
 		Projectile p = this.createProjectile();
 
-		if (this.ammo != 0){
-			if(this.ammo != -1)
-				this.ammo--;
+		if (!inCooldown()){
 			
-			EventBus.INSTANCE.publish(new Event(Property.FIRED_WEAPON_SUCCESS, p));
-			return p;
+			if (this.ammo != 0){
+				if(this.ammo != -1)
+					this.ammo--;
+
+				EventBus.INSTANCE.publish(new Event(Property.FIRED_WEAPON_SUCCESS, p));
+				resetCooldown();
+				return p;
+			}
+
+			else {
+				EventBus.INSTANCE.publish(new Event(Property.FIRED_WEAPON_FAIL, p));
+				return null;
+			}
 		}
 		else {
 			EventBus.INSTANCE.publish(new Event(Property.FIRED_WEAPON_FAIL, p));
 			return null;
 		}
+
 	}
-	
-	
+
+	/**
+	 * subtracts dt from the current cooldown, if cooldown is zero or below, resets the cooldown and returns false, else returns true.
+	 * @param dt
+	 * @return
+	 */
+	public boolean inCooldown(){
+		return this.cooldown > 0;
+	}
+
+	public void resetCooldown(){
+		this.cooldown = this.fireInterval;
+	}
+
+	public void updateCooldown(double dt){
+		if (this.cooldown > 0)
+			this.cooldown -=dt;
+	}
+
+
 	@Override
 	public String toString() {
 		return "["+this.getClass().getSimpleName() + "[owner:"+this.owner.getClass().getSimpleName()+"] [ammo:"+this.ammo+"]]";
@@ -90,15 +122,15 @@ public abstract class AbstractWeapon {
 	 * @return The projectile.
 	 */
 	public abstract Projectile createProjectile();
-	
-	
+
+
 	/**
 	 * Get the associated projectile from this weapon.
 	 * 
 	 * @return The projectile
 	 */
 	public abstract Projectile getProjectile();
-	
+
 	/**
 	 * Set the associated projectile for this weapon.
 	 * 
@@ -120,6 +152,22 @@ public abstract class AbstractWeapon {
 	 */
 	public void setammoMultiplier(double ammoMultiplier) {
 		this.ammoMultiplier = ammoMultiplier;
+	}
+	
+	/**
+	 * Set the fireInterval of this weapon. Lestt fireIntervall means faster firerate.
+	 * @param fireInterval
+	 */
+	public void setFireInterval(double fireInterval){
+		this.fireInterval = fireInterval;
+	}
+	
+	/**
+	 * get the fireInterval of this weapon
+	 * @return the fireInterval of this weapon
+	 */
+	public double getFireInterval (){
+		return this.fireInterval;
 	}
 
 }

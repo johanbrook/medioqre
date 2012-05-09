@@ -5,6 +5,7 @@
 		"type": "Melee",
 		"ammo": -1,
 		"ammoMultiplier": 0,
+		"fireInterval": 5,
 		"slot": 3,
 		"projectile": {
 			"damage": 10,

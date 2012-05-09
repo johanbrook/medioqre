@@ -36,7 +36,7 @@ public class TestCollectableItem {
 		this.medpack = new MedPack(30, 1, 1, 10, 10);
 		this.ammocrate = new AmmoCrate(30, 1, 1, 10, 10);
 		this.player = new Player(30, new Rectangle(20, 20), new Dimension(20, 48), 0, 16);
-		AbstractWeapon[] weapons = new AbstractWeapon[] {new MachineGun(player, 300, 2), new Grenade(player, 4, 0.1), new Melee(player, -1, 0)};
+		AbstractWeapon[] weapons = new AbstractWeapon[] {new MachineGun(player, 300, 2, 2), new Grenade(player, 4, 0.1, 5), new Melee(player, -1, 0, 4)};
 		this.player.setWeaponBelt(Arrays.asList(weapons));
 		this.player.setCurrentWeapon(MachineGun.class);
 	}

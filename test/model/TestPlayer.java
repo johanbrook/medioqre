@@ -31,7 +31,7 @@ public class TestPlayer {
 	public void setUp() throws Exception {
 		this.player = new Player(30, new Rectangle(20, 20), new Dimension(20, 48), 0, 16);
 	
-		AbstractWeapon[] weapons = new AbstractWeapon[] {new MachineGun(player, 300,2), new Grenade(player, 4,0.1), new Melee(player, -1, 0)};
+		AbstractWeapon[] weapons = new AbstractWeapon[] {new MachineGun(player, 300,2, 2), new Grenade(player, 4,0.1, 5), new Melee(player, -1, 0, 4)};
 		this.player.setWeaponBelt(Arrays.asList(weapons));
 		this.player.setCurrentWeapon(MachineGun.class);
 		
@@ -96,7 +96,7 @@ public class TestPlayer {
 	
 	@Test
 	public void testSetCurrentWeapon(){
-		AbstractWeapon w = new Melee(this.player, -1, 0);
+		AbstractWeapon w = new Melee(this.player, -1, 0, 4);
 		this.player.setCurrentWeapon(Melee.class);
 		
 		assertEquals(w, this.player.getCurrentWeapon());
