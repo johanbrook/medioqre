@@ -1,6 +1,6 @@
 {
 	"initialNumberOfEnemies": 5,
-	"tilesheet": "tiles.tilesheet",
+	"tilesheet": "barberset.tilesheet",
 	"levelbitmap": "test2.png",
 	"width": 1000,
 	"height": 1000
