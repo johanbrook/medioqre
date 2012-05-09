@@ -124,8 +124,8 @@ public class ViewController implements IEventHandler, GLEventListener {
 						.loadTileMapFromResources("test_lvl.png");
 				this.tilemap.setTileSheet(ResourceLoader
 						.loadTileSheetFromResource("barberset.tilesheet"));
-				this.tilemap.setViewPortSize(new Size(48 * 12, 48 * 20));
-				this.tilemap.setTileSize(new Size(48, 48));
+				this.tilemap.setViewPortSize(new Size(32 * 12, 32 * 20));
+				this.tilemap.setTileSize(new Size(32, 32));
 
 				this.screen.addDrawableToLayer(this.tilemap, 0);
 
