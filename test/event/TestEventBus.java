@@ -34,7 +34,7 @@ public class TestEventBus {
 	public void setUp() throws Exception {
 		this.handler = new Subscriber();
 		this.publisher = new Player(30, new Rectangle(20, 20), new Dimension(20, 48), 0, 16);
-		AbstractWeapon[] weapons = new AbstractWeapon[] {new Melee(this.publisher, -1, 0)};
+		AbstractWeapon[] weapons = new AbstractWeapon[] {new Melee(this.publisher, -1, 0, 4)};
 		this.publisher.setWeaponBelt(Arrays.asList(weapons));
 		
 		EventBus.INSTANCE.register(this.handler);
