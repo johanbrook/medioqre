@@ -1,4 +1,4 @@
-package launcher;
+package datamanagement;
 
 import java.util.prefs.*;
 
