@@ -1,67 +1,69 @@
-[
-	{
-		"type": "MachineGun",
-		"ammo": 300,
-		"ammoMultiplier": 2,
-		"slot": 1,
-		"projectile": {
-			"damage": 15,
-			"range": "FAR_RANGE",
-			"speed": 50,
-			"bounds": {
-				"height": 10,
-				"width": 10,
+{
+	"weapons": [
+		{
+			"type": "MachineGun",
+			"ammo": 300,
+			"ammoMultiplier": 2,
+			"slot": 1,
+			"projectile": {
+				"damage": 15,
+				"range": "FAR_RANGE",
+				"speed": 50,
+				"bounds": {
+					"height": 10,
+					"width": 10
+				}
 			}
-		}
-	},
+		},
 	
-	{
-		"type": "Grenade",
-		"radius": 70,
-		"ammoMultiplier": 0.1,
-		"splashDamageFactor": 2,
-		"ammo": 4,
-		"slot": 2,
-		"projectile": {
-			"damage": 75,
-			"range": "MEDIUM_RANGE",
-			"speed": 30,
-			"bounds": {
-				"height": 20,
-				"width": 20,
+		{
+			"type": "Grenade",
+			"radius": 70,
+			"ammoMultiplier": 0.1,
+			"splashDamageFactor": 2,
+			"ammo": 4,
+			"slot": 2,
+			"projectile": {
+				"damage": 75,
+				"range": "MEDIUM_RANGE",
+				"speed": 30,
+				"bounds": {
+					"height": 20,
+					"width": 20
+				}
 			}
-		}
-	},
+		},
 	
-	{
-		"type": "Melee",
-		"ammo": -1,
-		"ammoMultiplier": 0,
-		"slot": 3,
-		"projectile": {
-			"damage": 100,
-			"range":  "SHORT_RANGE",
-			"speed": 100,
-			"bounds": {
-				"height": 20,
-				"width": 20,
+		{
+			"type": "Melee",
+			"ammo": -1,
+			"ammoMultiplier": 0,
+			"slot": 3,
+			"projectile": {
+				"damage": 100,
+				"range":  "SHORT_RANGE",
+				"speed": 100,
+				"bounds": {
+					"height": 20,
+					"width": 20
+				}
 			}
-		}
-	},
+		},
 	
-	{
-		"type": "PortalGun",
-		"ammo": -1,
-		"ammoMultiplier": 0,
-		"slot": 4,
-		"projectile": {
-			"damage": 0,
-			"range":  "SHORT_RANGE",
-			"speed": 100,
-			"bounds": {
-				"height": 20,
-				"width": 20,
+		{
+			"type": "PortalGun",
+			"ammo": -1,
+			"ammoMultiplier": 0,
+			"slot": 4,
+			"projectile": {
+				"damage": 0,
+				"range":  "SHORT_RANGE",
+				"speed": 100,
+				"bounds": {
+					"height": 20,
+					"width": 20
+				}
 			}
 		}
-	}
-]
+	]
+}

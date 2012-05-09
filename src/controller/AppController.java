@@ -57,19 +57,23 @@ public class AppController implements Runnable{
 		
 		this.audio = AudioController.getInstance();
 		audio.setGame(game);
+	}
+	
+	
+	public void init() {
+		Level lev = new Level("gamedata/config.json");
+		ObjectFactory.setLevel(lev);
 		
 		try {
-			String loggingFormat = ResourceLoader.parseJSONFromPath("gamedata/world.json").getString("loggingFormat");
+			log(lev.getConfig());
+			String loggingFormat = lev.getConfig().getString("loggingFormat");
 			tools.Logger.getInstance().setTimestampFormat(loggingFormat);
 			
 		} catch (JSONException e) {
 			err("Couldn't load timestamp format from file! "+e.getMessage());
 		}
-	}
-	
-	
-	public void init() {
-		ObjectFactory.setLevel(new Level());
+		
+		
 		this.game.newGame();
 		this.game.newWave();
 		new Thread(this).start();

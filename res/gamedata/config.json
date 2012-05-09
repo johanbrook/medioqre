@@ -1,0 +1,19 @@
+{
+	"portal": {
+		"bounds": {
+			"width": 20,
+			"height": 20,
+			"boxWidth": 20,
+			"boxHeight": 20,
+			"offsetX": 0,
+			"offsetY": 0
+		}
+	},
+	
+	"loggingFormat": 	"H:m:s",
+	"itemSpawnChance": 	10,
+	"playerConfig": 	"gamedata/player.json",
+	"enemyConfig": 		"gamedata/enemy.json",
+	"itemConfig": 		"gamedata/items.json",
+	"weaponConfig": 	"gamedata/weapons.json"
+}

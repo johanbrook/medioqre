@@ -238,7 +238,7 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 
 	private void initPlayer() {
 		this.player = ObjectFactory.newPlayer();
-		this.player.setCurrentWeapon(0);
+		
 		this.objects.add(this.player);
 		this.player.addReceiver(this);
 	}

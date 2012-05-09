@@ -1,21 +1,23 @@
-[	
-	{
-		"type": "MedPack",
-		"amount": 20,
-		"amountMultiplier": 2,
-		"bounds": {
-			"width": 16,
-			"height": 16
-		}
-	},
+{
+	"items": [	
+		{
+			"type": "MedPack",
+			"amount": 20,
+			"amountMultiplier": 2,
+			"bounds": {
+				"width": 16,
+				"height": 16
+			}
+		},
 	
-	{
-		"type": "AmmoCrate",
-		"amount": 20,
-		"amountMultiplier": 2,
-		"bounds": {
-			"width": 16,
-			"height": 16
+		{
+			"type": "AmmoCrate",
+			"amount": 20,
+			"amountMultiplier": 2,
+			"bounds": {
+				"width": 16,
+				"height": 16
+			}
 		}
-	}
-]
+	]
+}

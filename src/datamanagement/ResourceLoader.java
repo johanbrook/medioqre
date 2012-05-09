@@ -29,15 +29,16 @@ public class ResourceLoader {
 			return new JSONObject(json);
 		}
 		catch(JSONException e) {
-			err("Couldn't parse JSON from file! "+e.getMessage());
+			err("Couldn't parse JSON from file! "+e);
+			e.printStackTrace();
 		}
 		
 		return null;
 	}
 	
-	public static String loadJSONStringFromStream(InputStream s) {
+	public static String loadJSONStringFromStream(InputStream s) throws FileNotFoundException {
 		if(s == null) {
-			throw new IllegalArgumentException("Input stream can't be null");
+			throw new FileNotFoundException("Input stream is null, resource couldn't be found");
 		}
 		
 		try {
@@ -58,7 +59,6 @@ public class ResourceLoader {
 			
 		} catch (FileNotFoundException e) {
 			err(e.getMessage());
-			e.printStackTrace();
 		}
 		
 		return null;
@@ -66,8 +66,14 @@ public class ResourceLoader {
 	
 	
 	public static String loadJSONStringFromResources(String resource) {
+		try {
+			return loadJSONStringFromStream(ClassLoader.getSystemResourceAsStream(resource));
+			
+		} catch (FileNotFoundException e) {
+			err(e.getMessage());
+		}
 		
-		return loadJSONStringFromStream(ClassLoader.getSystemResourceAsStream(resource));		
+		return null;
 	}
 	
 	

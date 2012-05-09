@@ -30,33 +30,35 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import tilemap.TileMap;
-import datamanagement.ResourceLoader;
 
 public class ObjectFactory {
 
 	private static Level level;
+	
 	private static JSONObject player; 
 	private static JSONObject enemy;
 	private static JSONArray weapons;
 	private static JSONArray items;
-	private static JSONObject world;
-
-	private static JSONObject levelData;
+	
+	private static JSONObject config;
 
 
 	private static void initJSONObjects() {
+		config = level.getConfig();
+		
 		try {
-			player = new JSONObject(ResourceLoader.loadJSONStringFromResources(level.getPlayerData()));
-			enemy = new JSONObject(ResourceLoader.loadJSONStringFromResources(level.getEnemyData()));
-			weapons = new JSONArray(ResourceLoader.loadJSONStringFromResources(level.getWeaponData()));
-			items = new JSONArray(ResourceLoader.loadJSONStringFromResources(level.getItemData()));
-			world = new JSONObject(ResourceLoader.loadJSONStringFromResources(level.getWorldData()));
-
-			levelData = new JSONObject(ResourceLoader.loadJSONStringFromResources(level.getLevelData()));
-
+			
+			player = config.getJSONObject("playerConfig");
+			enemy = config.getJSONObject("enemyConfig");
+			items = config.getJSONObject("itemConfig").getJSONArray("items");
+			weapons = config.getJSONObject("weaponConfig").getJSONArray("weapons");
+			
+			log("Config initialized");
+			
 		} catch (JSONException e) {
-			err("Couldn't initialize all JSON objects: "+e.getMessage());
+			err("Couldn't initialize all config files: "+e.getMessage());
 		}
+		
 	}
 
 	/**
@@ -98,11 +100,17 @@ public class ObjectFactory {
 
 			p.setHealth(player.getInt("health"));
 			p.setWeaponBelt(newWeaponBelt(p));
-
+			
+			Class startingWeapon = Class.forName("model.weapon."+player.getString("startingWeapon"));
+			p.setCurrentWeapon(startingWeapon);
+			
 			return p;
 
 		} catch (JSONException e) {
 			err("Couldn't initialize player from JSON object");
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			err("Couldn't find starting weapon class: "+e);
 			e.printStackTrace();
 		}
 		return null;
@@ -140,7 +148,7 @@ public class ObjectFactory {
 		int enemiesToAdd = math.Util.fib(waveNumber);
 
 		try {
-
+			
 			for(int i = 0; i < enemiesToAdd; i++) {
 
 				Enemy e = newEnemy();
@@ -171,10 +179,12 @@ public class ObjectFactory {
 		Random random = new Random();
 		
 		try {
+			
 			for(int i = 0; i < items.length(); i++) {
 				
-				int x = random.nextInt(levelData.getInt("width"));
-				int y = random.nextInt(levelData.getInt("height"));
+				//TODO Fix these hardcoded measures!
+				int x = random.nextInt(1000);
+				int y = random.nextInt(1000);
 				
 				JSONObject it = items.getJSONObject(i);
 				JSONObject bounds = it.getJSONObject("bounds");
@@ -204,8 +214,10 @@ public class ObjectFactory {
 		for (int i = 0; i < items.length(); i++) {
 			try {
 				if (items.getJSONObject(i).getString("type").equals(type)){
-					int x = random.nextInt(levelData.getInt("width"));
-					int y = random.nextInt(levelData.getInt("height"));
+					
+					//TODO Fix these hardcoded measures!
+					int x = random.nextInt(1000);
+					int y = random.nextInt(1000);
 					
 					JSONObject it = items.getJSONObject(i);
 					JSONObject bounds = it.getJSONObject("bounds");
@@ -307,7 +319,7 @@ public class ObjectFactory {
 
 	public static Portal newPortal(Mode mode, Point position) {
 		try {
-			JSONObject portal = world.getJSONObject("portal");
+			JSONObject portal = config.getJSONObject("portal");
 			JSONObject bounds = portal.getJSONObject("bounds");
 
 			Portal p = new Portal(	mode,
@@ -351,7 +363,7 @@ public class ObjectFactory {
 	
 	public static int getItemSpawnChance (){
 		try {
-			return world.getInt("itemSpawnChance");
+			return config.getInt("itemSpawnChance");
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
