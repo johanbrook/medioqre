@@ -3,7 +3,7 @@
 		"type": "MachineGun",
 		"ammo": 300,
 		"ammoMultiplier": 2,
-		"fireInterval": 2,
+		"fireInterval": 0.5,
 		"slot": 1,
 		"projectile": {
 			"damage": 15,
