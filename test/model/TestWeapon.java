@@ -74,6 +74,7 @@ public class TestWeapon {
 	
 	@Test
 	public void testAmmo(){
+		this.grenade.setFireInterval(0);
 		this.grenade.fire();
 		this.grenade.fire();
 		this.grenade.fire();
@@ -81,6 +82,18 @@ public class TestWeapon {
 		
 		assertNull(this.grenade.fire());
 		assertTrue(this.grenade.getCurrentAmmo() == 0);
+	}
+	
+	@Test
+	public void testFireInterval(){
+		assertNotNull(this.melee.fire());
+		assertNull(this.melee.fire());
+		
+		this.melee.setFireInterval(0);
+		this.melee.resetCooldown();
+		assertNotNull(this.melee.fire());
+		assertNotNull(this.melee.fire());
+		
 	}
 	
 
