@@ -45,6 +45,8 @@ import tilemap.TileMap;
  */
 public class ObjectFactory {
 
+	
+	
 	private static Level level;
 	
 	// Model
@@ -56,6 +58,8 @@ public class ObjectFactory {
 	
 	private static JSONObject config;
 
+	private static final int SPAWN_MARGIN = 100; 
+	
 	// View
 	private static JSONArray	actors;
 	private static JSONObject	tileMap;
@@ -261,6 +265,12 @@ public class ObjectFactory {
 				melee.setProjectile(projectile);
 				e.setCurrentWeapon(melee);
 
+				Random random = new Random();
+				
+				int x =  SPAWN_MARGIN + random.nextInt(tileMapInstance.getTileMapSize().getWidth() * tileMapInstance.getTileSize().getWidth() - (2 * SPAWN_MARGIN));
+				int y =  SPAWN_MARGIN + random.nextInt(tileMapInstance.getTileMapSize().getHeight() * tileMapInstance.getTileSize().getHeight() - (2 * SPAWN_MARGIN));
+				
+				e.setPosition(x, y);
 				enemies.add(e);
 			}
 		}
@@ -287,8 +297,8 @@ public class ObjectFactory {
 			
 			for(int i = 0; i < items.length(); i++) {
 				
-				int x = random.nextInt(tileMapInstance.getSize().getWidth());
-				int y = random.nextInt(tileMapInstance.getSize().getHeight());
+				int x = SPAWN_MARGIN + random.nextInt(tileMapInstance.getTileMapSize().getWidth() * tileMapInstance.getTileSize().getWidth() - (2 * SPAWN_MARGIN));
+				int y = SPAWN_MARGIN + random.nextInt(tileMapInstance.getTileMapSize().getHeight() * tileMapInstance.getTileSize().getHeight() - (2 * SPAWN_MARGIN));
 				
 				JSONObject it = items.getJSONObject(i);
 				JSONObject bounds = it.getJSONObject("bounds");
@@ -328,8 +338,8 @@ public class ObjectFactory {
 			try {
 				if (items.getJSONObject(i).getString("type").equals(type)){
 					
-					int x = random.nextInt(tileMapInstance.getSize().getWidth());
-					int y = random.nextInt(tileMapInstance.getSize().getHeight());
+					int x = random.nextInt(tileMapInstance.getTileMapSize().getWidth() * tileMapInstance.getTileSize().getWidth());
+					int y = random.nextInt(tileMapInstance.getTileMapSize().getHeight() * tileMapInstance.getTileSize().getHeight());
 					
 					JSONObject it = items.getJSONObject(i);
 					JSONObject bounds = it.getJSONObject("bounds");
