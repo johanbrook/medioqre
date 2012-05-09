@@ -50,7 +50,7 @@ public class TileSelector extends GLCanvas implements GLEventListener, TileSelec
 		super(glC);
 		this.addGLEventListener(this);
 
-		FPSAnimator animator = new FPSAnimator(this, 2);
+		FPSAnimator animator = new FPSAnimator(this, 30);
 		animator.start();
 
 		this.addMouseListener(new MouseListener() {
