@@ -1,5 +1,6 @@
 package controller;
 
+import datamanagement.PreferenceLoader;
 import model.Entity;
 import model.IGameModel;
 import model.character.Enemy;
@@ -85,7 +86,7 @@ public class AudioController implements IEventHandler {
 		soundSys.newSource(false, "playerWalk", lib.getFXSound("walk"),
 				"walk.wav", false, 1f, 1f, 1.0f,
 				SoundSystemConfig.ATTENUATION_NONE, 0.5f);
-		soundSys.setVolume("playerWalk", AudioConstants.getFXVolume());
+		soundSys.setVolume("playerWalk", PreferenceLoader.getFloat("FX_VOLUME",AudioConstants.standardFXVolume));
 		soundSys.play("playerWalk");
 	}
 
@@ -123,14 +124,14 @@ public class AudioController implements IEventHandler {
 	 *            weapon type (Class)
 	 */
 	public void playPlayerWeaponSound(Class<?> wType) {
-		if (AudioConstants.getFXVolume() != 0.0) {
+		if (PreferenceLoader.getFloat("FX_VOLUME",AudioConstants.standardFXVolume) != 0.0) {
 
 			soundSys.newSource(false, "playerWeaponSound",
 					lib.getWeaponSound(wType), lib.getWeaponId(wType), false,
 					1f, 1f, 1.0f, SoundSystemConfig.ATTENUATION_NONE, 0.0f);
 
 			soundSys.setVolume("playerWeaponSound",
-					AudioConstants.getFXVolume());
+					PreferenceLoader.getFloat("FX_VOLUME",AudioConstants.standardFXVolume));
 
 			soundSys.play("playerWeaponSound");
 		}
@@ -171,13 +172,7 @@ public class AudioController implements IEventHandler {
 
 				// Was hit
 				if (evt.getProperty() == Event.Property.WAS_DAMAGED) {
-					float f = (float) (game.getPlayer().getHealth() / playerMaxHealth);
-					f = (float) (f * 0.5 + 0.5);
-
-					if (f > 1)
-						f = 1f;
-
-					soundSys.setPitch("BGM", f);
+					pitchBGM();
 				}
 
 			}
@@ -219,13 +214,7 @@ public class AudioController implements IEventHandler {
 
 		// Pickup Items
 		if (evt.getProperty() == Event.Property.PICKED_UP_ITEM) {
-			float f = (float) (game.getPlayer().getHealth() / playerMaxHealth);
-			f = (float) (f * 0.5 + 0.5);
-
-			if (f > 1)
-				f = 1f;
-
-			soundSys.setPitch("BGM", f);
+			pitchBGM();
 		}
 	}
 
@@ -235,7 +224,7 @@ public class AudioController implements IEventHandler {
 	private void playBGM() {
 		soundSys.backgroundMusic("BGM", lib.getBGMURL(bgmID),
 				lib.getBGMId(bgmID), true);
-		soundSys.setVolume("BGM", AudioConstants.getBGMVolume());
+		soundSys.setVolume("BGM", PreferenceLoader.getFloat("BGM_VOLUME",AudioConstants.standardBGMVolume));
 		soundSys.play("BGM");
 	}
 
@@ -285,6 +274,19 @@ public class AudioController implements IEventHandler {
 	 */
 	public String soundCode(Entity e) {
 		return "sc_" + e.hashCode();
+	}
+	
+	private void pitchBGM(){
+		
+		if (PreferenceLoader.getBoolean("PITCH_D_BGM_WHEN_HURT", false)){
+			float f = (float) (game.getPlayer().getHealth() / playerMaxHealth);
+			f = (float) (f * 0.5 + 0.5);
+
+			if (f > 1)
+				f = 1f;
+
+			soundSys.setPitch("BGM", f);
+		}
 	}
 
 	/**

@@ -18,6 +18,8 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 
+import datamanagement.PreferenceLoader;
+
 import audio.AudioConstants;
 
 public class OptionsPanel extends JPanel {
@@ -55,19 +57,19 @@ public class OptionsPanel extends JPanel {
 
 		JPanel soundPanel = new JPanel();
 		soundPanel.setBackground(Color.DARK_GRAY);
-		soundPanel.setBounds(230, 30, 380, 220);
+		soundPanel.setBounds(230, 30, 380, 280);
 		add(soundPanel);
 		soundPanel.setLayout(null);
 
 		JSlider musicSlider = new JSlider();
-		musicSlider.setValue((int) (AudioConstants.getBGMVolume() * 10));
+		musicSlider.setValue((int) (PreferenceLoader.getFloat("BGM_VOLUME",AudioConstants.standardBGMVolume) * 10));
 		musicSlider.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				JSlider temp = (JSlider) e.getSource();
-				AudioConstants.setBGMVolume((float) (temp.getValue() / 10.0));
+				PreferenceLoader.putFloat("BGM_VOLUME",((float) (temp.getValue() / 10.0)));
 			}
 		});
-		musicSlider.setBounds(20, 93, 340, 38);
+		musicSlider.setBounds(30, 153, 340, 38);
 		musicSlider.setPaintLabels(true);
 		musicSlider.setMinorTickSpacing(1);
 		musicSlider.setMaximum(10);
@@ -76,15 +78,15 @@ public class OptionsPanel extends JPanel {
 		soundPanel.add(musicSlider);
 
 		JSlider fxSlider = new JSlider();
-		fxSlider.setValue((int) (AudioConstants.getFXVolume() * 10));
+		fxSlider.setValue((int) (PreferenceLoader.getFloat("FX_VOLUME",AudioConstants.standardFXVolume) * 10));
 		fxSlider.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				JSlider fxTemp = (JSlider) e.getSource();
-				AudioConstants.setFXVolume((float) (fxTemp.getValue() / 10.0));
+				PreferenceLoader.putFloat("FX_VOLUME",((float) (fxTemp.getValue() / 10.0)));
 
 			}
 		});
-		fxSlider.setBounds(20, 156, 340, 38);
+		fxSlider.setBounds(30, 216, 340, 38);
 		fxSlider.setPaintTicks(true);
 		fxSlider.setPaintLabels(true);
 		fxSlider.setMinorTickSpacing(1);
@@ -93,14 +95,14 @@ public class OptionsPanel extends JPanel {
 		soundPanel.add(fxSlider);
 
 		JLabel musicVolumeLabel = new JLabel("Music Volume");
-		musicVolumeLabel.setBounds(20, 80, 340, 16);
+		musicVolumeLabel.setBounds(30, 140, 340, 16);
 		musicVolumeLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		musicVolumeLabel.setForeground(Color.WHITE);
 		musicVolumeLabel.setOpaque(false);
 		soundPanel.add(musicVolumeLabel);
 		
 		JLabel lblFxVolume = new JLabel("FX Volume");
-		lblFxVolume.setBounds(20, 143, 340, 16);
+		lblFxVolume.setBounds(30, 203, 340, 16);
 		lblFxVolume.setHorizontalAlignment(SwingConstants.CENTER);
 		lblFxVolume.setForeground(Color.WHITE);
 		lblFxVolume.setOpaque(false);
@@ -112,6 +114,20 @@ public class OptionsPanel extends JPanel {
 		lblSound.setBounds(30, 20, 200, 24);
 		lblSound.setOpaque(false);
 		soundPanel.add(lblSound);
+		
+		JCheckBox pitchDownOnHarm = new JCheckBox("Pitch music when hurt");
+		pitchDownOnHarm.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent i) {
+				JCheckBox e = (JCheckBox)i.getSource();
+				PreferenceLoader.putBoolean("PITCH_D_BGM_WHEN_HURT",e.isSelected());
+			}
+		});
+		pitchDownOnHarm.setSelected(PreferenceLoader.getBoolean("PITCH_D_BGM_WHEN_HURT", false));
+		pitchDownOnHarm.setBounds(30, 80, 325, 30);
+		soundPanel.add(pitchDownOnHarm);
+		pitchDownOnHarm.setOpaque(false);
+		pitchDownOnHarm.setForeground(Color.WHITE);
+		pitchDownOnHarm.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
 
 		JComboBox difficultyBox = new JComboBox();
 		difficultyBox.setModel(new DefaultComboBoxModel(new String[]{"Easy",
