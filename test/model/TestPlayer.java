@@ -54,6 +54,7 @@ public class TestPlayer {
 	@Test
 	public void testOutOfAmmo(){
 		this.player.setCurrentWeapon(Grenade.class);
+		this.player.getCurrentWeapon().setFireInterval(0);
 		this.player.attack();
 		this.player.attack();
 		this.player.attack();
