@@ -193,14 +193,27 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 			this.texture = SharedTextures.getSharedTextures().bindTexture(
 					this.textureName, canvas);
 
-			float tX1 = (float) this.rectangle.getX()
-					/ (float) texture.getWidth();
-			float tX2 = ((float) this.rectangle.getX() + (float) this.rectangle
-					.getWidth()) / (float) texture.getWidth();
-			float tY1 = (float) this.rectangle.getY()
-					/ (float) texture.getHeight();
-			float tY2 = ((float) this.rectangle.getY() + (float) this.rectangle
-					.getHeight()) / (float) texture.getHeight();
+			float tX1, tX2, tY1, tY2;
+
+			if (this.texture.getMustFlipVertically()) {
+				tX1 = (float) this.rectangle.getX()
+						/ (float) texture.getWidth();
+				tX2 = ((float) this.rectangle.getX() + (float) this.rectangle
+						.getWidth()) / (float) texture.getWidth();
+				tY1 = (float) this.rectangle.getY()
+						/ (float) texture.getHeight();
+				tY2 = ((float) this.rectangle.getY() + (float) this.rectangle
+						.getHeight()) / (float) texture.getHeight();
+			} else {
+					tX1 = (float) this.rectangle.getX()
+							/ (float) texture.getWidth();
+					tX2 = ((float) this.rectangle.getX() + (float) this.rectangle
+							.getWidth()) / (float) texture.getWidth();
+					tY1 = ((float) texture.getHeight() - (float) this.rectangle.getY())
+							/ (float) texture.getHeight();
+					tY2 = ((float) texture.getHeight() - ((float) this.rectangle.getY() + (float) this.rectangle
+							.getHeight())) / (float) texture.getHeight();
+			}
 
 			float rX1 = (float) ((2.0f * object.getX()) - (float) target
 					.getWidth()) / (float) target.getWidth();
