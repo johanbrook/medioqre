@@ -32,27 +32,17 @@ public class TestCollidableObject {
 
 	@Before
 	public void setUp() throws Exception {
-		this.obj = new Player(30, new Rectangle(20, 20), new Dimension(20, 48),
-				0, 16); // I chose Player since then the sizes would be the same
-		this.player = new Player(30, new Rectangle(20, 20), new Dimension(20,
-				48), 0, 16);
+		this.obj = new Player(30, new Rectangle(20, 20), new Dimension(20, 48), 0, 16); 
+		// I chose Player since then the sizes would be the same
+		this.player = new Player(30, new Rectangle(20, 20), new Dimension(20, 48), 0, 16);
 	}
 
 	@Test
 	public void testIsColliding() {
 
 		CollidableObject collidingObject1 = new ConcreteCollidableObject(
-				new Rectangle(10, 10, 10, 10), new Dimension(10, 10), 0, 0); // The
-																				// obj
-																				// wxh
-																				// is
-																				// 16x16,
-																				// and
-																				// the
-																				// wall
-																				// wxh
-																				// is
-																				// 10x10
+				new Rectangle(10, 10, 10, 10), new Dimension(10, 10), 0, 0); 
+		// The obj wxh is 16x16, and the wall wxh is 10x10
 
 		CollidableObject collidingObject2 = new ConcreteCollidableObject(
 				new Rectangle(15, 15, 10, 10), new Dimension(10, 10), 0, 0);
