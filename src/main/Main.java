@@ -7,9 +7,11 @@ import java.net.URL;
 import controller.AppController;
 
 import launcher.Launcher;
-import static tools.Logger.*;
 
-import launcher.Launcher;
+import org.simplericity.macify.eawt.*;
+
+import tools.ImageUtlity;
+
 import static controller.AppController.MODE;
 import static controller.AppController.PRODUCTION;
 import static controller.AppController.DEBUG;
@@ -49,12 +51,11 @@ public class Main {
 		System.setProperty("com.apple.mrj.application.apple.menu.about.name",
 				"Frank The Tank");
 
-		com.apple.eawt.Application app = com.apple.eawt.Application
-				.getApplication();
+		Application app = new DefaultApplication();
 		URL dockIconURL = Main.class
 				.getResource("/images/launcher/appicon.png");
 		Image icon = Toolkit.getDefaultToolkit().createImage(dockIconURL);
-		app.setDockIconImage(icon);
+		app.setApplicationIconImage(ImageUtlity.imageToBufferedImage(icon));
 	}
 
 	private static void windowsOptions() {
