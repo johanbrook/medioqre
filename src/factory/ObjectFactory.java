@@ -558,6 +558,8 @@ public class ObjectFactory {
 		}
 		if (newA != null) {
 			newA.setObject(collidableObject);
+			//FIXME Remove before release!
+			newA.setShowCollisionBox(true);
 		}
 
 		return newA;
