@@ -10,7 +10,7 @@
 	<classpathentry kind="lib" path="libs/CodecWav.jar"/>
 	<classpathentry kind="lib" path="libs/LibraryJavaSound.jar"/>
 	<classpathentry kind="lib" path="libs/SoundSystem.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/jogamp-macosx-universal/jar/jogl.all.jar" sourcepath="libs/jogamp-macosx-universal/jogl-java-src.zip"/>
-	<classpathentry exported="true" kind="lib" path="libs/jogamp-macosx-universal/jar/gluegen-rt.jar" sourcepath="libs/jogamp-macosx-universal/gluegen-java-src.zip"/>
+	<classpathentry exported="true" kind="lib" path="libs/jogamp-all-platforms/jogamp-all-platforms/jar/gluegen-rt.jar" sourcepath="libs/jogamp-all-platforms/jogamp-all-platforms/gluegen-java-src.zip"/>
+	<classpathentry exported="true" kind="lib" path="libs/jogamp-all-platforms/jogamp-all-platforms/jar/jogl.all.jar" sourcepath="libs/jogamp-all-platforms/jogamp-all-platforms/jogl-java-src.zip"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
