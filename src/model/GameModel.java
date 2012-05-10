@@ -387,7 +387,8 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 
 						if (!this.portalVictims.contains(t)) {
 							// Teleport
-							t.setPosition(p.getSisterPortal().getPosition());
+							p.walkIntoPortal(t);
+							
 							this.portalVictims.add(t);
 						}
 					}
