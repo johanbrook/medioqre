@@ -63,6 +63,7 @@ public class LauncherMainPanel extends JPanel implements ActionListener {
 		frank.setFocusable(false);
 		frank.setBorderPainted(false);
 		frank.setBounds(4, 117, 224, 294);
+		frank.setContentAreaFilled(false);
 		add(frank);
 
 		JButton logo = new JButton("");
@@ -71,6 +72,7 @@ public class LauncherMainPanel extends JPanel implements ActionListener {
 		logo.setFocusable(false);
 		logo.setBorderPainted(false);
 		logo.setBounds(220, 11, 392, 212);
+		logo.setContentAreaFilled(false);
 		add(logo);
 
 		JButton startButton = new JButton("");
@@ -79,6 +81,7 @@ public class LauncherMainPanel extends JPanel implements ActionListener {
 		startButton.setFocusable(false);
 		startButton.setBorderPainted(false);
 		startButton.setBounds(300, 260, 239, 26);
+		startButton.setContentAreaFilled(false);
 		add(startButton);
 
 		JButton optionsButton = new JButton("");
@@ -87,6 +90,7 @@ public class LauncherMainPanel extends JPanel implements ActionListener {
 		optionsButton.setFocusable(false);
 		optionsButton.setBorderPainted(false);
 		optionsButton.setBounds(300, 320, 239, 26);
+		optionsButton.setContentAreaFilled(false);
 		add(optionsButton);
 
 		startButton.addActionListener(new ActionListener() {
