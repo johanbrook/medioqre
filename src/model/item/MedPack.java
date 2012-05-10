@@ -12,23 +12,27 @@ import model.CollidableObject;
 import model.character.Player;
 
 /**
-*	A medical kit.
-*
-*	@author Johan
-*/
+ * A medical kit.
+ * 
+ * @author Johan
+ */
 public class MedPack extends CollidableObject implements ICollectableItem {
 
 	private int amount;
-	
+
 	/**
 	 * Create a new med pack.
 	 * 
-	 * @param amount The HP amount
-	 * @param x The x coordinate
-	 * @param y The y coordinate
+	 * @param amount
+	 *            The HP amount
+	 * @param x
+	 *            The x coordinate
+	 * @param y
+	 *            The y coordinate
 	 */
 	public MedPack(int amount, int x, int y, int width, int height) {
-		super(new Rectangle(x, y, width, height), new Dimension(width, height), 0, 0);
+		super(new Rectangle(x, y, width, height), new Dimension(width, height),
+				0, 0);
 		this.amount = amount;
 	}
 

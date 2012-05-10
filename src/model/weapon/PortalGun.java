@@ -1,8 +1,8 @@
 /**
-*	PortalGun.java
-*
-*	@author Johan
-*/
+ *	PortalGun.java
+ *
+ *	@author Johan
+ */
 
 package model.weapon;
 
@@ -12,25 +12,26 @@ import model.weapon.Projectile.Range;
 public class PortalGun extends AbstractWeapon {
 
 	private Projectile projectile;
-	
+
 	public enum Mode {
 		BLUE, ORANGE;
 	}
-	
+
 	private Mode mode;
-	
-	public PortalGun(AbstractCharacter owner, int ammo, double ammoMultiplier, double fireInterval) {
+
+	public PortalGun(AbstractCharacter owner, int ammo, double ammoMultiplier,
+			double fireInterval) {
 		super(owner, ammo, ammoMultiplier, fireInterval);
 		this.mode = Mode.BLUE;
 	}
-	
+
 	public void setMode(Mode mode) {
 		this.mode = mode;
 	}
-	
+
 	public void switchMode() {
 		this.mode = (this.mode == Mode.BLUE) ? Mode.ORANGE : Mode.BLUE;
-		System.out.println("Current portal gun mode: "+this.mode);
+		System.out.println("Current portal gun mode: " + this.mode);
 	}
 
 	public Mode getMode() {
@@ -41,12 +42,12 @@ public class PortalGun extends AbstractWeapon {
 	public Projectile getProjectile() {
 		return this.projectile;
 	}
-	
+
 	@Override
 	public Projectile createProjectile() {
 		return new Projectile(this.projectile);
 	}
-	
+
 	@Override
 	public void setProjectile(Projectile projectile) {
 		this.projectile = projectile;

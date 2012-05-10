@@ -129,7 +129,8 @@ public class AudioController implements IEventHandler {
 					lib.getWeaponSound(wType), lib.getWeaponId(wType), false,
 					1f, 1f, 1.0f, SoundSystemConfig.ATTENUATION_NONE, 0.0f);
 
-			soundSys.setVolume("playerWeaponSound", AudioConstants.getFXVolume());
+			soundSys.setVolume("playerWeaponSound",
+					AudioConstants.getFXVolume());
 
 			soundSys.play("playerWeaponSound");
 		}

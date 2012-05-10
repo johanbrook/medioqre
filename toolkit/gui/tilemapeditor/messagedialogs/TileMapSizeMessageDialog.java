@@ -28,18 +28,16 @@ public class TileMapSizeMessageDialog {
 	int index = NO_OPTION;
 	Object lock;
 
-	JFrame frame; 
-	
-	public TileMapSizeMessageDialog()
-	{
+	JFrame frame;
+
+	public TileMapSizeMessageDialog() {
 		this.initGui();
 
 	}
 
-	public int showTileMapSizeDialog()
-	{
+	public int showTileMapSizeDialog() {
 		frame.setVisible(true);
-		
+
 		while (this.frame.isShowing()) {
 			try {
 				this.wait();
@@ -48,13 +46,12 @@ public class TileMapSizeMessageDialog {
 				e.printStackTrace();
 			}
 		}
-		
-		System.out.println("Index: "+index);
+
+		System.out.println("Index: " + index);
 		return index;
 	}
 
-	private void done()
-	{
+	private void done() {
 		index = DONE_OPTION;
 
 		synchronized (this) {
@@ -62,8 +59,7 @@ public class TileMapSizeMessageDialog {
 		}
 	}
 
-	private void cancel()
-	{
+	private void cancel() {
 		index = CANCEL_OPTION;
 
 		synchronized (this) {
@@ -71,10 +67,9 @@ public class TileMapSizeMessageDialog {
 		}
 	}
 
-	private void initGui()
-	{
+	private void initGui() {
 		frame = new JFrame();
-		
+
 		frame.getContentPane().setLayout(null);
 
 		JPanel panel = new JPanel();
@@ -112,8 +107,7 @@ public class TileMapSizeMessageDialog {
 		btnDone.setBounds(119, 117, 117, 29);
 		btnDone.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent arg0)
-			{
+			public void actionPerformed(ActionEvent arg0) {
 				done();
 			}
 		});
@@ -121,8 +115,7 @@ public class TileMapSizeMessageDialog {
 
 		JButton btnCancel = new JButton("Cancel");
 		btnCancel.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e)
-			{
+			public void actionPerformed(ActionEvent e) {
 				cancel();
 			}
 		});

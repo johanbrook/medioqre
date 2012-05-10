@@ -16,146 +16,162 @@ import event.IMessageSender;
 import event.Messager;
 
 /**
- * Class for controlling a list of enemies. Using a PathFinder (implementation of the A*-algorithm), the AIController is able to calculate
- * the most accurate path between a enemy and the player. 
+ * Class for controlling a list of enemies. Using a PathFinder (implementation
+ * of the A*-algorithm), the AIController is able to calculate the most accurate
+ * path between a enemy and the player.
+ * 
  * @author jesperpersson
- *
+ * 
  */
 public class AIController implements IMessageSender, IMessageListener {
 
-	private List <AIPlayer> enemies;
+	private List<AIPlayer> enemies;
 	private PathFinder pathfinder;
 	private int width, height;
-	private Point playerPos,playerTile;
+	private Point playerPos, playerTile;
 	private Player player;
 	private Messager messager = new Messager();
 
-
-	public AIController (int rows, int columns, int width, int height){
+	public AIController(int rows, int columns, int width, int height) {
 		this.pathfinder = new PathFinder(rows, columns);
 		this.width = width;
 		this.height = height;
 		this.enemies = new CopyOnWriteArrayList<AIPlayer>();
 	}
 
-
 	@SuppressWarnings("unchecked")
 	@Override
 	public void onMessage(Event evt) {
 
-		switch(evt.getProperty()) {
-		case NEW_GAME:
-			player = ((GameModel) evt.getValue() ).getPlayer();
-//			this.pathfinder.initWalls(           ObjectFactory.getWalls()     );
-			break;
-		case NEW_WAVE:
-			this.setEnemies(((GameModel) evt.getValue()).getEnemies());
-			break;
+		switch (evt.getProperty()) {
+			case NEW_GAME :
+				player = ((GameModel) evt.getValue()).getPlayer();
+				// this.pathfinder.initWalls( ObjectFactory.getWalls() );
+				break;
+			case NEW_WAVE :
+				this.setEnemies(((GameModel) evt.getValue()).getEnemies());
+				break;
 
-		case WAS_DESTROYED:
-			this.removeEnemy((Enemy) evt.getValue());
-			break;
+			case WAS_DESTROYED :
+				this.removeEnemy((Enemy) evt.getValue());
+				break;
 		}
 	}
 
 	/**
 	 * Updates each enemy the AIController keeps track of.
-	 * @param dt Time since last update
+	 * 
+	 * @param dt
+	 *            Time since last update
 	 */
-	public void updateAI(double dt){
+	public void updateAI(double dt) {
 		this.playerPos = player.getPosition();
 		playerTile = calculateTile(playerPos);
-		
 
-		if (playerTile.x >= 0 && playerTile.y >=0 &&
-				playerTile.x < 48 && playerTile.y < 48){
+		if (playerTile.x >= 0 && playerTile.y >= 0 && playerTile.x < 48
+				&& playerTile.y < 48) {
 
-			if (enemies.size() > 0){
+			if (enemies.size() > 0) {
 
-				for (AIPlayer ai : enemies){
+				for (AIPlayer ai : enemies) {
 					updateEnemy(ai, dt);
 					ai.getEnemy().start();
 				}
 			}
 		}
-	}//end updateAI
-
+	}// end updateAI
 
 	/**
-	 * Given a aiPlayer, will update the direction of the players unit. Depending on the players updatecount, the length between 
-	 * the unit and the player, as well as the amount of enemies in the gameworld, the calculation take different forms.
+	 * Given a aiPlayer, will update the direction of the players unit.
+	 * Depending on the players updatecount, the length between the unit and the
+	 * player, as well as the amount of enemies in the gameworld, the
+	 * calculation take different forms.
+	 * 
 	 * @param aiPlayer
 	 */
-	private void updateEnemy(AIPlayer aiPlayer, double dt ){
+	private void updateEnemy(AIPlayer aiPlayer, double dt) {
 		Point enemyTile = calculateTile(aiPlayer.getEnemy().getPosition());
 
-		aiPlayer.setDistance(Math.abs(aiPlayer.getEnemy().getPosition().x - playerPos.x) + Math.abs(aiPlayer.getEnemy().getPosition().y
-				- playerPos.y));
+		aiPlayer.setDistance(Math.abs(aiPlayer.getEnemy().getPosition().x
+				- playerPos.x)
+				+ Math.abs(aiPlayer.getEnemy().getPosition().y - playerPos.y));
 
 		aiPlayer.getEnemy().getCurrentWeapon().updateCooldown(dt);
-		handleAttack(aiPlayer,dt);
-		if (aiPlayer.getCount() < (aiPlayer.getDistance()/15) + enemies.size()/15){
+		handleAttack(aiPlayer, dt);
+		if (aiPlayer.getCount() < (aiPlayer.getDistance() / 15)
+				+ enemies.size() / 15) {
 			aiPlayer.updateCount();
 
-		}else{
-			if (enemyTile.x >= 0 && enemyTile.y >=0 &&
-					enemyTile.x < 48 && enemyTile.y < 48){
+		} else {
+			if (enemyTile.x >= 0 && enemyTile.y >= 0 && enemyTile.x < 48
+					&& enemyTile.y < 48) {
 				aiPlayer.resetCount();
 
 				aiPlayer.setPath(pathfinder.getPath(enemyTile, playerTile));
-				if (aiPlayer.getPath() != null){
+				if (aiPlayer.getPath() != null) {
 
-					//Update direction of the enemy depending on what the current path is.
+					// Update direction of the enemy depending on what the
+					// current path is.
 
-					//If path is longer than 2 tiles, just calculate the direction from the path
-					if (aiPlayer.getPath().size() >= 2){
-						aiPlayer.updateEnemy(calculateDirection(aiPlayer.getPath()));
-					}else {
+					// If path is longer than 2 tiles, just calculate the
+					// direction from the path
+					if (aiPlayer.getPath().size() >= 2) {
+						aiPlayer.updateEnemy(calculateDirection(aiPlayer
+								.getPath()));
+					} else {
 
-						//If path is shorter, manually inserts enemy and player positions and walk straight towards them, they should be to close for there to
-						//be any kind of obsticle in the way.
-					aiPlayer.getEnemy().setDirection(findLineToPlayer(aiPlayer));
+						// If path is shorter, manually inserts enemy and player
+						// positions and walk straight towards them, they should
+						// be to close for there to
+						// be any kind of obsticle in the way.
+						aiPlayer.getEnemy().setDirection(
+								findLineToPlayer(aiPlayer));
 					}
-				}else {
+				} else {
 					aiPlayer.getEnemy().setDirection(randomDir());
 				}
 			}
 		}
-	}//end updateEnemy
+	}// end updateEnemy
 
-	
 	/**
-	 * If enemy is in range of player, will try to send projectiles into the game. The AIPlayer keeps track of cooldown.
-	 * @param ai AIPlayer in control of this specific enemy
-	 * @param dt time since last update
+	 * If enemy is in range of player, will try to send projectiles into the
+	 * game. The AIPlayer keeps track of cooldown.
+	 * 
+	 * @param ai
+	 *            AIPlayer in control of this specific enemy
+	 * @param dt
+	 *            time since last update
 	 */
-	private void handleAttack(AIPlayer ai, double dt){
+	private void handleAttack(AIPlayer ai, double dt) {
 		if (ai.inRange()) {
-			if (!ai.getEnemy().getCurrentWeapon().inCooldown()){
+			if (!ai.getEnemy().getCurrentWeapon().inCooldown()) {
 				Projectile proj = ai.doAttack();
 				messager.sendMessage(new Event(Event.Property.DID_ATTACK, proj));
 			}
-		}else {
+		} else {
 			ai.getEnemy().getCurrentWeapon().resetCooldown();
 		}
 	}
-	
+
 	/**
-	 * Given a AIPlayer, will return the direction towards the player, not taking any walls or other collidables into consideration
+	 * Given a AIPlayer, will return the direction towards the player, not
+	 * taking any walls or other collidables into consideration
+	 * 
 	 * @param aiPlayer
 	 * @return
 	 */
-	private Direction findLineToPlayer(AIPlayer aiPlayer){
+	private Direction findLineToPlayer(AIPlayer aiPlayer) {
 		aiPlayer.getPath().clear();
 		aiPlayer.getPath().add(playerPos);
 		aiPlayer.getPath().add(aiPlayer.getEnemy().getPosition());
-		return(calculateDirection(aiPlayer.getPath()));
-		
-	}
+		return (calculateDirection(aiPlayer.getPath()));
 
+	}
 
 	/**
 	 * Returns a randomly selected direction
+	 * 
 	 * @return
 	 */
 	private Direction randomDir() {
@@ -163,30 +179,30 @@ public class AIController implements IMessageSender, IMessageListener {
 		int r = rand.nextInt(8);
 		Direction d = Direction.ORIGIN;
 		switch (r) {
-		case 0:
-			d = Direction.EAST;
-			break;
-		case 1:
-			d = Direction.NORTH;
-			break;
-		case 2:
-			d = Direction.NORTH_EAST;
-			break;
-		case 3:
-			d = Direction.NORTH_WEST;
-			break;
-		case 4:
-			d = Direction.SOUTH;
-			break;
-		case 5:
-			d = Direction.SOUTH_EAST;
-			break;
-		case 6:
-			d = Direction.SOUTH_WEST;
-			break;
-		case 7:
-			d = Direction.WEST;
-			break;
+			case 0 :
+				d = Direction.EAST;
+				break;
+			case 1 :
+				d = Direction.NORTH;
+				break;
+			case 2 :
+				d = Direction.NORTH_EAST;
+				break;
+			case 3 :
+				d = Direction.NORTH_WEST;
+				break;
+			case 4 :
+				d = Direction.SOUTH;
+				break;
+			case 5 :
+				d = Direction.SOUTH_EAST;
+				break;
+			case 6 :
+				d = Direction.SOUTH_WEST;
+				break;
+			case 7 :
+				d = Direction.WEST;
+				break;
 		}
 		return d;
 	}
@@ -194,30 +210,34 @@ public class AIController implements IMessageSender, IMessageListener {
 	/**
 	 * Replace the current list of enemies with a new one.
 	 * 
-	 * @param enemies A list of enemies to track
+	 * @param enemies
+	 *            A list of enemies to track
 	 */
 	public void setEnemies(List<Enemy> enemies) {
 		this.enemies.clear();
-		for (Enemy e : enemies){
+		for (Enemy e : enemies) {
 			this.enemies.add(new AIPlayer(e));
 		}
 	}
 
 	/**
 	 * Adds a enemy to the list of enemies the AIController keeps track of
+	 * 
 	 * @param enemy
 	 */
-	public void addEnemy(Enemy enemy){
+	public void addEnemy(Enemy enemy) {
 		this.enemies.add(new AIPlayer(enemy));
 	}
 
 	/**
-	 * Given a enemy, that enemy will no longer be controlled by this AIController
+	 * Given a enemy, that enemy will no longer be controlled by this
+	 * AIController
+	 * 
 	 * @param enemy
 	 */
-	public void removeEnemy(Enemy enemy){
-		for (AIPlayer ai : this.enemies){
-			if (ai.getEnemy() == enemy){
+	public void removeEnemy(Enemy enemy) {
+		for (AIPlayer ai : this.enemies) {
+			if (ai.getEnemy() == enemy) {
 				this.enemies.remove(ai);
 			}
 		}
@@ -225,61 +245,64 @@ public class AIController implements IMessageSender, IMessageListener {
 	}
 
 	/**
-	 * Given a list of points, will return the direction between the last two points in the list.
+	 * Given a list of points, will return the direction between the last two
+	 * points in the list.
+	 * 
 	 * @param path
-	 * @return  
+	 * @return
 	 */
-	public Direction calculateDirection(List <Point> path){
+	public Direction calculateDirection(List<Point> path) {
 		// Compare enemy position with next calculated position in path.
-		int dx = (int) Math.signum(path.get(path.size()-2).getX()-path.get(path.size()-1).getX());
-		int dy = (int) Math.signum(path.get(path.size()-2).getY()-path.get(path.size()-1).getY());
+		int dx = (int) Math.signum(path.get(path.size() - 2).getX()
+				- path.get(path.size() - 1).getX());
+		int dy = (int) Math.signum(path.get(path.size() - 2).getY()
+				- path.get(path.size() - 1).getY());
 
-		//Return direction depending on the values of dx and dy.
-		switch (dx){
-		case 1:
-			if(dy == -1)
-				return Direction.NORTH_EAST;
+		// Return direction depending on the values of dx and dy.
+		switch (dx) {
+			case 1 :
+				if (dy == -1)
+					return Direction.NORTH_EAST;
 
+				else if (dy == 0)
+					return Direction.EAST;
 
-			else if(dy == 0)
-				return Direction.EAST;
+				else {
+					return Direction.SOUTH_EAST;
+				}
 
-			else{
-				return Direction.SOUTH_EAST;
-			}
+			case 0 :
+				if (dy == -1)
+					return Direction.NORTH;
 
-		case 0:
-			if (dy == -1)
-				return Direction.NORTH;
+				else {
+					return Direction.SOUTH;
+				}
 
+			case -1 :
+				if (dy == -1)
+					return Direction.NORTH_WEST;
 
-			else {
-				return Direction.SOUTH;
-			}
+				else if (dy == 0)
+					return Direction.WEST;
 
-		case -1:
-			if (dy == -1)
-				return Direction.NORTH_WEST;
-
-			else if (dy == 0)
-				return Direction.WEST;
-
-
-			else {
-				return Direction.SOUTH_WEST;
-			}
-		}//Should never reach this point since dx will always be 1,0 or -1
+				else {
+					return Direction.SOUTH_WEST;
+				}
+		}// Should never reach this point since dx will always be 1,0 or -1
 		return null;
 
 	}
 
 	/**
-	 * Given a point representing a position in the gameworld, will return the tile of that position
-	 * @param point 
-	 * @return 
+	 * Given a point representing a position in the gameworld, will return the
+	 * tile of that position
+	 * 
+	 * @param point
+	 * @return
 	 */
-	public Point calculateTile(Point point){
-		return new Point(point.x/this.width, point.y/this.height);
+	public Point calculateTile(Point point) {
+		return new Point(point.x / this.width, point.y / this.height);
 	}
 
 	@Override
@@ -287,6 +310,5 @@ public class AIController implements IMessageSender, IMessageListener {
 		this.messager.addListener(listener);
 
 	}
-
 
 }

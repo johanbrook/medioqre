@@ -29,8 +29,7 @@ public class SpriteEdit extends JPanel {
 	private ActionListener cmbAListener;
 	private ActionListener parentListener;
 
-	public void setAnimation(Animation animation)
-	{
+	public void setAnimation(Animation animation) {
 		this.animation = animation;
 		if (this.animation != null && this.animation.getFrames() != null) {
 			if (this.animation.getFrames().length > 0)
@@ -40,21 +39,18 @@ public class SpriteEdit extends JPanel {
 		this.updateGUI();
 	}
 
-	public Animation getAnimation()
-	{
+	public Animation getAnimation() {
 		return this.animation;
 	}
-	public Sprite getSelectedSprite()
-	{
+	public Sprite getSelectedSprite() {
 		return this.selectedSprite;
 	}
 
-	private void addSprite()
-	{
-		System.out.println("Animation: "+ this.animation);
-		
+	private void addSprite() {
+		System.out.println("Animation: " + this.animation);
+
 		System.out.println(Thread.currentThread().toString());
-		
+
 		if (this.animation != null) {
 			if (this.animation.getFrames() == null) {
 				this.animation.setFrames(new Sprite[1]);
@@ -71,16 +67,14 @@ public class SpriteEdit extends JPanel {
 		this.updateGUI();
 	}
 
-	private void removeAnimation()
-	{
+	private void removeAnimation() {
 		// if (this.animation.getAnimations() != null) {
 		// this.animation.getAnimations().remove(this.selectedSprite);
 		// }
 		// this.updateGUI();
 	}
 
-	public void updateGUI()
-	{
+	public void updateGUI() {
 		this.cmbS.removeActionListener(this.cmbAListener);
 		this.cmbS.removeActionListener(this.parentListener);
 		this.cmbS.removeAllItems();
@@ -114,8 +108,7 @@ public class SpriteEdit extends JPanel {
 		this.tfH.setText(height);
 	}
 
-	public void saveState()
-	{
+	public void saveState() {
 		if (this.selectedSprite != null) {
 			this.selectedSprite.setTexture(this.tfTexture.getText());
 			this.selectedSprite.setX(Integer.valueOf(this.tfX.getText()));
@@ -133,8 +126,7 @@ public class SpriteEdit extends JPanel {
 	private JTextField tfH;
 	private JTextField tfW;
 
-	public SpriteEdit(ActionListener l, Animation animation)
-	{
+	public SpriteEdit(ActionListener l, Animation animation) {
 		this();
 
 		this.animation = animation;
@@ -143,8 +135,7 @@ public class SpriteEdit extends JPanel {
 		this.updateGUI();
 	}
 
-	public SpriteEdit()
-	{
+	public SpriteEdit() {
 		setBorder(new LineBorder(new Color(128, 128, 128)));
 		setBackground(new Color(192, 192, 192));
 		setLayout(null);
@@ -155,8 +146,7 @@ public class SpriteEdit extends JPanel {
 		cmbS.setActionCommand("sprite");
 		cmbAListener = (new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent arg0)
-			{
+			public void actionPerformed(ActionEvent arg0) {
 				selectedSprite = (Sprite) ((JComboBox) arg0.getSource())
 						.getSelectedItem();
 				System.out.println(selectedSprite);
@@ -177,14 +167,12 @@ public class SpriteEdit extends JPanel {
 		tfTexture.setColumns(10);
 		tfTexture.addFocusListener(new FocusListener() {
 			@Override
-			public void focusLost(FocusEvent arg0)
-			{
+			public void focusLost(FocusEvent arg0) {
 				saveState();
 			}
 
 			@Override
-			public void focusGained(FocusEvent arg0)
-			{
+			public void focusGained(FocusEvent arg0) {
 			}
 		});
 
@@ -199,14 +187,12 @@ public class SpriteEdit extends JPanel {
 		add(tfX);
 		tfX.addFocusListener(new FocusListener() {
 			@Override
-			public void focusLost(FocusEvent arg0)
-			{
+			public void focusLost(FocusEvent arg0) {
 				saveState();
 			}
 
 			@Override
-			public void focusGained(FocusEvent arg0)
-			{
+			public void focusGained(FocusEvent arg0) {
 			}
 		});
 
@@ -220,8 +206,7 @@ public class SpriteEdit extends JPanel {
 		add(btnAdd);
 		btnAdd.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e)
-			{
+			public void actionPerformed(ActionEvent e) {
 				addSprite();
 			}
 		});
@@ -246,14 +231,12 @@ public class SpriteEdit extends JPanel {
 		add(tfY);
 		tfY.addFocusListener(new FocusListener() {
 			@Override
-			public void focusLost(FocusEvent arg0)
-			{
+			public void focusLost(FocusEvent arg0) {
 				saveState();
 			}
 
 			@Override
-			public void focusGained(FocusEvent arg0)
-			{
+			public void focusGained(FocusEvent arg0) {
 			}
 		});
 
@@ -268,14 +251,12 @@ public class SpriteEdit extends JPanel {
 		add(tfH);
 		tfH.addFocusListener(new FocusListener() {
 			@Override
-			public void focusLost(FocusEvent arg0)
-			{
+			public void focusLost(FocusEvent arg0) {
 				saveState();
 			}
 
 			@Override
-			public void focusGained(FocusEvent arg0)
-			{
+			public void focusGained(FocusEvent arg0) {
 			}
 		});
 
@@ -285,14 +266,12 @@ public class SpriteEdit extends JPanel {
 		add(tfW);
 		tfW.addFocusListener(new FocusListener() {
 			@Override
-			public void focusLost(FocusEvent arg0)
-			{
+			public void focusLost(FocusEvent arg0) {
 				saveState();
 			}
 
 			@Override
-			public void focusGained(FocusEvent arg0)
-			{
+			public void focusGained(FocusEvent arg0) {
 			}
 		});
 
@@ -302,8 +281,7 @@ public class SpriteEdit extends JPanel {
 		add(lblWidth);
 		btnRemove.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e)
-			{
+			public void actionPerformed(ActionEvent e) {
 				removeAnimation();
 			}
 		});

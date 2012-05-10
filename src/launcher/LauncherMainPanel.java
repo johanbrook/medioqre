@@ -109,7 +109,7 @@ public class LauncherMainPanel extends JPanel implements ActionListener {
 		setBackground(new Color(0, 0, 0));
 
 		timer = new Timer(delay, this);
-		
+
 		timer.start();
 
 	}

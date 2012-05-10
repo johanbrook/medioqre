@@ -27,8 +27,7 @@ public class AnimationEdit extends JPanel {
 	private ActionListener cmbAListener;
 	private ActionListener parentListener;
 
-	public void setActor(Actor actor)
-	{
+	public void setActor(Actor actor) {
 		this.actor = actor;
 		if (this.actor.getAnimations() != null) {
 			Collection<Animation> as = this.actor.getAnimations().values();
@@ -42,35 +41,32 @@ public class AnimationEdit extends JPanel {
 		this.updateGUI();
 	}
 
-	public Animation getSelectedAnimation()
-	{
+	public Animation getSelectedAnimation() {
 		return this.selectedAnimation;
 	}
 
-	public Actor getActor()
-	{
+	public Actor getActor() {
 		return this.actor;
 	}
 
-	private void addAnimation()
-	{
-		this.actor.addAnimation(new Animation(("New Animation " + this.actor.getAnimations().size()), null, 1000.0));
+	private void addAnimation() {
+		this.actor.addAnimation(new Animation(("New Animation " + this.actor
+				.getAnimations().size()), null, 1000.0));
 		this.updateGUI();
 	}
 
-	private void removeAnimation()
-	{
+	private void removeAnimation() {
 		if (this.actor.getAnimations() != null) {
 			this.actor.getAnimations().remove(this.selectedAnimation);
 		}
 		this.updateGUI();
 	}
 
-	public void updateGUI()
-	{
+	public void updateGUI() {
 		System.out.println("UpdateGUI animEd");
 		if (this.actor != null) {
-			System.out.println("Num anim: "+this.actor.getAnimations().values().size());
+			System.out.println("Num anim: "
+					+ this.actor.getAnimations().values().size());
 			this.cmbA.removeActionListener(this.cmbAListener);
 			this.cmbA.removeActionListener(this.parentListener);
 			this.cmbA.removeAllItems();
@@ -96,8 +92,7 @@ public class AnimationEdit extends JPanel {
 		}
 	}
 
-	public void saveState()
-	{
+	public void saveState() {
 		if (this.selectedAnimation != null) {
 			this.selectedAnimation.setName(this.tfName.getText());
 			this.selectedAnimation.setDuration(Double.valueOf(this.tfD
@@ -110,8 +105,7 @@ public class AnimationEdit extends JPanel {
 	private JTextField tfName;
 	private JTextField tfD;
 
-	public AnimationEdit(ActionListener l, Actor actor)
-	{
+	public AnimationEdit(ActionListener l, Actor actor) {
 		this();
 
 		this.actor = actor;
@@ -120,8 +114,7 @@ public class AnimationEdit extends JPanel {
 		this.updateGUI();
 	}
 
-	public AnimationEdit()
-	{
+	public AnimationEdit() {
 		setBorder(new LineBorder(new Color(128, 128, 128)));
 		setBackground(new Color(192, 192, 192));
 		setLayout(null);
@@ -132,8 +125,7 @@ public class AnimationEdit extends JPanel {
 		cmbA.setActionCommand("animation");
 		cmbAListener = (new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent arg0)
-			{
+			public void actionPerformed(ActionEvent arg0) {
 				selectedAnimation = (Animation) ((JComboBox) arg0.getSource())
 						.getSelectedItem();
 				updateGUI();
@@ -153,14 +145,12 @@ public class AnimationEdit extends JPanel {
 		tfName.setColumns(10);
 		tfName.addFocusListener(new FocusListener() {
 			@Override
-			public void focusLost(FocusEvent arg0)
-			{
+			public void focusLost(FocusEvent arg0) {
 				saveState();
 			}
 
 			@Override
-			public void focusGained(FocusEvent arg0)
-			{
+			public void focusGained(FocusEvent arg0) {
 			}
 		});
 
@@ -175,14 +165,12 @@ public class AnimationEdit extends JPanel {
 		add(tfD);
 		tfD.addFocusListener(new FocusListener() {
 			@Override
-			public void focusLost(FocusEvent arg0)
-			{
+			public void focusLost(FocusEvent arg0) {
 				saveState();
 			}
 
 			@Override
-			public void focusGained(FocusEvent arg0)
-			{
+			public void focusGained(FocusEvent arg0) {
 			}
 		});
 
@@ -196,8 +184,7 @@ public class AnimationEdit extends JPanel {
 		add(btnAdd);
 		btnAdd.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e)
-			{
+			public void actionPerformed(ActionEvent e) {
 				addAnimation();
 			}
 		});
@@ -207,8 +194,7 @@ public class AnimationEdit extends JPanel {
 		add(btnRemove);
 		btnRemove.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e)
-			{
+			public void actionPerformed(ActionEvent e) {
 				removeAnimation();
 			}
 		});

@@ -64,33 +64,29 @@ import javax.swing.JCheckBox;
 
 public class TileSheetEditor implements GLEventListener {
 
-	private File		currentFile;
-	private TileSheet	currentTileSheet;
-	private File		currentTextureFile;
-	private Texture		currentTexture;
-	private Tile		currentTile;
-	private Rectangle	renceringRect;
+	private File currentFile;
+	private TileSheet currentTileSheet;
+	private File currentTextureFile;
+	private Texture currentTexture;
+	private Tile currentTile;
+	private Rectangle renceringRect;
 
-	public static void main(String[] arg)
-	{
+	public static void main(String[] arg) {
 		new TileSheetEditor();
 	}
 
-	public TileSheetEditor()
-	{
+	public TileSheetEditor() {
 		this.initGui();
 		this.updateGui();
 	}
 
-	public void loadTexture(File file)
-	{
+	public void loadTexture(File file) {
 		System.out.println("Load texture: " + file.getAbsolutePath());
 		this.currentTextureFile = file;
 		this.currentTexture = null;
 	}
 
-	public void newTileSheet()
-	{
+	public void newTileSheet() {
 		this.currentTileSheet = new TileSheet();
 		this.tiles = null;
 		this.currentFile = null;
@@ -101,22 +97,24 @@ public class TileSheetEditor implements GLEventListener {
 		this.updateGui();
 	}
 
-	public void loadTileSheet(File file)
-	{
+	public void loadTileSheet(File file) {
 		try {
 			this.currentTileSheet = new TileSheet(new JSONObject(
 					IOUtils.toString(new FileInputStream(file))));
 			System.out.println("load TileSheet: " + file.getAbsolutePath());
-			
-			if (this.tiles == null) this.tiles = new ArrayList<Tile>();
+
+			if (this.tiles == null)
+				this.tiles = new ArrayList<Tile>();
 			for (Tile t : this.currentTileSheet.getTiles()) {
 				this.tiles.add(t);
 			}
-			
-			this.currentTextureFile = new File(file.getParent()+"/"+file.getName().substring(0, file.getName().indexOf('.'))+".png");
-			
+
+			this.currentTextureFile = new File(file.getParent() + "/"
+					+ file.getName().substring(0, file.getName().indexOf('.'))
+					+ ".png");
+
 			this.updateGui();
-			
+
 			return;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -128,8 +126,7 @@ public class TileSheetEditor implements GLEventListener {
 		System.out.println("Could not load: " + file.getAbsolutePath());
 	}
 
-	public void saveTileSheet(File file)
-	{
+	public void saveTileSheet(File file) {
 		System.out.println("Method for saving file");
 
 		this.currentFile = file;
@@ -159,8 +156,7 @@ public class TileSheetEditor implements GLEventListener {
 	}
 
 	@SuppressWarnings("serial")
-	public void updateGui()
-	{
+	public void updateGui() {
 		if (this.currentTileSheet == null) {
 			mntmSave.setEnabled(false);
 			mntmSaveAs.setEnabled(false);
@@ -205,22 +201,19 @@ public class TileSheetEditor implements GLEventListener {
 		}
 
 		liTiles.setModel(new AbstractListModel() {
-			public int getSize()
-			{
+			public int getSize() {
 				int size = tiles != null ? tiles.size() : 0;
 				return size;
 			}
 
-			public Object getElementAt(int index)
-			{
+			public Object getElementAt(int index) {
 				return tiles.get(index);
 			}
 		});
 	}
 
 	// JButton actions
-	public void addTile()
-	{
+	public void addTile() {
 		System.out.println("Add new tile");
 		if (this.tiles == null)
 			this.tiles = new ArrayList<Tile>();
@@ -230,19 +223,16 @@ public class TileSheetEditor implements GLEventListener {
 		this.updateGui();
 	}
 
-	public void removeTile()
-	{
+	public void removeTile() {
 		this.tiles.remove(this.currentTile);
 		this.updateGui();
 	}
 
-	public void selectTile(int i)
-	{
+	public void selectTile(int i) {
 		this.currentTile = this.tiles.get(i);
 	}
 
-	public void saveTile()
-	{
+	public void saveTile() {
 		if (this.currentTile != null) {
 			Tile tile = this.currentTile;
 			if (tile != null) {
@@ -252,30 +242,30 @@ public class TileSheetEditor implements GLEventListener {
 				tile.getSprite().setHeight(Integer.valueOf(tfHeight.getText()));
 				tile.setType(Util.intFromHexString(tfType.getText()));
 				tile.setCollidable(chbxColl.isSelected());
-				System.out.println("Int: "+Util.intFromHexString(tfType.getText()));
+				System.out.println("Int: "
+						+ Util.intFromHexString(tfType.getText()));
 			}
 		}
 	}
 
 	// Ivar gui elements
-	private final JFrame	frame	= new JFrame("TileSheetEditor");
-	private JMenuItem		mntmSave;
-	private JMenuItem		mntmSaveAs;
-	private JList			liTiles;
-	ArrayList<Tile>			tiles	= new ArrayList<Tile>();
-	private JTextField		tfX;
-	private JTextField		tfY;
-	private JTextField		tfWidth;
-	private JTextField		tfHeight;
-	private JTextField		tfType;
-	private JCheckBox		chbxColl;
-	private JButton			btnAdd;
-	private JButton			btnRemove;
-	private JButton			btnSave;
+	private final JFrame frame = new JFrame("TileSheetEditor");
+	private JMenuItem mntmSave;
+	private JMenuItem mntmSaveAs;
+	private JList liTiles;
+	ArrayList<Tile> tiles = new ArrayList<Tile>();
+	private JTextField tfX;
+	private JTextField tfY;
+	private JTextField tfWidth;
+	private JTextField tfHeight;
+	private JTextField tfType;
+	private JCheckBox chbxColl;
+	private JButton btnAdd;
+	private JButton btnRemove;
+	private JButton btnSave;
 
 	@SuppressWarnings("serial")
-	public void initGui()
-	{
+	public void initGui() {
 		frame.setPreferredSize(new Dimension(700, 600));
 		frame.pack();
 
@@ -291,8 +281,7 @@ public class TileSheetEditor implements GLEventListener {
 		mnFile.add(mntmNewTileSheet);
 		mntmNewTileSheet.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent arg0)
-			{
+			public void actionPerformed(ActionEvent arg0) {
 				newTileSheet();
 			}
 		});
@@ -303,8 +292,7 @@ public class TileSheetEditor implements GLEventListener {
 		mnFile.add(mntmOpenTileSheet);
 		mntmOpenTileSheet.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e)
-			{
+			public void actionPerformed(ActionEvent e) {
 				JFileChooser chooser = new JFileChooser();
 				int input = chooser.showOpenDialog(frame.getParent());
 				if (input == JFileChooser.APPROVE_OPTION) {
@@ -322,8 +310,7 @@ public class TileSheetEditor implements GLEventListener {
 		mnFile.add(mntmSave);
 		mntmSave.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e)
-			{
+			public void actionPerformed(ActionEvent e) {
 				if (currentFile == null) {
 					JFileChooser chooser = new JFileChooser();
 					int input = chooser.showSaveDialog(frame.getParent());
@@ -342,8 +329,7 @@ public class TileSheetEditor implements GLEventListener {
 		mnFile.add(mntmSaveAs);
 		mntmSaveAs.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e)
-			{
+			public void actionPerformed(ActionEvent e) {
 				JFileChooser chooser = new JFileChooser();
 				int input = chooser.showSaveDialog(frame.getParent());
 				if (input == JFileChooser.APPROVE_OPTION) {
@@ -361,8 +347,7 @@ public class TileSheetEditor implements GLEventListener {
 		mnTexture.add(mntmLoad);
 		mntmLoad.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e)
-			{
+			public void actionPerformed(ActionEvent e) {
 				JFileChooser chooser = new JFileChooser();
 				int input = chooser.showOpenDialog(frame.getParent());
 				if (input == JFileChooser.APPROVE_OPTION) {
@@ -409,8 +394,7 @@ public class TileSheetEditor implements GLEventListener {
 		panel_4.add(btnAdd);
 		btnAdd.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent arg0)
-			{
+			public void actionPerformed(ActionEvent arg0) {
 				addTile();
 			}
 		});
@@ -421,29 +405,25 @@ public class TileSheetEditor implements GLEventListener {
 
 		liTiles = new JList();
 		liTiles.setModel(new AbstractListModel() {
-			public int getSize()
-			{
+			public int getSize() {
 				return tiles.size();
 			}
 
-			public Object getElementAt(int index)
-			{
+			public Object getElementAt(int index) {
 				return tiles.get(index);
 			}
 		});
 		panel_1.add(liTiles, BorderLayout.CENTER);
 		liTiles.addListSelectionListener(new ListSelectionListener() {
 			@Override
-			public void valueChanged(ListSelectionEvent arg0)
-			{
+			public void valueChanged(ListSelectionEvent arg0) {
 				selectTile(arg0.getLastIndex());
 				updateGui();
 			}
 		});
 		btnRemove.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent arg0)
-			{
+			public void actionPerformed(ActionEvent arg0) {
 				removeTile();
 			}
 		});
@@ -533,8 +513,7 @@ public class TileSheetEditor implements GLEventListener {
 		panel_6.add(btnSave);
 		btnSave.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e)
-			{
+			public void actionPerformed(ActionEvent e) {
 				saveTile();
 			}
 		});
@@ -565,8 +544,7 @@ public class TileSheetEditor implements GLEventListener {
 	}
 
 	@Override
-	public void display(GLAutoDrawable arg0)
-	{
+	public void display(GLAutoDrawable arg0) {
 		GL2 gl = arg0.getGL().getGL2();
 		gl.glClear(GL2.GL_COLOR_BUFFER_BIT);
 
@@ -636,22 +614,18 @@ public class TileSheetEditor implements GLEventListener {
 
 	}
 
-	
-
 	@Override
-	public void init(GLAutoDrawable arg0)
-	{
+	public void init(GLAutoDrawable arg0) {
 		GL2 gl = arg0.getGL().getGL2();
 		gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 		gl.glEnable(GL2.GL_TEXTURE_2D);
 	}
-	
+
 	@Override
-	public void dispose(GLAutoDrawable arg0)
-	{
+	public void dispose(GLAutoDrawable arg0) {
 	}
 	@Override
 	public void reshape(GLAutoDrawable arg0, int arg1, int arg2, int arg3,
-			int arg4)
-	{}
+			int arg4) {
+	}
 }

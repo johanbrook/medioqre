@@ -8,89 +8,91 @@ import event.Event.Property;
 import event.EventBus;
 
 /**
-*	Entity.
-*
-*	A movable, collidable object.
-*
-*	@author Johan
-*/
-public abstract class Entity extends CollidableObject  {
-	
+ * Entity.
+ * 
+ * A movable, collidable object.
+ * 
+ * @author Johan
+ */
+public abstract class Entity extends CollidableObject {
+
 	private int movementSpeed;
 	private boolean isMoving;
 	private Direction direction;
-	
+
 	/**
 	 * Create a new entity.
 	 * 
 	 */
-	public Entity(java.awt.Rectangle box, java.awt.Dimension size, int xoffset, int yoffset, int movementSpeed){
+	public Entity(java.awt.Rectangle box, java.awt.Dimension size, int xoffset,
+			int yoffset, int movementSpeed) {
 		super(box, size, xoffset, yoffset);
 		this.movementSpeed = movementSpeed;
 		this.direction = Direction.ORIGIN;
 		this.isMoving = true;
 	}
-	
 
-	
-	
 	/**
 	 * Move in a the set direction.
 	 * 
-	 * @param dt Delta time
+	 * @param dt
+	 *            Delta time
 	 * @pre isMoving() == true
 	 * @see setDirection()
 	 */
 	public void move(double dt) {
 		// Upper left corner is origin
-		
-		if(isMoving()){
+
+		if (isMoving()) {
 			Point currPos = getPosition();
-			
-			int x = (int) (this.direction.getXRatio() * (double) this.movementSpeed * dt);		
-			int y = (int) (this.direction.getYRatio() * (double) this.movementSpeed * dt);
-						
+
+			int x = (int) (this.direction.getXRatio()
+					* (double) this.movementSpeed * dt);
+			int y = (int) (this.direction.getYRatio()
+					* (double) this.movementSpeed * dt);
+
 			this.setPosition(currPos.x + x, currPos.y + y);
 			EventBus.INSTANCE.publish(new Event(Property.DID_MOVE, this));
 		}
 	}
-	
+
 	/**
 	 * Let the entity stop.
 	 * 
 	 */
 	public void stop() {
 		this.isMoving = false;
-		
+
 		EventBus.INSTANCE.publish(new Event(Property.DID_STOP, this));
 	}
-	
-	
+
 	/**
 	 * Let the entity start moving.
 	 * 
 	 */
 	public void start() {
-		this.isMoving = true;		
+		this.isMoving = true;
 	}
-		
+
 	/**
 	 * Set a direction of the entity.
 	 * 
-	 * Note: Will only set a new direction if <code>dir</code>
-	 * differs from the current direction.
+	 * Note: Will only set a new direction if <code>dir</code> differs from the
+	 * current direction.
 	 * 
-	 * @param dir The new direction
+	 * @param dir
+	 *            The new direction
 	 * @pre getDirection() != dir
 	 */
 	public void setDirection(Direction dir) {
-		
+
 		if (this.direction != dir) {
 			this.direction = dir;
-			EventBus.INSTANCE.publish(new Event(Property.CHANGED_DIRECTION, this));
+			EventBus.INSTANCE.publish(new Event(Property.CHANGED_DIRECTION,
+					this));
 		}
 	}
-	
+
 	/**
 	 * Get the current direction
 	 * 
@@ -99,7 +101,7 @@ public abstract class Entity extends CollidableObject  {
 	public Direction getDirection() {
 		return this.direction;
 	}
-	
+
 	/**
 	 * If the entity is moving or not
 	 * 
@@ -117,20 +119,22 @@ public abstract class Entity extends CollidableObject  {
 	public int getMovementSpeed() {
 		return this.movementSpeed;
 	}
-	
+
 	/**
 	 * Set the movement speed of the entity.
 	 * 
-	 * @param movementSpeed The movement speed
+	 * @param movementSpeed
+	 *            The movement speed
 	 */
-	public void setMovementSpeed(int movementSpeed)
-	{
+	public void setMovementSpeed(int movementSpeed) {
 		this.movementSpeed = movementSpeed;
 	}
-	
+
 	@Override
 	public String toString() {
-		return super.toString() + " [speed:"+this.movementSpeed+"] [moving:"+this.isMoving+"] [dir:"+this.direction+"]";
+		return super.toString() + " [speed:" + this.movementSpeed
+				+ "] [moving:" + this.isMoving + "] [dir:" + this.direction
+				+ "]";
 	}
-	
+
 }

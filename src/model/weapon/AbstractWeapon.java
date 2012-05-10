@@ -1,15 +1,14 @@
 package model.weapon;
 
-
 import event.Event;
 import event.Event.Property;
 import event.EventBus;
 import model.character.AbstractCharacter;
 
 /**
- *	Weapon.java
- *
- *	@author Johan
+ * Weapon.java
+ * 
+ * @author Johan
  */
 public abstract class AbstractWeapon {
 
@@ -22,8 +21,10 @@ public abstract class AbstractWeapon {
 	/**
 	 * Create a new weapon with an owner and initial ammo.
 	 * 
-	 * @param owner The owner
-	 * @param initialAmmo The ammo
+	 * @param owner
+	 *            The owner
+	 * @param initialAmmo
+	 *            The ammo
 	 */
 	public AbstractWeapon(AbstractCharacter owner, int initialAmmo, double ammoMultiplier, double fireInterval) {
 		this.ammo = initialAmmo;

@@ -42,16 +42,17 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class SpriteCreatorView extends JFrame implements GLEventListener,
-		ActionListener {
+public class SpriteCreatorView extends JFrame
+		implements
+			GLEventListener,
+			ActionListener {
 
-	private Actor		player;
-	private Rectangle	rect	= new Rectangle(2 * 64, 1 * 64, 64, 64);
-	private Rectangle	target	= new Rectangle(0, 0, 5 * 64, 3 * 64);
-	private File		currentFile;
+	private Actor player;
+	private Rectangle rect = new Rectangle(2 * 64, 1 * 64, 64, 64);
+	private Rectangle target = new Rectangle(0, 0, 5 * 64, 3 * 64);
+	private File currentFile;
 
-	public SpriteCreatorView()
-	{
+	public SpriteCreatorView() {
 		setPreferredSize(new Dimension(464, 645));
 		GLProfile glP = GLProfile.getDefault();
 		GLCapabilities glC = new GLCapabilities(glP);
@@ -69,8 +70,7 @@ public class SpriteCreatorView extends JFrame implements GLEventListener,
 		mntmOpen.addActionListener(new ActionListener() {
 
 			@Override
-			public void actionPerformed(ActionEvent arg0)
-			{
+			public void actionPerformed(ActionEvent arg0) {
 				JFileChooser chooser = new JFileChooser();
 
 				int returnVal = chooser.showOpenDialog(getParent());
@@ -120,12 +120,10 @@ public class SpriteCreatorView extends JFrame implements GLEventListener,
 
 	}
 
-	private void reloadSprite(Actor newPlayer)
-	{
+	private void reloadSprite(Actor newPlayer) {
 	}
 
-	private void saveState(File file)
-	{
+	private void saveState(File file) {
 		if (file == null) {
 			JFileChooser chooser = new JFileChooser();
 			int input = chooser.showSaveDialog(getParent());
@@ -154,16 +152,14 @@ public class SpriteCreatorView extends JFrame implements GLEventListener,
 		}
 	}
 
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
 		new SpriteCreatorView();
 	}
 
-	long	lastTime	= System.nanoTime();
+	long lastTime = System.nanoTime();
 
 	@Override
-	public void display(GLAutoDrawable arg0)
-	{
+	public void display(GLAutoDrawable arg0) {
 		long now = System.nanoTime();
 		long dt = (now - lastTime) / 1000000;
 		this.lastTime = now;
@@ -178,8 +174,7 @@ public class SpriteCreatorView extends JFrame implements GLEventListener,
 	}
 
 	@Override
-	public void init(GLAutoDrawable arg0)
-	{
+	public void init(GLAutoDrawable arg0) {
 		GL2 gl = arg0.getGL().getGL2();
 		gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 		gl.glEnable(GL.GL_TEXTURE_2D);
@@ -208,19 +203,16 @@ public class SpriteCreatorView extends JFrame implements GLEventListener,
 	}
 
 	@Override
-	public void dispose(GLAutoDrawable arg0)
-	{
+	public void dispose(GLAutoDrawable arg0) {
 	}
 
 	@Override
 	public void reshape(GLAutoDrawable arg0, int arg1, int arg2, int arg3,
-			int arg4)
-	{
+			int arg4) {
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e)
-	{
+	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("actor")) {
 			this.animationEdit.setActor(this.actorEdit.getSelectedActor());
 			this.spriteEdit.setAnimation(this.animationEdit
@@ -244,12 +236,11 @@ public class SpriteCreatorView extends JFrame implements GLEventListener,
 		}
 	}
 
-	private ActorEdit		actorEdit;
-	private AnimationEdit	animationEdit;
-	private SpriteEdit		spriteEdit;
+	private ActorEdit actorEdit;
+	private AnimationEdit animationEdit;
+	private SpriteEdit spriteEdit;
 
-	private void initEditViewGUI()
-	{
+	private void initEditViewGUI() {
 		this.setTitle("EditView");
 		this.pack();
 		getContentPane().setLayout(null);
@@ -291,8 +282,7 @@ public class SpriteCreatorView extends JFrame implements GLEventListener,
 		getContentPane().add(spriteEdit);
 		btnSaveState.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent arg0)
-			{
+			public void actionPerformed(ActionEvent arg0) {
 				saveState(null);
 			}
 		});

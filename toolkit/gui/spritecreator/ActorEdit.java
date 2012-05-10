@@ -26,17 +26,15 @@ public class ActorEdit extends JPanel {
 	private ActionListener cmbAListener;
 	private ActionListener parentListener;
 
-	// Getters 
-	public Actor getSelectedActor()
-	{
+	// Getters
+	public Actor getSelectedActor() {
 		if (this.actors != null && this.actors.length > this.selectedActor)
 			return this.actors[this.selectedActor];
-		
+
 		return null;
 	}
-	
-	public void addActor(Actor a)
-	{
+
+	public void addActor(Actor a) {
 		Actor[] newActors;
 		if (this.actors != null) {
 			newActors = new Actor[this.actors.length + 1];
@@ -53,13 +51,11 @@ public class ActorEdit extends JPanel {
 		this.actors[this.selectedActor] = a;
 		this.updateGUI();
 	}
-	private void addNewActor()
-	{
+	private void addNewActor() {
 		this.addActor(new Actor("New Actor", 0, 0, 0, 0));
 	}
 
-	private void removeActor()
-	{
+	private void removeActor() {
 		if (this.actors != null && this.actors.length > 0) {
 			int rmIndex = -1;
 			for (int i = 0; i < this.actors.length; i++) {
@@ -88,8 +84,7 @@ public class ActorEdit extends JPanel {
 		this.updateGUI();
 	}
 
-	public void updateGUI()
-	{
+	public void updateGUI() {
 		this.cmbA.removeActionListener(this.cmbAListener);
 		this.cmbA.removeActionListener(this.parentListener);
 		this.cmbA.removeAllItems();
@@ -113,14 +108,17 @@ public class ActorEdit extends JPanel {
 		}
 	}
 
-	public void saveState()
-	{
+	public void saveState() {
 		if (this.actors[this.selectedActor] != null) {
 			this.actors[this.selectedActor].setName(this.tfName.getText());
-			this.actors[this.selectedActor].setX(Integer.valueOf(this.tfX.getText()));
-			this.actors[this.selectedActor].setY(Integer.valueOf(this.tfY.getText()));
-			this.actors[this.selectedActor].setWidth(Integer.valueOf(this.tfW.getText()));
-			this.actors[this.selectedActor].setHeight(Integer.valueOf(this.tfH.getText()));
+			this.actors[this.selectedActor].setX(Integer.valueOf(this.tfX
+					.getText()));
+			this.actors[this.selectedActor].setY(Integer.valueOf(this.tfY
+					.getText()));
+			this.actors[this.selectedActor].setWidth(Integer.valueOf(this.tfW
+					.getText()));
+			this.actors[this.selectedActor].setHeight(Integer.valueOf(this.tfH
+					.getText()));
 		}
 	}
 
@@ -132,18 +130,16 @@ public class ActorEdit extends JPanel {
 	private JTextField tfW;
 	private JTextField tfH;
 
-	public ActorEdit(ActionListener l, Actor[] actors)
-	{
+	public ActorEdit(ActionListener l, Actor[] actors) {
 		this();
 
 		this.actors = actors;
 		this.parentListener = l;
-		
+
 		this.updateGUI();
 	}
 
-	public ActorEdit()
-	{
+	public ActorEdit() {
 		setBorder(new LineBorder(new Color(128, 128, 128)));
 		setBackground(new Color(192, 192, 192));
 		setLayout(null);
@@ -155,8 +151,7 @@ public class ActorEdit extends JPanel {
 		cmbAListener = (new ActionListener() {
 
 			@Override
-			public void actionPerformed(ActionEvent arg0)
-			{
+			public void actionPerformed(ActionEvent arg0) {
 				selectedActor = ((JComboBox) arg0.getSource())
 						.getSelectedIndex();
 				updateGUI();
@@ -176,12 +171,12 @@ public class ActorEdit extends JPanel {
 		tfName.setColumns(10);
 		tfName.addFocusListener(new FocusListener() {
 			@Override
-			public void focusLost(FocusEvent arg0)
-			{
+			public void focusLost(FocusEvent arg0) {
 				saveState();
 			}
 			@Override
-			public void focusGained(FocusEvent arg0){}
+			public void focusGained(FocusEvent arg0) {
+			}
 		});
 
 		JLabel lblActor = new JLabel("Actor:");
@@ -195,12 +190,12 @@ public class ActorEdit extends JPanel {
 		add(tfX);
 		tfX.addFocusListener(new FocusListener() {
 			@Override
-			public void focusLost(FocusEvent arg0)
-			{
+			public void focusLost(FocusEvent arg0) {
 				saveState();
 			}
 			@Override
-			public void focusGained(FocusEvent arg0){}
+			public void focusGained(FocusEvent arg0) {
+			}
 		});
 
 		JLabel lblY = new JLabel("X:");
@@ -214,12 +209,12 @@ public class ActorEdit extends JPanel {
 		add(tfY);
 		tfY.addFocusListener(new FocusListener() {
 			@Override
-			public void focusLost(FocusEvent arg0)
-			{
+			public void focusLost(FocusEvent arg0) {
 				saveState();
 			}
 			@Override
-			public void focusGained(FocusEvent arg0){}
+			public void focusGained(FocusEvent arg0) {
+			}
 		});
 
 		JLabel lblWidth = new JLabel("Y:");
@@ -233,12 +228,12 @@ public class ActorEdit extends JPanel {
 		add(tfW);
 		tfW.addFocusListener(new FocusListener() {
 			@Override
-			public void focusLost(FocusEvent arg0)
-			{
+			public void focusLost(FocusEvent arg0) {
 				saveState();
 			}
 			@Override
-			public void focusGained(FocusEvent arg0){}
+			public void focusGained(FocusEvent arg0) {
+			}
 		});
 
 		JLabel lblHeight = new JLabel("Width:");
@@ -257,12 +252,12 @@ public class ActorEdit extends JPanel {
 		add(tfH);
 		tfH.addFocusListener(new FocusListener() {
 			@Override
-			public void focusLost(FocusEvent arg0)
-			{
+			public void focusLost(FocusEvent arg0) {
 				saveState();
 			}
 			@Override
-			public void focusGained(FocusEvent arg0){}
+			public void focusGained(FocusEvent arg0) {
+			}
 		});
 
 		JSeparator separator = new JSeparator();
@@ -275,8 +270,7 @@ public class ActorEdit extends JPanel {
 		add(btnAdd);
 		btnAdd.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e)
-			{
+			public void actionPerformed(ActionEvent e) {
 				addNewActor();
 			}
 		});
@@ -286,8 +280,7 @@ public class ActorEdit extends JPanel {
 		add(btnRemove);
 		btnRemove.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e)
-			{
+			public void actionPerformed(ActionEvent e) {
 				removeActor();
 			}
 		});

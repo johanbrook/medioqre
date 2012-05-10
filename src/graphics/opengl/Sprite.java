@@ -1,6 +1,5 @@
 package graphics.opengl;
 
-
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
@@ -35,8 +34,7 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 	 * @param o
 	 *            The JSON object.
 	 */
-	public Sprite(JSONObject o)
-	{
+	public Sprite(JSONObject o) {
 		this.deserialize(o);
 	}
 
@@ -54,16 +52,14 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 	 * @param height
 	 *            The height of the sprite.
 	 */
-	public Sprite(String textureName, int x, int y, int width, int height)
-	{
+	public Sprite(String textureName, int x, int y, int width, int height) {
 		this.textureName = textureName;
 		this.setTexture(this.textureName);
 		this.rectangle = new Rectangle(x, y, width, height);
 	}
 
 	// ************* Other *************
-	public String toString()
-	{
+	public String toString() {
 		return this.textureName;
 	}
 
@@ -76,8 +72,7 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 	 * 
 	 * @param textureName
 	 */
-	public void setTexture(String textureName)
-	{
+	public void setTexture(String textureName) {
 		this.textureName = textureName;
 		this.texture = null;
 	}
@@ -88,8 +83,7 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 	 * @param x
 	 *            The x coordinate.
 	 */
-	public void setX(int x)
-	{
+	public void setX(int x) {
 		if (this.rectangle != null)
 			this.rectangle.setX(x);
 	}
@@ -100,8 +94,7 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 	 * @param y
 	 *            The y coordinate.
 	 */
-	public void setY(int y)
-	{
+	public void setY(int y) {
 		if (this.rectangle != null)
 			this.rectangle.setY(y);
 	}
@@ -112,8 +105,7 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 	 * @param width
 	 *            The width.
 	 */
-	public void setWidth(int width)
-	{
+	public void setWidth(int width) {
 		if (this.rectangle != null)
 			this.rectangle.setWidth(width);
 	}
@@ -124,19 +116,18 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 	 * @param height
 	 *            The height.
 	 */
-	public void setHeight(int height)
-	{
+	public void setHeight(int height) {
 		if (this.rectangle != null)
 			this.rectangle.setHeight(height);
 	}
-	
+
 	/**
 	 * Set the bounds of the sprite.
 	 * 
-	 * @param r The rectangle representing the bounds
+	 * @param r
+	 *            The rectangle representing the bounds
 	 */
-	public void setBounds(Rectangle r)
-	{
+	public void setBounds(Rectangle r) {
 		this.rectangle = r;
 	}
 
@@ -146,8 +137,7 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 	 * 
 	 * @return The name of the texture.
 	 */
-	public String getTextureName()
-	{
+	public String getTextureName() {
 		return this.textureName;
 	}
 
@@ -156,8 +146,7 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 	 * 
 	 * @return The x coordinate.
 	 */
-	public int getX()
-	{
+	public int getX() {
 		return this.rectangle.getX();
 	}
 
@@ -166,8 +155,7 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 	 * 
 	 * @return The y coordinate.
 	 */
-	public int getY()
-	{
+	public int getY() {
 		return this.rectangle.getY();
 	}
 
@@ -176,8 +164,7 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 	 * 
 	 * @return The width.
 	 */
-	public int getWidth()
-	{
+	public int getWidth() {
 		return this.rectangle.getWidth();
 	}
 
@@ -186,33 +173,34 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 	 * 
 	 * @return The height.
 	 */
-	public int getHeight()
-	{
+	public int getHeight() {
 		return this.rectangle.getHeight();
 	}
 
 	@Override
-	public Rectangle getBounds()
-	{
+	public Rectangle getBounds() {
 		return this.rectangle;
 	}
-	
+
 	// ************* Interface methods *************
 	@Override
-	public void render(Rectangle object, Rectangle target, GLAutoDrawable canvas, int zIndex)
-	{
+	public void render(Rectangle object, Rectangle target,
+			GLAutoDrawable canvas, int zIndex) {
 		if (object != null && object.intersectsRectangle(target)) {
 
 			GL2 gl = canvas.getGL().getGL2();
 
-			this.texture = SharedTextures.getSharedTextures().bindTexture(this.textureName, canvas);
+			this.texture = SharedTextures.getSharedTextures().bindTexture(
+					this.textureName, canvas);
 
-			float tX1 = (float) this.rectangle.getX() / (float) texture.getWidth();
-			float tX2 = ((float) this.rectangle.getX() + (float) this.rectangle.getWidth())
+			float tX1 = (float) this.rectangle.getX()
 					/ (float) texture.getWidth();
-			float tY1 = (float) this.rectangle.getY() / (float) texture.getHeight();
-			float tY2 = ((float) this.rectangle.getY() + (float) this.rectangle.getHeight())
+			float tX2 = ((float) this.rectangle.getX() + (float) this.rectangle
+					.getWidth()) / (float) texture.getWidth();
+			float tY1 = (float) this.rectangle.getY()
 					/ (float) texture.getHeight();
+			float tY2 = ((float) this.rectangle.getY() + (float) this.rectangle
+					.getHeight()) / (float) texture.getHeight();
 
 			float rX1 = (float) ((2.0f * object.getX()) - (float) target
 					.getWidth()) / (float) target.getWidth();
@@ -222,38 +210,37 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 					.getHeight()) / (float) target.getHeight();
 			float rY2 = (float) (2.0f * object.getY() - (float) target
 					.getHeight()) / (float) target.getHeight();
-			
+
 			gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER,
 					GL.GL_NEAREST);
 			gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER,
 					GL.GL_NEAREST);
 			gl.glAlphaFunc(GL2.GL_GREATER, 0.10f);
-			
-//			gl.glEnable(GL.GL_BLEND);
-//			gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-			
+
+			// gl.glEnable(GL.GL_BLEND);
+			// gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+
 			gl.glBegin(GL2.GL_QUADS);
 			gl.glColor3f(1.0f, 1.0f, 1.0f);
-			
+
 			gl.glTexCoord2f(tX1, tY1);
 			gl.glVertex3f(rX1, -rY2, ((float) -zIndex) / 10000f);
 
 			gl.glTexCoord2f(tX2, tY1);
-			gl.glVertex3f(rX2, -rY2, ((float) -zIndex ) / 10000f);
+			gl.glVertex3f(rX2, -rY2, ((float) -zIndex) / 10000f);
 
 			gl.glTexCoord2f(tX2, tY2);
-			gl.glVertex3f(rX2, -rY1, ((float) -zIndex ) / 10000f);
+			gl.glVertex3f(rX2, -rY1, ((float) -zIndex) / 10000f);
 
 			gl.glTexCoord2f(tX1, tY2);
-			gl.glVertex3f(rX1, -rY1, ((float) -zIndex ) / 10000f);
+			gl.glVertex3f(rX1, -rY1, ((float) -zIndex) / 10000f);
 
-			gl.glEnd(); 
+			gl.glEnd();
 		}
 	}
 
 	@Override
-	public JSONObject serialize()
-	{
+	public JSONObject serialize() {
 		JSONObject retObj = new JSONObject();
 		try {
 			retObj.put("texture", this.textureName);
@@ -269,12 +256,12 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 	}
 
 	@Override
-	public void deserialize(JSONObject o)
-	{
+	public void deserialize(JSONObject o) {
 		try {
 			this.textureName = o.getString("texture");
 			this.texture = null;
-			this.rectangle = new Rectangle(o.getInt("x"), o.getInt("y"), o.getInt("width"), o.getInt("height"));
+			this.rectangle = new Rectangle(o.getInt("x"), o.getInt("y"),
+					o.getInt("width"), o.getInt("height"));
 		} catch (JSONException e) {
 			System.out.println("Failed to deserialize Sprite!");
 			e.printStackTrace();
@@ -282,6 +269,6 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 	}
 
 	@Override
-	public void update(double dt)
-	{}
+	public void update(double dt) {
+	}
 }

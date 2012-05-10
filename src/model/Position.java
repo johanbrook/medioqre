@@ -1,52 +1,52 @@
 package model;
 
 /**
-*	Position
-*
-*	@author Johan
-*	@deprecated Using java.awt.Point instead (2012-03-29)
-*/
+ * Position
+ * 
+ * @author Johan
+ * @deprecated Using java.awt.Point instead (2012-03-29)
+ */
 public class Position {
-	
+
 	private final int x;
 	private final int y;
-	
+
 	public Position(final int x, final int y) {
 		this.x = x;
 		this.y = y;
 	}
-	
+
 	public Position(final Position p) {
 		this.x = p.x;
 		this.y = p.y;
 	}
-	
-	public int getX(){
+
+	public int getX() {
 		return this.x;
 	}
-	
-	public int getY(){
+
+	public int getY() {
 		return this.y;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "["+this.x + ", "+this.y+"]";
+		return "[" + this.x + ", " + this.y + "]";
 	}
-	
+
 	@Override
-	public boolean equals(Object o){
-		if(this == o){
+	public boolean equals(Object o) {
+		if (this == o) {
 			return true;
 		}
-		
-		if(o == null || getClass() != o.getClass()){
+
+		if (o == null || getClass() != o.getClass()) {
 			return false;
 		}
-		
+
 		Position other = (Position) o;
-		
+
 		return this.x == other.x && this.y == other.y;
 	}
-	
+
 }

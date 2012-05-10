@@ -13,11 +13,11 @@ import core.Rectangle;
 /**
  * A class used for drawing on screen.
  * 
- * It supports multiple layers and its viewport can be moved around 
- * for rendering a certain part of the scene.
+ * It supports multiple layers and its viewport can be moved around for
+ * rendering a certain part of the scene.
  * 
  * @author John Barbero Unenge
- *
+ * 
  */
 public class Screen implements GLRenderableObject {
 
@@ -29,10 +29,10 @@ public class Screen implements GLRenderableObject {
 	/**
 	 * Creates a screen with the given screensize.
 	 * 
-	 * @param screenSize The screensize
+	 * @param screenSize
+	 *            The screensize
 	 */
-	public Screen(Rectangle screenSize)
-	{
+	public Screen(Rectangle screenSize) {
 		this.screenSize = screenSize;
 		this.screenOffset = new Point(0, 0);
 	}
@@ -40,24 +40,28 @@ public class Screen implements GLRenderableObject {
 	/**
 	 * Creates a screen with the given screensize.
 	 * 
-	 * @param x The x position of the screen
-	 * @param y The y position of the screen
-	 * @param width The width of the screen
-	 * @param height The height of the screen
+	 * @param x
+	 *            The x position of the screen
+	 * @param y
+	 *            The y position of the screen
+	 * @param width
+	 *            The width of the screen
+	 * @param height
+	 *            The height of the screen
 	 */
-	public Screen(int x, int y, int width, int height)
-	{
+	public Screen(int x, int y, int width, int height) {
 		this(new Rectangle(x, y, width, height));
 	}
 
 	/**
 	 * Adds a GLRenderableObject to the layer at the given z index.
 	 * 
-	 * @param ro GLRenderableObject to add to the layer
-	 * @param zIndex The zIndex to add it to
+	 * @param ro
+	 *            GLRenderableObject to add to the layer
+	 * @param zIndex
+	 *            The zIndex to add it to
 	 */
-	public void addDrawableToLayer(GLRenderableObject ro, int zIndex)
-	{
+	public void addDrawableToLayer(GLRenderableObject ro, int zIndex) {
 		// If there are no layers at all
 		if (this.layers == null) {
 			this.layers = new GLRenderableObject[zIndex + 1][];
@@ -98,41 +102,40 @@ public class Screen implements GLRenderableObject {
 	/**
 	 * Remove a GLRenderableObject from the screen.
 	 * 
-	 * @param ro The GLRenderableObject to remove
-	 * @return A boolean representing if the GLRenderableObject was found or not 
+	 * @param ro
+	 *            The GLRenderableObject to remove
+	 * @return A boolean representing if the GLRenderableObject was found or not
 	 */
-	public boolean removeDrawableFromLayer(GLRenderableObject ro)
-	{
+	public boolean removeDrawableFromLayer(GLRenderableObject ro) {
 		boolean retVal = false;
-		 if (ro == null || this.layers == null)
-			 return retVal;
-		
-		  
-		 for (int i = 0; i < this.layers.length; i++) {
+		if (ro == null || this.layers == null)
+			return retVal;
+
+		for (int i = 0; i < this.layers.length; i++) {
 			for (int j = 0; j < this.layers[i].length; j++) {
 				if (this.layers[i][j] == ro) {
 					this.layers[i][j] = null;
 					retVal = true;
 				}
 			}
-		 }
+		}
 		return retVal;
 	}
 
 	/**
 	 * Set the viewport of the screen a given point.
 	 * 
-	 * @param p The point to set the viewport
+	 * @param p
+	 *            The point to set the viewport
 	 */
-	public void setViewPort(Point p)
-	{
+	public void setViewPort(Point p) {
 		this.screenOffset.setLocation(p.x - this.screenSize.getWidth() / 2, p.y
 				- this.screenSize.getHeight() / 2);
 	}
 
 	@Override
-	public void render(Rectangle object, Rectangle target, GLAutoDrawable canvas, int zIndex)
-	{
+	public void render(Rectangle object, Rectangle target,
+			GLAutoDrawable canvas, int zIndex) {
 		if (layers == null)
 			return;
 
@@ -142,7 +145,7 @@ public class Screen implements GLRenderableObject {
 		if (renderRect == null)
 			this.renderRect = new Rectangle(0, 0, 0, 0);
 
-		for (int i = layers.length-1; i >= 0; i--) {
+		for (int i = layers.length - 1; i >= 0; i--) {
 			GLRenderableObject[] tmpLayer = layers[i];
 			if (tmpLayer != null) {
 				for (GLRenderableObject glR : tmpLayer) {
@@ -161,7 +164,8 @@ public class Screen implements GLRenderableObject {
 							this.renderRect.setWidth(width);
 							this.renderRect.setHeight(height);
 
-							glR.render(this.renderRect, this.screenSize, canvas, zIndex);
+							glR.render(this.renderRect, this.screenSize,
+									canvas, zIndex);
 						}
 					}
 				}
@@ -170,13 +174,11 @@ public class Screen implements GLRenderableObject {
 	}
 
 	@Override
-	public void update(double dt)
-	{
+	public void update(double dt) {
 	}
 
 	@Override
-	public Rectangle getBounds()
-	{
+	public Rectangle getBounds() {
 		return this.screenSize;
 	}
 

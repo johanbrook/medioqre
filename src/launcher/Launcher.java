@@ -37,7 +37,7 @@ public class Launcher extends JFrame {
 
 	JPanel mainPanel;
 	JPanel optionsPanel;
-	
+
 	public Launcher() {
 		setResizable(false);
 
@@ -55,26 +55,26 @@ public class Launcher extends JFrame {
 
 		optionsPanel = new OptionsPanel(this);
 		optionsPanel.setVisible(false);
-		
+
 		getContentPane().add(mainPanel);
 		getContentPane().add(optionsPanel);
 		setVisible(true);
 
 		AudioController audio = AudioController.getInstance();
 		audio.playStartUpSound();
-		
+
 	}
-	
-	public void drawOptionPanel(){
+
+	public void drawOptionPanel() {
 		mainPanel.setVisible(false);
 		optionsPanel.setVisible(true);
-		
+
 	}
-	
-	public void drawMainPanel(){
+
+	public void drawMainPanel() {
 		mainPanel.setVisible(true);
 		optionsPanel.setVisible(false);
-		
+
 	}
-	
+
 }

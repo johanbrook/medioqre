@@ -4,7 +4,6 @@ import java.util.prefs.*;
 
 import datamanagement.PreferenceLoader;
 
-
 import sun.tools.tree.ThisExpression;
 
 /**
@@ -20,7 +19,7 @@ public class AudioConstants {
 	private static PreferenceLoader prefs = PreferenceLoader.getInstance();
 	public static final float zROLLOFF = 100;
 
-//	private static Preferences prefs = Preferences.userRoot().node("");
+	// private static Preferences prefs = Preferences.userRoot().node("");
 
 	public static void setBGMVolume(float f) {
 		prefs.putFloat("BGM_VOLUME", f);

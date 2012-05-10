@@ -7,21 +7,21 @@ import java.awt.image.Raster;
 
 public class PixelCastingTool {
 
-	public static int[][] get2dTileMatrixFromPixelArray(int width, int height, int[] pixels)
-	{
+	public static int[][] get2dTileMatrixFromPixelArray(int width, int height,
+			int[] pixels) {
 		int[][] tiles = new int[width][height];
-		
+
 		for (int y = 0; y < width; y++) {
 			for (int x = 0; x < height; x++) {
 				tiles[x][y] = pixels[y * width + x];
 			}
 		}
-		
+
 		return tiles;
 	}
-	
-	public static int[] getARGBarrayFromDataBuffer(Raster raster, int imageWidth, int imageHeight)
-	{
+
+	public static int[] getARGBarrayFromDataBuffer(Raster raster,
+			int imageWidth, int imageHeight) {
 		DataBuffer buffer = raster.getDataBuffer();
 
 		if (buffer.getClass() == DataBufferByte.class) {
@@ -60,5 +60,5 @@ public class PixelCastingTool {
 		}
 		return null;
 	}
-	
+
 }
