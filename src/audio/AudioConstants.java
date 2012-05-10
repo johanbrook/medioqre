@@ -1,10 +1,5 @@
 package audio;
 
-import java.util.prefs.*;
-
-import datamanagement.PreferenceLoader;
-
-import sun.tools.tree.ThisExpression;
 
 /**
  * Constants used by AudioController

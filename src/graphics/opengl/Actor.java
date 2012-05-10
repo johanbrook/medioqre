@@ -19,8 +19,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import quicktime.streaming.MediaParams;
-
 import core.GLRenderableObject;
 import core.JSONSerializable;
 import core.Rectangle;
