@@ -4,6 +4,12 @@
 # find out the current branch so we know where to switch back
 OLD_BRANCH=`git branch --no-color | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'`
 
+# Clean old stuff
+rm -rf docs/pcdoc/*
+
+# Build Javadoc from build file
+ant -buildfile javadoc.xml || exit $?
+
 git checkout gh-pages || exit $?
 
 # Clear out the old files: (files which will be served)
@@ -21,7 +27,7 @@ echo "Clean generated docs ..."
 rm -rf docs/pcdoc/*
 
 echo "Pushing to GitHub gh-pages branch ..."
-git push origin gh-pages || exit $?
+git push -f origin gh-pages || exit $?
 
 # Switch back to the old branch
 git checkout $OLD_BRANCH || exit $?
