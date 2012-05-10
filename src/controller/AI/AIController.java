@@ -18,7 +18,7 @@ import event.Messager;
 /**
  * Class for controlling a list of enemies. Using a PathFinder (implementation
  * of the A*-algorithm), the AIController is able to calculate the most accurate
- * path between a enemy and the player.
+ * path between an enemy and the player.
  * 
  * @author jesperpersson
  * 
@@ -123,7 +123,7 @@ public class AIController implements IMessageSender, IMessageListener {
 						// If path is shorter, manually inserts enemy and player
 						// positions and walk straight towards them, they should
 						// be to close for there to
-						// be any kind of obsticle in the way.
+						// be any kind of obstacle in the way.
 						aiPlayer.getEnemy().setDirection(
 								findLineToPlayer(aiPlayer));
 					}
@@ -296,7 +296,7 @@ public class AIController implements IMessageSender, IMessageListener {
 
 	/**
 	 * Given a point representing a position in the gameworld, will return the
-	 * tile of that position
+	 * tile in which that position exists
 	 * 
 	 * @param point
 	 * @return

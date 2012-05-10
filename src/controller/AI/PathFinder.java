@@ -132,26 +132,25 @@ public class PathFinder {
 	}
 
 	/*
-	 * Loop through the given list, and updates depending on its relation to its
-	 * adjacent tile, the one currently selected Should a tile be in a closed or
-	 * open state, the length of the path between it and the start will be
-	 * compared to what it would have been had we measured the current path to
-	 * it instead. Should the tile be neither closed nor open, the path to it
-	 * will be updated, and it will be added to the open list for consideration
+	 Loop through all neighbors of the currently considered tile
+	 updating their G-values, and whether they belong to the open list och closed list. 
+	The G-value is only updated if the path to the currently considered tile is shorter than any other 
+	considered path to the neighbor in question (that is, if the current G-value is higher than the one we
+	are calculating through the current tile)
 	 */
 	private void updateNeighbors(List<AStarTile> currentNeighbors) {
 
 		for (int k = 0; k < currentNeighbors.size(); k++) {
 
 			// if a tile is closed and the current paths g-value would be lower
-			// than its old g-value, we update the tiles g-value and sets it
-			// adds currentTile as parent
+			// than the tiles old g-value, we update the tiles g-value and sets it to the newly calculated value
+			// Should this be the case, the neighbor will set the current tile as its parrent
 			if (currentNeighbors.get(k).isClosed()
 					&& currentPathIsShorter(currentNeighbors.get(k))) {
 
 				currentNeighbors.get(k).setG(
 						currentTile.isDiagonal(currentNeighbors.get(k))
-								? currentTile.getG() + DIAGONALCOST
+						? currentTile.getG() + DIAGONALCOST
 								: currentTile.getG() + 1);
 
 				currentNeighbors.get(k).setParent(currentTile);
@@ -163,13 +162,13 @@ public class PathFinder {
 					&& currentPathIsShorter(currentNeighbors.get(k))) {
 				currentNeighbors.get(k).setG(
 						currentTile.isDiagonal(currentNeighbors.get(k))
-								? currentTile.getG() + DIAGONALCOST
+						? currentTile.getG() + DIAGONALCOST
 								: currentTile.getG() + 1);
 				currentNeighbors.get(k).setParent(currentTile);
 
 				// if a tile is neither open nor closed, adds tile to the
 				// openList
-				// and set the G-value accordingly.
+				// and set the G-value accordingly. Set current tile as parent.
 			} else if (!currentNeighbors.get(k).isOpen()
 					&& !currentNeighbors.get(k).isClosed()) {
 
@@ -178,21 +177,28 @@ public class PathFinder {
 				currentNeighbors.get(k).setParent(currentTile);
 				currentNeighbors.get(k).setG(
 						currentTile.isDiagonal(currentNeighbors.get(k))
-								? currentTile.getG() + DIAGONALCOST
+						? currentTile.getG() + DIAGONALCOST
 								: currentTile.getG() + 1);
 			}
 		}
 	}// end updateNeighbors
 
-	// Given a SmartButton, will return whether or not the current path from the
-	// start to the button is shorter than the currently recorded.
+
+	/**
+	 * 	Given a tile, will return whether or not the current path from the
+	start to the tile is shorter than the currently recorded.
+	 * @param tile
+	 * @return
+	 */
 	private boolean currentPathIsShorter(AStarTile tile) {
 		return tile.getG() > (currentTile.isDiagonal(tile) ? currentTile.getG()
 				+ DIAGONALCOST : currentTile.getG() + 1);
 	}
 
-	// Loops through gameboard and make sure every button calculates finds its
-	// neighbors.
+	/**
+	 * Loops through gameboard and make sure every button calculates its neighbors, and 
+	 * adds them to their list of neighbors.
+	 */
 	private void generateNeighbors() {
 		for (int i = 0; i < logicList.length; i++) {
 			for (int l = 0; l < logicList[i].length; l++) {
@@ -203,8 +209,15 @@ public class PathFinder {
 		}
 	}
 
-	// Tells the specified button to calculate and add its neighbors. Only adds
-	// non-solids.
+
+	/**
+	 *Tells the specified button to calculate and add its neighbors. Only adds non-solids.
+	 * Calls the method isRelevant (AStarTile tile, AStarTile considered) to find out whether
+	 * or not the considered neighbor is a tile that is adjecent to this one, with a wall
+	 * in between them. If that would be the case, no path between the two would ever be possible,
+	 * and the tile is not added.
+	 * @param tile
+	 */
 	private void calculateNeighbors(AStarTile tile) {
 		int top = tile.getColumn() + 1;
 		int buttom = tile.getColumn() - 1;
@@ -270,12 +283,15 @@ public class PathFinder {
 			int dx = consideredTile.getRow() - currentTile.getRow();
 			int dy = consideredTile.getColumn() - currentTile.getColumn();
 			return (!logicList[currentTile.getRow() + dx][currentTile
-					.getColumn()].isSolid() && !logicList[currentTile.getRow()][currentTile
-					.getColumn() + dy].isSolid());
+			                                              .getColumn()].isSolid() && !logicList[currentTile.getRow()][currentTile
+			                                                                                                          .getColumn() + dy].isSolid());
 		}
 	}
 
-	// Removes a SmartButton from the open list
+	/**
+	 * Removes a SmartButton from the open list
+	 * @param tile to be removed
+	 */
 	private void removeFromOpen(AStarTile tile) {
 		for (int i = 0; i < openList.size(); i++) {
 			if (openList.get(i) == tile) {
@@ -284,6 +300,10 @@ public class PathFinder {
 		}
 	}
 
+	/**
+	 * Removes any closed/open-status of each tile in the logicList, 
+	 * sets the G-value to 0 in every tile. Clears the open list
+	 */
 	public void clear() {
 		for (int i = 0; i < logicList.length; i++) {
 			for (int l = 0; l < logicList[i].length; l++) {
@@ -295,10 +315,12 @@ public class PathFinder {
 		clearOpen();
 	}
 
+
+	/**
+	 * Clears the open list.
+	 */
 	private void clearOpen() {
-		for (int i = 0; i < openList.size(); i++) {
-			openList.remove(i);
-		}
+		openList.clear();
 	}
 
 }
