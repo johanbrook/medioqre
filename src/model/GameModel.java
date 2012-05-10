@@ -314,9 +314,9 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 				checkCollisions(temp);
 				if (t instanceof AbstractCharacter) {
 					((AbstractCharacter) t).update(dt);
-				} else {
-					temp.move(dt);
 				}
+				
+				temp.move(dt);
 			}
 
 			if (t instanceof Projectile) {
