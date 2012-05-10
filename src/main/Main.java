@@ -1,9 +1,7 @@
 package main;
 
-import java.awt.Image;
-import java.awt.Toolkit;
+
 import java.io.IOException;
-import java.net.URL;
 
 import javax.imageio.ImageIO;
 
@@ -16,7 +14,6 @@ import static tools.Logger.*;
 
 import org.simplericity.macify.eawt.*;
 
-import tools.ImageUtlity;
 
 import static controller.AppController.MODE;
 import static controller.AppController.PRODUCTION;
@@ -57,10 +54,9 @@ public class Main {
 		System.setProperty("com.apple.mrj.application.apple.menu.about.name",
 				"Frank The Tank");
 
-		com.apple.eawt.Application app = com.apple.eawt.Application
-				.getApplication();
+		Application app = new DefaultApplication();
 		try {
-			app.setDockIconImage(ImageIO.read(ClassLoader.getSystemResourceAsStream("images/launcher/appicon.png")));
+			app.setApplicationIconImage(ImageIO.read(ClassLoader.getSystemResourceAsStream("images/launcher/appicon.png")));
 		} catch (IOException e) {
 			Logger.log("Couldn't load dock icon!");
 			e.printStackTrace();
