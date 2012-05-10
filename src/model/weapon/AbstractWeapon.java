@@ -1,15 +1,14 @@
 package model.weapon;
 
-
 import event.Event;
 import event.Event.Property;
 import event.EventBus;
 import model.character.AbstractCharacter;
 
 /**
- *	Weapon.java
- *
- *	@author Johan
+ * Weapon.java
+ * 
+ * @author Johan
  */
 public abstract class AbstractWeapon {
 

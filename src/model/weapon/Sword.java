@@ -1,8 +1,8 @@
 /**
-*	Sword.java
-*
-*	@author Johan
-*/
+ *	Sword.java
+ *
+ *	@author Johan
+ */
 
 package model.weapon;
 
@@ -10,17 +10,18 @@ import model.character.AbstractCharacter;
 import model.weapon.Projectile.Range;
 
 public class Sword extends AbstractWeapon {
-	
+
 	private Projectile projectile;
-	
-	public Sword(AbstractCharacter owner, int ammo, double ammoMultiplier, double fireInterval) {
+
+	public Sword(AbstractCharacter owner, int ammo, double ammoMultiplier,
+			double fireInterval) {
 		super(owner, ammo, ammoMultiplier, fireInterval);
 	}
 
 	public boolean equals(Object o) {
-		if(o == null || getClass() != o.getClass())
+		if (o == null || getClass() != o.getClass())
 			return false;
-		
+
 		return true;
 	}
 
@@ -28,7 +29,7 @@ public class Sword extends AbstractWeapon {
 	public Projectile createProjectile() {
 		return new Projectile(this.projectile);
 	}
-	
+
 	@Override
 	public Projectile getProjectile() {
 		return this.projectile;

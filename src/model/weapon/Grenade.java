@@ -1,8 +1,8 @@
 /**
-*	Grenade.java
-*
-*	@author Johan
-*/
+ *	Grenade.java
+ *
+ *	@author Johan
+ */
 
 package model.weapon;
 
@@ -24,10 +24,9 @@ public class Grenade extends AbstractWeapon {
 	public Grenade(AbstractCharacter owner, int ammo, double ammoMultiplier, double fireInterval) {
 		super(owner, ammo, ammoMultiplier, fireInterval);
 	}
-	
 
 	public boolean equals(Object o) {
-		if(o == null || getClass() != o.getClass())
+		if (o == null || getClass() != o.getClass())
 			return false;
 		
 		return true;

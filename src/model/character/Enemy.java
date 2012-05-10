@@ -40,7 +40,7 @@ public class Enemy extends AbstractCharacter {
 		if (!e.isMoving()){
 			Point currPos = this.getPosition();
 
-			int x = (int) Math.signum((e.getDirection().getXRatio()));		
+			int x = (int) Math.signum((e.getDirection().getXRatio()));
 			int y = (int) Math.signum((e.getDirection().getYRatio()));
 
 			this.setPosition(currPos.x + x, currPos.y + y);

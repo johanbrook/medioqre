@@ -5,10 +5,10 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 /**
-*	A concrete implementation of CollidableObject.
-*
-*	@author Johan
-*/
+ * A concrete implementation of CollidableObject.
+ * 
+ * @author Johan
+ */
 public class ConcreteCollidableObject extends CollidableObject {
 	
 	/**

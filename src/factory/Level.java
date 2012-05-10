@@ -17,7 +17,7 @@ import datamanagement.ResourceLoader;
  * A class used to package all resources used in one level.
  * 
  * @author John Barbero Unenge and Johan Brook
- *
+ * 
  */
 public class Level {
 	
@@ -26,7 +26,7 @@ public class Level {
 	private String	defaultConfigPath;	
 	private JSONObject config;
 	private Map<String, String> configFiles;
-	
+
 	/**
 	 * Create a new level with default config file ("gamedata/config.json")
 	 */
@@ -37,14 +37,16 @@ public class Level {
 	/**
 	 * Create a new level from a path to a given JSON config file
 	 * 
-	 * @param configPath The path to the JSON resource
+	 * @param configPath
+	 *            The path to the JSON resource
 	 */
 	public Level(String configPath) {
 		this.defaultConfigPath = configPath;
 		this.config = new JSONObject();
 		this.configFiles = new HashMap<String, String>();
-		
-		JSONObject configFile = ResourceLoader.parseJSONFromPath(this.defaultConfigPath);
+
+		JSONObject configFile = ResourceLoader
+				.parseJSONFromPath(this.defaultConfigPath);
 		parseNestedConfigFiles(configFile);
 	}
 	
@@ -60,9 +62,9 @@ public class Level {
 		if(configFile == null) {
 			throw new IllegalArgumentException("Input config file can't be null");
 		}
-		
+
 		Iterator<String> it = configFile.keys();
-		while(it.hasNext()) {
+		while (it.hasNext()) {
 			String configKey = it.next();
 				
 				try {
@@ -85,10 +87,9 @@ public class Level {
 					e.printStackTrace();
 				}
 		}
-		
+
 	}
-	
-	
+
 	// Getters
 	
 	
@@ -102,8 +103,7 @@ public class Level {
 	public Map<String, String> getConfigMap() {
 		return this.configFiles;
 	}
-	
-	
+
 	/**
 	 * Return a collection with all separate config files.
 	 * 
@@ -112,7 +112,7 @@ public class Level {
 	public Collection<String> getConfigFiles() {
 		return this.configFiles.values();
 	}
-	
+
 	/**
 	 * Return the config.
 	 * 
@@ -121,7 +121,7 @@ public class Level {
 	public JSONObject getConfig() {
 		return this.config;
 	}
-	
+
 	/**
 	 * Get the path from where the config data is read.
 	 * 

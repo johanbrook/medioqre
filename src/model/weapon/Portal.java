@@ -1,8 +1,8 @@
 /**
-*	Portal.java
-*
-*	@author Johan
-*/
+ *	Portal.java
+ *
+ *	@author Johan
+ */
 
 package model.weapon;
 
@@ -32,22 +32,22 @@ public class Portal extends CollidableObject {
 		super(collBox, size, xoffset, yoffset);
 		this.mode = mode;
 	}
-	
+
 	public void setPositionFromCenter(Point pos) {
-		tools.Logger.log("Original position is: "+ pos);
+		tools.Logger.log("Original position is: " + pos);
 		int x = pos.x - this.getCenter().x;
 		int y = pos.y - this.getCenter().y;
-		
-		tools.Logger.log("New position is: "+x + ", "+y);
+
+		tools.Logger.log("New position is: " + x + ", " + y);
 		this.setPosition(x, y);
 	}
-	
+
 	public Point getCenter() {
 		Point p = new Point(this.getSize().width / 2, this.getSize().height / 2);
-		tools.Logger.log("Center is: "+p);
+		tools.Logger.log("Center is: " + p);
 		return p;
 	}
-	
+
 	public void center() {
 		this.setPositionFromCenter(this.getPosition());
 	}

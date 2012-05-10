@@ -1,8 +1,8 @@
 /**
-*	PortalGun.java
-*
-*	@author Johan
-*/
+ *	PortalGun.java
+ *
+ *	@author Johan
+ */
 
 package model.weapon;
 
@@ -67,12 +67,12 @@ public class PortalGun extends AbstractWeapon {
 	public Projectile getProjectile() {
 		return this.projectile;
 	}
-	
+
 	@Override
 	public Projectile createProjectile() {
 		return new Projectile(this.projectile);
 	}
-	
+
 	@Override
 	public void setProjectile(Projectile projectile) {
 		this.projectile = projectile;

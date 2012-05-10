@@ -36,17 +36,17 @@ import core.Rectangle;
 public class Actor implements JSONSerializable, GLRenderableObject {
 
 	// Animation
-	private Animation				currentAnimation;
-	private Map<String, Animation>	animations;
+	private Animation currentAnimation;
+	private Map<String, Animation> animations;
 
 	// Name
-	private String					name;
+	private String name;
 
 	// Position
-	private Rectangle				rectangle;
+	private Rectangle rectangle;
 
 	// Entity
-	private CollidableObject		object;
+	private CollidableObject object;
 
 	// ************* Getters *************
 	/**
@@ -54,8 +54,7 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	 * 
 	 * @return The x coordinate.
 	 */
-	public int getX()
-	{
+	public int getX() {
 		return this.rectangle.getX();
 	}
 
@@ -64,8 +63,7 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	 * 
 	 * @return The y coordinate.
 	 */
-	public int getY()
-	{
+	public int getY() {
 		return this.rectangle.getY();
 	}
 
@@ -74,8 +72,7 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	 * 
 	 * @return The width.
 	 */
-	public int getWidth()
-	{
+	public int getWidth() {
 		return this.rectangle.getWidth();
 	}
 
@@ -84,8 +81,7 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	 * 
 	 * @return The height.
 	 */
-	public int getHeight()
-	{
+	public int getHeight() {
 		return this.rectangle.getHeight();
 	}
 
@@ -94,13 +90,11 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	 * 
 	 * @return The rectangle.
 	 */
-	public Rectangle getRectangle()
-	{
+	public Rectangle getRectangle() {
 		return this.rectangle;
 	}
 
-	public Animation getCurrentAnimation()
-	{
+	public Animation getCurrentAnimation() {
 		return this.currentAnimation;
 	}
 
@@ -109,8 +103,7 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	 * 
 	 * @return The animations.
 	 */
-	public Map<String, Animation> getAnimations()
-	{
+	public Map<String, Animation> getAnimations() {
 		return this.animations;
 	}
 
@@ -120,8 +113,7 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	 * 
 	 * @return The name of the actor.
 	 */
-	public String getName()
-	{
+	public String getName() {
 		return this.name;
 	}
 
@@ -130,8 +122,7 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	 * 
 	 * @return The entity.
 	 */
-	public CollidableObject getCollidableObject()
-	{
+	public CollidableObject getCollidableObject() {
 		return this.object;
 	}
 
@@ -142,8 +133,7 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	 * @param x
 	 *            The x coordinate.
 	 */
-	public void setX(int x)
-	{
+	public void setX(int x) {
 		this.rectangle.setX(x);
 	}
 
@@ -153,8 +143,7 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	 * @param y
 	 *            The y coordinate.
 	 */
-	public void setY(int y)
-	{
+	public void setY(int y) {
 		this.rectangle.setY(y);
 	}
 
@@ -164,8 +153,7 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	 * @param width
 	 *            The width.
 	 */
-	public void setWidth(int width)
-	{
+	public void setWidth(int width) {
 		this.rectangle.setWidth(width);
 	}
 
@@ -175,8 +163,7 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	 * @param height
 	 *            The height of the actor.
 	 */
-	public void setHeight(int height)
-	{
+	public void setHeight(int height) {
 		this.rectangle.setHeight(height);
 	}
 
@@ -186,10 +173,10 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	 * @param animationName
 	 *            The name of the animation to display.
 	 */
-	public void setCurrentAnimation(String animationName)
-	{
+	public void setCurrentAnimation(String animationName) {
 		Animation newAnimation = this.animations.get(animationName);
-		this.currentAnimation = newAnimation != null ? newAnimation
+		this.currentAnimation = newAnimation != null
+				? newAnimation
 				: this.currentAnimation;
 	}
 
@@ -199,8 +186,7 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	 * @param animations
 	 *            The new animations.
 	 */
-	public void setAnimations(Map<String, Animation> animations)
-	{
+	public void setAnimations(Map<String, Animation> animations) {
 		this.animations = animations;
 	}
 
@@ -210,8 +196,7 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	 * @param name
 	 *            The name.
 	 */
-	public void setName(String name)
-	{
+	public void setName(String name) {
 		this.name = name;
 	}
 
@@ -221,8 +206,7 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	 * @param e
 	 *            The Entity.
 	 */
-	public void setObject(CollidableObject o)
-	{
+	public void setObject(CollidableObject o) {
 		this.object = o;
 	}
 
@@ -233,8 +217,7 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	 * @param animation
 	 *            The animation to add.
 	 */
-	public void addAnimation(Animation animation)
-	{
+	public void addAnimation(Animation animation) {
 		if (this.animations == null) {
 			this.animations = new IdentityHashMap<String, Animation>();
 		}
@@ -244,8 +227,7 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 
 	// Update
 	@Override
-	public void update(double dt)
-	{
+	public void update(double dt) {
 		if (this.object != null) {
 			String animation = "";
 
@@ -254,30 +236,30 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 
 				if (entity instanceof model.character.AbstractCharacter) {
 					switch (entity.getDirection()) {
-					case SOUTH:
-						animation = entity.isMoving() ? "moveS" : "stopS";
-						break;
-					case SOUTH_WEST:
-						animation = entity.isMoving() ? "moveSW" : "stopSW";
-						break;
-					case WEST:
-						animation = entity.isMoving() ? "moveW" : "stopW";
-						break;
-					case NORTH_WEST:
-						animation = entity.isMoving() ? "moveNW" : "stopNW";
-						break;
-					case NORTH:
-						animation = entity.isMoving() ? "moveN" : "stopN";
-						break;
-					case NORTH_EAST:
-						animation = entity.isMoving() ? "moveNE" : "stopNE";
-						break;
-					case EAST:
-						animation = entity.isMoving() ? "moveE" : "stopE";
-						break;
-					case SOUTH_EAST:
-						animation = entity.isMoving() ? "moveSE" : "stopSE";
-						break;
+						case SOUTH :
+							animation = entity.isMoving() ? "moveS" : "stopS";
+							break;
+						case SOUTH_WEST :
+							animation = entity.isMoving() ? "moveSW" : "stopSW";
+							break;
+						case WEST :
+							animation = entity.isMoving() ? "moveW" : "stopW";
+							break;
+						case NORTH_WEST :
+							animation = entity.isMoving() ? "moveNW" : "stopNW";
+							break;
+						case NORTH :
+							animation = entity.isMoving() ? "moveN" : "stopN";
+							break;
+						case NORTH_EAST :
+							animation = entity.isMoving() ? "moveNE" : "stopNE";
+							break;
+						case EAST :
+							animation = entity.isMoving() ? "moveE" : "stopE";
+							break;
+						case SOUTH_EAST :
+							animation = entity.isMoving() ? "moveSE" : "stopSE";
+							break;
 					}
 				} else if (entity instanceof Projectile) {
 					Projectile p = (Projectile) this.object;
@@ -325,8 +307,7 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	 *            The animations.
 	 */
 	public Actor(String name, int x, int y, int width, int height,
-			Map<String, Animation> animations)
-	{
+			Map<String, Animation> animations) {
 		this.name = name;
 		this.rectangle = new Rectangle(x, y, width, height);
 		this.animations = animations;
@@ -347,8 +328,7 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	 * @param height
 	 *            The height.
 	 */
-	public Actor(String name, int x, int y, int width, int height)
-	{
+	public Actor(String name, int x, int y, int width, int height) {
 		this(name, x, y, width, height,
 				new IdentityHashMap<String, Animation>());
 	}
@@ -359,8 +339,7 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	 * @param o
 	 *            The JSON object.
 	 */
-	public Actor(JSONObject o)
-	{
+	public Actor(JSONObject o) {
 		this.deserialize(o);
 	}
 
@@ -372,22 +351,21 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	 * @param e
 	 *            Entity.
 	 */
-	public Actor(JSONObject jo, CollidableObject co)
-	{
+	public Actor(JSONObject jo, CollidableObject co) {
 		this(jo);
 		this.object = co;
 	}
 
 	@Override
-	public void render(Rectangle object, Rectangle target, GLAutoDrawable canvas, int zIndex)
-	{
+	public void render(Rectangle object, Rectangle target,
+			GLAutoDrawable canvas, int zIndex) {
 		if (this.currentAnimation != null)
-			this.currentAnimation.render(object, target, canvas, this.getY()+this.getHeight());
+			this.currentAnimation.render(object, target, canvas, this.getY()
+					+ this.getHeight());
 	}
 
 	@Override
-	public JSONObject serialize()
-	{
+	public JSONObject serialize() {
 
 		JSONObject retObj = new JSONObject();
 		try {
@@ -411,8 +389,7 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	}
 
 	@Override
-	public void deserialize(JSONObject o)
-	{
+	public void deserialize(JSONObject o) {
 		try {
 			this.name = o.getString("name");
 			this.rectangle = new Rectangle(o.getInt("x"), o.getInt("y"),
@@ -440,21 +417,18 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	 * 
 	 * @return A string representation of the actor.
 	 */
-	public String toStringFull()
-	{
+	public String toStringFull() {
 		return ("Actor: " + this.name + " Position: (" + this.rectangle.getX()
 				+ "," + this.rectangle.getY() + ") Size (w,h): ("
 				+ this.rectangle.getWidth() + "," + this.rectangle.getHeight() + ")");
 	}
 
-	public String toString()
-	{
+	public String toString() {
 		return this.name;
 	}
 
 	@Override
-	public Rectangle getBounds()
-	{
+	public Rectangle getBounds() {
 		return this.rectangle;
 	}
 }

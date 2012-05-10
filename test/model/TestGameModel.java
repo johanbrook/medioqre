@@ -1,8 +1,8 @@
 /**
-*	TestGameModel.java
-*
-*	@author Johan
-*/
+ *	TestGameModel.java
+ *
+ *	@author Johan
+ */
 
 package model;
 
@@ -25,7 +25,7 @@ public class TestGameModel implements IEventHandler {
 
 	private GameModel game;
 	private Direction newDir;
-	
+
 	@Before
 	public void setUp() throws Exception {
 		ObjectFactory.setLevel(new Level());
@@ -35,23 +35,22 @@ public class TestGameModel implements IEventHandler {
 		EventBus.INSTANCE.register(this);
 	}
 
-	
 	@Test
 	public void testUpdateDirection() {
 		this.game.getPlayer().setDirection(Direction.NORTH);
-		
+
 		assertEquals(Direction.NORTH, this.newDir);
 	}
 
 	@Override
 	public void onEvent(Event evt) {
-		
-		if(evt.getProperty() == Property.CHANGED_DIRECTION){
+
+		if (evt.getProperty() == Property.CHANGED_DIRECTION) {
 			this.newDir = ((Entity) evt.getValue()).getDirection();
 		}
-			
+
 	}
-	
+
 	@After
 	public void cleanUp() {
 		EventBus.INSTANCE.remove(this);

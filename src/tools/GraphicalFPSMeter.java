@@ -30,8 +30,7 @@ public class GraphicalFPSMeter {
 	 * Create a new FPS meter with the label "FPS" and logging enabled.
 	 * 
 	 */
-	public GraphicalFPSMeter()
-	{
+	public GraphicalFPSMeter() {
 		this("FPS");
 	}
 
@@ -41,15 +40,14 @@ public class GraphicalFPSMeter {
 	 * @param label
 	 *            The label before the frame rate
 	 */
-	public GraphicalFPSMeter(String label)
-	{
+	public GraphicalFPSMeter(String label) {
 		this.label = label;
 
 		this.timeLastFrame = System.nanoTime();
 		this.timeThisSecond = 0;
 		this.framesThisSecond = 0;
 		this.currentFPS = 0;
-		
+
 	}
 
 	/**
@@ -58,8 +56,7 @@ public class GraphicalFPSMeter {
 	 * @param canvas
 	 *            The canvas to draw the string on
 	 */
-	public void tick(Graphics2D canvas)
-	{
+	public void tick(Graphics2D canvas) {
 		canvas.setColor(Color.RED);
 		canvas.setFont(new Font("Courier", Font.BOLD, 20));
 		canvas.drawString(this.label + ": " + this.tick(), 10, 20);
@@ -70,8 +67,7 @@ public class GraphicalFPSMeter {
 	 * 
 	 * @return The current FPS
 	 */
-	public int tick()
-	{
+	public int tick() {
 		double timeThisFrame = System.nanoTime();
 		double dt = timeThisFrame - timeLastFrame;
 
@@ -79,10 +75,10 @@ public class GraphicalFPSMeter {
 			this.currentFPS = framesThisSecond;
 			framesThisSecond = 0;
 			timeThisSecond = 0;
-			
-			if (AppController.MODE == AppController.DEBUG) 
-				System.out.println(this.label+": "+this.currentFPS);
-			
+
+			if (AppController.MODE == AppController.DEBUG)
+				System.out.println(this.label + ": " + this.currentFPS);
+
 		} else {
 			timeThisSecond += dt;
 			framesThisSecond++;

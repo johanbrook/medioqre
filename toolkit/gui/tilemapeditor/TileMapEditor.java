@@ -68,22 +68,19 @@ public class TileMapEditor extends JFrame implements TileSelectorListener {
 	private JMenuItem mntmSaveAs;
 
 	private TileCanvas tileCanvas;
-	private TileSelector	tileSelector;
+	private TileSelector tileSelector;
 	private TileInspector tileInspector;
 
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
 		new TileMapEditor();
 	}
 
-	public TileMapEditor()
-	{
+	public TileMapEditor() {
 		this.initGui();
 		this.reloadGui();
 	}
 
-	private void saveFile(File file)
-	{
+	private void saveFile(File file) {
 		System.out.println("Method for saving file");
 		if (file == null) {
 			System.out.println("Filename is null");
@@ -94,33 +91,37 @@ public class TileMapEditor extends JFrame implements TileSelectorListener {
 				saveFile(currentFile);
 			}
 		} else {
-			BufferedImage img = new BufferedImage(this.currentTileMap.getTileMapSize().getWidth(), this.currentTileMap.getTileMapSize().getHeight(), BufferedImage.TYPE_INT_ARGB);
-			
-			int[] pixels = ((DataBufferInt)img.getRaster().getDataBuffer()).getData();
-						
+			BufferedImage img = new BufferedImage(this.currentTileMap
+					.getTileMapSize().getWidth(), this.currentTileMap
+					.getTileMapSize().getHeight(), BufferedImage.TYPE_INT_ARGB);
+
+			int[] pixels = ((DataBufferInt) img.getRaster().getDataBuffer())
+					.getData();
+
 			this.currentTileMap.fillPixelArrayWithTiles(pixels);
-					
+
 			try {
 				ImageIO.write(img, "png", file);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 			System.out.println("Saving file: " + file);
 		}
 	}
 
-	private void newTileMap()
-	{
+	private void newTileMap() {
 		System.out.println("Creating new tilemap.");
 		int rows = Integer.valueOf(JOptionPane
 				.showInputDialog("Number of rows: "));
 		int columns = Integer.valueOf(JOptionPane
 				.showInputDialog("Number of columns: "));
-			
-		TileSheet t = this.currentTileSheet == null ? new TileSheet() : this.currentTileSheet;
-		
+
+		TileSheet t = this.currentTileSheet == null
+				? new TileSheet()
+				: this.currentTileSheet;
+
 		this.currentTileMap = new TileMap(rows, columns, t, null);
 		this.currentTileMap.randomizeTileMap();
 
@@ -129,33 +130,31 @@ public class TileMapEditor extends JFrame implements TileSelectorListener {
 		this.reloadGui();
 	}
 
-	private void loadTileMap(File file)
-	{
+	private void loadTileMap(File file) {
 		this.currentFile = file;
-				
-		this.currentTileMap = ResourceLoader.loadTileMapFromAbsolutePath(this.currentFile.getAbsolutePath());
+
+		this.currentTileMap = ResourceLoader
+				.loadTileMapFromAbsolutePath(this.currentFile.getAbsolutePath());
 		this.currentTileMap.setTileSheet(this.currentTileSheet);
 
 		this.tileCanvas.setTileMap(this.currentTileMap);
-		
+
 		System.out.println("Loading tilemap: " + file);
 
 	}
 
-	private void createNewTileSheet()
-	{
+	private void createNewTileSheet() {
 		new TileSheetEditor();
 		System.out.println("Creating new tilesheet.");
 	}
 
-	private void loadTileSheet(File file)
-	{
-		
+	private void loadTileSheet(File file) {
+
 		try {
 			this.currentTileSheet = new TileSheet(new JSONObject(
 					IOUtils.toString(new FileInputStream(file))));
 			System.out.println("load TileSheet: " + file.getAbsolutePath());
-			
+
 			this.reloadGui();
 			return;
 		} catch (FileNotFoundException e) {
@@ -168,24 +167,25 @@ public class TileMapEditor extends JFrame implements TileSelectorListener {
 		System.out.println("Could not load: " + file.getAbsolutePath());
 	}
 
-	private void clearTileMap()
-	{
-		if (this.tileSelector == null) return;
-		if (this.tileSelector.getSelectedTile() == null) return;
-		if (this.currentTileMap == null) return;
-		
-		this.currentTileMap.clearTileMap(this.tileSelector.getSelectedTile().getType());
+	private void clearTileMap() {
+		if (this.tileSelector == null)
+			return;
+		if (this.tileSelector.getSelectedTile() == null)
+			return;
+		if (this.currentTileMap == null)
+			return;
+
+		this.currentTileMap.clearTileMap(this.tileSelector.getSelectedTile()
+				.getType());
 		System.out.println("Clearing tilemap.");
 	}
 
-	private void setTileMapSize(int rows, int columns)
-	{
+	private void setTileMapSize(int rows, int columns) {
 		System.out
 				.println("Setting tilemap size to: " + rows + " x " + columns);
 	}
 
-	private void reloadGui()
-	{	
+	private void reloadGui() {
 		if (this.currentTileMap == null) {
 			// Update GUI
 			this.mntmSave.setEnabled(false);
@@ -194,7 +194,7 @@ public class TileMapEditor extends JFrame implements TileSelectorListener {
 			// Update GUI
 			this.mntmSave.setEnabled(true);
 			this.mntmSaveAs.setEnabled(true);
-			
+
 			// Update Logic
 			this.currentTileMap.setTileSheet(this.currentTileSheet);
 		}
@@ -203,8 +203,7 @@ public class TileMapEditor extends JFrame implements TileSelectorListener {
 		}
 	}
 
-	private void initGui()
-	{
+	private void initGui() {
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 
@@ -217,8 +216,7 @@ public class TileMapEditor extends JFrame implements TileSelectorListener {
 		mnFile.add(mntmNewTilemap);
 		mntmNewTilemap.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent arg0)
-			{
+			public void actionPerformed(ActionEvent arg0) {
 				newTileMap();
 			}
 		});
@@ -229,13 +227,13 @@ public class TileMapEditor extends JFrame implements TileSelectorListener {
 		mnFile.add(mntmLoadTilemap);
 		mntmLoadTilemap.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent arg0)
-			{
+			public void actionPerformed(ActionEvent arg0) {
 				if (currentTileSheet == null) {
-					JOptionPane.showMessageDialog(getParent(), "Y U NO LOAD TILESHEET FIRST?  ლ(ಠ益ಠლ)");
+					JOptionPane.showMessageDialog(getParent(),
+							"Y U NO LOAD TILESHEET FIRST?  ლ(ಠ益ಠლ)");
 					return;
 				}
-				
+
 				JFileChooser chooser = new JFileChooser();
 				int input = chooser.showOpenDialog(getParent());
 				if (input == JFileChooser.APPROVE_OPTION)
@@ -252,8 +250,7 @@ public class TileMapEditor extends JFrame implements TileSelectorListener {
 		mnFile.add(mntmSave);
 		mntmSave.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e)
-			{
+			public void actionPerformed(ActionEvent e) {
 				saveFile(currentFile);
 			}
 		});
@@ -276,8 +273,7 @@ public class TileMapEditor extends JFrame implements TileSelectorListener {
 		mnFile.add(mntmClear);
 		mntmClear.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent arg0)
-			{
+			public void actionPerformed(ActionEvent arg0) {
 				int input = JOptionPane.showConfirmDialog(null,
 						"Do you really want to clear the tilemap?",
 						"Clear tilemap", JOptionPane.YES_NO_OPTION);
@@ -287,8 +283,7 @@ public class TileMapEditor extends JFrame implements TileSelectorListener {
 		});
 		mntmSize.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent arg0)
-			{
+			public void actionPerformed(ActionEvent arg0) {
 				int rows = Integer.valueOf(JOptionPane
 						.showInputDialog("Number of rows: "));
 				int columns = Integer.valueOf(JOptionPane
@@ -298,8 +293,7 @@ public class TileMapEditor extends JFrame implements TileSelectorListener {
 		});
 		mntmSaveAs.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e)
-			{
+			public void actionPerformed(ActionEvent e) {
 				saveFile(null);
 			}
 		});
@@ -312,8 +306,7 @@ public class TileMapEditor extends JFrame implements TileSelectorListener {
 		mnTilesheet.add(mntmCreateNewTilesheet);
 		mntmCreateNewTilesheet.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e)
-			{
+			public void actionPerformed(ActionEvent e) {
 				createNewTileSheet();
 			}
 		});
@@ -325,8 +318,7 @@ public class TileMapEditor extends JFrame implements TileSelectorListener {
 		mnTilesheet.add(mntmLoadTileSheet);
 		mntmLoadTileSheet.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e)
-			{	
+			public void actionPerformed(ActionEvent e) {
 				JFileChooser chooser = new JFileChooser();
 				int input = chooser.showOpenDialog(getParent());
 				if (input == JFileChooser.APPROVE_OPTION) {
@@ -356,7 +348,7 @@ public class TileMapEditor extends JFrame implements TileSelectorListener {
 
 		// Creating tile selector and adding it to
 		// split pane
-		
+
 		this.tileSelector = new TileSelector(glC);
 		this.tileSelector.addTileSelectorListener(this);
 		splitPane_1.setRightComponent(this.tileSelector);
@@ -372,49 +364,41 @@ public class TileMapEditor extends JFrame implements TileSelectorListener {
 
 		splitPane.addComponentListener(new ComponentListener() {
 			@Override
-			public void componentShown(ComponentEvent e)
-			{
+			public void componentShown(ComponentEvent e) {
 			}
 
 			@Override
-			public void componentResized(ComponentEvent e)
-			{
+			public void componentResized(ComponentEvent e) {
 				((JSplitPane) e.getComponent()).setDividerLocation(e
 						.getComponent().getWidth() - 220);
 			}
 
 			@Override
-			public void componentMoved(ComponentEvent e)
-			{
+			public void componentMoved(ComponentEvent e) {
 			}
 
 			@Override
-			public void componentHidden(ComponentEvent e)
-			{
+			public void componentHidden(ComponentEvent e) {
 			}
 		});
 
 		splitPane_1.addComponentListener(new ComponentListener() {
 			@Override
-			public void componentShown(ComponentEvent e)
-			{
+			public void componentShown(ComponentEvent e) {
 			}
 
 			@Override
-			public void componentResized(ComponentEvent e)
-			{
+			public void componentResized(ComponentEvent e) {
 				((JSplitPane) e.getComponent()).setDividerLocation(e
 						.getComponent().getHeight() - 200);
 			}
 
 			@Override
-			public void componentMoved(ComponentEvent e)
-			{
+			public void componentMoved(ComponentEvent e) {
 			}
 
 			@Override
-			public void componentHidden(ComponentEvent e)
-			{
+			public void componentHidden(ComponentEvent e) {
 			}
 		});
 
@@ -422,28 +406,23 @@ public class TileMapEditor extends JFrame implements TileSelectorListener {
 		this.addWindowListener(new WindowListener() {
 
 			@Override
-			public void windowOpened(WindowEvent e)
-			{
+			public void windowOpened(WindowEvent e) {
 			}
 
 			@Override
-			public void windowIconified(WindowEvent e)
-			{
+			public void windowIconified(WindowEvent e) {
 			}
 
 			@Override
-			public void windowDeiconified(WindowEvent e)
-			{
+			public void windowDeiconified(WindowEvent e) {
 			}
 
 			@Override
-			public void windowDeactivated(WindowEvent e)
-			{
+			public void windowDeactivated(WindowEvent e) {
 			}
 
 			@Override
-			public void windowClosing(WindowEvent e)
-			{
+			public void windowClosing(WindowEvent e) {
 
 				// "You have usaved changes, do you want to save theese before closing down?"
 				int i = JOptionPane
@@ -461,13 +440,11 @@ public class TileMapEditor extends JFrame implements TileSelectorListener {
 			}
 
 			@Override
-			public void windowClosed(WindowEvent e)
-			{
+			public void windowClosed(WindowEvent e) {
 			}
 
 			@Override
-			public void windowActivated(WindowEvent e)
-			{
+			public void windowActivated(WindowEvent e) {
 			}
 		});
 
@@ -479,8 +456,7 @@ public class TileMapEditor extends JFrame implements TileSelectorListener {
 	}
 
 	@Override
-	public void didSelectTile(Tile selectedTile)
-	{
+	public void didSelectTile(Tile selectedTile) {
 		this.tileCanvas.didSelectTile(selectedTile);
 		this.tileInspector.setTile(selectedTile);
 	}

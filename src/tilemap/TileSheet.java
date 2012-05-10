@@ -11,10 +11,10 @@ import org.json.JSONObject;
 import core.JSONSerializable;
 
 /**
- * A class used to map a tiletype to a tile that can be rendered. 
+ * A class used to map a tiletype to a tile that can be rendered.
  * 
  * @author John Barbero Unenge
- *
+ * 
  */
 public class TileSheet implements JSONSerializable {
 
@@ -24,74 +24,74 @@ public class TileSheet implements JSONSerializable {
 	/**
 	 * Creates a tilesheet from the given JSONObject.
 	 * 
-	 * @param o The JSONObject
+	 * @param o
+	 *            The JSONObject
 	 */
-	public TileSheet(JSONObject o)
-	{
+	public TileSheet(JSONObject o) {
 		this.deserialize(o);
 	}
 
 	/**
 	 * Creates a tilesheet with no tiles.
 	 */
-	public TileSheet()
-	{
+	public TileSheet() {
 		this.resetTiles();
 	}
 
 	// Other
-	
+
 	/**
 	 * Delete all tiles.
 	 */
-	public void resetTiles()
-	{
+	public void resetTiles() {
 		this.tileTypes = new HashMap<Integer, Tile>();
 	}
-	
+
 	/**
 	 * Add a tile to the tilesheet.
 	 * 
-	 * @param type The tiletype
-	 * @param tile The tile
+	 * @param type
+	 *            The tiletype
+	 * @param tile
+	 *            The tile
 	 */
-	public void addTile(Integer type, Tile tile)
-	{
-		if (this.tileTypes == null) this.resetTiles();
+	public void addTile(Integer type, Tile tile) {
+		if (this.tileTypes == null)
+			this.resetTiles();
 		this.tileTypes.put(type, tile);
 	}
-	
+
 	// Setters
-	
+
 	/**
 	 * Set the name of the tilesheet.
 	 * 
-	 * @param name The name of the tilesheet
+	 * @param name
+	 *            The name of the tilesheet
 	 */
-	public void setName(String name)
-	{
+	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	// Getters
 
 	/**
 	 * Get the name of this tilesheet.
+	 * 
 	 * @return The name of the tilesheet
 	 */
-	public String getName()
-	{
+	public String getName() {
 		return this.name;
 	}
-	
+
 	/**
 	 * Get the tile of given type.
 	 * 
-	 * @param tileType The type of tile to get
+	 * @param tileType
+	 *            The type of tile to get
 	 * @return The tile
 	 */
-	public Tile getTile(int tileType)
-	{
+	public Tile getTile(int tileType) {
 		return this.tileTypes.get(Integer.valueOf(tileType));
 	}
 
@@ -100,15 +100,13 @@ public class TileSheet implements JSONSerializable {
 	 * 
 	 * @return All the tiles in the tilesheet
 	 */
-	public Collection<Tile> getTiles()
-	{
+	public Collection<Tile> getTiles() {
 		return this.tileTypes.values();
 	}
-	
-	// Interface 
+
+	// Interface
 	@Override
-	public JSONObject serialize()
-	{
+	public JSONObject serialize() {
 		try {
 			JSONObject retObj = new JSONObject();
 
@@ -129,8 +127,7 @@ public class TileSheet implements JSONSerializable {
 	}
 
 	@Override
-	public void deserialize(JSONObject o)
-	{
+	public void deserialize(JSONObject o) {
 
 		JSONArray jsonArray;
 		try {

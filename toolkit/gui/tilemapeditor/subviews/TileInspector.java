@@ -17,34 +17,32 @@ import javax.swing.SwingConstants;
 
 public class TileInspector extends JPanel {
 
-	private Tile	currentTile;
-	JLabel			lblType, lblCollidable;
+	private Tile currentTile;
+	JLabel lblType, lblCollidable;
 
-	public TileInspector()
-	{
+	public TileInspector() {
 		this.initGui();
 		this.updateGui();
 	}
 
-	public void setTile(Tile tile)
-	{
+	public void setTile(Tile tile) {
 		this.currentTile = tile;
 		this.updateGui();
 	}
 
-	private void updateGui()
-	{
+	private void updateGui() {
 		if (this.currentTile != null) {
-			this.lblType.setText(""+this.currentTile.getType());
-			this.lblCollidable.setText(this.currentTile.isCollidable() ? "YES" : "NO");
+			this.lblType.setText("" + this.currentTile.getType());
+			this.lblCollidable.setText(this.currentTile.isCollidable()
+					? "YES"
+					: "NO");
 		} else {
-			this.lblType.setText(""+0);
+			this.lblType.setText("" + 0);
 			this.lblCollidable.setText("N/A");
 		}
 	}
 
-	private void initGui()
-	{
+	private void initGui() {
 		setLayout(null);
 
 		JLabel lblNewLabel = new JLabel("Tile");

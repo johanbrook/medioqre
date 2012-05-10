@@ -31,22 +31,24 @@ import core.Rectangle;
 import tilemap.Tile;
 import tilemap.TileSheet;
 
-public class TileSelector extends GLCanvas implements GLEventListener, TileSelectorListener {
+public class TileSelector extends GLCanvas
+		implements
+			GLEventListener,
+			TileSelectorListener {
 
-	private TileSheet	tileSheet;
-	private Rectangle	object	= new Rectangle(0, 0, 0, 0);
-	private Rectangle	target	= new Rectangle(0, 0, 0, 0);
-	private int			tileWidth;
-	private int			tileHeight;
-	private final int	margin	= 2;
+	private TileSheet tileSheet;
+	private Rectangle object = new Rectangle(0, 0, 0, 0);
+	private Rectangle target = new Rectangle(0, 0, 0, 0);
+	private int tileWidth;
+	private int tileHeight;
+	private final int margin = 2;
 	private Tile activeTile;
 	private Tile[] tiles;
 	private int colSize;
 
 	private TileSelectorListener listener;
-	
-	public TileSelector(GLCapabilities glC)
-	{
+
+	public TileSelector(GLCapabilities glC) {
 		super(glC);
 		this.addGLEventListener(this);
 
@@ -56,32 +58,26 @@ public class TileSelector extends GLCanvas implements GLEventListener, TileSelec
 		this.addMouseListener(new MouseListener() {
 
 			@Override
-			public void mouseReleased(MouseEvent arg0)
-			{
+			public void mouseReleased(MouseEvent arg0) {
 			}
 
 			@Override
-			public void mousePressed(MouseEvent arg0)
-			{
+			public void mousePressed(MouseEvent arg0) {
 			}
 
 			@Override
-			public void mouseExited(MouseEvent arg0)
-			{
+			public void mouseExited(MouseEvent arg0) {
 			}
 
 			@Override
-			public void mouseEntered(MouseEvent arg0)
-			{
+			public void mouseEntered(MouseEvent arg0) {
 			}
 
 			@Override
-			public void mouseClicked(MouseEvent arg0)
-			{
+			public void mouseClicked(MouseEvent arg0) {
 				if (tileWidth == 0 || tileHeight == 0)
 					return;
 
-				
 				int x = arg0.getPoint().x / (tileHeight + margin);
 				int y = arg0.getPoint().y / (tileWidth + margin);
 				if (tiles.length > y * colSize + x) {
@@ -92,82 +88,73 @@ public class TileSelector extends GLCanvas implements GLEventListener, TileSelec
 		});
 		this.addComponentListener(new ComponentListener() {
 			@Override
-			public void componentShown(ComponentEvent arg0)
-			{
+			public void componentShown(ComponentEvent arg0) {
 			}
 
 			@Override
-			public void componentResized(ComponentEvent arg0)
-			{
+			public void componentResized(ComponentEvent arg0) {
 				Component cmp = (Component) arg0.getSource();
 				setPreferredSize(new Dimension(cmp.getWidth(), 100));
 			}
 
 			@Override
-			public void componentMoved(ComponentEvent arg0)
-			{
+			public void componentMoved(ComponentEvent arg0) {
 			}
 
 			@Override
-			public void componentHidden(ComponentEvent arg0)
-			{
+			public void componentHidden(ComponentEvent arg0) {
 			}
 		});
 	}
 
-	public void setTileSheet(TileSheet tileSheet)
-	{
+	public void setTileSheet(TileSheet tileSheet) {
 		this.tileSheet = tileSheet;
-		
+
 		if (this.tileSheet == null)
 			return;
 
-		
 		this.tileWidth = 64;
 		this.tileHeight = 64;
 		colSize = this.getWidth() / this.tileWidth;
-		
+
 		int tiles = 0;
 		this.tiles = new Tile[this.tileSheet.getTiles().size()];
 		for (Tile t : this.tileSheet.getTiles()) {
-		
+
 			this.tiles[tiles] = t;
-			
+
 			tiles++;
-		}		
-		
+		}
+
 		this.updateGui();
 	}
-	
-	public void addTileSelectorListener(TileSelectorListener listener) 
-	{
+
+	public void addTileSelectorListener(TileSelectorListener listener) {
 		this.listener = listener;
 	}
-	
-	public Tile getSelectedTile()
-	{
+
+	public Tile getSelectedTile() {
 		return this.activeTile;
 	}
-	
-	private void updateGui()
-	{
+
+	private void updateGui() {
 
 	}
 
 	@Override
-	public void display(GLAutoDrawable arg0)
-	{
+	public void display(GLAutoDrawable arg0) {
 		GL2 gl = arg0.getGL().getGL2();
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
-	
+
 		this.target.setX(0);
 		this.target.setY(0);
 		this.target.setWidth(this.getWidth());
 		this.target.setHeight(this.getHeight());
-		
-		if (this.tiles == null) return;
+
+		if (this.tiles == null)
+			return;
 		this.colSize = this.getWidth() / this.tileWidth;
-		
+
 		for (int y = 0; y <= this.tiles.length / this.colSize; y++) {
 			for (int x = 0; x < this.colSize; x++) {
 				if (y * this.colSize + x < this.tiles.length) {
@@ -175,29 +162,23 @@ public class TileSelector extends GLCanvas implements GLEventListener, TileSelec
 					this.object.setY(y * (this.tileHeight + this.margin));
 					this.object.setWidth(this.tileWidth);
 					this.object.setHeight(this.tileWidth);
-					
-					this.tiles[y * this.colSize + x].render(object, target, this, 0);
+
+					this.tiles[y * this.colSize + x].render(object, target,
+							this, 0);
 				}
 			}
 		}
-		
 
-		
-		
-
-		
 	}
 
 	@Override
-	public void dispose(GLAutoDrawable arg0)
-	{
+	public void dispose(GLAutoDrawable arg0) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void init(GLAutoDrawable arg0)
-	{
+	public void init(GLAutoDrawable arg0) {
 		GL2 gl = arg0.getGL().getGL2();
 		gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
@@ -208,15 +189,13 @@ public class TileSelector extends GLCanvas implements GLEventListener, TileSelec
 
 	@Override
 	public void reshape(GLAutoDrawable arg0, int arg1, int arg2, int arg3,
-			int arg4)
-	{
+			int arg4) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void didSelectTile(Tile selectedTile)
-	{
+	public void didSelectTile(Tile selectedTile) {
 		this.activeTile = selectedTile;
 	}
 }

@@ -8,29 +8,28 @@ import java.util.List;
 
 import constants.Direction;
 
-
 /**
  * A unique list with a maximum size.
  * 
  * @author Johan
  */
 public class NavigationKeyQueue implements Collection<NavigationKey> {
-	
+
 	private List<NavigationKey> list;
 	private final int maxSize;
-	
+
 	/**
-	 * Create a new navigation queue with a max size, which is the number of keys which
-	 * can be pressed simultaneously.
+	 * Create a new navigation queue with a max size, which is the number of
+	 * keys which can be pressed simultaneously.
 	 * 
-	 * @param maxSize The maximum number of keys
+	 * @param maxSize
+	 *            The maximum number of keys
 	 */
 	public NavigationKeyQueue(int maxSize) {
 		this.list = new LinkedList<NavigationKey>();
 		this.maxSize = maxSize;
 	}
-	
-	
+
 	/**
 	 * Checks if multiple keys are pressed.
 	 * 
@@ -39,72 +38,74 @@ public class NavigationKeyQueue implements Collection<NavigationKey> {
 	public boolean hasMultiple() {
 		return this.list.size() > 1;
 	}
-	
-	
+
 	/**
-	 * Creates a composite navigation key with a direction from the 
-	 * existing keys in the navigation list.
+	 * Creates a composite navigation key with a direction from the existing
+	 * keys in the navigation list.
 	 * 
-	 * @return A new navigation key with a diagonal direction. If the list doesn't
-	 * contain matching diagonal key, null is returned.
+	 * @return A new navigation key with a diagonal direction. If the list
+	 *         doesn't contain matching diagonal key, null is returned.
 	 * @see Direction
 	 */
 	public NavigationKey createCompositeKey() {
 		List<Direction> dirs = new ArrayList<Direction>();
-		
-		for(NavigationKey dir : this.list) {
+
+		for (NavigationKey dir : this.list) {
 			dirs.add(dir.getDirection());
 		}
-		
-		if(dirs.contains(Direction.NORTH) && dirs.contains(Direction.EAST)){
+
+		if (dirs.contains(Direction.NORTH) && dirs.contains(Direction.EAST)) {
 			return new NavigationKey("top_right", null, Direction.NORTH_EAST);
 		}
-		
-		if(dirs.contains(Direction.NORTH) && dirs.contains(Direction.WEST)){
+
+		if (dirs.contains(Direction.NORTH) && dirs.contains(Direction.WEST)) {
 			return new NavigationKey("top_left", null, Direction.NORTH_WEST);
 		}
-		
-		if(dirs.contains(Direction.SOUTH) && dirs.contains(Direction.EAST)){
+
+		if (dirs.contains(Direction.SOUTH) && dirs.contains(Direction.EAST)) {
 			return new NavigationKey("bottom_right", null, Direction.SOUTH_EAST);
 		}
-		
-		if(dirs.contains(Direction.SOUTH) && dirs.contains(Direction.WEST)){
+
+		if (dirs.contains(Direction.SOUTH) && dirs.contains(Direction.WEST)) {
 			return new NavigationKey("bottom_left", null, Direction.SOUTH_WEST);
 		}
-		
-		
+
 		return null;
-		
+
 	}
-	
+
 	/**
 	 * Add a navigation key.
 	 * 
-	 *  @param key The navigation key
-	 *  @return True if the key doesn't exist, and if there's room for more keys in the list
-	 *  @pre size() < maxSize
-	 *  @pre contains(key) == false
+	 * @param key
+	 *            The navigation key
+	 * @return True if the key doesn't exist, and if there's room for more keys
+	 *         in the list
+	 * @pre size() < maxSize
+	 * @pre contains(key) == false
 	 */
 	public boolean add(NavigationKey key) {
-		
-		if(this.list.size() < this.maxSize && !this.list.contains(key)) {
+
+		if (this.list.size() < this.maxSize && !this.list.contains(key)) {
 			return this.list.add(key);
 		}
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * Get a key from the index.
 	 * 
-	 * @param index The index
+	 * @param index
+	 *            The index
 	 * @return A navigation key
-	 * @throws IndexOutOfBoundsException If the index is out of bounds
+	 * @throws IndexOutOfBoundsException
+	 *             If the index is out of bounds
 	 */
 	public NavigationKey get(int index) throws IndexOutOfBoundsException {
 		return this.list.get(index);
 	}
-	
+
 	/**
 	 * Get the first key in the list.
 	 * 
@@ -113,16 +114,16 @@ public class NavigationKeyQueue implements Collection<NavigationKey> {
 	public NavigationKey first() throws IndexOutOfBoundsException {
 		return this.list.get(0);
 	}
-	
+
 	/**
 	 * Get the last key in the list.
 	 * 
 	 * @return The last navigation key
 	 */
 	public NavigationKey last() throws IndexOutOfBoundsException {
-		return this.list.get(this.list.size()-1);
+		return this.list.get(this.list.size() - 1);
 	}
-	
+
 	@Override
 	public boolean addAll(Collection<? extends NavigationKey> c) {
 		return this.list.addAll(c);
@@ -182,7 +183,7 @@ public class NavigationKeyQueue implements Collection<NavigationKey> {
 	public <T> T[] toArray(T[] a) {
 		return this.list.toArray(a);
 	}
-	
+
 	@Override
 	public String toString() {
 		return this.list.toString();

@@ -1,8 +1,8 @@
 /**
-*	Melee.java
-*
-*	@author Johan
-*/
+ *	Melee.java
+ *
+ *	@author Johan
+ */
 
 package model.weapon;
 
@@ -10,7 +10,7 @@ import model.character.AbstractCharacter;
 import model.weapon.Projectile.Range;
 
 public class Melee extends AbstractWeapon {
-	
+
 	private Projectile projectile;
 	
 	/**
@@ -26,9 +26,9 @@ public class Melee extends AbstractWeapon {
 	}
 
 	public boolean equals(Object o) {
-		if(o == null || getClass() != o.getClass())
+		if (o == null || getClass() != o.getClass())
 			return false;
-		
+
 		return true;
 	}
 

@@ -41,9 +41,8 @@ public class ToolKitView extends JFrame implements ActionListener {
 	private Tile activeTile;
 	private Tile[][] tiles;
 
-	public ToolKitView()
-	{
-		this.activeTile = new Tile(0,0,0, null);
+	public ToolKitView() {
+		this.activeTile = new Tile(0, 0, 0, null);
 		JSplitPane splitPane = new JSplitPane();
 		getContentPane().add(splitPane, BorderLayout.CENTER);
 
@@ -73,17 +72,17 @@ public class ToolKitView extends JFrame implements ActionListener {
 		btnTile_1.setActionCommand("tile1");
 		panel.add(btnTile_1);
 		btnTile_1.addActionListener(this);
-		
+
 		JButton btnTile_2 = new JButton("Tile2");
 		btnTile_2.setActionCommand("tile2");
 		panel.add(btnTile_2);
 		btnTile_2.addActionListener(this);
-		
+
 		JButton btnTile_3 = new JButton("Tile3");
 		btnTile_3.setActionCommand("tile3");
 		panel.add(btnTile_3);
 		btnTile_3.addActionListener(this);
-		
+
 		JButton btnTile_4 = new JButton("Tile4");
 		btnTile_4.setActionCommand("tile4");
 		panel.add(btnTile_4);
@@ -115,8 +114,7 @@ public class ToolKitView extends JFrame implements ActionListener {
 
 		// Add a listener
 		tree.addTreeSelectionListener(new TreeSelectionListener() {
-			public void valueChanged(TreeSelectionEvent e)
-			{
+			public void valueChanged(TreeSelectionEvent e) {
 				DefaultMutableTreeNode node = (DefaultMutableTreeNode) e
 						.getPath().getLastPathComponent();
 				System.out.println("You selected " + node);
@@ -135,11 +133,11 @@ public class ToolKitView extends JFrame implements ActionListener {
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent arg0)
-	{
+	public void actionPerformed(ActionEvent arg0) {
 		if (arg0.getActionCommand().equals("tile1")) {
 			try {
-				String s = (String) ToolKitView.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+				String s = (String) ToolKitView.class.getProtectionDomain()
+						.getCodeSource().getLocation().toURI().getPath();
 				s += "/files/stone_1.png";
 				activeTile = new Tile(0, 0, 1, ImageIO.read(new File(s)));
 			} catch (URISyntaxException e) {
@@ -151,7 +149,8 @@ public class ToolKitView extends JFrame implements ActionListener {
 			}
 		} else if (arg0.getActionCommand().equals("tile2")) {
 			try {
-				String s = (String) ToolKitView.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+				String s = (String) ToolKitView.class.getProtectionDomain()
+						.getCodeSource().getLocation().toURI().getPath();
 				s += "/files/grass.png";
 				activeTile.setImage(ImageIO.read(new File(s)));
 				activeTile = new Tile(0, 0, 2, ImageIO.read(new File(s)));
@@ -164,7 +163,8 @@ public class ToolKitView extends JFrame implements ActionListener {
 			}
 		} else if (arg0.getActionCommand().equals("tile3")) {
 			try {
-				String s = (String) ToolKitView.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+				String s = (String) ToolKitView.class.getProtectionDomain()
+						.getCodeSource().getLocation().toURI().getPath();
 				s += "/files/metal.png";
 				activeTile = new Tile(0, 0, 3, ImageIO.read(new File(s)));
 			} catch (URISyntaxException e) {
@@ -176,9 +176,10 @@ public class ToolKitView extends JFrame implements ActionListener {
 			}
 		} else if (arg0.getActionCommand().equals("tile4")) {
 			try {
-				String s = (String) ToolKitView.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+				String s = (String) ToolKitView.class.getProtectionDomain()
+						.getCodeSource().getLocation().toURI().getPath();
 				s += "/files/water.png";
-				
+
 				activeTile = new Tile(0, 0, 4, ImageIO.read(new File(s)));
 			} catch (URISyntaxException e) {
 				// TODO Auto-generated catch block
@@ -194,146 +195,138 @@ public class ToolKitView extends JFrame implements ActionListener {
 		private int x, y, tag;
 		private Image img;
 
-		public Tile(int x, int y, int tag, Image img)
-		{
+		public Tile(int x, int y, int tag, Image img) {
 			this.x = x;
 			this.y = y;
 			this.tag = tag;
 			this.img = img;
 		}
 
-		public Tile(Tile tile, int x, int y)
-		{
+		public Tile(Tile tile, int x, int y) {
 			this(x, y, tile.tag, tile.img);
 		}
-		public void setImage(Image img)
-		{
+		public void setImage(Image img) {
 			this.img = img;
 		}
-		public Image getImage()
-		{
+		public Image getImage() {
 			return this.img;
 		}
-		public int getX()
-		{
+		public int getX() {
 			return this.x;
 		}
-		public int getY()
-		{
+		public int getY() {
 			return this.y;
 		}
-		public void setX(int x)
-		{
+		public void setX(int x) {
 			this.x = x;
 		}
-		public void setY(int y)
-		{
+		public void setY(int y) {
 			this.y = y;
 		}
 	}
 
-	public class TileMapEditor extends JPanel implements MouseListener, MouseMotionListener {
+	public class TileMapEditor extends JPanel
+			implements
+				MouseListener,
+				MouseMotionListener {
 		private final int tileSize = 64;
 
-		public TileMapEditor()
-		{
+		public TileMapEditor() {
 			addMouseListener(this);
 			addMouseMotionListener(this);
 		}
 
-		public void paint(Graphics g)
-		{
+		public void paint(Graphics g) {
 			g.clearRect(0, 0, this.getWidth(), this.getHeight());
-			
+
 			for (int xi = 0; xi < tiles.length; xi++) {
 				for (int yi = 0; yi < tiles[xi].length; yi++) {
-					g.drawImage(tiles[xi][yi].getImage(), tiles[xi][yi].getX(), tiles[xi][yi].getY(), tileSize, tileSize, null);
+					g.drawImage(tiles[xi][yi].getImage(), tiles[xi][yi].getX(),
+							tiles[xi][yi].getY(), tileSize, tileSize, null);
 				}
 			}
-			
-			
-			g.drawImage(activeTile.getImage(), activeTile.getX(), activeTile.getY(), tileSize, tileSize, null);
+
+			g.drawImage(activeTile.getImage(), activeTile.getX(),
+					activeTile.getY(), tileSize, tileSize, null);
 		}
-	
-		public void setBounds(int x, int y, int width, int height)
-		{
+
+		public void setBounds(int x, int y, int width, int height) {
 			super.setBounds(x, y, width, height);
-			
+
 			int w = (this.getWidth() / tileSize) + 1;
 			int h = (this.getHeight() / tileSize) + 1;
 			if (tiles == null || tiles.length != w || tiles[0].length != h) {
 				Tile[][] old = tiles;
 				tiles = new Tile[w][h];
-				
-//				if (old != null) {
-//					for (int xi = 0; xi < w; xi++) {
-//						for (int yi = 0; yi < h; yi++) {
-//							Tile tmp = null;
-//							if (old.length < xi && old[xi].length < yi) tmp = old[xi][yi];
-//							if (tmp != null) tiles[xi][yi] = tmp;
-//							else {
-//								tiles[xi][yi] = new Tile(xi * tileSize, yi * tileSize, 0);
-//								tiles[xi][yi].setImage(activeTile.getImage());
-//							}
-//						}
-//					}
-//				} else {
-					for (int xi = 0; xi < tiles.length; xi++) {
-						for (int yi = 0; yi < tiles[xi].length; yi++) {
-							tiles[xi][yi] = new Tile(xi * tileSize, yi * tileSize, 0, null);
-							tiles[xi][yi].setImage(activeTile.getImage());
-						}
+
+				// if (old != null) {
+				// for (int xi = 0; xi < w; xi++) {
+				// for (int yi = 0; yi < h; yi++) {
+				// Tile tmp = null;
+				// if (old.length < xi && old[xi].length < yi) tmp =
+				// old[xi][yi];
+				// if (tmp != null) tiles[xi][yi] = tmp;
+				// else {
+				// tiles[xi][yi] = new Tile(xi * tileSize, yi * tileSize, 0);
+				// tiles[xi][yi].setImage(activeTile.getImage());
+				// }
+				// }
+				// }
+				// } else {
+				for (int xi = 0; xi < tiles.length; xi++) {
+					for (int yi = 0; yi < tiles[xi].length; yi++) {
+						tiles[xi][yi] = new Tile(xi * tileSize, yi * tileSize,
+								0, null);
+						tiles[xi][yi].setImage(activeTile.getImage());
 					}
-//				}
-				
+				}
+				// }
+
 			}
 			System.out.println("b4");
 		}
 
 		@Override
-		public void mouseClicked(MouseEvent arg0)
-		{
+		public void mouseClicked(MouseEvent arg0) {
 			int xTile = arg0.getX() / tileSize;
 			int yTile = arg0.getY() / tileSize;
-			
-			tiles[xTile][yTile] = new Tile(activeTile, xTile*tileSize, yTile*tileSize);
-			
-			System.out.println("Click at: ("+xTile+","+yTile+")");
-		}
-		
-		@Override
-		public void mouseEntered(MouseEvent arg0)
-		{
-			
+
+			tiles[xTile][yTile] = new Tile(activeTile, xTile * tileSize, yTile
+					* tileSize);
+
+			System.out.println("Click at: (" + xTile + "," + yTile + ")");
 		}
 
 		@Override
-		public void mouseExited(MouseEvent arg0)
-		{}
+		public void mouseEntered(MouseEvent arg0) {
+
+		}
 
 		@Override
-		public void mousePressed(MouseEvent arg0)
-		{}
+		public void mouseExited(MouseEvent arg0) {
+		}
 
 		@Override
-		public void mouseReleased(MouseEvent arg0)
-		{}
+		public void mousePressed(MouseEvent arg0) {
+		}
 
-		public void mouseMoved(MouseEvent arg0)
-		{
+		@Override
+		public void mouseReleased(MouseEvent arg0) {
+		}
+
+		public void mouseMoved(MouseEvent arg0) {
 			int xTile = arg0.getX() / tileSize;
 			int yTile = arg0.getY() / tileSize;
-			System.out.println("Moved to: ("+xTile+","+yTile+")");
-			activeTile.setX(xTile*tileSize);
-			activeTile.setY(yTile*tileSize);
+			System.out.println("Moved to: (" + xTile + "," + yTile + ")");
+			activeTile.setX(xTile * tileSize);
+			activeTile.setY(yTile * tileSize);
 			repaint();
 		}
-		
+
 		@Override
-		public void mouseDragged(MouseEvent arg0)
-		{
+		public void mouseDragged(MouseEvent arg0) {
 			// TODO Auto-generated method stub
-			
+
 		}
 	}
 }

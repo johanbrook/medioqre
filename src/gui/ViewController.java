@@ -67,31 +67,34 @@ import graphics.opengl.Actor;
 public class ViewController implements IEventHandler, GLEventListener {
 
 	// State
-	private boolean							doneLoading	= false;
+	private boolean doneLoading = false;
 
 	// Screen
-	private Screen							screen;
+	private Screen screen;
 
 	// Map
-	private TileMap							tilemap;
+	private TileMap tilemap;
 
 	// Actors
-	private Actor							player;
-	private Map<CollidableObject, Actor>	actors		= new IdentityHashMap<CollidableObject, Actor>();	;
+	private Actor player;
+	private Map<CollidableObject, Actor> actors = new IdentityHashMap<CollidableObject, Actor>();;
 
 	// Tools
-	private GraphicalFPSMeter				fpsmeter;
+	private GraphicalFPSMeter fpsmeter;
 
 	/**
-	 * Creates the ViewController with a given width and height, and adds the given KeyLister to itself.
+	 * Creates the ViewController with a given width and height, and adds the
+	 * given KeyLister to itself.
 	 * 
-	 * @param listener The keylistener
-	 * @param screenWidth The frame width
-	 * @param screenHeight The frame height
+	 * @param listener
+	 *            The keylistener
+	 * @param screenWidth
+	 *            The frame width
+	 * @param screenHeight
+	 *            The frame height
 	 */
 	public ViewController(KeyListener listener, int screenWidth,
-			int screenHeight)
-	{
+			int screenHeight) {
 		EventBus.INSTANCE.register(this);
 
 		this.fpsmeter = new GraphicalFPSMeter();
@@ -123,8 +126,7 @@ public class ViewController implements IEventHandler, GLEventListener {
 	}
 
 	@Override
-	public void onEvent(Event evt)
-	{
+	public void onEvent(Event evt) {
 		if (evt.getProperty() == Event.Property.INIT_MODEL) {
 			GameModel gm = (GameModel) evt.getValue();
 
@@ -142,13 +144,14 @@ public class ViewController implements IEventHandler, GLEventListener {
 			for (Actor actor : this.actors.values()) {
 				this.screen.removeDrawableFromLayer(actor);
 			}
-			
+
 			List<CollidableObject> entities = (List) ((GameModel) evt
 					.getValue()).getObjects();
-			
+
 			for (CollidableObject e : entities) {
-				if (e instanceof Player) continue;
-				
+				if (e instanceof Player)
+					continue;
+
 				Actor newA = ObjectFactory.newActor(e);
 				this.actors.put(e, newA);
 				this.screen.addDrawableToLayer(newA, 1);
@@ -170,14 +173,13 @@ public class ViewController implements IEventHandler, GLEventListener {
 				CollidableObject cObj = (CollidableObject) evt.getValue();
 
 				this.screen.removeDrawableFromLayer(this.actors.remove(cObj));
-//				this.actors.remove(cObj);
+				// this.actors.remove(cObj);
 			}
 		}
 	}
 
 	@Override
-	public void display(GLAutoDrawable arg0)
-	{
+	public void display(GLAutoDrawable arg0) {
 		fpsmeter.tick();
 
 		GL2 gl = arg0.getGL().getGL2();
@@ -196,8 +198,7 @@ public class ViewController implements IEventHandler, GLEventListener {
 	}
 
 	@Override
-	public void init(GLAutoDrawable arg0)
-	{
+	public void init(GLAutoDrawable arg0) {
 		GL2 gl = arg0.getGL().getGL2();
 		gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 		gl.glEnable(GL.GL_TEXTURE_2D);
@@ -209,13 +210,11 @@ public class ViewController implements IEventHandler, GLEventListener {
 	}
 
 	@Override
-	public void dispose(GLAutoDrawable arg0)
-	{
+	public void dispose(GLAutoDrawable arg0) {
 	}
 
 	@Override
 	public void reshape(GLAutoDrawable arg0, int arg1, int arg2, int arg3,
-			int arg4)
-	{
+			int arg4) {
 	}
 }

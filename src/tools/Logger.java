@@ -15,26 +15,26 @@ import datamanagement.ResourceLoader;
  *	@author Johan
  */
 public final class Logger {
-	
+
 	private static Logger instance;
 	private static String logFormat = "H:m:s";
-	
-	
-	private Logger() {}
-	
+
+	private Logger() {
+	}
+
 	public void setTimestampFormat(String format) {
 		logFormat = format;
 	}
-	
+
 	/**
 	 * Get the Logger instance.
 	 * 
 	 * @return This instance
 	 */
 	public static Logger getInstance() {
-		if(instance == null)
+		if (instance == null)
 			instance = new Logger();
-		
+
 		return instance;
 	}
 	
@@ -46,13 +46,14 @@ public final class Logger {
 	 */
 	private static Object addTimestamp(Object msg) {
 		java.util.Calendar calendar = java.util.Calendar.getInstance();
-		java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(calendar.getTime().getTime());
-		String stamp = new java.text.SimpleDateFormat(logFormat).format(currentTimestamp);
-		
-		return "["+ stamp +"] " + msg;
+		java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(calendar
+				.getTime().getTime());
+		String stamp = new java.text.SimpleDateFormat(logFormat)
+				.format(currentTimestamp);
+
+		return "[" + stamp + "] " + msg;
 	}
-	
-	
+
 	/**
 	 * Log an object to the system out.
 	 * 
@@ -60,11 +61,11 @@ public final class Logger {
 	 * @pre AppController.MODE == AppController.DEBUG
 	 */
 	public static void log(Object msg) {
-		if(AppController.MODE == AppController.DEBUG) {
+		if (AppController.MODE == AppController.DEBUG) {
 			System.out.println(addTimestamp(msg));
 		}
 	}
-	
+
 	/**
 	 * Log an error to the system out.
 	 * 
@@ -72,7 +73,7 @@ public final class Logger {
 	 * @pre AppController.MODE == AppController.DEBUG
 	 */
 	public static void err(Object msg) {
-		if(AppController.MODE == AppController.DEBUG) {
+		if (AppController.MODE == AppController.DEBUG) {
 			System.err.println(addTimestamp(msg));
 		}
 	}

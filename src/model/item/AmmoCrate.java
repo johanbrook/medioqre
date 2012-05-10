@@ -13,14 +13,14 @@ import model.character.Player;
 import model.weapon.AbstractWeapon;
 
 /**
-*	An ammo crate.
-*
-*	@author Johan
-*/
+ * An ammo crate.
+ * 
+ * @author Johan
+ */
 public class AmmoCrate extends CollidableObject implements ICollectableItem {
 
 	private int amount;
-	
+
 	/**
 	 * Create a new AmmoCrate.
 	 * 
@@ -31,8 +31,9 @@ public class AmmoCrate extends CollidableObject implements ICollectableItem {
 	 * @param height The height
 	 */
 	public AmmoCrate(int amount, int x, int y, int width, int height) {
-		super(new Rectangle(x, y, width, height), new Dimension(width, height), 0, 0);
-		
+		super(new Rectangle(x, y, width, height), new Dimension(width, height),
+				0, 0);
+
 		this.amount = amount;
 	}
 
@@ -43,10 +44,10 @@ public class AmmoCrate extends CollidableObject implements ICollectableItem {
 	 */
 	@Override
 	public void pickedUpBy(Player source) {
-		for (AbstractWeapon weapon : source.getWeaponBelt()){
+		for (AbstractWeapon weapon : source.getWeaponBelt()) {
 			weapon.addAmmo(this.amount);
 		}
-		
+
 		EventBus.INSTANCE.publish(new Event(Property.PICKED_UP_ITEM, this));
 		this.destroy();
 	}

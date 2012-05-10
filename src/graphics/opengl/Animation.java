@@ -31,22 +31,24 @@ public class Animation implements JSONSerializable, GLRenderableObject {
 	/**
 	 * Creates an actor from a JSON object.
 	 * 
-	 * @param o The JSON object.
+	 * @param o
+	 *            The JSON object.
 	 */
-	public Animation(JSONObject o)
-	{
+	public Animation(JSONObject o) {
 		this.deserialize(o);
 	}
 
 	/**
 	 * Creates an actor.
 	 * 
-	 * @param name The name.
-	 * @param frames The frames.
-	 * @param duration The duration of the animation.
+	 * @param name
+	 *            The name.
+	 * @param frames
+	 *            The frames.
+	 * @param duration
+	 *            The duration of the animation.
 	 */
-	public Animation(String name, Sprite[] frames, double duration)
-	{
+	public Animation(String name, Sprite[] frames, double duration) {
 		this.name = name;
 		this.frames = frames;
 		this.durationMillis = duration;
@@ -58,8 +60,7 @@ public class Animation implements JSONSerializable, GLRenderableObject {
 	 * 
 	 * @return The name of the animation.
 	 */
-	public String getName()
-	{
+	public String getName() {
 		return this.name;
 	}
 
@@ -68,8 +69,7 @@ public class Animation implements JSONSerializable, GLRenderableObject {
 	 * 
 	 * @return The duration of the animation.
 	 */
-	public double getDuration()
-	{
+	public double getDuration() {
 		return this.durationMillis;
 	}
 
@@ -78,8 +78,7 @@ public class Animation implements JSONSerializable, GLRenderableObject {
 	 * 
 	 * @return The frames of the animation.
 	 */
-	public Sprite[] getFrames()
-	{
+	public Sprite[] getFrames() {
 		return this.frames;
 	}
 
@@ -87,30 +86,30 @@ public class Animation implements JSONSerializable, GLRenderableObject {
 	/**
 	 * Set the name of the animation.
 	 * 
-	 * @param name The name of the animation.
+	 * @param name
+	 *            The name of the animation.
 	 */
-	public void setName(String name)
-	{
+	public void setName(String name) {
 		this.name = name;
 	}
 
 	/**
 	 * Set the duration of the animation.
 	 * 
-	 * @param durationMillis The duration.
+	 * @param durationMillis
+	 *            The duration.
 	 */
-	public void setDuration(double durationMillis)
-	{
+	public void setDuration(double durationMillis) {
 		this.durationMillis = durationMillis;
 	}
 
 	/**
 	 * Set the frames of the animations.
 	 * 
-	 * @param frames The new frames.
+	 * @param frames
+	 *            The new frames.
 	 */
-	public void setFrames(Sprite[] frames)
-	{
+	public void setFrames(Sprite[] frames) {
 		this.frames = frames;
 	}
 
@@ -118,10 +117,10 @@ public class Animation implements JSONSerializable, GLRenderableObject {
 	/**
 	 * Add a frame to the animation.
 	 * 
-	 * @param frame The new frame.
+	 * @param frame
+	 *            The new frame.
 	 */
-	public void addFrame(Sprite frame)
-	{
+	public void addFrame(Sprite frame) {
 		Sprite[] newFrames = new Sprite[this.frames.length + 1];
 		for (int i = 0; i < this.frames.length; i++) {
 			newFrames[i] = this.frames[i];
@@ -131,30 +130,27 @@ public class Animation implements JSONSerializable, GLRenderableObject {
 	}
 
 	@Override
-	public void update(double dt)
-	{
+	public void update(double dt) {
 		this.timePassed += dt;
 		if (this.timePassed >= durationMillis)
 			this.timePassed = 0;
 	}
 
 	// ************* Other *************
-	public String toString()
-	{
+	public String toString() {
 		return this.name;
 	}
 
 	// ************* Interface methods *************
 	@Override
-	public void render(Rectangle object, Rectangle target, GLAutoDrawable canvas, int zIndex)
-	{
+	public void render(Rectangle object, Rectangle target,
+			GLAutoDrawable canvas, int zIndex) {
 		this.currentSprite = this.frames[(int) ((this.timePassed / this.durationMillis) * (double) (this.frames.length))];
 		this.currentSprite.render(object, target, canvas, zIndex);
 	}
 
 	@Override
-	public JSONObject serialize()
-	{
+	public JSONObject serialize() {
 		JSONObject retObj = new JSONObject();
 		try {
 			retObj.put("name", this.name);
@@ -176,8 +172,7 @@ public class Animation implements JSONSerializable, GLRenderableObject {
 	}
 
 	@Override
-	public void deserialize(JSONObject o)
-	{
+	public void deserialize(JSONObject o) {
 		try {
 			this.name = o.getString("name");
 			this.durationMillis = o.getDouble("duration");
@@ -193,8 +188,7 @@ public class Animation implements JSONSerializable, GLRenderableObject {
 	}
 
 	@Override
-	public Rectangle getBounds()
-	{
+	public Rectangle getBounds() {
 		if (this.currentSprite != null)
 			return this.currentSprite.getBounds();
 		return null;
