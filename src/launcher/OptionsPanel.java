@@ -40,6 +40,7 @@ public class OptionsPanel extends JPanel {
 		chckbxHipsterMode.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
 		chckbxHipsterMode.setForeground(Color.WHITE);
 		chckbxHipsterMode.setBounds(30, 350, 170, 30);
+		chckbxHipsterMode.setOpaque(false);
 		add(chckbxHipsterMode);
 
 		JButton btnDone = new JButton("Done");
@@ -67,11 +68,12 @@ public class OptionsPanel extends JPanel {
 			}
 		});
 		musicSlider.setBounds(20, 93, 340, 38);
-		soundPanel.add(musicSlider);
 		musicSlider.setPaintLabels(true);
 		musicSlider.setMinorTickSpacing(1);
 		musicSlider.setMaximum(10);
 		musicSlider.setPaintTicks(true);
+		musicSlider.setOpaque(false);
+		soundPanel.add(musicSlider);
 
 		JSlider fxSlider = new JSlider();
 		fxSlider.setValue((int) (AudioConstants.getFXVolume() * 10));
@@ -83,40 +85,46 @@ public class OptionsPanel extends JPanel {
 			}
 		});
 		fxSlider.setBounds(20, 156, 340, 38);
-		soundPanel.add(fxSlider);
 		fxSlider.setPaintTicks(true);
 		fxSlider.setPaintLabels(true);
 		fxSlider.setMinorTickSpacing(1);
 		fxSlider.setMaximum(10);
+		fxSlider.setOpaque(false);
+		soundPanel.add(fxSlider);
 
 		JLabel musicVolumeLabel = new JLabel("Music Volume");
 		musicVolumeLabel.setBounds(20, 80, 340, 16);
-		soundPanel.add(musicVolumeLabel);
 		musicVolumeLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		musicVolumeLabel.setForeground(Color.WHITE);
-
+		musicVolumeLabel.setOpaque(false);
+		soundPanel.add(musicVolumeLabel);
+		
 		JLabel lblFxVolume = new JLabel("FX Volume");
 		lblFxVolume.setBounds(20, 143, 340, 16);
-		soundPanel.add(lblFxVolume);
 		lblFxVolume.setHorizontalAlignment(SwingConstants.CENTER);
 		lblFxVolume.setForeground(Color.WHITE);
+		lblFxVolume.setOpaque(false);
+		soundPanel.add(lblFxVolume);
 
 		JLabel lblSound = new JLabel("Sound");
 		lblSound.setFont(new Font("Lucida Grande", Font.PLAIN, 24));
 		lblSound.setForeground(Color.WHITE);
 		lblSound.setBounds(30, 20, 200, 24);
+		lblSound.setOpaque(false);
 		soundPanel.add(lblSound);
 
 		JComboBox difficultyBox = new JComboBox();
 		difficultyBox.setModel(new DefaultComboBoxModel(new String[]{"Easy",
 				"Medium", "Hard"}));
 		difficultyBox.setBounds(30, 100, 170, 27);
+		difficultyBox.setOpaque(false);
 		add(difficultyBox);
 
 		JLabel lblDifficulty = new JLabel("Difficulty");
 		lblDifficulty.setHorizontalAlignment(SwingConstants.CENTER);
 		lblDifficulty.setForeground(Color.WHITE);
 		lblDifficulty.setBounds(30, 80, 170, 16);
+		lblDifficulty.setOpaque(false);
 		add(lblDifficulty);
 
 	}
