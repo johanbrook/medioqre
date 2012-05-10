@@ -58,6 +58,8 @@ public class Projectile extends Entity {
 	/**
 	 * Create a new projectile.
 	 * 
+	 * <p>The direction is set on init to this projectile's weapons' owner.</p>
+	 * 
 	 * @param owner The projectile's owner (a weapon)
 	 * @param width The width
 	 * @param height The height
@@ -118,6 +120,11 @@ public class Projectile extends Entity {
 		Logger.log("Projectile created: "+this.toString());
 	}
 	
+	/**
+	 * Create a new projectile from another Projectile
+	 * 
+	 * @param p A projectile
+	 */
 	public Projectile(Projectile p) {
 		this(p.owner, p.getCollisionBox().width, p.getCollisionBox().height, p.damage, p.range, p.getMovementSpeed());
 	}

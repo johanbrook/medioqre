@@ -31,11 +31,11 @@ public abstract class AbstractCharacter extends Entity {
 	/**
 	 * A game character with 100 health points.
 	 * 
-	 * @param movementSpeed
-	 * @param collBox
-	 * @param size
-	 * @param xoffset
-	 * @param yoffset
+	 * @param movementSpeed The movement speed
+	 * @param collBox The collision box
+	 * @param size The size
+	 * @param xoffset The x offset
+	 * @param yoffset The y offset
 	 */
 	public AbstractCharacter(int movementSpeed, Rectangle collBox, Dimension size, int xoffset, int yoffset) {
 		super(collBox, size, xoffset, yoffset, movementSpeed);
@@ -45,6 +45,8 @@ public abstract class AbstractCharacter extends Entity {
 	
 	/**
 	 * Set the current weapon.
+	 * 
+	 * <p>Sends a <code>CHANGED_WEAPON</code> event with the value <code>this</code></p>.
 	 * 
 	 * @param w The weapon
 	 */
@@ -67,8 +69,10 @@ public abstract class AbstractCharacter extends Entity {
 	 * Call this method to hurt the character with a certain amount
 	 * of damage.
 	 * 
-	 * If the character's health points goes below 0, <code>destroy()</code>
-	 * will be called and the entity is killed.
+	 * <p>If the character's health points goes below 0, <code>destroy()</code>
+	 * will be called and the entity is killed.</p>
+	 * 
+	 * <p>Sends a <code>WAS_DAMAGED</code> event with the value <code>this</code></p>.
 	 * 
 	 * @param dmg The damage
 	 */
@@ -108,6 +112,7 @@ public abstract class AbstractCharacter extends Entity {
 		}
 	}
 	
+	//TODO Why update? Not move?
 	public void update (double dt){
 		super.move(dt);
 		this.currentWeapon.updateCooldown(dt);
@@ -134,6 +139,8 @@ public abstract class AbstractCharacter extends Entity {
 	
 	/**
 	 * Tell the character to attack a target (another Character)
+	 * 
+	 * <p>Sends a <code>DID_ATTACK</code> event with the value <code>this</code></p>.
 	 * 
 	 * @param target The target to attack
 	 */

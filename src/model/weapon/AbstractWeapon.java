@@ -20,10 +20,12 @@ public abstract class AbstractWeapon {
 	private double fireInterval, cooldown;
 
 	/**
-	 * Create a new weapon with an owner and initial ammo.
+	 * Create a new weapon.
 	 * 
-	 * @param owner The owner
-	 * @param initialAmmo The ammo
+	 * @param owner This weapon's owner
+	 * @param initialAmmo The initial ammo
+	 * @param ammoMultiplier The ammo multiplier
+	 * @param fireInterval The fire interval
 	 */
 	public AbstractWeapon(AbstractCharacter owner, int initialAmmo, double ammoMultiplier, double fireInterval) {
 		this.ammo = initialAmmo;
@@ -63,7 +65,13 @@ public abstract class AbstractWeapon {
 	/**
 	 * Fire this weapon and return the resulting projectile.
 	 * 
-	 * @return The projectile from this weapon.
+	 * <p>Sends a <code>FIRED_WEAPON_SUCCESS</code> event with the resulting <code>Projectile</code>
+	 * as value on successful fire, i.e. if the weapon had enough ammo and it's not in a cooldown.</p>.
+	 * 
+	 * <p>Sends a <code>FIRED_WEAPON_FAIL</code> event with the <code>Projectile</code> of the firing
+	 * was unsuccessful.</p>.
+	 * 
+	 * @return The projectile from this weapon, or null on failure
 	 */
 	public Projectile fire() {
 		Projectile p = this.createProjectile();
@@ -100,10 +108,18 @@ public abstract class AbstractWeapon {
 		return this.cooldown > 0;
 	}
 
+	/**
+	 * Reset this weapon's cooldown.
+	 */
 	public void resetCooldown(){
 		this.cooldown = this.fireInterval;
 	}
 
+	/**
+	 * Update the cooldown from a delta time
+	 * 
+	 * @param dt The delta time
+	 */
 	public void updateCooldown(double dt){
 		if (this.cooldown > 0)
 			this.cooldown -=dt;

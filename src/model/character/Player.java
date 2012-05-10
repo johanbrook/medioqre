@@ -24,6 +24,12 @@ public class Player extends AbstractCharacter {
 	
 	/**
 	 * Create a new player.
+	 * 
+	 * @param speed The movement speed
+	 * @param box The collision box
+	 * @param size The size
+	 * @param offsetX The x offset
+	 * @param offsetY The y offset
 	 */
 	public Player(int speed, Rectangle box, Dimension size, int offsetX, int offsetY){
 		super(speed, box, size, offsetX, offsetY);
@@ -58,7 +64,7 @@ public class Player extends AbstractCharacter {
 			setCurrentWeapon(this.weaponbelt.get(slot));
 		}
 		catch(IndexOutOfBoundsException e) {
-			System.err.println("Couldn't find a weapon for that slot!");
+			tools.Logger.err("Couldn't find a weapon for that slot!");
 		}
 	}
 	

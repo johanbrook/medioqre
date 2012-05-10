@@ -13,26 +13,52 @@ public class PortalGun extends AbstractWeapon {
 
 	private Projectile projectile;
 	
+	/**
+	 * The different portal gun modes.
+	 * 
+	 * @author Johan
+	 */
 	public enum Mode {
 		BLUE, ORANGE;
 	}
 	
 	private Mode mode;
 	
+	/**
+	 * Create a new PortalGun.
+	 * 
+	 * @param owner The owner
+	 * @param ammo The initial ammo
+	 * @param ammoMultiplier The ammo multiplier
+	 * @param fireInterval The firing interval
+	 */
 	public PortalGun(AbstractCharacter owner, int ammo, double ammoMultiplier, double fireInterval) {
 		super(owner, ammo, ammoMultiplier, fireInterval);
 		this.mode = Mode.BLUE;
 	}
 	
+	/**
+	 * Set this portal gun's mode
+	 * 
+	 * @param mode The mode
+	 */
 	public void setMode(Mode mode) {
 		this.mode = mode;
 	}
 	
+	/**
+	 * Toggle this portal gun's mode.
+	 */
 	public void switchMode() {
 		this.mode = (this.mode == Mode.BLUE) ? Mode.ORANGE : Mode.BLUE;
-		System.out.println("Current portal gun mode: "+this.mode);
+		tools.Logger.log("Current portal gun mode: "+this.mode);
 	}
 
+	/**
+	 * Get this portal gun's mode.
+	 * 
+	 * @return The mode
+	 */
 	public Mode getMode() {
 		return this.mode;
 	}

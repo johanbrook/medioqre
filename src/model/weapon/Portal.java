@@ -19,6 +19,15 @@ public class Portal extends CollidableObject {
 	private Portal otherPortal;
 	private Mode mode;
 	
+	/**
+	 * Create a new Portal.
+	 * 
+	 * @param mode The current mode
+	 * @param collBox The collision box
+	 * @param size The size
+	 * @param xoffset The x offset
+	 * @param yoffset The y offset
+	 */
 	public Portal(Mode mode, Rectangle collBox, Dimension size, int xoffset, int yoffset) {
 		super(collBox, size, xoffset, yoffset);
 		this.mode = mode;
@@ -43,15 +52,29 @@ public class Portal extends CollidableObject {
 		this.setPositionFromCenter(this.getPosition());
 	}
 	
+	/**
+	 * Get the current mode.
+	 * 
+	 * @return The mode
+	 */
 	public Mode getMode() {
 		return this.mode;
 	}
 	
+	/**
+	 * Connect another portal to this portal to walk through.
+	 * 
+	 * @param p The other portal
+	 */
 	public void setSisterPortal(Portal p) {
 		this.otherPortal = p;
 	}
 
-	
+	/**
+	 * Get this portal's sister portal.
+	 * 
+	 * @return The other portal
+	 */
 	public Portal getSisterPortal() {
 		return this.otherPortal;
 	}

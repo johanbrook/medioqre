@@ -13,6 +13,14 @@ public class MachineGun extends AbstractWeapon {
 	
 	private Projectile projectile;
 	
+	/**
+	 * Create a new MachineGun.
+	 * 
+	 * @param owner The owner
+	 * @param ammo Initial ammo
+	 * @param ammoMultiplier The ammo multiplier
+	 * @param fireInterval The firing interval
+	 */
 	public MachineGun(AbstractCharacter owner, int ammo, double ammoMultiplier, double fireInterval){
 		super(owner, ammo, ammoMultiplier, fireInterval);
 	}

@@ -229,10 +229,8 @@ public class ResourceLoader {
 			log ("Loaded tile sheet: "+absolutePath);
 			return new TileSheet(new JSONObject(load));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		err("Couldn't load tile sheet: "+absolutePath);

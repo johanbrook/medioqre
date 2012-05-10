@@ -9,7 +9,14 @@ import constants.Direction;
  * @author Johan
  */
 interface Callable {
+	/**
+	 * "On" callback - called on trigger, i.e. on a keydown event for example.
+	 */
 	public void on();
+	
+	/**
+	 * "Off" callback - called on untrigger, i.e. on a keyup event for example.
+	 */
 	public void off();
 }
 
@@ -109,6 +116,11 @@ class NavigationKey extends Key {
 		return this.direction;
 	}
 	
+	/**
+	 * If this navigation key equals another navigation key.
+	 * 
+	 * @return True if the <code>Key</code>s are equal and that the directions are the same
+	 */
 	@Override
 	public boolean equals(Object o) {
 		return super.equals(o) && this.direction == ((NavigationKey) o).direction; 

@@ -22,11 +22,13 @@ public class AmmoCrate extends CollidableObject implements ICollectableItem {
 	private int amount;
 	
 	/**
-	 * Create a new ammo crate.
+	 * Create a new AmmoCrate.
 	 * 
-	 * @param amount The ammo amount
+	 * @param amount The amount of ammo this crate should contain
 	 * @param x The x coordinate
 	 * @param y The y coordinate
+	 * @param width The width
+	 * @param height The height
 	 */
 	public AmmoCrate(int amount, int x, int y, int width, int height) {
 		super(new Rectangle(x, y, width, height), new Dimension(width, height), 0, 0);
@@ -34,6 +36,11 @@ public class AmmoCrate extends CollidableObject implements ICollectableItem {
 		this.amount = amount;
 	}
 
+	/**
+	 * A Player picked up this AmmoCrate.
+	 * 
+	 * <p>Sends a <code>PICKED_UP_ITEM</code> event with the value <code>this</code></p>.
+	 */
 	@Override
 	public void pickedUpBy(Player source) {
 		for (AbstractWeapon weapon : source.getWeaponBelt()){

@@ -70,8 +70,12 @@ public abstract class CollidableObject implements IMessageSender {
 	}
 	
 	/**
-	 * Destroy the entity
+	 * Destroy the entity.
 	 * 
+	 * <p>Publishes an <code>Event</code> and sends a message to the listeners.</p>
+	 * 
+	 * <p>The event includes the property name <code>WAS_DESTROYED</code> and the property
+	 * value is <code>this</code> (the object).</p> 
 	 */
 	public void destroy(){
 		Event evt = new Event(Property.WAS_DESTROYED, this);
@@ -175,10 +179,10 @@ public abstract class CollidableObject implements IMessageSender {
 	
 	
 	/**
-	 * Get the direction 
+	 * Get the direction of where another object is located relative to this object.
 	 * 
-	 * @param obj
-	 * @return
+	 * @param obj Another object
+	 * @return a <code>Direction</code>
 	 */
 	public Direction getDirectionOfObject(CollidableObject obj) {		
         int code = getLocationOfPoint(obj.getCollisionBox().getLocation());

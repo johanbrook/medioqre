@@ -13,6 +13,14 @@ public class Grenade extends AbstractWeapon {
 	private Projectile projectile;
 	private int radius, splashDamageFactor;
 	
+	/**
+	 * Create a new Grenade.
+	 * 
+	 * @param owner The owner
+	 * @param ammo Initial ammo
+	 * @param ammoMultiplier The ammo multiplier
+	 * @param fireInterval The firing interval
+	 */
 	public Grenade(AbstractCharacter owner, int ammo, double ammoMultiplier, double fireInterval) {
 		super(owner, ammo, ammoMultiplier, fireInterval);
 	}

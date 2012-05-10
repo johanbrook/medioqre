@@ -174,7 +174,9 @@ public class NavigationController implements KeyListener, IMessageSender {
 		}
 	}
 	
-	
+	/**
+	 * Keypressed callback.
+	 */
 	@Override
 	public void keyPressed(KeyEvent evt) {
 		Key a = this.keyMap.get(evt.getKeyCode());
@@ -197,6 +199,9 @@ public class NavigationController implements KeyListener, IMessageSender {
 		}
 	}
 
+	/**
+	 * Key released callback.
+	 */
 	@Override
 	public void keyReleased(KeyEvent evt) {
 		

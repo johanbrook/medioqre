@@ -19,21 +19,11 @@ import datamanagement.ResourceLoader;
  * @author John Barbero Unenge and Johan Brook
  *
  */
-public class Level implements JSONSerializable {
+public class Level {
 	
 	// Default paths
 	
-	private String	defaultConfigPath;
-	
-	// View part
-	// .act is an abbreviation for actor data
-	private String[]	actorsData		= { "spritesheets/json/frank.act",
-											"spritesheets/json/walker1.act", "spritesheets/json/gameitems.act",
-											"spritesheets/json/machinegun_projectile.act",
-											"spritesheets/json/portal.act" };
-	
-	private String tileMapData = "spritesheets/levels/level1.lvl";
-	
+	private String	defaultConfigPath;	
 	private JSONObject config;
 	private Map<String, String> configFiles;
 	
@@ -58,7 +48,14 @@ public class Level implements JSONSerializable {
 		parseNestedConfigFiles(configFile);
 	}
 	
-	
+	/**
+	 * Traverses the input JSON object and parses any values to keys ending with "Config" or "config".
+	 * 
+	 * <p>Puts all parsed objects in the <code>config</code> variable, which in the end would contain
+	 * a complete JSON config.</p>
+	 * 
+	 * @param configFile
+	 */
 	private void parseNestedConfigFiles(JSONObject configFile) {
 		if(configFile == null) {
 			throw new IllegalArgumentException("Input config file can't be null");
@@ -94,23 +91,6 @@ public class Level implements JSONSerializable {
 	
 	// Getters
 	
-	/**
-	 * Get the file path to the actors data.
-	 * 
-	 * @return An array of file paths
-	 */
-	public String[] getActorsData() {
-		return this.actorsData;
-	}
-	
-	/**
-	 * Get the file path to the tilemap data.
-	 * 
-	 * @return The file path
-	 */
-	public String getTileMapData() {
-		return this.tileMapData;
-	}
 	
 	/**
 	 * Return a map with all the separate config files.
@@ -149,26 +129,5 @@ public class Level implements JSONSerializable {
 	 */
 	public String getConfigPath() {
 		return this.defaultConfigPath;
-	}
-
-
-	@Override
-	public JSONObject serialize() {
-		return this.config;
-	}
-
-	@Override
-	public void deserialize(JSONObject o) {
-		try {
-			JSONArray array = o.getJSONArray("actorsData");
-			this.actorsData = new String[array.length()];
-			for (int i = 0; i < this.actorsData.length; i++) {
-				this.actorsData[i] = array.getString(i);
-			}
-
-			this.tileMapData = o.getString("tileMapData");
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
 	}
 }

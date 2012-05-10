@@ -27,10 +27,24 @@ import model.IGameModel;
 
 public class AppController implements Runnable{
 	
+	/**
+	 * Desired refresh rate
+	 */
 	public static final int FPS = 60;
 	
+	/**
+	 * Production environment
+	 */
 	public static final int PRODUCTION = 0;
+	
+	/**
+	 * Debugging mode
+	 */
 	public static final int DEBUG = 1;
+	
+	/**
+	 * Current mode
+	 */
 	public static int MODE = PRODUCTION;
 	
 	private static final double DELTA_RATIO = 10E7;
@@ -41,6 +55,12 @@ public class AppController implements Runnable{
 	private AudioController audio;
 	private NavigationController navigation;
 		
+	/**
+	 * New AppController. 
+	 * 
+	 * <p>Initializes the game model, navigation controller, view controller, audio controller and AI controller,
+	 * as well as relevant listeners.</p>
+	 */
 	public AppController(){
 		String mode = (MODE == PRODUCTION) ? "production" : "debug";
 		System.out.println("Initializing main controller in "+ mode +" mode ...");
@@ -60,6 +80,9 @@ public class AppController implements Runnable{
 	}
 	
 	
+	/**
+	 * Initialize a new game.
+	 */
 	public void init() {
 		Level lev = new Level("gamedata/config.json");
 		ObjectFactory.setLevel(lev);
@@ -81,6 +104,10 @@ public class AppController implements Runnable{
 	}
 
 	
+	/**
+	 * The game loop. Called repeatedly and refreshes the game logic (model), the AI and the audio
+	 * with a delta time.
+	 */
 	@Override
 	public void run() {
 		long lastLoopTime = System.nanoTime();

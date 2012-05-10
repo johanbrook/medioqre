@@ -38,7 +38,12 @@ public final class Logger {
 		return instance;
 	}
 	
-	
+	/**
+	 * Add a timestamp to a message.
+	 * 
+	 * @param msg The message
+	 * @return The message prefixed with the current timestamp
+	 */
 	private static Object addTimestamp(Object msg) {
 		java.util.Calendar calendar = java.util.Calendar.getInstance();
 		java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(calendar.getTime().getTime());

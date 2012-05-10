@@ -10,7 +10,7 @@ import model.character.Player;
 public interface ICollectableItem {
 		
 	/**
-	 * Callback when this item is picked up by a player
+	 * Callback when this item is picked up by a player.
 	 * 
 	 * @param source The player
 	 */
