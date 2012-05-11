@@ -18,11 +18,11 @@
 		}
 	},
 	"bounds": {
-		"boxWidth": 16,
+		"boxWidth": 24,
 		"height": 20,
-		"offsetY": 16,
-		"offsetX": 0,
+		"offsetY": 3,
+		"offsetX": 4,
 		"width": 20,
-		"boxHeight": 16
+		"boxHeight": 58
 	}
 }
