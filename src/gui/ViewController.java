@@ -3,7 +3,6 @@ package gui;
 import java.awt.Dimension;
 import java.awt.event.KeyListener;
 import java.util.IdentityHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,42 +16,22 @@ import javax.media.opengl.awt.GLCanvas;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import com.jogamp.opengl.util.Animator;
 import com.jogamp.opengl.util.FPSAnimator;
 
-import controller.AppController;
+import datamanagement.PreferenceLoader;
 
 import tilemap.TileMap;
 import tools.GraphicalFPSMeter;
-import tools.TimerTool;
 
 import event.Event;
 import event.EventBus;
 import event.IEventHandler;
-import event.Event.Property;
 
 import model.CollidableObject;
-import model.Entity;
 import model.GameModel;
-import model.character.Enemy;
 import model.character.Player;
-import model.item.AmmoCrate;
-import model.item.ICollectableItem;
-import model.item.MedPack;
-import model.weapon.MachineGun;
 import model.weapon.Portal;
-import model.weapon.PortalGun;
-import model.weapon.Projectile;
 
-import core.Rectangle;
-import core.Size;
-import datamanagement.ResourceLoader;
-import event.Event;
-import event.EventBus;
-import event.IEventHandler;
 import factory.ObjectFactory;
 import graphics.opengl.Actor;
 
@@ -82,8 +61,9 @@ public class ViewController implements IEventHandler, GLEventListener {
 	// Tools
 	private GraphicalFPSMeter fpsmeter;
 
-	// Rotation
+	// LSD mode
 	private float rotationAngle;
+	private boolean isInLSDMode;
 
 	/**
 	 * Creates the ViewController with a given width and height, and adds the
@@ -126,6 +106,8 @@ public class ViewController implements IEventHandler, GLEventListener {
 
 		FPSAnimator anim = new FPSAnimator(canvas, 60);
 		anim.start();
+		
+		this.isInLSDMode = PreferenceLoader.getBoolean("LSD_MODE", false);
 	}
 
 	@Override
@@ -192,14 +174,17 @@ public class ViewController implements IEventHandler, GLEventListener {
 
 		// TimerTool.start("GL-Screen");
 		if (doneLoading) {
-//			gl.glPushMatrix();
-//			this.rotationAngle ++;
-//			gl.glRotated(this.rotationAngle, 0, 0, 1);
+			if (this.isInLSDMode) {
+			gl.glPushMatrix();
+			this.rotationAngle ++;
+			gl.glRotated(this.rotationAngle, 0, 0, 1);
+			}
 			this.screen.setViewPort(this.player.getCollidableObject()
 					.getPosition());
 			this.screen.render(this.screen.getBounds(),
 					this.screen.getBounds(), arg0, 0);
-//			gl.glPopMatrix();
+			if (this.isInLSDMode)
+				gl.glPopMatrix();
 		}
 		// TimerTool.stop();
 	}
@@ -215,7 +200,8 @@ public class ViewController implements IEventHandler, GLEventListener {
 		gl.glDepthFunc(GL.GL_LESS);
 		gl.glEnable(GL2.GL_ALPHA_TEST);
 		
-		gl.glRotated(45, -1, -1, -1);
+		if (this.isInLSDMode)
+			gl.glRotated(45, -1, -1, -1);
 	}
 
 	@Override
