@@ -20,6 +20,7 @@ public class AIPlayer {
 	private Enemy unit;
 	private List<Point> path;
 	private int iq, updateCount, distance;
+	private Point midPos;
 
 	public AIPlayer(Enemy unit) {
 		this.unit = unit;
@@ -139,5 +140,10 @@ public class AIPlayer {
 		double range = this.unit.getCurrentWeapon().getProjectile().getRange()
 				.getDistance();
 		return this.distance < range;
+	}
+	
+	public Point getMidPos(){
+		return new Point (this.unit.getPosition().x + (this.unit.getCollisionBox().width / 2) + this.unit.getOffsetX(), 
+				this.unit.getPosition().y + (this.unit.getCollisionBox().height / 2) + this.unit.getOffsetY());
 	}
 }
