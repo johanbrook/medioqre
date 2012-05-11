@@ -245,18 +245,19 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 
 			gl.glBegin(GL2.GL_QUADS);
 			gl.glColor3f(this.color.x, this.color.y, this.color.z);
-
+			float renderZ = ((float) -zIndex) / 1000000f;
+			
 			gl.glTexCoord2f(tX1, tY1);
-			gl.glVertex3f(rX1, -rY2, ((float) -zIndex) / 10000f);
+			gl.glVertex3f(rX1, -rY2, renderZ);
 
 			gl.glTexCoord2f(tX2, tY1);
-			gl.glVertex3f(rX2, -rY2, ((float) -zIndex) / 10000f);
+			gl.glVertex3f(rX2, -rY2, renderZ);
 
 			gl.glTexCoord2f(tX2, tY2);
-			gl.glVertex3f(rX2, -rY1, ((float) -zIndex) / 10000f);
+			gl.glVertex3f(rX2, -rY1, renderZ);
 
 			gl.glTexCoord2f(tX1, tY2);
-			gl.glVertex3f(rX1, -rY1, ((float) -zIndex) / 10000f);
+			gl.glVertex3f(rX1, -rY1, renderZ);
 
 			gl.glEnd();
 		}

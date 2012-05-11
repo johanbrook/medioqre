@@ -277,7 +277,7 @@ public class ViewController implements IEventHandler, GLEventListener {
 		if (doneLoading) {
 			if (this.isInLSDMode) {
 			gl.glPushMatrix();
-			this.rotationAngle ++;
+			this.rotationAngle += 1;
 			gl.glRotated(this.rotationAngle, 0, 0, 1);
 			}
 			this.screen.setViewPort(this.player.getCollidableObject()
@@ -299,7 +299,7 @@ public class ViewController implements IEventHandler, GLEventListener {
 			gl.glPushMatrix();
 			gl.glLoadIdentity();
 			for (GLRenderableObject ro : this.overlayObjects) {
-				ro.render(ro.getBounds(), this.screen.getBounds(), arg0, (20 + this.tilemap.getTileMapSize().getHeight() * this.tilemap.getTileSize().getHeight() / 10000));
+				ro.render(ro.getBounds(), this.screen.getBounds(), arg0, (20 + this.tilemap.getTileMapSize().getHeight() * this.tilemap.getTileSize().getHeight() / 1000000));
 			}
 			gl.glPopMatrix();
 		}
@@ -309,7 +309,7 @@ public class ViewController implements IEventHandler, GLEventListener {
 	@Override
 	public void init(GLAutoDrawable arg0) {
 		GL2 gl = arg0.getGL().getGL2();
-		gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		gl.glEnable(GL.GL_TEXTURE_2D);
 		gl.glTexEnvf(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE,
 				GL2.GL_MODULATE);

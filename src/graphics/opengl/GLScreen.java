@@ -184,7 +184,7 @@ public class GLScreen implements GLRenderableObject {
 									rX2 = (2f * ((float) a.getCollidableObject().getCollisionBox().x + (float) a.getCollidableObject().getCollisionBox().width - (float) this.screenOffset.getX()) - (float) this.screenSize.getWidth()) / (float) this.screenSize.getWidth();
 									rY1 = (2f * ((float) a.getCollidableObject().getCollisionBox().y - (float) this.screenOffset.getY()) - (float) this.screenSize.getHeight()) / (float) this.screenSize.getHeight();
 									rY2 = (2f * ((float) a.getCollidableObject().getCollisionBox().y + (float) a.getCollidableObject().getCollisionBox().height - (float) this.screenOffset.getY()) - (float) this.screenSize.getHeight()) / (float) this.screenSize.getHeight();
-									float zInd = (-(float)a.getCollidableObject().getCollisionBox().getY() - (float)a.getCollidableObject().getCollisionBox().getHeight()) / 10000f - 0.01f;
+									float zInd = (-(float)a.getCollidableObject().getCollisionBox().getY() - (float)a.getCollidableObject().getCollisionBox().getHeight()) / 1000000f - 0.01f;
 									
 									gl.glDisable(GL.GL_TEXTURE_2D);
 									
