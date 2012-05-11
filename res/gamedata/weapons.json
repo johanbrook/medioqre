@@ -11,8 +11,8 @@
 			"range": "FAR_RANGE",
 			"speed": 50,
 			"bounds": {
-				"height": 10,
-				"width": 10,
+				"height": 8,
+				"width": 8,
 			}
 		}
 	},

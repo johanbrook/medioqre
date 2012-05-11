@@ -1,12 +1,12 @@
 {
 	"portal": {
 		"bounds": {
-			"width": 20,
-			"height": 20,
-			"boxWidth": 20,
-			"boxHeight": 20,
-			"offsetX": 0,
-			"offsetY": 0
+			"width": 25,
+			"height": 30,
+			"boxWidth": 15,
+			"boxHeight": 5,
+			"offsetX": 8,
+			"offsetY": 30
 		}
 	},
 	
