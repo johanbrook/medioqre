@@ -82,6 +82,9 @@ public class ViewController implements IEventHandler, GLEventListener {
 	// Tools
 	private GraphicalFPSMeter fpsmeter;
 
+	// Rotation
+	private float rotationAngle;
+
 	/**
 	 * Creates the ViewController with a given width and height, and adds the
 	 * given KeyLister to itself.
@@ -189,10 +192,14 @@ public class ViewController implements IEventHandler, GLEventListener {
 
 		// TimerTool.start("GL-Screen");
 		if (doneLoading) {
+//			gl.glPushMatrix();
+//			this.rotationAngle ++;
+//			gl.glRotated(this.rotationAngle, 0, 0, 1);
 			this.screen.setViewPort(this.player.getCollidableObject()
 					.getPosition());
 			this.screen.render(this.screen.getBounds(),
 					this.screen.getBounds(), arg0, 0);
+//			gl.glPopMatrix();
 		}
 		// TimerTool.stop();
 	}
@@ -207,6 +214,8 @@ public class ViewController implements IEventHandler, GLEventListener {
 		gl.glEnable(GL.GL_DEPTH_TEST);
 		gl.glDepthFunc(GL.GL_LESS);
 		gl.glEnable(GL2.GL_ALPHA_TEST);
+		
+		gl.glRotated(45, -1, -1, -1);
 	}
 
 	@Override
