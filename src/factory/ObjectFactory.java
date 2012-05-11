@@ -30,6 +30,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import controller.AppController;
+
 import core.Size;
 import datamanagement.ResourceLoader;
 
@@ -558,9 +560,10 @@ public class ObjectFactory {
 		}
 		if (newA != null) {
 			newA.setObject(collidableObject);
-			//FIXME Remove before release!
-			
-			newA.setShowCollisionBox(true);
+
+			if(AppController.isDebugMode()){
+				newA.setShowCollisionBox(true);
+			}
 		}
 
 		return newA;
