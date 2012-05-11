@@ -62,7 +62,7 @@ public class AppController implements Runnable{
 	 * as well as relevant listeners.</p>
 	 */
 	public AppController(){
-		String mode = (MODE == PRODUCTION) ? "production" : "debug";
+		String mode = (isDebugMode()) ? "debug" : "production";
 		System.out.println("Initializing main controller in " + mode
 				+ " mode ...");
 
@@ -104,6 +104,15 @@ public class AppController implements Runnable{
 				this.game));
 	}
 
+	
+	/**
+	 * If the app is in debug mode or not.
+	 * 
+	 * @return Returns true if debug mode is activated, otherwise false
+	 */
+	public static boolean isDebugMode() {
+		return MODE == DEBUG;
+	}
 	
 	/**
 	 * The game loop. Called repeatedly and refreshes the game logic (model), the AI and the audio

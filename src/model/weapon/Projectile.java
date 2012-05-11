@@ -186,6 +186,19 @@ public class Projectile extends Entity {
 		return super.toString() + " [owner/type:" + this.owner + "] [range: "
 				+ this.range + "] [damage: " + this.damage + "]";
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(this == o) {
+			return true;
+		}
+		if(o == null || this.getClass() != o.getClass()) {
+			return false;
+		}
+		
+		Projectile p = (Projectile) o;
+		return this.owner.equals(p.owner) && this.damage == p.damage && this.range == p.range;
+	}
 
 	@Override
 	public void move(double dt) {

@@ -61,7 +61,7 @@ public final class Logger {
 	 * @pre AppController.MODE == AppController.DEBUG
 	 */
 	public static void log(Object msg) {
-		if (AppController.MODE == AppController.DEBUG) {
+		if (AppController.isDebugMode()) {
 			System.out.println(addTimestamp(msg));
 		}
 	}
@@ -73,7 +73,7 @@ public final class Logger {
 	 * @pre AppController.MODE == AppController.DEBUG
 	 */
 	public static void err(Object msg) {
-		if (AppController.MODE == AppController.DEBUG) {
+		if (AppController.isDebugMode()) {
 			System.err.println(addTimestamp(msg));
 		}
 	}

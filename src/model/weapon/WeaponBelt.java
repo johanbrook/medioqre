@@ -25,11 +25,11 @@ public class WeaponBelt {
 	/**
 	 * Add a weapon to the belt.
 	 * 
-	 * @param w
-	 *            The weapon
+	 * @param w The weapon
+	 * @return True if the weapon was added successfully. Otherwise false.        
 	 */
-	public void addWeapon(AbstractWeapon w) {
-		this.weapons.add(w);
+	public boolean addWeapon(AbstractWeapon w) {
+		return this.weapons.add(w);
 	}
 
 	/**

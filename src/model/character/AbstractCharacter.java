@@ -110,8 +110,13 @@ public abstract class AbstractCharacter extends Entity {
 		}
 	}
 
+	/**
+	 * Update this character, which could react and do stuff based on
+	 * the delta time passed.
+	 * 
+	 * @param dt The delta time
+	 */
 	public void update(double dt) {
-		super.move(dt);
 		this.currentWeapon.updateCooldown(dt);
 	}
 

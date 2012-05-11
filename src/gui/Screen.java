@@ -1,9 +1,14 @@
 package gui;
 
+import factory.ObjectFactory;
+import graphics.opengl.Actor;
+
 import java.awt.Point;
 import java.util.Collection;
 import java.util.LinkedList;
 
+import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLDrawable;
 
@@ -25,6 +30,9 @@ public class Screen implements GLRenderableObject {
 	private Rectangle screenSize;
 	private Rectangle renderRect;
 	private Point screenOffset;
+
+	// TODO Remove this!
+	private float angle = 0;
 
 	/**
 	 * Creates a screen with the given screensize.
@@ -136,6 +144,9 @@ public class Screen implements GLRenderableObject {
 	@Override
 	public void render(Rectangle object, Rectangle target,
 			GLAutoDrawable canvas, int zIndex) {
+
+		GL2 gl = canvas.getGL().getGL2();
+
 		if (layers == null)
 			return;
 
@@ -166,6 +177,27 @@ public class Screen implements GLRenderableObject {
 
 							glR.render(this.renderRect, this.screenSize,
 									canvas, zIndex);
+							if (glR instanceof Actor) {
+								Actor a = (Actor) glR;
+								if (a.isShowingCollisionBox()) {
+									float rX1, rX2, rY1, rY2;
+									rX1 = (2f * ((float) a.getCollidableObject().getCollisionBox().x - (float) this.screenOffset.getX()) - (float) this.screenSize.getWidth()) / (float) this.screenSize.getWidth();
+									rX2 = (2f * ((float) a.getCollidableObject().getCollisionBox().x + (float) a.getCollidableObject().getCollisionBox().width - (float) this.screenOffset.getX()) - (float) this.screenSize.getWidth()) / (float) this.screenSize.getWidth();
+									rY1 = (2f * ((float) a.getCollidableObject().getCollisionBox().y - (float) this.screenOffset.getY()) - (float) this.screenSize.getHeight()) / (float) this.screenSize.getHeight();
+									rY2 = (2f * ((float) a.getCollidableObject().getCollisionBox().y + (float) a.getCollidableObject().getCollisionBox().height - (float) this.screenOffset.getY()) - (float) this.screenSize.getHeight()) / (float) this.screenSize.getHeight();
+									float zInd = (-(float)a.getCollidableObject().getCollisionBox().getY() - (float)a.getCollidableObject().getCollisionBox().getHeight()) / 10000f - 0.01f;
+									
+									gl.glDisable(GL.GL_TEXTURE_2D);
+									gl.glBegin(GL2.GL_QUADS);
+									gl.glColor3f(1.0f, 0.0f, 1.0f);
+									gl.glVertex3f(rX1, -rY2, zInd);
+									gl.glVertex3f(rX2, -rY2, zInd);
+									gl.glVertex3f(rX2, -rY1, zInd);
+									gl.glVertex3f(rX1, -rY1, zInd);
+									gl.glEnd();
+									gl.glEnable(GL.GL_TEXTURE_2D);
+								}
+							}
 						}
 					}
 				}
@@ -181,5 +213,5 @@ public class Screen implements GLRenderableObject {
 	public Rectangle getBounds() {
 		return this.screenSize;
 	}
-
 }
+

@@ -177,6 +177,12 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 
 	}
 
+	/**
+	 * Initializes a new game with a player and walls.
+	 * 
+	 * <p>Sends the event <code>NEW_GAME</code> to listeners with the value
+	 * <code>this</code>.</p>
+	 */
 	public void newGame() {
 		initPlayer();
 		this.messager.sendMessage(new Event(Event.Property.NEW_GAME, this));
@@ -186,11 +192,17 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 	}
 
 	private void gameOver() {
+		log("Noob, game over");
 		EventBus.INSTANCE.publish(new Event(Event.Property.GAME_OVER, this));
 		this.objects.clear();
 		newGame();
 	}
 
+	/**
+	 * Initializes a new wave of enemies and items. Increments the wave number,
+	 * and sends an event to the bus and listeners of the type <code>NEW_WAVE</code>
+	 * and with the value <code>this</code>.
+	 */
 	public void newWave() {
 		this.currentWave++;
 
@@ -314,9 +326,9 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 				checkCollisions(temp);
 				if (t instanceof AbstractCharacter) {
 					((AbstractCharacter) t).update(dt);
-				} else {
-					temp.move(dt);
 				}
+				
+				temp.move(dt);
 			}
 
 			if (t instanceof Projectile) {
@@ -375,7 +387,8 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 
 						if (!this.portalVictims.contains(t)) {
 							// Teleport
-							t.setPosition(p.getSisterPortal().getPosition());
+							p.walkIntoPortal(t);
+							
 							this.portalVictims.add(t);
 						}
 					}

@@ -25,7 +25,7 @@ public class PortalGun extends AbstractWeapon {
 	private Mode mode;
 	
 	/**
-	 * Create a new PortalGun.
+	 * Create a new PortalGun. Initializes the mode to <code>BLUE</code>.
 	 * 
 	 * @param owner The owner
 	 * @param ammo The initial ammo

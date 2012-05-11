@@ -22,7 +22,6 @@ public class TestWeapon {
 
 	private AbstractWeapon machineGun;
 	private AbstractWeapon grenade;
-	private AbstractWeapon sword;
 	private AbstractWeapon melee;
 
 	@Before
@@ -36,10 +35,6 @@ public class TestWeapon {
 		this.grenade = new Grenade(p, 4, 0.1, 5);
 		this.grenade.setProjectile(new Projectile(grenade, 10, 10, 40,
 				Range.MEDIUM_RANGE, 30));
-
-		this.sword = new Sword(p, -1, 0, 4);
-		this.sword.setProjectile(new Projectile(sword, 10, 10, 100,
-				Range.SHORT_RANGE, 30));
 
 		this.melee = new Melee(p, -1, 0, 4);
 		this.melee.setProjectile(new Projectile(melee, 10, 10, 100,
@@ -59,11 +54,6 @@ public class TestWeapon {
 	@Test
 	public void testMachineGun() {
 		assertNotNull(this.machineGun.fire());
-	}
-
-	@Test
-	public void testSword() {
-		assertNotNull(this.sword.fire());
 	}
 
 	@Test

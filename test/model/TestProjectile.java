@@ -14,6 +14,7 @@ import java.awt.Rectangle;
 
 import model.character.AbstractCharacter;
 import model.character.Player;
+import model.weapon.AbstractWeapon;
 import model.weapon.MachineGun;
 import model.weapon.Projectile;
 import model.weapon.Projectile.Range;
@@ -26,19 +27,42 @@ import constants.Direction;
 public class TestProjectile {
 
 	private Projectile projectile;
-	private AbstractCharacter owner;
+	private AbstractCharacter owningCharacter;
+	private AbstractWeapon owningWeapon;
 
 	@Before
 	public void setUp() throws Exception {
-		this.owner = new Player(30, new Rectangle(20, 20),
-				new Dimension(20, 48), 0, 16);
-		this.owner.setPosition(10, 10);
-		this.owner.setDirection(Direction.EAST);
+		this.owningCharacter = new Player(30, new Rectangle(20, 20), new Dimension(20, 48), 0, 16);
+		this.owningWeapon = new MachineGun(this.owningCharacter, 300, 2, 2);
+		
+		this.owningCharacter.setPosition(10, 10);
+		this.owningCharacter.setDirection(Direction.EAST);
 
-		this.projectile = new Projectile(new MachineGun(this.owner, 300, 2, 2),
+		this.projectile = new Projectile(this.owningWeapon,
 				10, 10, 30, Range.FAR_RANGE, 30);
 	}
+	
+	@Test
+	public void testOwners() {
+		assertEquals(this.owningWeapon, this.projectile.getOwner());
+		assertEquals(this.owningCharacter, this.projectile.getOwner().getOwner());
+	}
+	
+	
+	@Test
+	public void testCopyConstructor() {
+		Projectile copy = new Projectile(this.projectile);
+		
+		assertEquals(this.projectile, copy);
+	}
 
+	
+	@Test
+	public void testProjectileDirection() {
+		assertEquals(this.owningCharacter.getDirection(), this.projectile.getDirection());
+	}
+	
+	
 	// @Test
 	// public void testProjectilePosition() {
 	// // A projectile should be at its parent weapon's owner's position when

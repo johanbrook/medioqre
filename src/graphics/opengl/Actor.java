@@ -4,6 +4,7 @@ import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
 import model.CollidableObject;
@@ -18,8 +19,6 @@ import model.weapon.Projectile;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import quicktime.streaming.MediaParams;
 
 import core.GLRenderableObject;
 import core.JSONSerializable;
@@ -47,6 +46,7 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 
 	// Entity
 	private CollidableObject object;
+	private boolean showCollisionBox = false;
 
 	// ************* Getters *************
 	/**
@@ -126,6 +126,10 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 		return this.object;
 	}
 
+	public boolean isShowingCollisionBox() {
+		return this.showCollisionBox;
+	}
+	
 	// ************* Setters *************
 	/**
 	 * Set the x coordinate of the actor.
@@ -210,6 +214,10 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 		this.object = o;
 	}
 
+	public void setShowCollisionBox(boolean showCollisionBox) {
+		this.showCollisionBox = showCollisionBox;
+	}
+	
 	// ************* Animations *************
 	/**
 	 * Add an animation to the actor.
@@ -358,7 +366,8 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 
 	@Override
 	public void render(Rectangle object, Rectangle target,
-			GLAutoDrawable canvas, int zIndex) {
+			GLAutoDrawable canvas, int zIndex) {	
+		
 		if (this.currentAnimation != null)
 			this.currentAnimation.render(object, target, canvas, this.getY()
 					+ this.getHeight());

@@ -10,25 +10,8 @@
 	<classpathentry kind="lib" path="libs/CodecWav.jar"/>
 	<classpathentry kind="lib" path="libs/LibraryJavaSound.jar"/>
 	<classpathentry kind="lib" path="libs/SoundSystem.jar"/>
-	<classpathentry kind="lib" path="libs/gluegen-rt.jar">
-		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="Medioqre/libs/lib/macosx-universal"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="libs/jogl.all.jar">
-		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="Medioqre/libs/lib/macosx-universal"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="libs/nativewindow-natives-macosx-universal.jar">
-		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="Medioqre/libs/lib/macosx-universal"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="libs/newt-natives-macosx-universal.jar">
-		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="Medioqre/libs/lib/macosx-universal"/>
-		</attributes>
-	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="libs/jogamp-all-platforms/jogamp-all-platforms/jar/gluegen-rt.jar" sourcepath="libs/jogamp-all-platforms/jogamp-all-platforms/gluegen-java-src.zip"/>
+	<classpathentry exported="true" kind="lib" path="libs/jogamp-all-platforms/jogamp-all-platforms/jar/jogl.all.jar" sourcepath="libs/jogamp-all-platforms/jogamp-all-platforms/jogl-java-src.zip"/>
+	<classpathentry kind="lib" path="libs/macify-1.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

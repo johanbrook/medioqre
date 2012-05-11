@@ -1,14 +1,13 @@
+package model.weapon;
+
+import model.character.AbstractCharacter;
+
 /**
  *	Sword.java
  *
  *	@author Johan
+ *	@deprecated Using Melee instead. Same functionality (2012-05-10).
  */
-
-package model.weapon;
-
-import model.character.AbstractCharacter;
-import model.weapon.Projectile.Range;
-
 public class Sword extends AbstractWeapon {
 
 	private Projectile projectile;

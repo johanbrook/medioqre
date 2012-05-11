@@ -78,5 +78,17 @@ public class Portal extends CollidableObject {
 	public Portal getSisterPortal() {
 		return this.otherPortal;
 	}
-
+	
+	/**
+	 * Let an object walk into this portal and teleport.
+	 * 
+	 * @param t The object
+	 */
+	public void walkIntoPortal(Entity t) {
+		if(this.otherPortal == null) {
+			throw new NullPointerException("Sister portal is not set!");
+		}
+		
+		t.setPosition(this.otherPortal.getPosition());
+	}
 }
