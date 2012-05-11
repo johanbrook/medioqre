@@ -4,6 +4,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
+import factory.ObjectFactory;
+
 /**
  * Class capable of finding a path between different spots on a matrice of
  * tiles. Keeps a logic representation of that matrice using AStarTiles.
@@ -19,21 +21,27 @@ public class PathFinder {
 	// Using a approx value of sqrt(2) for diagonalcost, in order to save time.
 	private final double DIAGONALCOST = 1.41421356;
 	private int rows, columns;
+	private boolean initiated;
 
 	public PathFinder(int rows, int columns) {
 		this.columns = columns;
 		this.rows = rows;
-		initTiles();
+		this.setInitiated(false);
 	}
 
-	private void initTiles() {
+	public void init() {
+		boolean [][] walls = ObjectFactory.getCollidables();
 		logicList = new AStarTile[rows][columns];
 		for (int i = 0; i < this.rows; i++) {
 			for (int l = 0; l < this.columns; l++) {
 				logicList[i][l] = new AStarTile(i, l);
+				if (walls[i][l]){
+					logicList[i][l].setSolid(true);
+				}
 			}
 		}
 		generateNeighbors();
+		this.setInitiated(true);
 	}
 
 	/**
@@ -321,6 +329,22 @@ public class PathFinder {
 	 */
 	private void clearOpen() {
 		openList.clear();
+	}
+
+	/**
+	 * get the status of this PathFinder, if its initiated and ready to use.
+	 * @return true if ready to use.
+	 */
+	public boolean isInitiated() {
+		return initiated;
+	}
+
+	/**
+	 * Specify whether this PathFinder is initiated and ready to use.
+	 * @param initiated
+	 */
+	public void setInitiated(boolean initiated) {
+		this.initiated = initiated;
 	}
 
 }

@@ -44,17 +44,17 @@ public class AIController implements IMessageSender, IMessageListener {
 	public void onMessage(Event evt) {
 
 		switch (evt.getProperty()) {
-			case NEW_GAME :
-				player = ((GameModel) evt.getValue()).getPlayer();
-				// this.pathfinder.initWalls( ObjectFactory.getWalls() );
-				break;
-			case NEW_WAVE :
-				this.setEnemies(((GameModel) evt.getValue()).getEnemies());
-				break;
+		case NEW_GAME :
+			player = ((GameModel) evt.getValue()).getPlayer();
+			this.pathfinder.init();
+			break;
+		case NEW_WAVE :
+			this.setEnemies(((GameModel) evt.getValue()).getEnemies());
+			break;
 
-			case WAS_DESTROYED :
-				this.removeEnemy((Enemy) evt.getValue());
-				break;
+		case WAS_DESTROYED :
+			this.removeEnemy((Enemy) evt.getValue());
+			break;
 		}
 	}
 
@@ -90,45 +90,47 @@ public class AIController implements IMessageSender, IMessageListener {
 	 * @param aiPlayer
 	 */
 	private void updateEnemy(AIPlayer aiPlayer, double dt) {
-		Point enemyTile = calculateTile(aiPlayer.getEnemy().getPosition());
+		if (this.pathfinder.isInitiated()){
+			Point enemyTile = calculateTile(aiPlayer.getEnemy().getPosition());
 
-		aiPlayer.setDistance(Math.abs(aiPlayer.getEnemy().getPosition().x
-				- playerPos.x)
-				+ Math.abs(aiPlayer.getEnemy().getPosition().y - playerPos.y));
+			aiPlayer.setDistance(Math.abs(aiPlayer.getEnemy().getPosition().x
+					- playerPos.x)
+					+ Math.abs(aiPlayer.getEnemy().getPosition().y - playerPos.y));
 
-		aiPlayer.getEnemy().getCurrentWeapon().updateCooldown(dt);
-		handleAttack(aiPlayer, dt);
-		if (aiPlayer.getCount() < (aiPlayer.getDistance() / 15)
-				+ enemies.size() / 15) {
-			aiPlayer.updateCount();
+			aiPlayer.getEnemy().getCurrentWeapon().updateCooldown(dt);
+			handleAttack(aiPlayer, dt);
+			if (aiPlayer.getCount() < (aiPlayer.getDistance() / 15)
+					+ enemies.size() / 15) {
+				aiPlayer.updateCount();
 
-		} else {
-			if (enemyTile.x >= 0 && enemyTile.y >= 0 && enemyTile.x < 48
-					&& enemyTile.y < 48) {
-				aiPlayer.resetCount();
+			} else {
+				if (enemyTile.x >= 0 && enemyTile.y >= 0 && enemyTile.x < 48
+						&& enemyTile.y < 48) {
+					aiPlayer.resetCount();
 
-				aiPlayer.setPath(pathfinder.getPath(enemyTile, playerTile));
-				if (aiPlayer.getPath() != null) {
+					aiPlayer.setPath(pathfinder.getPath(enemyTile, playerTile));
+					if (aiPlayer.getPath() != null) {
 
-					// Update direction of the enemy depending on what the
-					// current path is.
+						// Update direction of the enemy depending on what the
+						// current path is.
 
-					// If path is longer than 2 tiles, just calculate the
-					// direction from the path
-					if (aiPlayer.getPath().size() >= 2) {
-						aiPlayer.updateEnemy(calculateDirection(aiPlayer
-								.getPath()));
+						// If path is longer than 2 tiles, just calculate the
+						// direction from the path
+						if (aiPlayer.getPath().size() >= 2) {
+							aiPlayer.updateEnemy(calculateDirection(aiPlayer
+									.getPath()));
+						} else {
+
+							// If path is shorter, manually inserts enemy and player
+							// positions and walk straight towards them, they should
+							// be to close for there to
+							// be any kind of obstacle in the way.
+							aiPlayer.getEnemy().setDirection(
+									findLineToPlayer(aiPlayer));
+						}
 					} else {
-
-						// If path is shorter, manually inserts enemy and player
-						// positions and walk straight towards them, they should
-						// be to close for there to
-						// be any kind of obstacle in the way.
-						aiPlayer.getEnemy().setDirection(
-								findLineToPlayer(aiPlayer));
+						aiPlayer.getEnemy().setDirection(randomDir());
 					}
-				} else {
-					aiPlayer.getEnemy().setDirection(randomDir());
 				}
 			}
 		}
@@ -179,30 +181,30 @@ public class AIController implements IMessageSender, IMessageListener {
 		int r = rand.nextInt(8);
 		Direction d = Direction.ORIGIN;
 		switch (r) {
-			case 0 :
-				d = Direction.EAST;
-				break;
-			case 1 :
-				d = Direction.NORTH;
-				break;
-			case 2 :
-				d = Direction.NORTH_EAST;
-				break;
-			case 3 :
-				d = Direction.NORTH_WEST;
-				break;
-			case 4 :
-				d = Direction.SOUTH;
-				break;
-			case 5 :
-				d = Direction.SOUTH_EAST;
-				break;
-			case 6 :
-				d = Direction.SOUTH_WEST;
-				break;
-			case 7 :
-				d = Direction.WEST;
-				break;
+		case 0 :
+			d = Direction.EAST;
+			break;
+		case 1 :
+			d = Direction.NORTH;
+			break;
+		case 2 :
+			d = Direction.NORTH_EAST;
+			break;
+		case 3 :
+			d = Direction.NORTH_WEST;
+			break;
+		case 4 :
+			d = Direction.SOUTH;
+			break;
+		case 5 :
+			d = Direction.SOUTH_EAST;
+			break;
+		case 6 :
+			d = Direction.SOUTH_WEST;
+			break;
+		case 7 :
+			d = Direction.WEST;
+			break;
 		}
 		return d;
 	}
@@ -260,35 +262,35 @@ public class AIController implements IMessageSender, IMessageListener {
 
 		// Return direction depending on the values of dx and dy.
 		switch (dx) {
-			case 1 :
-				if (dy == -1)
-					return Direction.NORTH_EAST;
+		case 1 :
+			if (dy == -1)
+				return Direction.NORTH_EAST;
 
-				else if (dy == 0)
-					return Direction.EAST;
+			else if (dy == 0)
+				return Direction.EAST;
 
-				else {
-					return Direction.SOUTH_EAST;
-				}
+			else {
+				return Direction.SOUTH_EAST;
+			}
 
-			case 0 :
-				if (dy == -1)
-					return Direction.NORTH;
+		case 0 :
+			if (dy == -1)
+				return Direction.NORTH;
 
-				else {
-					return Direction.SOUTH;
-				}
+			else {
+				return Direction.SOUTH;
+			}
 
-			case -1 :
-				if (dy == -1)
-					return Direction.NORTH_WEST;
+		case -1 :
+			if (dy == -1)
+				return Direction.NORTH_WEST;
 
-				else if (dy == 0)
-					return Direction.WEST;
+			else if (dy == 0)
+				return Direction.WEST;
 
-				else {
-					return Direction.SOUTH_WEST;
-				}
+			else {
+				return Direction.SOUTH_WEST;
+			}
 		}// Should never reach this point since dx will always be 1,0 or -1
 		return null;
 
