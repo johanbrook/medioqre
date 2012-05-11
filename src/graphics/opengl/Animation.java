@@ -113,6 +113,12 @@ public class Animation implements JSONSerializable, GLRenderableObject {
 		this.frames = frames;
 	}
 
+	public void setColor(float r, float g, float b) {
+		for (Sprite s : this.frames) {
+			s.setColor(r, g, b);
+		}
+	}
+	
 	// ************* Methods *************
 	/**
 	 * Add a frame to the animation.

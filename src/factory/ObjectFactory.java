@@ -1,7 +1,7 @@
 package factory;
 
 import graphics.opengl.Actor;
-import gui.Screen;
+import graphics.opengl.GLScreen;
 
 import java.awt.Dimension;
 import java.awt.Point;
@@ -592,7 +592,7 @@ public class ObjectFactory {
 	 * 
 	 * @return null
 	 */
-	public static Screen newScreen() {
+	public static GLScreen newScreen() {
 		return null;
 	}
 

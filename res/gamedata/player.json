@@ -7,11 +7,11 @@
 		"y": 100
 	},
 	"bounds": {
-		"boxWidth": 16,
+		"boxWidth": 28,
 		"height": 64,
-		"offsetY": 16,
-		"offsetX": 0,
+		"offsetY": 3,
+		"offsetX": 4,
 		"width": 32,
-		"boxHeight": 16
+		"boxHeight": 58
 	}
 }

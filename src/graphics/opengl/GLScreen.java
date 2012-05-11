@@ -1,7 +1,6 @@
-package gui;
+package graphics.opengl;
 
 import factory.ObjectFactory;
-import graphics.opengl.Actor;
 
 import java.awt.Point;
 import java.util.Collection;
@@ -24,7 +23,7 @@ import core.Rectangle;
  * @author John Barbero Unenge
  * 
  */
-public class Screen implements GLRenderableObject {
+public class GLScreen implements GLRenderableObject {
 
 	private GLRenderableObject[][] layers;
 	private Rectangle screenSize;
@@ -40,7 +39,7 @@ public class Screen implements GLRenderableObject {
 	 * @param screenSize
 	 *            The screensize
 	 */
-	public Screen(Rectangle screenSize) {
+	public GLScreen(Rectangle screenSize) {
 		this.screenSize = screenSize;
 		this.screenOffset = new Point(0, 0);
 	}
@@ -57,7 +56,7 @@ public class Screen implements GLRenderableObject {
 	 * @param height
 	 *            The height of the screen
 	 */
-	public Screen(int x, int y, int width, int height) {
+	public GLScreen(int x, int y, int width, int height) {
 		this(new Rectangle(x, y, width, height));
 	}
 
@@ -188,8 +187,9 @@ public class Screen implements GLRenderableObject {
 									float zInd = (-(float)a.getCollidableObject().getCollisionBox().getY() - (float)a.getCollidableObject().getCollisionBox().getHeight()) / 10000f - 0.01f;
 									
 									gl.glDisable(GL.GL_TEXTURE_2D);
+									
 									gl.glBegin(GL2.GL_QUADS);
-									gl.glColor3f(1.0f, 0.0f, 1.0f);
+									gl.glColor4f(1.0f, 0.0f, 1.0f, 0.5f);
 									gl.glVertex3f(rX1, -rY2, zInd);
 									gl.glVertex3f(rX2, -rY2, zInd);
 									gl.glVertex3f(rX2, -rY1, zInd);

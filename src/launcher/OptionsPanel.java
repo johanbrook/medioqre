@@ -44,6 +44,12 @@ public class OptionsPanel extends JPanel {
 		chckbxHipsterMode.setBounds(30, 350, 170, 30);
 		chckbxHipsterMode.setOpaque(false);
 		add(chckbxHipsterMode);
+		chckbxHipsterMode.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				PreferenceLoader.putBoolean("HIPSTER_MODE", ((JCheckBox) arg0.getSource()).isSelected());
+			}
+		});
 
 		JButton btnDone = new JButton("Done");
 		btnDone.addActionListener(new ActionListener() {
@@ -142,6 +148,19 @@ public class OptionsPanel extends JPanel {
 		lblDifficulty.setBounds(30, 80, 170, 16);
 		lblDifficulty.setOpaque(false);
 		add(lblDifficulty);
+		
+		JCheckBox chckbxLsdMode = new JCheckBox("LSD mode");
+		chckbxLsdMode.setOpaque(false);
+		chckbxLsdMode.setForeground(Color.WHITE);
+		chckbxLsdMode.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
+		chckbxLsdMode.setBounds(30, 308, 170, 30);
+		add(chckbxLsdMode);
+		chckbxLsdMode.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				PreferenceLoader.putBoolean("LSD_MODE", ((JCheckBox) e.getSource()).isSelected());
+			}
+		});
 
 	}
 }

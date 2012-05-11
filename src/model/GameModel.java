@@ -530,6 +530,10 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 		return this.enemies;
 	}
 
+	public int getCurrentWaveCount() {
+		return this.currentWave;
+	}
+	
 	@Override
 	public void addReceiver(IMessageListener listener) {
 		this.messager.addListener(listener);
