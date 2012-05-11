@@ -3,6 +3,7 @@ package graphics.opengl;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
+import javax.vecmath.Color3f;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,6 +27,8 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 
 	private Texture texture;
 	private Rectangle rectangle;
+
+	private Color3f color = new Color3f(1.0f, 1.0f, 1.0f);
 
 	// ************* Constructors *************
 	/**
@@ -131,6 +134,12 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 		this.rectangle = r;
 	}
 
+	public void setColor(float r, float g, float b) {
+		this.color.x = r;
+		this.color.y = g;
+		this.color.z = b;
+	}
+
 	// ************* Getters *************
 	/**
 	 * Get the name of the texture.
@@ -205,14 +214,15 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 				tY2 = ((float) this.rectangle.getY() + (float) this.rectangle
 						.getHeight()) / (float) texture.getHeight();
 			} else {
-					tX1 = (float) this.rectangle.getX()
-							/ (float) texture.getWidth();
-					tX2 = ((float) this.rectangle.getX() + (float) this.rectangle
-							.getWidth()) / (float) texture.getWidth();
-					tY1 = ((float) texture.getHeight() - (float) this.rectangle.getY())
-							/ (float) texture.getHeight();
-					tY2 = ((float) texture.getHeight() - ((float) this.rectangle.getY() + (float) this.rectangle
-							.getHeight())) / (float) texture.getHeight();
+				tX1 = (float) this.rectangle.getX()
+						/ (float) texture.getWidth();
+				tX2 = ((float) this.rectangle.getX() + (float) this.rectangle
+						.getWidth()) / (float) texture.getWidth();
+				tY1 = ((float) texture.getHeight() - (float) this.rectangle
+						.getY()) / (float) texture.getHeight();
+				tY2 = ((float) texture.getHeight() - ((float) this.rectangle
+						.getY() + (float) this.rectangle.getHeight()))
+						/ (float) texture.getHeight();
 			}
 
 			float rX1 = (float) ((2.0f * object.getX()) - (float) target
@@ -234,7 +244,7 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 			// gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 
 			gl.glBegin(GL2.GL_QUADS);
-			gl.glColor3f(1.0f, 1.0f, 1.0f);
+			gl.glColor3f(this.color.x, this.color.y, this.color.z);
 
 			gl.glTexCoord2f(tX1, tY1);
 			gl.glVertex3f(rX1, -rY2, ((float) -zIndex) / 10000f);

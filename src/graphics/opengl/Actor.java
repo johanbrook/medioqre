@@ -218,6 +218,12 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 		this.showCollisionBox = showCollisionBox;
 	}
 	
+	public void setColor(float r, float g, float b) {
+		for (Animation a : this.animations.values()) {
+			a.setColor(r, g, b);
+		}
+	}
+	
 	// ************* Animations *************
 	/**
 	 * Add an animation to the actor.
