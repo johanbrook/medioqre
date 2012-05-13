@@ -219,7 +219,7 @@ public class ViewController implements IEventHandler, GLEventListener {
 			this.player.setCurrentAnimation("moveS");
 			this.screen.addDrawableToLayer(this.player, 1);
 
-			this.player.setColor(1f, 0.4f, 0.4f);
+			this.player.setColor(1f, 1f, 1f);
 			this.doneLoading = true;
 		} else if (evt.getProperty() == Event.Property.NEW_WAVE) {
 
@@ -299,7 +299,7 @@ public class ViewController implements IEventHandler, GLEventListener {
 			gl.glPushMatrix();
 			gl.glLoadIdentity();
 			for (GLRenderableObject ro : this.overlayObjects) {
-				ro.render(ro.getBounds(), this.screen.getBounds(), arg0, (20 + this.tilemap.getTileMapSize().getHeight() * this.tilemap.getTileSize().getHeight() / 1000000));
+				ro.render(ro.getBounds(), this.screen.getBounds(), arg0, (20 + this.tilemap.getTileMapSize().getHeight() * this.tilemap.getTileSize().getHeight()));
 			}
 			gl.glPopMatrix();
 		}
