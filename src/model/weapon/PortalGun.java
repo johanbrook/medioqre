@@ -16,6 +16,11 @@ public class PortalGun extends AbstractWeapon {
 	/**
 	 * The different portal gun modes.
 	 * 
+	 * <ul>
+	 * <li><code>BLUE</code></li>
+	 * <li><code>ORANGE</code></li>
+	 * </ul>
+	 * 
 	 * @author Johan
 	 */
 	public enum Mode {

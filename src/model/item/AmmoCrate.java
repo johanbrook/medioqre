@@ -54,10 +54,9 @@ public class AmmoCrate extends CollidableObject implements ICollectableItem {
 
 	@Override
 	public void didCollide(CollidableObject w) {
-		tools.Logger.log("AmmoCrate reached");
 
 		if (w instanceof Player){
-			this.pickedUpBy((Player)w);
+			this.pickedUpBy((Player) w);
 		}
 		
 	}

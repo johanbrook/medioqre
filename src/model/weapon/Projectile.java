@@ -208,8 +208,8 @@ public class Projectile extends Entity {
 	public void move(double dt) {
 		super.move(dt);
 
+		// Remove this projectile if it's reached its max range
 		this.updateDistanceTravelled(dt);
-		
 		if (this.getDistanceTravelled() >= this.getRange().getDistance()) {
 			this.destroy();
 		}
@@ -220,15 +220,15 @@ public class Projectile extends Entity {
 		// Projectiles fired by enemies shouldn't hurt other enemies
 		if (!(this.getOwner().getOwner() instanceof Enemy && w instanceof Enemy)){
 			
-			//If w is a ConcreteCollidableObject (wall) or AbstractCharacter, 
-			//this projectile should destroy itself
+			// If this projectile hits a character or wall, destroy itself
 		
 			if (w instanceof AbstractCharacter || w instanceof ConcreteCollidableObject){
 				
-				//if w is a AbstractCharacter, w should take damage from this Projectile
+				// if w is a character, it should take damage
 				if (w instanceof AbstractCharacter){
 					((AbstractCharacter)w).takeDamage(this.getDamage());
 				}
+				
 				this.destroy();
 			}
 			

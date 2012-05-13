@@ -149,6 +149,12 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 		}
 	}
 
+	/**
+	 * Create new medpacks and ammocrates based on a probability value.
+	 * 
+	 * <p>I.e., new items will only spawn if a random integer is lower than the
+	 * config entry 'itemSpawnChange'.</p>
+	 */
 	private void randomizeItem() {
 		Random random = new Random();
 		int rand = random.nextInt(100);
@@ -160,6 +166,10 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 
 	}
 
+	/**
+	 * Create a new ammocrate from the factory, setup listener and add
+	 * to the game world.
+	 */
 	private void newAmmoCrate() {
 		CollidableObject item = ObjectFactory.newItem("AmmoCrate");
 		item.addReceiver(this);
@@ -167,6 +177,10 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 		log("** Ammo Crate created **");
 	}
 
+	/**
+	 * Create a new medpack from the factory, setup listener and add
+	 * to the game world.
+	 */
 	private void newMedPack() {
 		CollidableObject item = ObjectFactory.newItem("MedPack");
 		item.addReceiver(this);
@@ -189,6 +203,9 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 		}
 	}
 
+	/**
+	 * Game over handling.
+	 */
 	private void gameOver() {
 		log("Noob, game over");
 		EventBus.INSTANCE.publish(new Event(Event.Property.GAME_OVER, this));
@@ -214,6 +231,11 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 		log("New wave: " + this.currentWave);
 	}
 
+	
+	/**
+	 * Add relevant items to the game world from the factory. Sets up
+	 * relevant listeners.
+	 */
 	private void addItems() {
 		List<CollidableObject> items = ObjectFactory
 				.newItemsForWave(this.currentWave);
@@ -230,6 +252,14 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 
 	}
 
+	/**
+	 * Initialize enemies.
+	 * 
+	 * <p>Get new enemies for the current wave from the factory,
+	 * set up listeners and add them to the enemies list and game world.</p>
+	 * 
+	 * <p>Clears the previous list of enemies.</p>
+	 */
 	private void initEnemies() {
 		this.objects.removeAll(this.enemies);
 		this.enemies.clear();
@@ -249,6 +279,9 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 		log("** " + tempEnemies.size() + " enemies added");
 	}
 
+	/**
+	 * Initialize a new player from the factory and adds a listener.
+	 */
 	private void initPlayer() {
 		this.player = ObjectFactory.newPlayer();
 
@@ -256,6 +289,16 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 		this.player.addReceiver(this);
 	}
 
+	/**
+	 * Create a new portal with a mode on a position in the game world.
+	 * 
+	 * <p>Handles the logic associated with the two portals, i.e. connect
+	 * them and position them correctly.</p>
+	 * 
+	 * @param mode The mode the new portal should be initialized with
+	 * @param position The position the new portal should be initialized on
+	 * @see PortalGun.Mode
+	 */
 	private void deployPortal(Mode mode, Point position) {
 
 		for (int i = 0; i < this.portals.length; i++) {
@@ -281,6 +324,11 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 		}
 	}
 
+	/**
+	 * Do splash damage from a projectile.
+	 * 
+	 * @param p The projectile
+	 */
 	private void doSplashDamage(Projectile p) {
 		if (p.getOwner() instanceof Grenade) {
 
@@ -313,12 +361,15 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 
 	}
 
+	/**
+	 * Move all relevant entities based on a delta time, and take 
+	 * relevant actions.
+	 * 
+	 * @param dt The delta time
+	 */
 	private void moveEntities(double dt) {
 		for (CollidableObject t : this.objects) {
-
-			// The entity has to move *after* collision checks have been
-			// finished,
-			// otherwise you'll be able to bug your way through other entities.
+			
 			if (t instanceof Entity) {
 				Entity temp = (Entity) t;
 
@@ -326,10 +377,15 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 					((AbstractCharacter) t).update(dt);
 				}
 
+				// Save the old position of the entity .. 
 				Point oldPos = temp.getPosition();
+				
+				// .. move and check eventual collisions
 				temp.move(dt);
 				checkCollisions(temp);
 				
+				// .. and nudge the entity back to the old position
+				// if it collides with a wall
 				boolean canMove = true;
 				for (CollidableObject o : this.objects) {
 					if (o instanceof ConcreteCollidableObject)
@@ -349,7 +405,13 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 
 	}
 
-	private void checkIfLeftPortal (Entity temp){
+	/**
+	 * Checks if an entity moved out of a portal and if it did,
+	 * change its state.
+	 * 
+	 * @param temp The entity
+	 */
+	private void checkIfLeftPortal(Entity temp){
 		boolean isVictim = false;
 		for (Portal p : this.portals){ 
 			if (p != null && p.isColliding(temp)){
@@ -361,12 +423,21 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 			temp.setPortalVictim(isVictim);
 	}
 
+	
+	/**
+	 * Check collisions for an entity.
+	 * 
+	 * @param t The entity
+	 */
 	private void checkCollisions(Entity t) {
-
+		
 		for (CollidableObject w : this.objects) {
-
+			
 			if (t != w && t.isColliding(w)) {
-
+				
+				// If the given entity (t) is colliding with another
+				// object, call both object's collision callbacks and 
+				// stop t if it's direction is blocked by w.
 				w.didCollide(t);
 				t.didCollide(w);
 				stopIfBlocked(t, w);
@@ -374,7 +445,16 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 		}
 	}
 
-	
+	/**
+	 * Stop an entity if its path is blocked by another collidable.
+	 * 
+	 * <p>Doesn't stop the entity if the collidable is an instance of
+	 * <code>ICollectableItem</code> or <code>Portal</code> (which entities
+	 * should be able to move through.</p>
+	 * 
+	 * @param t The entity to manipulate
+	 * @param w The collidable object the entity may collide with
+	 */
 	private void stopIfBlocked (Entity t, CollidableObject w){
 		Direction currentDirection = t.getDirection();
 		Direction blockedDirection = t.getDirectionOfObject(w);
@@ -388,8 +468,15 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 		}
 	}
 
-	private boolean directionIsBlocked(Direction currentDirection,
-			Direction blockedDirection) {
+	/**
+	 * Check if an entity with a given direction will be blocked by another entity.
+	 * 
+	 * @param currentDirection The given, current, direction
+	 * @param blockedDirection The other (potentially) blocking object's direction
+	 * @return
+	 */
+	private boolean directionIsBlocked(Direction currentDirection, Direction blockedDirection) {
+		
 		boolean stop = false;
 
 		if (currentDirection == Direction.EAST
@@ -459,6 +546,11 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 	}
 
 
+	/**
+	 * Callback for checking if a new wave should be created based
+	 * on if the number of enemies is zero.
+	 * 
+	 */
 	private void checkEnemiesLeft() {
 		if (this.enemies.isEmpty()) {
 			this.newWave();
@@ -492,6 +584,11 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 		return this.enemies;
 	}
 
+	/**
+	 * Get the current wave
+	 * 
+	 * @return The number of the current wave
+	 */
 	public int getCurrentWaveCount() {
 		return this.currentWave;
 	}

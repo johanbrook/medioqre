@@ -33,21 +33,31 @@ public class Portal extends CollidableObject {
 		this.mode = mode;
 	}
 
+	/**
+	 * Center this portal around a given position.
+	 * 
+	 * @param pos The position
+	 */
 	public void setPositionFromCenter(Point pos) {
-		tools.Logger.log("Original position is: " + pos);
 		int x = pos.x - this.getCenter().x;
 		int y = pos.y - this.getCenter().y;
 
-		tools.Logger.log("New position is: " + x + ", " + y);
 		this.setPosition(x, y);
 	}
 
+	/**
+	 * Get the center of this portal.
+	 * 
+	 * @return The center as a position
+	 */
 	public Point getCenter() {
 		Point p = new Point(this.getSize().width / 2, this.getSize().height / 2);
-		tools.Logger.log("Center is: " + p);
 		return p;
 	}
 
+	/**
+	 * Center this portal around it's current position.
+	 */
 	public void center() {
 		this.setPositionFromCenter(this.getPosition());
 	}
@@ -94,7 +104,6 @@ public class Portal extends CollidableObject {
 
 	@Override
 	public void didCollide(CollidableObject w) {
-		tools.Logger.log("Reached Portal");
 		if (w instanceof Entity && this.getSisterPortal() != null){
 			Entity temp = (Entity) w;
 			if (!temp.isPortalVictim()){

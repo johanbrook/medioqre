@@ -260,5 +260,13 @@ public abstract class CollidableObject implements IMessageSender {
 				+ ":h:" + this.getSize().height + "]";
 	}
 	
+	/**
+	 * Callback for when this object collided with another.
+	 * 
+	 * <p>Any typecasts have to be done in each inherited object's
+	 * implementation of this method.</p>
+	 * 
+	 * @param w The other object
+	 */
 	public abstract void didCollide(CollidableObject w);
 }

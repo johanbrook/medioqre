@@ -52,6 +52,8 @@ public class Enemy extends AbstractCharacter {
 
 	@Override
 	public void didCollide(CollidableObject w) {
+
+		// Make enemies push each other if they collide
 		if (w instanceof Enemy) {
 			((Enemy) w).push(this);
 		}

@@ -146,10 +146,24 @@ public abstract class Entity extends CollidableObject {
 				+ "]";
 	}
 
+	
+	/**
+	 * Get the status of this entity in regard to portals.
+	 * 
+	 * <p>If this entity just teleported through a portal, 
+	 * this will return true.</p>
+	 * 
+	 * @return True if this entity came through a portal
+	 */
 	public boolean isPortalVictim() {
 		return this.portalVictim;
 	}
 
+	/**
+	 * Set this entity's portal victim status.
+	 * 
+	 * @param portalVictim Set the status
+	 */
 	public void setPortalVictim(boolean portalVictim) {
 		this.portalVictim = portalVictim;
 	}
