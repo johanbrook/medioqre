@@ -10,7 +10,9 @@ import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
@@ -43,7 +45,7 @@ public class TileSelector extends GLCanvas
 	private int tileHeight;
 	private final int margin = 2;
 	private Tile activeTile;
-	private Tile[] tiles;
+	private ArrayList<Tile> tiles;
 	private int colSize;
 
 	private TileSelectorListener listener;
@@ -80,8 +82,8 @@ public class TileSelector extends GLCanvas
 
 				int x = arg0.getPoint().x / (tileHeight + margin);
 				int y = arg0.getPoint().y / (tileWidth + margin);
-				if (tiles.length > y * colSize + x) {
-					activeTile = tiles[y * colSize + x];
+				if (tiles.size() > y * colSize + x) {
+					activeTile = tiles.get(y * colSize + x);
 					listener.didSelectTile(activeTile);
 				}
 			}
@@ -113,18 +115,15 @@ public class TileSelector extends GLCanvas
 		if (this.tileSheet == null)
 			return;
 
-		this.tileWidth = 64;
-		this.tileHeight = 64;
+		this.tileWidth = 32;
+		this.tileHeight = 32;
 		colSize = this.getWidth() / this.tileWidth;
 
-		int tiles = 0;
-		this.tiles = new Tile[this.tileSheet.getTiles().size()];
+		this.tiles = new ArrayList<Tile>(tileSheet.getTiles().size());
 		for (Tile t : this.tileSheet.getTiles()) {
-
-			this.tiles[tiles] = t;
-
-			tiles++;
+			this.tiles.add(t);
 		}
+		Collections.sort(this.tiles);
 
 		this.updateGui();
 	}
@@ -138,7 +137,6 @@ public class TileSelector extends GLCanvas
 	}
 
 	private void updateGui() {
-
 	}
 
 	@Override
@@ -155,15 +153,15 @@ public class TileSelector extends GLCanvas
 			return;
 		this.colSize = this.getWidth() / this.tileWidth;
 
-		for (int y = 0; y <= this.tiles.length / this.colSize; y++) {
+		for (int y = 0; y <= this.tiles.size() / this.colSize; y++) {
 			for (int x = 0; x < this.colSize; x++) {
-				if (y * this.colSize + x < this.tiles.length) {
+				if (y * this.colSize + x < this.tiles.size()) {
 					this.object.setX(x * (this.tileWidth + this.margin));
 					this.object.setY(y * (this.tileHeight + this.margin));
 					this.object.setWidth(this.tileWidth);
 					this.object.setHeight(this.tileWidth);
 
-					this.tiles[y * this.colSize + x].render(object, target,
+					this.tiles.get(y * this.colSize + x).render(object, target,
 							this, 0);
 				}
 			}
