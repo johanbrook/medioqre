@@ -1,12 +1,12 @@
-/**
- *	Grenade.java
- *
- *	@author Johan
- */
-
 package model.weapon;
 
 import model.character.AbstractCharacter;
+
+/**
+ *	A grenade with a radius and splash damage properties.
+ *
+ *	@author Johan
+ */
 
 public class Grenade extends AbstractWeapon {
 

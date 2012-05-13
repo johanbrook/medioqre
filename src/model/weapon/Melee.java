@@ -1,14 +1,13 @@
-/**
- *	Melee.java
- *
- *	@author Johan
- */
-
 package model.weapon;
 
 import model.character.AbstractCharacter;
 import model.weapon.Projectile.Range;
 
+/**
+ *	A melee weapon.
+ *
+ *	@author Johan
+ */
 public class Melee extends AbstractWeapon {
 
 	private Projectile projectile;

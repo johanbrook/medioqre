@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * The weapon belt class
+ * A weapon belt with weapons.
  * 
  * @author Johan
  */

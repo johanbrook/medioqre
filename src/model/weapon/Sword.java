@@ -3,7 +3,7 @@ package model.weapon;
 import model.character.AbstractCharacter;
 
 /**
- *	Sword.java
+ *	A sword.
  *
  *	@author Johan
  *	@deprecated Using Melee instead. Same functionality (2012-05-10).

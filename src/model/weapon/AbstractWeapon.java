@@ -6,7 +6,7 @@ import event.EventBus;
 import model.character.AbstractCharacter;
 
 /**
- * Weapon.java
+ * A weapon. Got ammo, a character owner and parameters for firing properties. 
  * 
  * @author Johan
  */

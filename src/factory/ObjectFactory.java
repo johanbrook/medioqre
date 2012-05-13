@@ -42,7 +42,7 @@ import tilemap.TileMap;
  * 
  * It should load all its files from JSON.
  * 
- * @author John Barbero Unenge and Johan Brook.
+ * @author Johan Brook and John Barbero Unenge.
  * 
  */
 public class ObjectFactory {
@@ -64,6 +64,8 @@ public class ObjectFactory {
 	private static JSONArray actors;
 	private static JSONObject tileMap;
 	private static TileMap tileMapInstance;
+	
+	private ObjectFactory() {}
 
 	private static void initJSONObjects() {
 		try {

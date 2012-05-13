@@ -1,9 +1,3 @@
-/**
- *	Portal.java
- *
- *	@author Johan
- */
-
 package model.weapon;
 
 import java.awt.Dimension;
@@ -14,6 +8,11 @@ import model.CollidableObject;
 import model.Entity;
 import model.weapon.PortalGun.Mode;
 
+/**
+ *	A portal. Have a reference to another portal and a given mode.
+ *
+ *	@author Johan
+ */
 public class Portal extends CollidableObject {
 
 	private Portal otherPortal;

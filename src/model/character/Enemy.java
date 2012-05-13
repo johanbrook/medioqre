@@ -1,9 +1,3 @@
-/**
- *	Enemy.java
- *
- *	@author Johan
- */
-
 package model.character;
 
 import java.awt.Dimension;
@@ -16,6 +10,11 @@ import event.Event;
 import event.Event.Property;
 import event.EventBus;
 
+/**
+ *	An enemy.
+ *
+ *	@author Johan
+ */
 public class Enemy extends AbstractCharacter {
 	
 	/**

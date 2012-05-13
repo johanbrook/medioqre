@@ -15,9 +15,7 @@ import model.weapon.AbstractWeapon;
 import model.weapon.Projectile;
 
 /**
- * Character.
- * 
- * A character in the game. Could be a player, enemy, etc.
+ * A character in the game. Concrete implementations will have health, max health and a currently equipped weapon.
  * 
  * @author Johan
  */

@@ -1,14 +1,13 @@
-/**
- *	MachineGun.java
- *
- *	@author Johan
- */
-
 package model.weapon;
 
 import model.character.AbstractCharacter;
 import model.weapon.Projectile.Range;
 
+/**
+ *	A machine gun.
+ *
+ *	@author Johan
+ */
 public class MachineGun extends AbstractWeapon {
 
 	private Projectile projectile;

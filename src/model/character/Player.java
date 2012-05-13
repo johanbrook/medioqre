@@ -1,22 +1,16 @@
-/**
- *	Player.java
- *
- *	@author Johan
- */
-
 package model.character;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.util.List;
-
-import event.Event;
-import event.EventBus;
-import event.Event.Property;
-import factory.ObjectFactory;
 import model.CollidableObject;
 import model.weapon.*;
 
+/**
+ *	A player. Has a weapon belt (inventory).
+ *
+ *	@author Johan
+ */
 public class Player extends AbstractCharacter {
 
 	private List<AbstractWeapon> weaponbelt;

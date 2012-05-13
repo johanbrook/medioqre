@@ -38,9 +38,21 @@ public abstract class CollidableObject implements IMessageSender {
 
 	private Messager messager = new Messager();
 
+	/**
+	 * Point is located on top.
+	 */
 	public final static int TOP = 1;
+	/**
+	 * Point is located on the bottom.
+	 */
 	public final static int BOTTOM = 2;
+	/**
+	 * Point is located to the right.
+	 */
 	public final static int RIGHT = 4;
+	/**
+	 * Point is located to the left.
+	 */
 	public final static int LEFT = 8;
 
 	/**

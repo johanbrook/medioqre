@@ -1,25 +1,20 @@
-/**
- *	Projectile.java
- *
- *	@author Johan
- */
-
 package model.weapon;
 
 import java.awt.Dimension;
-import java.awt.Point;
 import java.awt.Rectangle;
 
 import tools.Logger;
-
-import constants.Direction;
-
 import model.CollidableObject;
 import model.ConcreteCollidableObject;
 import model.Entity;
 import model.character.AbstractCharacter;
 import model.character.Enemy;
 
+/**
+ *	A projectile, with a damage, range and character owner.
+ *
+ *	@author Johan
+ */
 public class Projectile extends Entity {
 
 	private int damage;

@@ -1,14 +1,13 @@
-/**
- *	PortalGun.java
- *
- *	@author Johan
- */
-
 package model.weapon;
 
 import model.character.AbstractCharacter;
 import model.weapon.Projectile.Range;
 
+/**
+ *	A portal gun.
+ *
+ *	@author Johan
+ */
 public class PortalGun extends AbstractWeapon {
 
 	private Projectile projectile;
