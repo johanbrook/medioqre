@@ -8,6 +8,7 @@ datamanagement
 event
 factory
 graphics.opengl
+graphics.opengl.bitmapfont
 graphics.tools
 gui
 launcher
