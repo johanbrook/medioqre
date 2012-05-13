@@ -14,6 +14,7 @@ import event.Event;
 import event.EventBus;
 import event.Event.Property;
 import factory.ObjectFactory;
+import model.CollidableObject;
 import model.weapon.*;
 
 public class Player extends AbstractCharacter {
@@ -91,5 +92,10 @@ public class Player extends AbstractCharacter {
 		}
 
 		return null;
+	}
+
+	@Override
+	public void didCollide(CollidableObject w) {
+		
 	}
 }

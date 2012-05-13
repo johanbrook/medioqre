@@ -52,4 +52,14 @@ public class AmmoCrate extends CollidableObject implements ICollectableItem {
 		this.destroy();
 	}
 
+	@Override
+	public void didCollide(CollidableObject w) {
+		tools.Logger.log("AmmoCrate reached");
+
+		if (w instanceof Player){
+			this.pickedUpBy((Player)w);
+		}
+		
+	}
+
 }
