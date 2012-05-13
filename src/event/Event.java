@@ -33,7 +33,8 @@ public class Event {
 		NEW_WAVE, 
 		GAME_OVER, 
 		NEW_GAME, 
-		PORTAL_CREATED
+		PORTAL_CREATED,
+		PORTALGUN_SWITCHED_MODE
 	};
 
 	private final Property name;

@@ -40,6 +40,7 @@ public class NavigationController implements KeyListener, IMessageSender {
 	private NavigationKey right;
 	private Key shoot;
 	private Key weaponModifier;
+	private Key modeSwitcher;
 
 	/**
 	 * Create a new NavigationController.
@@ -74,7 +75,7 @@ public class NavigationController implements KeyListener, IMessageSender {
 		this.down = new NavigationKey("down", null, Direction.SOUTH);
 		this.left = new NavigationKey("left", null, Direction.WEST);
 		this.right = new NavigationKey("right", null, Direction.EAST);
-
+		
 		this.shoot = new Key("shoot", new Callable() {
 			@Override
 			public void on() {
@@ -82,9 +83,7 @@ public class NavigationController implements KeyListener, IMessageSender {
 			}
 
 			@Override
-			public void off() {
-
-			}
+			public void off() {}
 		});
 
 		this.weaponModifier = new Key("chose_weapon", new Callable() {
@@ -102,6 +101,17 @@ public class NavigationController implements KeyListener, IMessageSender {
 				EventBus.INSTANCE.publish(new Event(Property.WEAPON_MENU_HIDE));
 			}
 		});
+		
+		this.modeSwitcher = new Key("switch_mode", new Callable() {
+			
+			@Override
+			public void on() {
+				messager.sendMessage(new Event(Property.PORTALGUN_SWITCHED_MODE));
+			}
+			
+			@Override
+			public void off() {}
+		});
 
 		this.keyMap.put(KeyEvent.VK_W, this.up);
 		this.keyMap.put(KeyEvent.VK_A, this.left);
@@ -109,6 +119,7 @@ public class NavigationController implements KeyListener, IMessageSender {
 		this.keyMap.put(KeyEvent.VK_D, this.right);
 		this.keyMap.put(KeyEvent.VK_SPACE, this.shoot);
 		this.keyMap.put(KeyEvent.VK_SHIFT, this.weaponModifier);
+		this.keyMap.put(KeyEvent.VK_Q, this.modeSwitcher);
 	}
 
 	/**

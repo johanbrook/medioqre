@@ -136,17 +136,26 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 
 		case CHANGED_WEAPON :
 			int slot = (Integer) evt.getValue();
-
-			if (this.player.getCurrentWeapon() instanceof PortalGun
-					&& slot == 3) {
-				PortalGun g = (PortalGun) this.player.getCurrentWeapon();
-				g.switchMode();
+			int portalGunPosition = this.player.getWeaponBelt().indexOf(PortalGun.class);
+			
+			if (this.player.getCurrentWeapon() instanceof PortalGun && 
+					slot == portalGunPosition) {
+				
+				switchPortalGunMode();
 			} else {
 				this.player.setCurrentWeapon(slot);
 			}
 
 			break;
+			
+		case PORTALGUN_SWITCHED_MODE :
+			switchPortalGunMode();
+			break;
 		}
+	}
+	
+	private void switchPortalGunMode() {
+		((PortalGun) this.player.getWeaponBelt().get(PortalGun.class)).switchMode();
 	}
 
 	/**
