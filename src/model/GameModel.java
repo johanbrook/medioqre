@@ -381,16 +381,24 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 				Point oldPos = temp.getPosition();
 				
 				// .. move and check eventual collisions
-				temp.move(dt);
+			
+				
 				checkCollisions(temp);
+				temp.move(dt);
 				
 				// .. and nudge the entity back to the old position
 				// if it collides with a wall
 				boolean canMove = true;
 				for (CollidableObject o : this.objects) {
 					if (o instanceof ConcreteCollidableObject)
-						if (o.getCollisionBox().intersects(temp.getCollisionBox())){
+						if (o.isColliding(temp)){
 							canMove = false;
+							
+							//Manually tell projectiles they collided with a wall, they are the only 
+							//kind of entity that have an actual behavior related to wall-collisions.
+							if (temp instanceof Projectile){
+								temp.didCollide(o);
+							}
 						}
 				}
 				if (!canMove){
