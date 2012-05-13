@@ -33,7 +33,8 @@ public class TestPlayer {
 		AbstractWeapon[] weapons = new AbstractWeapon[]{
 				new MachineGun(player, 300, 2, 2),
 				new Grenade(player, 4, 0.1, 5), new Melee(player, -1, 0, 4)};
-		this.player.setWeaponBelt(Arrays.asList(weapons));
+		
+		this.player.setWeaponBelt(new WeaponBelt(Arrays.asList(weapons)));
 		this.player.setCurrentWeapon(MachineGun.class);
 
 		for (AbstractWeapon w : this.player.getWeaponBelt()) {

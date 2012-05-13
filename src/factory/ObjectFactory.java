@@ -22,6 +22,7 @@ import model.item.ICollectableItem;
 import model.weapon.AbstractWeapon;
 import model.weapon.Grenade;
 import model.weapon.Portal;
+import model.weapon.WeaponBelt;
 import model.weapon.PortalGun.Mode;
 import model.weapon.Projectile;
 import model.weapon.Projectile.Range;
@@ -423,9 +424,9 @@ public class ObjectFactory {
 	 *            The weapons' owner
 	 * @return A list of weapons with corresponding projectiles
 	 */
-	public static List<AbstractWeapon> newWeaponBelt(AbstractCharacter owner) {
+	public static WeaponBelt newWeaponBelt(AbstractCharacter owner) {
 
-		List<AbstractWeapon> weaponsList = new ArrayList<AbstractWeapon>();
+		WeaponBelt weaponsList = new WeaponBelt();
 
 		try {
 

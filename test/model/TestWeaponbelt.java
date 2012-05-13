@@ -39,31 +39,38 @@ public class TestWeaponbelt {
 
 	@Test
 	public void testAddWeapon() {
-		assertTrue(this.belt.addWeapon(new MachineGun(null, 300, 1, 0)));
+		assertTrue(this.belt.add(new MachineGun(null, 300, 1, 0)));
 	}
 	
+	@Test
+	public void testIndexOf() {
+		assertEquals(0, this.belt.indexOf(MachineGun.class));
+		assertEquals(1, this.belt.indexOf(Melee.class));
+		assertEquals(2, this.belt.indexOf(PortalGun.class));
+		assertEquals(3, this.belt.indexOf(Grenade.class));
+	}
 	
 	@Test
 	public void testGetWeaponFromSlot() {
-		assertNotNull(this.belt.getWeapon(0));
+		assertNotNull(this.belt.get(0));
 	}
 	
 	@Test
 	public void testGetSpecificWeapon() {
 		AbstractWeapon machinegun = new MachineGun(null, 300, 1, 0);
 		
-		assertEquals(machinegun, this.belt.getWeapon(0));
-		assertEquals(machinegun, this.belt.getWeapon(MachineGun.class));
+		assertEquals(machinegun, this.belt.get(0));
+		assertEquals(machinegun, this.belt.get(MachineGun.class));
 	}
 	
 	@Test
 	public void testGetNonExistingWeapon() {
-		assertNull(this.belt.getWeapon(Sword.class));
+		assertNull(this.belt.get(Sword.class));
 	}
 	
 	@Test(expected=IndexOutOfBoundsException.class)
 	public void testGetNonExistingIndex() {
-		this.belt.getWeapon(10);
+		this.belt.get(10);
 	}
 
 }

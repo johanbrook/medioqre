@@ -13,7 +13,7 @@ import model.weapon.*;
  */
 public class Player extends AbstractCharacter {
 
-	private List<AbstractWeapon> weaponbelt;
+	private WeaponBelt weaponbelt;
 
 	/**
 	 * Create a new player.
@@ -34,7 +34,7 @@ public class Player extends AbstractCharacter {
 	 * 
 	 * @param weapons The weapon belt list
 	 */
-	public void setWeaponBelt(List<AbstractWeapon> weapons) {
+	public void setWeaponBelt(WeaponBelt weapons) {
 		this.weaponbelt = weapons;
 	}
 
@@ -43,7 +43,7 @@ public class Player extends AbstractCharacter {
 	 * 
 	 * @return The list of weapon
 	 */
-	public List<AbstractWeapon> getWeaponBelt() {
+	public WeaponBelt getWeaponBelt() {
 		return this.weaponbelt;
 	}
 
@@ -76,8 +76,7 @@ public class Player extends AbstractCharacter {
 	 * @param type A weapon type (the weapon's class)
 	 * @return The first weapon in the belt with the specified type
 	 */
-	private AbstractWeapon getWeaponFromBelt(
-			Class<? extends AbstractWeapon> type) {
+	private AbstractWeapon getWeaponFromBelt(Class<? extends AbstractWeapon> type) {
 
 		for (AbstractWeapon w : this.weaponbelt) {
 			if (w.getClass() == type) {

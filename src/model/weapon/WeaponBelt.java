@@ -1,6 +1,7 @@
 package model.weapon;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -9,9 +10,16 @@ import java.util.List;
  * 
  * @author Johan
  */
-public class WeaponBelt {
+public class WeaponBelt implements Iterable<AbstractWeapon> {
 	private List<AbstractWeapon> weapons;
 
+	/**
+	 * Create a new empty weapon belt.
+	 */
+	public WeaponBelt() {
+		this.weapons = new LinkedList<AbstractWeapon>();
+	}
+	
 	/**
 	 * Create a new weapon belt from a collection of weapons.
 	 * 
@@ -28,7 +36,7 @@ public class WeaponBelt {
 	 * @param w The weapon
 	 * @return True if the weapon was added successfully. Otherwise false.        
 	 */
-	public boolean addWeapon(AbstractWeapon w) {
+	public boolean add(AbstractWeapon w) {
 		return this.weapons.add(w);
 	}
 
@@ -41,8 +49,18 @@ public class WeaponBelt {
 	 * @throws IndexOutOfBoundsException
 	 *             If no weapon exists in this slot
 	 */
-	public AbstractWeapon getWeapon(int slot) throws IndexOutOfBoundsException {
+	public AbstractWeapon get(int slot) throws IndexOutOfBoundsException {
 		return this.weapons.get(slot);
+	}
+	
+	/**
+	 * Return the index of the given weapon type.
+	 * 
+	 * @param type The type
+	 * @return The slot position in the belt for this type
+	 */
+	public int indexOf(Class<? extends AbstractWeapon> type){
+		return this.weapons.indexOf(this.get(type));
 	}
 
 	/**
@@ -52,7 +70,7 @@ public class WeaponBelt {
 	 *            A weapon type (the weapon's class)
 	 * @return The first weapon in the belt with the specified type
 	 */
-	public AbstractWeapon getWeapon(Class<? extends AbstractWeapon> type) {
+	public AbstractWeapon get(Class<? extends AbstractWeapon> type) {
 
 		for (AbstractWeapon w : this.weapons) {
 			if (w.getClass() == type) {
@@ -61,6 +79,11 @@ public class WeaponBelt {
 		}
 
 		return null;
+	}
+
+	@Override
+	public Iterator<AbstractWeapon> iterator() {
+		return this.weapons.iterator();
 	}
 
 }

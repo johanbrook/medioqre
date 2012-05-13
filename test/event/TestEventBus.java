@@ -18,6 +18,7 @@ import model.weapon.Grenade;
 import model.weapon.MachineGun;
 import model.weapon.Melee;
 import model.weapon.Sword;
+import model.weapon.WeaponBelt;
 
 import org.junit.After;
 import org.junit.Before;
@@ -37,7 +38,7 @@ public class TestEventBus {
 				20, 48), 0, 16);
 		AbstractWeapon[] weapons = new AbstractWeapon[]{new Melee(
 				this.publisher, -1, 0, 4)};
-		this.publisher.setWeaponBelt(Arrays.asList(weapons));
+		this.publisher.setWeaponBelt(new WeaponBelt(Arrays.asList(weapons)));
 
 		EventBus.INSTANCE.register(this.handler);
 
