@@ -32,7 +32,8 @@ public class TestCollidableObject {
 
 	@Before
 	public void setUp() throws Exception {
-		this.obj = new Player(30, new Rectangle(20, 20), new Dimension(20, 48), 0, 16); 
+		this.obj = new ConcreteCollidableObject(new Rectangle(20, 20), new Dimension(20, 48), 0, 16);
+		
 		// I chose Player since then the sizes would be the same
 		this.player = new Player(30, new Rectangle(20, 20), new Dimension(20, 48), 0, 16);
 	}
