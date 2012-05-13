@@ -17,6 +17,6 @@
 	"itemConfig": 		"gamedata/items.json",
 	"weaponConfig": 	"gamedata/weapons.json",
 	
-	"tileMapConfig": 	"spritesheets/levels/level1.lvl",
+	"tileMapConfig": 	"spritesheets/levels/level2.lvl",
 	"actorsConfig": 	"gamedata/actors.json"
 }
