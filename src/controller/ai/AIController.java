@@ -92,7 +92,7 @@ public class AIController implements IMessageSender, IMessageListener {
 	 */
 	private void updateEnemy(AIPlayer aiPlayer, double dt) {
 		if (this.pathfinder.isInitiated()){
-			Point enemyTile = calculateTile(aiPlayer.getMidPos());
+			Point enemyTile = calculateTile(aiPlayer.getEnemy().getPosition());
 
 			aiPlayer.setDistance(Math.abs(aiPlayer.getMidPos().x
 					- playerPos.x)
@@ -118,13 +118,8 @@ public class AIController implements IMessageSender, IMessageListener {
 						// If path is longer than 2 tiles, just calculate the
 						// direction from the path
 						if (aiPlayer.getPath().size() >= 2) {
-							
-							//Path is from player to enemy - enemy will always be in the last slot of the list
-							//This also means that the next position we want the enemy to walk to is the next to last slot in the list.
-							Point nextPos = getMidOfTile(aiPlayer.getPath().get(aiPlayer.getPath().size()-2).getLocation());
-							Point enemyPos =getMidOfTile(aiPlayer.getPath().get(aiPlayer.getPath().size()-1).getLocation());
-							
-							aiPlayer.updateEnemy(calculateDirection(enemyPos, nextPos));
+							Point nextPos =aiPlayer.getPath().get(aiPlayer.getPath().size()-2);
+							aiPlayer.updateEnemy(calculateDirection(enemyTile, nextPos));
 						} else {
 
 							// If path is shorter, manually inserts enemy and player
@@ -135,6 +130,7 @@ public class AIController implements IMessageSender, IMessageListener {
 									findLineToPlayer(aiPlayer));
 						}
 					} else {
+						tools.Logger.log("Random direction... for some reason");
 						aiPlayer.getEnemy().setDirection(randomDir());
 					}
 				}
@@ -171,7 +167,7 @@ public class AIController implements IMessageSender, IMessageListener {
 	 */
 	private Direction findLineToPlayer(AIPlayer aiPlayer) {
 		
-		return calculateDirection(aiPlayer.getMidPos(), this.playerPos);
+		return calculateDirection(aiPlayer.getEnemy().getPosition(), this.playerPos);
 
 	}
 
