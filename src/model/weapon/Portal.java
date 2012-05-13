@@ -91,4 +91,17 @@ public class Portal extends CollidableObject {
 		
 		t.setPosition(this.otherPortal.getPosition());
 	}
+
+	@Override
+	public void didCollide(CollidableObject w) {
+		tools.Logger.log("Reached Portal");
+		if (w instanceof Entity && this.getSisterPortal() != null){
+			Entity temp = (Entity) w;
+			if (!temp.isPortalVictim()){
+				this.walkIntoPortal(temp);
+				temp.setPortalVictim(true);
+			}
+		}
+		
+	}
 }

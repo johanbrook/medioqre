@@ -14,8 +14,11 @@ import tools.Logger;
 
 import constants.Direction;
 
+import model.CollidableObject;
+import model.ConcreteCollidableObject;
 import model.Entity;
 import model.character.AbstractCharacter;
+import model.character.Enemy;
 
 public class Projectile extends Entity {
 
@@ -170,6 +173,7 @@ public class Projectile extends Entity {
 		int y = (int) (this.getDirection().getYRatio()
 				* (double) this.getMovementSpeed() * dt);
 		this.distanceTravelled += Math.abs(x) + Math.abs(y);
+		
 	}
 
 	/**
@@ -205,6 +209,31 @@ public class Projectile extends Entity {
 		super.move(dt);
 
 		this.updateDistanceTravelled(dt);
+		
+		if (this.getDistanceTravelled() >= this.getRange().getDistance()) {
+			this.destroy();
+		}
+	}
+
+	@Override
+	public void didCollide(CollidableObject w) {
+		// Projectiles fired by enemies shouldn't hurt other enemies
+		if (!(this.getOwner().getOwner() instanceof Enemy && w instanceof Enemy)){
+			
+			//If w is a ConcreteCollidableObject (wall) or AbstractCharacter, 
+			//this projectile should destroy itself
+		
+			if (w instanceof AbstractCharacter || w instanceof ConcreteCollidableObject){
+				
+				//if w is a AbstractCharacter, w should take damage from this Projectile
+				if (w instanceof AbstractCharacter){
+					((AbstractCharacter)w).takeDamage(this.getDamage());
+				}
+				this.destroy();
+			}
+			
+		}
+		
 	}
 
 }

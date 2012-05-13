@@ -48,5 +48,14 @@ public class MedPack extends CollidableObject implements ICollectableItem {
 
 		this.destroy();
 	}
+	
+	@Override
+	public void didCollide(CollidableObject w) {
+		tools.Logger.log("MedPack reached");
+		if (w instanceof Player){
+			this.pickedUpBy((Player)w);
+		}
+		
+	}
 
 }

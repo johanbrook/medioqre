@@ -10,6 +10,8 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+import model.CollidableObject;
+
 import event.Event;
 import event.Event.Property;
 import event.EventBus;
@@ -36,7 +38,7 @@ public class Enemy extends AbstractCharacter {
 	 * 
 	 * @param e The other enemy
 	 */
-	public void getPushed(Enemy e){
+	public void push(Enemy e){
 		if (!e.isMoving()){
 			Point currPos = this.getPosition();
 
@@ -45,6 +47,13 @@ public class Enemy extends AbstractCharacter {
 
 			this.setPosition(currPos.x + x, currPos.y + y);
 			EventBus.INSTANCE.publish(new Event(Property.DID_MOVE, this));
+		}
+	}
+
+	@Override
+	public void didCollide(CollidableObject w) {
+		if (w instanceof Enemy) {
+			((Enemy) w).push(this);
 		}
 	}
 

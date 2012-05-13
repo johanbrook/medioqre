@@ -259,4 +259,6 @@ public abstract class CollidableObject implements IMessageSender {
 				+ ":y:" + this.getPosition().y + "] [w:" + this.getSize().width
 				+ ":h:" + this.getSize().height + "]";
 	}
+	
+	public abstract void didCollide(CollidableObject w);
 }

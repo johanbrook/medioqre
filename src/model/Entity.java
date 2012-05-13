@@ -19,6 +19,7 @@ public abstract class Entity extends CollidableObject {
 	private int movementSpeed;
 	private boolean isMoving;
 	private Direction direction;
+	private boolean portalVictim;
 
 	/**
 	 * Create a new Entity.
@@ -37,6 +38,7 @@ public abstract class Entity extends CollidableObject {
 		this.movementSpeed = movementSpeed;
 		this.direction = Direction.ORIGIN;
 		this.isMoving = true;
+		this.portalVictim = false;
 	}
 
 	/**
@@ -142,6 +144,14 @@ public abstract class Entity extends CollidableObject {
 		return super.toString() + " [speed:" + this.movementSpeed
 				+ "] [moving:" + this.isMoving + "] [dir:" + this.direction
 				+ "]";
+	}
+
+	public boolean isPortalVictim() {
+		return this.portalVictim;
+	}
+
+	public void setPortalVictim(boolean portalVictim) {
+		this.portalVictim = portalVictim;
 	}
 
 }
