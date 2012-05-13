@@ -328,7 +328,19 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 					((AbstractCharacter) t).update(dt);
 				}
 				
+				Point oldPos = temp.getPosition();
 				temp.move(dt);
+				boolean canMove = true;
+				for (CollidableObject o : this.objects) {
+					if (o instanceof ConcreteCollidableObject)
+						if (o.getCollisionBox().intersects(temp.getCollisionBox())){
+							canMove = false;
+						}
+				}
+				if (!canMove){
+					temp.setPosition(oldPos);
+				}
+
 			}
 
 			if (t instanceof Projectile) {
