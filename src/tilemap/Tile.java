@@ -16,7 +16,7 @@ import core.Rectangle;
  * @author John Barbero Unenge
  * 
  */
-public class Tile implements JSONSerializable, GLRenderableObject {
+public class Tile implements JSONSerializable, GLRenderableObject, Comparable {
 
 	private Sprite sprite;
 	private int type;
@@ -132,5 +132,27 @@ public class Tile implements JSONSerializable, GLRenderableObject {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public int compareTo(Object arg0) {
+		int retVal = 0;
+		
+		if (arg0 instanceof Tile) {
+			Tile t = (Tile) arg0;
+			if (t.getBounds().getY() > this.getBounds().getY()) {
+				retVal = -1;
+			} else if (t.getBounds().getY() < this.getBounds().getY()) {
+				retVal = 1;
+			} else {
+				if (t.getBounds().getX() > this.getBounds().getX()) {
+					retVal = -1;
+				} else if (t.getBounds().getX() < this.getBounds().getX()) {
+					retVal = 1;
+				}
+			}
+		}
+		
+		return retVal;
 	}
 }
