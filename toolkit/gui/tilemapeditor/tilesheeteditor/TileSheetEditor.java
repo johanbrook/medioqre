@@ -17,6 +17,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
 
@@ -37,6 +38,10 @@ import tilemap.TileSheet;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.awt.event.ContainerEvent;
+import java.awt.event.ContainerListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.InputEvent;
 import java.io.File;
@@ -45,6 +50,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.swing.JSplitPane;
 import javax.swing.JPanel;
@@ -61,6 +67,7 @@ import java.awt.Color;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import javax.swing.JCheckBox;
+import javax.swing.JScrollPane;
 
 public class TileSheetEditor implements GLEventListener {
 
@@ -70,6 +77,8 @@ public class TileSheetEditor implements GLEventListener {
 	private Texture currentTexture;
 	private Tile currentTile;
 	private Rectangle renceringRect;
+
+	int lastColor = 0xff000000;
 
 	public static void main(String[] arg) {
 		new TileSheetEditor();
@@ -155,7 +164,7 @@ public class TileSheetEditor implements GLEventListener {
 		System.out.println("Saving file: " + file);
 	}
 
-	@SuppressWarnings("serial")
+	@SuppressWarnings({"serial", "unchecked"})
 	public void updateGui() {
 		if (this.currentTileSheet == null) {
 			mntmSave.setEnabled(false);
@@ -200,6 +209,8 @@ public class TileSheetEditor implements GLEventListener {
 			}
 		}
 
+		Collections.sort(tiles);
+		
 		liTiles.setModel(new AbstractListModel() {
 			public int getSize() {
 				int size = tiles != null ? tiles.size() : 0;
@@ -207,7 +218,7 @@ public class TileSheetEditor implements GLEventListener {
 			}
 
 			public Object getElementAt(int index) {
-				return tiles.get(index);
+				return (""+tiles.get(index).getBounds().getY()+":"+tiles.get(index).getBounds().getX());
 			}
 		});
 	}
@@ -218,8 +229,15 @@ public class TileSheetEditor implements GLEventListener {
 		if (this.tiles == null)
 			this.tiles = new ArrayList<Tile>();
 
-		this.tiles.add(new Tile(new Sprite("tilesheet", 0, 0, 0, 0),
-				0xffffffff, false));
+		if (this.currentTextureFile == null) {
+			JOptionPane.showMessageDialog(this.frame.getParent(), "Ooops! It seems no texture has been loaded...");
+			return;
+		}
+		String name = this.currentTextureFile.getName();
+		
+		this.tiles.add(new Tile(new Sprite(name.substring(0, name.indexOf('.')), 0, 0, 0, 0), lastColor,
+				false));
+		lastColor += 10;
 		this.updateGui();
 	}
 
@@ -345,6 +363,17 @@ public class TileSheetEditor implements GLEventListener {
 		mntmLoad.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L,
 				InputEvent.META_MASK));
 		mnTexture.add(mntmLoad);
+		
+		JMenu mnToolkit = new JMenu("Toolkit");
+		menuBar.add(mnToolkit);
+		
+		JMenuItem mntmSetTiletype = new JMenuItem("Set tiletype...");
+		mntmSetTiletype.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				lastColor = Util.intFromHexString(JOptionPane.showInputDialog(frame.getParent(), "Default color"));
+			}
+		});
+		mnToolkit.add(mntmSetTiletype);
 		mntmLoad.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -370,7 +399,7 @@ public class TileSheetEditor implements GLEventListener {
 		splitPane_1.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		splitPane.setRightComponent(splitPane_1);
 
-		JPanel panel_1 = new JPanel();
+		final JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new LineBorder(new Color(128, 128, 128)));
 		splitPane_1.setLeftComponent(panel_1);
 		panel_1.setLayout(new BorderLayout(0, 0));
@@ -402,6 +431,12 @@ public class TileSheetEditor implements GLEventListener {
 		btnRemove = new JButton("-");
 		btnRemove.setPreferredSize(new Dimension(19, 19));
 		panel_4.add(btnRemove);
+		btnRemove.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				removeTile();
+			}
+		});
 
 		liTiles = new JList();
 		liTiles.setModel(new AbstractListModel() {
@@ -413,18 +448,34 @@ public class TileSheetEditor implements GLEventListener {
 				return tiles.get(index);
 			}
 		});
-		panel_1.add(liTiles, BorderLayout.CENTER);
+
+		JScrollPane scrollPane = new JScrollPane();
+		panel_1.add(scrollPane, BorderLayout.CENTER);
+		scrollPane.setViewportView(this.liTiles);
+		
+		scrollPane.addComponentListener(new ComponentListener() {
+
+			@Override
+			public void componentShown(ComponentEvent arg0) {
+			}
+
+			@Override
+			public void componentResized(ComponentEvent arg0) {
+				arg0.getComponent().setPreferredSize(panel_1.getSize());
+			}
+			@Override
+			public void componentMoved(ComponentEvent arg0) {
+			}
+			@Override
+			public void componentHidden(ComponentEvent arg0) {
+			}
+		});
+
 		liTiles.addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent arg0) {
 				selectTile(arg0.getLastIndex());
 				updateGui();
-			}
-		});
-		btnRemove.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				removeTile();
 			}
 		});
 
@@ -556,6 +607,9 @@ public class TileSheetEditor implements GLEventListener {
 		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER,
 				GL.GL_NEAREST);
 
+		float tx1 = 0f, ty1 = 0f;
+		float tx2 = 1f, ty2 = 1f;
+
 		if (this.currentTextureFile != null && this.currentTexture == null) {
 			try {
 				this.currentTexture = TextureIO.newTexture(
@@ -564,6 +618,12 @@ public class TileSheetEditor implements GLEventListener {
 				this.renceringRect = new Rectangle(0, 0,
 						this.currentTexture.getWidth(),
 						this.currentTexture.getHeight());
+
+				if (this.currentTexture.getMustFlipVertically()) {
+					float tmp = ty1;
+					ty1 = ty2;
+					ty2 = tmp;
+				}
 			} catch (GLException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
@@ -574,14 +634,17 @@ public class TileSheetEditor implements GLEventListener {
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glColor3f(1.0f, 1.0f, 1.0f);
 
-		gl.glTexCoord2f(0.0f, 0.0f);
-		gl.glVertex2f(-1.0f, 1.0f);
-		gl.glTexCoord2f(0.0f, 1.0f);
-		gl.glVertex2f(-1.0f, -1.0f);
-		gl.glTexCoord2f(1.0f, 1.0f);
-		gl.glVertex2f(1.0f, -1.0f);
-		gl.glTexCoord2f(1.0f, 0.0f);
-		gl.glVertex2f(1.0f, 1.0f);
+		gl.glTexCoord2f(tx1, ty1);
+		gl.glVertex2f(-1f, -1f);
+
+		gl.glTexCoord2f(tx1, ty2);
+		gl.glVertex2f(-1f, 1f);
+
+		gl.glTexCoord2f(tx2, ty2);
+		gl.glVertex2f(1f, 1f);
+
+		gl.glTexCoord2f(tx2, ty1);
+		gl.glVertex2f(1f, -1f);
 
 		gl.glEnd();
 
