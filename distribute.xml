@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create_run_jar" name="Create Runnable Jar for Project Medioqre with Jar-in-Jar Loader">
+    <!--this file was created by Eclipse Runnable JAR Export Wizard-->
+    <!--ANT 1.7 is required                                        -->
+    <target name="create_run_jar">
+        <jar destfile="dist/Frank The Tank.jar">
+            <manifest>
+                <attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"/>
+                <attribute name="Rsrc-Main-Class" value="main.Main"/>
+                <attribute name="Class-Path" value="."/>
+                <attribute name="Rsrc-Class-Path" value="./ junit.jar org.hamcrest.core_1.1.0.v20090501071000.jar CodecWav.jar LibraryJavaSound.jar SoundSystem.jar gluegen-rt.jar jogl.all.jar macify-1.6.jar"/>
+            </manifest>
+            <zipfileset src="jar-in-jar-loader.zip"/>
+            <fileset dir="bin"/>
+            <zipfileset dir="/Applications/Eclipse/plugins/org.junit_4.8.2.v4_8_2_v20110321-1705" includes="junit.jar"/>
+            <zipfileset dir="/Applications/Eclipse/plugins" includes="org.hamcrest.core_1.1.0.v20090501071000.jar"/>
+            <fileset dir="libs"/>
+            <zipfileset dir="libs" includes="CodecWav.jar"/>
+            <zipfileset dir="libs" includes="LibraryJavaSound.jar"/>
+            <zipfileset dir="libs" includes="SoundSystem.jar"/>
+            <zipfileset dir="libs/jogamp-all-platforms/jogamp-all-platforms/jar" includes="gluegen-rt.jar"/>
+            <zipfileset dir="libs/jogamp-all-platforms/jogamp-all-platforms/jar" includes="jogl.all.jar"/>
+            <zipfileset dir="libs" includes="macify-1.6.jar"/>
+        </jar>
+    </target>
+</project>
