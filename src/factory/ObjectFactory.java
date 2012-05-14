@@ -65,8 +65,9 @@ public class ObjectFactory {
 	private static JSONArray actors;
 	private static JSONObject tileMap;
 	private static TileMap tileMapInstance;
-	
-	private ObjectFactory() {}
+
+	private ObjectFactory() {
+	}
 
 	private static void initJSONObjects() {
 		try {
@@ -558,13 +559,15 @@ public class ObjectFactory {
 				newA = new Actor(actors.getJSONObject(3));
 			else if (collidableObject instanceof Portal)
 				newA = new Actor(actors.getJSONObject(4));
+			else if (collidableObject == null)
+				newA = new Actor(actors.getJSONObject(5));
 		} catch (JSONException e1) {
 			e1.printStackTrace();
 		}
 		if (newA != null) {
 			newA.setObject(collidableObject);
 
-			if(AppController.isDebugMode()){
+			if (AppController.isDebugMode()) {
 				newA.setShowCollisionBox(true);
 			}
 		}

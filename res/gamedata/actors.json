@@ -4,6 +4,7 @@
 		"spritesheets/json/walker1.act",
 		"spritesheets/json/gameitems.act",
 		"spritesheets/json/machinegun_projectile.act",
-		"spritesheets/json/portal.act"
+		"spritesheets/json/portal.act",
+		"spritesheets/json/explosion.act"
 	]
 }

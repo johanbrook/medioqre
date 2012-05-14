@@ -1,5 +1,8 @@
 package graphics.opengl;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import javax.media.opengl.GLAutoDrawable;
 
 import org.json.JSONArray;
@@ -26,6 +29,10 @@ public class Animation implements JSONSerializable, GLRenderableObject {
 	private double durationMillis;
 
 	private double timePassed;
+
+	// Animation behavior
+	private List<AnimationListener> animationListeners;
+	private boolean shouldRepeat = true;
 
 	// ************* Constructors *************
 	/**
@@ -118,7 +125,26 @@ public class Animation implements JSONSerializable, GLRenderableObject {
 			s.setColor(r, g, b);
 		}
 	}
-	
+
+	public void setShouldRepeat(boolean shouldRepeat) {
+		this.shouldRepeat = shouldRepeat;
+	}
+
+	// AnimationListeners
+	public void addAnimationListener(AnimationListener l) {
+		if (this.animationListeners == null)
+			this.animationListeners = new LinkedList<AnimationListener>();
+
+		this.animationListeners.add(l);
+	}
+
+	public void removeAnimationListener(AnimationListener l) {
+		if (this.animationListeners == null)
+			return;
+
+		this.animationListeners.remove(l);
+	}
+
 	// ************* Methods *************
 	/**
 	 * Add a frame to the animation.
@@ -137,9 +163,21 @@ public class Animation implements JSONSerializable, GLRenderableObject {
 
 	@Override
 	public void update(double dt) {
-		this.timePassed += dt;
-		if (this.timePassed >= durationMillis)
-			this.timePassed = 0;
+		if (this.timePassed >= 0)
+			this.timePassed += dt;
+
+		if (this.timePassed >= durationMillis) {
+			if (this.shouldRepeat)
+				this.timePassed = 0;
+			else
+				this.timePassed = -1;
+
+			if (this.animationListeners != null) {
+				for (AnimationListener l : this.animationListeners) {
+					l.animationDoneAnimating(this);
+				}
+			}
+		}
 	}
 
 	// ************* Other *************
@@ -151,7 +189,12 @@ public class Animation implements JSONSerializable, GLRenderableObject {
 	@Override
 	public void render(Rectangle object, Rectangle target,
 			GLAutoDrawable canvas, int zIndex) {
-		this.currentSprite = this.frames[(int) ((this.timePassed / this.durationMillis) * (double) (this.frames.length))];
+
+		if (this.timePassed == -1)
+			return;
+		else
+			this.currentSprite = this.frames[(int) ((this.timePassed / this.durationMillis) * (double) (this.frames.length))];
+		
 		this.currentSprite.render(object, target, canvas, zIndex);
 	}
 
