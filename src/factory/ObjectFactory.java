@@ -31,6 +31,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import constants.Direction;
 import controller.AppController;
 
 import core.Size;
@@ -204,6 +205,7 @@ public class ObjectFactory {
 					+ player.getString("startingWeapon"));
 			p.setCurrentWeapon(startingWeapon);
 
+			p.stop();
 			return p;
 
 		} catch (JSONException e) {
