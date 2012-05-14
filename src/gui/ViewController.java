@@ -256,14 +256,14 @@ public class ViewController
 				32, 32), '8'));
 		letters4.put('9', new GLLetter(new Sprite("bitmapfont", 4 * 32, 8 * 32,
 				32, 32), '9'));
-		this.hpMeter = new GLBitmapFont(("Hp: " + 0), new Rectangle(0, 20, 60,
-				10), letters1, 8);
-		this.fpsMeter = new GLBitmapFont(("FPS: " + 0), new Rectangle(0, 0, 60,
-				10), letters2, 8);
-		this.ammoMeter = new GLBitmapFont(("Ammo: " + 0), new Rectangle(0,
-				this.screen.getBounds().getHeight() - 10, 60, 10), letters3, 8);
-		this.waveMeter = new GLBitmapFont(("Wave: " + 0), new Rectangle(0,
-				this.screen.getBounds().getHeight() - 20, 60, 10), letters4, 8);
+		this.hpMeter = new GLBitmapFont(("Hp: " + 0), new Rectangle(10, 30, 60,
+				10), letters1, 10);
+		this.fpsMeter = new GLBitmapFont(("FPS: " + 0), new Rectangle(10, 10, 60,
+				10), letters2, 10);
+		this.ammoMeter = new GLBitmapFont(("Ammo: " + 0), new Rectangle(10,
+				this.screen.getBounds().getHeight() - 20, 60, 10), letters3, 10);
+		this.waveMeter = new GLBitmapFont(("Wave: " + 0), new Rectangle(10,
+				this.screen.getBounds().getHeight() - 40, 60, 10), letters4, 10);
 		this.overlayObjects.add(this.hpMeter);
 		this.overlayObjects.add(this.fpsMeter);
 		this.overlayObjects.add(this.ammoMeter);
