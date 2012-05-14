@@ -50,6 +50,11 @@ public class OptionsPanel extends JPanel {
 				PreferenceLoader.putBoolean("HIPSTER_MODE", ((JCheckBox) arg0.getSource()).isSelected());
 			}
 		});
+		chckbxHipsterMode.setSelected(PreferenceLoader.getBoolean("HIPSTER_MODE", false));
+		// TODO When hipstermode has been implemented this should be removed.
+		// TODO If hipstermode is not implemented at all the whole option hipstermode should be removed from the GUI-interface in Visual BASIC
+		chckbxHipsterMode.setEnabled(false);
+		
 
 		JButton btnDone = new JButton("Done");
 		btnDone.addActionListener(new ActionListener() {
@@ -141,6 +146,8 @@ public class OptionsPanel extends JPanel {
 		difficultyBox.setBounds(30, 100, 170, 27);
 		difficultyBox.setOpaque(false);
 		add(difficultyBox);
+		// TODO Remove when this funtionality has been implemented!
+		difficultyBox.setEnabled(false);
 
 		JLabel lblDifficulty = new JLabel("Difficulty");
 		lblDifficulty.setHorizontalAlignment(SwingConstants.CENTER);
@@ -161,6 +168,7 @@ public class OptionsPanel extends JPanel {
 				PreferenceLoader.putBoolean("LSD_MODE", ((JCheckBox) e.getSource()).isSelected());
 			}
 		});
+		chckbxLsdMode.setSelected(PreferenceLoader.getBoolean("LSD_MODE", false));
 
 	}
 }
