@@ -130,8 +130,7 @@ public class AIController implements IMessageSender, IMessageListener {
 									findLineToPlayer(aiPlayer));
 						}
 					} else {
-						tools.Logger.log("Random direction... for some reason");
-						aiPlayer.getEnemy().setDirection(randomDir());
+						aiPlayer.updateEnemy(findLineToPlayer(aiPlayer));
 					}
 				}
 			}
