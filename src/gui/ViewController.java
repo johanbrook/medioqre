@@ -110,6 +110,7 @@ public class ViewController
 		// Creating the frame
 		GLProfile glP = GLProfile.getDefault();
 		GLCapabilities glC = new GLCapabilities(glP);
+		glC.setDoubleBuffered(true);
 		GLCanvas canvas = new GLCanvas(glC);
 
 		// Creating the frame
