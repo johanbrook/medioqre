@@ -3,7 +3,6 @@ package graphics.opengl;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
-import javax.vecmath.Color3f;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,7 +27,7 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 	private Texture texture;
 	private Rectangle rectangle;
 
-	private Color3f color = new Color3f(1.0f, 1.0f, 1.0f);
+	private float[] color = new float[]{1.0f, 1.0f, 1.0f};
 
 	// ************* Constructors *************
 	/**
@@ -135,9 +134,7 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 	}
 
 	public void setColor(float r, float g, float b) {
-		this.color.x = r;
-		this.color.y = g;
-		this.color.z = b;
+		this.color = new float[]{r, g, b};
 	}
 
 	// ************* Getters *************
@@ -244,7 +241,7 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 			// gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 
 			gl.glBegin(GL2.GL_QUADS);
-			gl.glColor3f(this.color.x, this.color.y, this.color.z);
+			gl.glColor3f(this.color[0], this.color[1], this.color[2]);
 			float renderZ = ((float) -zIndex) / 1000000f;
 			
 			gl.glTexCoord2f(tX1, tY1);
