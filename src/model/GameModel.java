@@ -20,6 +20,7 @@ import model.weapon.PortalGun;
 import model.weapon.PortalGun.Mode;
 import model.weapon.Projectile;
 import constants.Direction;
+import controller.AppController;
 import event.Event;
 import event.Event.Property;
 import event.EventBus;
@@ -151,8 +152,15 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 		case PORTALGUN_SWITCHED_MODE :
 			switchPortalGunMode();
 			break;
+			
+		case PAUSE_GAME :
+			
+			AppController.togglePaused();
+			
+			break;
 		}
 	}
+	
 	
 	private void switchPortalGunMode() {
 		((PortalGun) this.player.getWeaponBelt().get(PortalGun.class)).switchMode();

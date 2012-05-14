@@ -34,7 +34,8 @@ public class Event {
 		GAME_OVER, 
 		NEW_GAME, 
 		PORTAL_CREATED,
-		PORTALGUN_SWITCHED_MODE
+		PORTALGUN_SWITCHED_MODE,
+		PAUSE_GAME
 	};
 
 	private final Property name;

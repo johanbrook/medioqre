@@ -41,6 +41,7 @@ public class NavigationController implements KeyListener, IMessageSender {
 	private Key shoot;
 	private Key weaponModifier;
 	private Key modeSwitcher;
+	private Key pause;
 
 	/**
 	 * Create a new NavigationController.
@@ -112,6 +113,19 @@ public class NavigationController implements KeyListener, IMessageSender {
 			@Override
 			public void off() {}
 		});
+		
+		this.pause = new Key("pause_game", new Callable() {
+			
+			@Override
+			public void on() {
+				Event evt = new Event(Property.PAUSE_GAME);
+				messager.sendMessage(evt);
+				EventBus.INSTANCE.publish(evt);
+			}
+			
+			@Override
+			public void off() {}
+		});
 
 		this.keyMap.put(KeyEvent.VK_W, this.up);
 		this.keyMap.put(KeyEvent.VK_A, this.left);
@@ -120,6 +134,7 @@ public class NavigationController implements KeyListener, IMessageSender {
 		this.keyMap.put(KeyEvent.VK_SPACE, this.shoot);
 		this.keyMap.put(KeyEvent.VK_SHIFT, this.weaponModifier);
 		this.keyMap.put(KeyEvent.VK_Q, this.modeSwitcher);
+		this.keyMap.put(KeyEvent.VK_ESCAPE, this.pause);
 	}
 
 	/**
