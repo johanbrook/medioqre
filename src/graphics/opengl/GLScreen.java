@@ -178,7 +178,7 @@ public class GLScreen implements GLRenderableObject {
 									canvas, zIndex);
 							if (glR instanceof Actor) {
 								Actor a = (Actor) glR;
-								if (a.isShowingCollisionBox()) {
+								if (a.isShowingCollisionBox() && a.getCollidableObject() != null) {
 									float rX1, rX2, rY1, rY2;
 									rX1 = (2f * ((float) a.getCollidableObject().getCollisionBox().x - (float) this.screenOffset.getX()) - (float) this.screenSize.getWidth()) / (float) this.screenSize.getWidth();
 									rX2 = (2f * ((float) a.getCollidableObject().getCollisionBox().x + (float) a.getCollidableObject().getCollisionBox().width - (float) this.screenOffset.getX()) - (float) this.screenSize.getWidth()) / (float) this.screenSize.getWidth();
