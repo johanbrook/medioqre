@@ -35,10 +35,13 @@ import event.IEventHandler;
 import model.CollidableObject;
 import model.GameModel;
 import model.character.Player;
+import model.weapon.Grenade;
 import model.weapon.Portal;
+import model.weapon.Projectile;
 
 import factory.ObjectFactory;
 import graphics.opengl.Actor;
+import graphics.opengl.AnimationListener;
 import graphics.opengl.GLScreen;
 import graphics.opengl.Sprite;
 import graphics.opengl.bitmapfont.GLBitmapFont;
@@ -52,14 +55,18 @@ import graphics.opengl.bitmapfont.GLLetter;
  * @author John Barbero Unenge
  * 
  */
-public class ViewController implements IEventHandler, GLEventListener {
+public class ViewController
+		implements
+			IEventHandler,
+			GLEventListener,
+			AnimationListener {
 
 	// State
 	private boolean doneLoading = false;
 
 	// Screen
 	private GLScreen screen;
-	
+
 	// Overlay
 	private List<GLRenderableObject> overlayObjects = new LinkedList<GLRenderableObject>();
 	private GLBitmapFont hpMeter;
@@ -120,77 +127,142 @@ public class ViewController implements IEventHandler, GLEventListener {
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
 
-		
-		Map <Character, GLLetter> letters1 = new HashMap<Character, GLLetter>();
-		letters1.put('H', new GLLetter(new Sprite("bitmapfont", 7*32, 0*32, 32, 32), 'H'));
-		letters1.put('p', new GLLetter(new Sprite("bitmapfont", 7*32, 5*32, 32, 32), 'p'));
-		letters1.put(':', new GLLetter(new Sprite("bitmapfont", 6*32, 8*32, 32, 32), ':'));
-		letters1.put(' ', new GLLetter(new Sprite("bitmapfont", 7*32, 3*32, 32, 32), ' '));
-		letters1.put('0', new GLLetter(new Sprite("bitmapfont", 5*32, 8*32, 32, 32), '0'));
-		letters1.put('1', new GLLetter(new Sprite("bitmapfont", 4*32, 7*32, 32, 32), '1'));
-		letters1.put('2', new GLLetter(new Sprite("bitmapfont", 5*32, 7*32, 32, 32), '2'));
-		letters1.put('3', new GLLetter(new Sprite("bitmapfont", 6*32, 7*32, 32, 32), '3'));
-		letters1.put('4', new GLLetter(new Sprite("bitmapfont", 7*32, 7*32, 32, 32), '4'));
-		letters1.put('5', new GLLetter(new Sprite("bitmapfont", 0*32, 8*32, 32, 32), '5'));
-		letters1.put('6', new GLLetter(new Sprite("bitmapfont", 1*32, 8*32, 32, 32), '6'));
-		letters1.put('7', new GLLetter(new Sprite("bitmapfont", 2*32, 8*32, 32, 32), '7'));
-		letters1.put('8', new GLLetter(new Sprite("bitmapfont", 3*32, 8*32, 32, 32), '8'));
-		letters1.put('9', new GLLetter(new Sprite("bitmapfont", 4*32, 8*32, 32, 32), '9'));
-		Map <Character, GLLetter> letters2 = new HashMap<Character, GLLetter>();
-		letters2.put('H', new GLLetter(new Sprite("bitmapfont", 7*32, 0*32, 32, 32), 'H'));
-		letters2.put('F', new GLLetter(new Sprite("bitmapfont", 5*32, 0*32, 32, 32), 'F'));
-		letters2.put('P', new GLLetter(new Sprite("bitmapfont", 7*32, 1*32, 32, 32), 'P'));
-		letters2.put('S', new GLLetter(new Sprite("bitmapfont", 2*32, 2*32, 32, 32), 'S'));
-		letters2.put('p', new GLLetter(new Sprite("bitmapfont", 7*32, 5*32, 32, 32), 'p'));
-		letters2.put(':', new GLLetter(new Sprite("bitmapfont", 6*32, 8*32, 32, 32), ':'));
-		letters2.put(' ', new GLLetter(new Sprite("bitmapfont", 7*32, 3*32, 32, 32), ' '));
-		letters2.put('0', new GLLetter(new Sprite("bitmapfont", 5*32, 8*32, 32, 32), '0'));
-		letters2.put('1', new GLLetter(new Sprite("bitmapfont", 4*32, 7*32, 32, 32), '1'));
-		letters2.put('2', new GLLetter(new Sprite("bitmapfont", 5*32, 7*32, 32, 32), '2'));
-		letters2.put('3', new GLLetter(new Sprite("bitmapfont", 6*32, 7*32, 32, 32), '3'));
-		letters2.put('4', new GLLetter(new Sprite("bitmapfont", 7*32, 7*32, 32, 32), '4'));
-		letters2.put('5', new GLLetter(new Sprite("bitmapfont", 0*32, 8*32, 32, 32), '5'));
-		letters2.put('6', new GLLetter(new Sprite("bitmapfont", 1*32, 8*32, 32, 32), '6'));
-		letters2.put('7', new GLLetter(new Sprite("bitmapfont", 2*32, 8*32, 32, 32), '7'));
-		letters2.put('8', new GLLetter(new Sprite("bitmapfont", 3*32, 8*32, 32, 32), '8'));
-		letters2.put('9', new GLLetter(new Sprite("bitmapfont", 4*32, 8*32, 32, 32), '9'));
-		Map <Character, GLLetter> letters3 = new HashMap<Character, GLLetter>();
-		letters3.put('A', new GLLetter(new Sprite("bitmapfont", 0*32, 0*32, 32, 32), 'A'));
-		letters3.put('m', new GLLetter(new Sprite("bitmapfont", 4*32, 5*32, 32, 32), 'm'));
-		letters3.put('o', new GLLetter(new Sprite("bitmapfont", 6*32, 5*32, 32, 32), 'o'));
-		letters3.put(':', new GLLetter(new Sprite("bitmapfont", 6*32, 8*32, 32, 32), ':'));
-		letters3.put(' ', new GLLetter(new Sprite("bitmapfont", 7*32, 3*32, 32, 32), ' '));
-		letters3.put('0', new GLLetter(new Sprite("bitmapfont", 5*32, 8*32, 32, 32), '0'));
-		letters3.put('1', new GLLetter(new Sprite("bitmapfont", 4*32, 7*32, 32, 32), '1'));
-		letters3.put('2', new GLLetter(new Sprite("bitmapfont", 5*32, 7*32, 32, 32), '2'));
-		letters3.put('3', new GLLetter(new Sprite("bitmapfont", 6*32, 7*32, 32, 32), '3'));
-		letters3.put('4', new GLLetter(new Sprite("bitmapfont", 7*32, 7*32, 32, 32), '4'));
-		letters3.put('5', new GLLetter(new Sprite("bitmapfont", 0*32, 8*32, 32, 32), '5'));
-		letters3.put('6', new GLLetter(new Sprite("bitmapfont", 1*32, 8*32, 32, 32), '6'));
-		letters3.put('7', new GLLetter(new Sprite("bitmapfont", 2*32, 8*32, 32, 32), '7'));
-		letters3.put('8', new GLLetter(new Sprite("bitmapfont", 3*32, 8*32, 32, 32), '8'));
-		letters3.put('9', new GLLetter(new Sprite("bitmapfont", 4*32, 8*32, 32, 32), '9'));
-		Map <Character, GLLetter> letters4 = new HashMap<Character, GLLetter>();
-		letters4.put('W', new GLLetter(new Sprite("bitmapfont", 6*32, 2*32, 32, 32), 'W'));
-		letters4.put('a', new GLLetter(new Sprite("bitmapfont", 0*32, 4*32, 32, 32), 'a'));
-		letters4.put('v', new GLLetter(new Sprite("bitmapfont", 5*32, 6*32, 32, 32), 'v'));
-		letters4.put('e', new GLLetter(new Sprite("bitmapfont", 4*32, 4*32, 32, 32), 'e'));
-		letters4.put(':', new GLLetter(new Sprite("bitmapfont", 6*32, 8*32, 32, 32), ':'));
-		letters4.put(' ', new GLLetter(new Sprite("bitmapfont", 7*32, 3*32, 32, 32), ' '));
-		letters4.put('0', new GLLetter(new Sprite("bitmapfont", 5*32, 8*32, 32, 32), '0'));
-		letters4.put('1', new GLLetter(new Sprite("bitmapfont", 4*32, 7*32, 32, 32), '1'));
-		letters4.put('2', new GLLetter(new Sprite("bitmapfont", 5*32, 7*32, 32, 32), '2'));
-		letters4.put('3', new GLLetter(new Sprite("bitmapfont", 6*32, 7*32, 32, 32), '3'));
-		letters4.put('4', new GLLetter(new Sprite("bitmapfont", 7*32, 7*32, 32, 32), '4'));
-		letters4.put('5', new GLLetter(new Sprite("bitmapfont", 0*32, 8*32, 32, 32), '5'));
-		letters4.put('6', new GLLetter(new Sprite("bitmapfont", 1*32, 8*32, 32, 32), '6'));
-		letters4.put('7', new GLLetter(new Sprite("bitmapfont", 2*32, 8*32, 32, 32), '7'));
-		letters4.put('8', new GLLetter(new Sprite("bitmapfont", 3*32, 8*32, 32, 32), '8'));
-		letters4.put('9', new GLLetter(new Sprite("bitmapfont", 4*32, 8*32, 32, 32), '9'));
-		this.hpMeter = new GLBitmapFont(("Hp: "+0), new Rectangle(0,20,60,10), letters1, 8);
-		this.fpsMeter = new GLBitmapFont(("FPS: "+0), new Rectangle(0,0,60,10), letters2, 8);
-		this.ammoMeter = new GLBitmapFont(("Ammo: "+0), new Rectangle(0, this.screen.getBounds().getHeight()-10, 60, 10), letters3, 8);
-		this.waveMeter = new GLBitmapFont(("Wave: "+0), new Rectangle(0, this.screen.getBounds().getHeight()-20, 60, 10), letters4, 8);
+		Map<Character, GLLetter> letters1 = new HashMap<Character, GLLetter>();
+		letters1.put('H', new GLLetter(new Sprite("bitmapfont", 7 * 32, 0 * 32,
+				32, 32), 'H'));
+		letters1.put('p', new GLLetter(new Sprite("bitmapfont", 7 * 32, 5 * 32,
+				32, 32), 'p'));
+		letters1.put(':', new GLLetter(new Sprite("bitmapfont", 6 * 32, 8 * 32,
+				32, 32), ':'));
+		letters1.put(' ', new GLLetter(new Sprite("bitmapfont", 7 * 32, 3 * 32,
+				32, 32), ' '));
+		letters1.put('0', new GLLetter(new Sprite("bitmapfont", 5 * 32, 8 * 32,
+				32, 32), '0'));
+		letters1.put('1', new GLLetter(new Sprite("bitmapfont", 4 * 32, 7 * 32,
+				32, 32), '1'));
+		letters1.put('2', new GLLetter(new Sprite("bitmapfont", 5 * 32, 7 * 32,
+				32, 32), '2'));
+		letters1.put('3', new GLLetter(new Sprite("bitmapfont", 6 * 32, 7 * 32,
+				32, 32), '3'));
+		letters1.put('4', new GLLetter(new Sprite("bitmapfont", 7 * 32, 7 * 32,
+				32, 32), '4'));
+		letters1.put('5', new GLLetter(new Sprite("bitmapfont", 0 * 32, 8 * 32,
+				32, 32), '5'));
+		letters1.put('6', new GLLetter(new Sprite("bitmapfont", 1 * 32, 8 * 32,
+				32, 32), '6'));
+		letters1.put('7', new GLLetter(new Sprite("bitmapfont", 2 * 32, 8 * 32,
+				32, 32), '7'));
+		letters1.put('8', new GLLetter(new Sprite("bitmapfont", 3 * 32, 8 * 32,
+				32, 32), '8'));
+		letters1.put('9', new GLLetter(new Sprite("bitmapfont", 4 * 32, 8 * 32,
+				32, 32), '9'));
+		Map<Character, GLLetter> letters2 = new HashMap<Character, GLLetter>();
+		letters2.put('H', new GLLetter(new Sprite("bitmapfont", 7 * 32, 0 * 32,
+				32, 32), 'H'));
+		letters2.put('F', new GLLetter(new Sprite("bitmapfont", 5 * 32, 0 * 32,
+				32, 32), 'F'));
+		letters2.put('P', new GLLetter(new Sprite("bitmapfont", 7 * 32, 1 * 32,
+				32, 32), 'P'));
+		letters2.put('S', new GLLetter(new Sprite("bitmapfont", 2 * 32, 2 * 32,
+				32, 32), 'S'));
+		letters2.put('p', new GLLetter(new Sprite("bitmapfont", 7 * 32, 5 * 32,
+				32, 32), 'p'));
+		letters2.put(':', new GLLetter(new Sprite("bitmapfont", 6 * 32, 8 * 32,
+				32, 32), ':'));
+		letters2.put(' ', new GLLetter(new Sprite("bitmapfont", 7 * 32, 3 * 32,
+				32, 32), ' '));
+		letters2.put('0', new GLLetter(new Sprite("bitmapfont", 5 * 32, 8 * 32,
+				32, 32), '0'));
+		letters2.put('1', new GLLetter(new Sprite("bitmapfont", 4 * 32, 7 * 32,
+				32, 32), '1'));
+		letters2.put('2', new GLLetter(new Sprite("bitmapfont", 5 * 32, 7 * 32,
+				32, 32), '2'));
+		letters2.put('3', new GLLetter(new Sprite("bitmapfont", 6 * 32, 7 * 32,
+				32, 32), '3'));
+		letters2.put('4', new GLLetter(new Sprite("bitmapfont", 7 * 32, 7 * 32,
+				32, 32), '4'));
+		letters2.put('5', new GLLetter(new Sprite("bitmapfont", 0 * 32, 8 * 32,
+				32, 32), '5'));
+		letters2.put('6', new GLLetter(new Sprite("bitmapfont", 1 * 32, 8 * 32,
+				32, 32), '6'));
+		letters2.put('7', new GLLetter(new Sprite("bitmapfont", 2 * 32, 8 * 32,
+				32, 32), '7'));
+		letters2.put('8', new GLLetter(new Sprite("bitmapfont", 3 * 32, 8 * 32,
+				32, 32), '8'));
+		letters2.put('9', new GLLetter(new Sprite("bitmapfont", 4 * 32, 8 * 32,
+				32, 32), '9'));
+		Map<Character, GLLetter> letters3 = new HashMap<Character, GLLetter>();
+		letters3.put('A', new GLLetter(new Sprite("bitmapfont", 0 * 32, 0 * 32,
+				32, 32), 'A'));
+		letters3.put('m', new GLLetter(new Sprite("bitmapfont", 4 * 32, 5 * 32,
+				32, 32), 'm'));
+		letters3.put('o', new GLLetter(new Sprite("bitmapfont", 6 * 32, 5 * 32,
+				32, 32), 'o'));
+		letters3.put(':', new GLLetter(new Sprite("bitmapfont", 6 * 32, 8 * 32,
+				32, 32), ':'));
+		letters3.put(' ', new GLLetter(new Sprite("bitmapfont", 7 * 32, 3 * 32,
+				32, 32), ' '));
+		letters3.put('0', new GLLetter(new Sprite("bitmapfont", 5 * 32, 8 * 32,
+				32, 32), '0'));
+		letters3.put('1', new GLLetter(new Sprite("bitmapfont", 4 * 32, 7 * 32,
+				32, 32), '1'));
+		letters3.put('2', new GLLetter(new Sprite("bitmapfont", 5 * 32, 7 * 32,
+				32, 32), '2'));
+		letters3.put('3', new GLLetter(new Sprite("bitmapfont", 6 * 32, 7 * 32,
+				32, 32), '3'));
+		letters3.put('4', new GLLetter(new Sprite("bitmapfont", 7 * 32, 7 * 32,
+				32, 32), '4'));
+		letters3.put('5', new GLLetter(new Sprite("bitmapfont", 0 * 32, 8 * 32,
+				32, 32), '5'));
+		letters3.put('6', new GLLetter(new Sprite("bitmapfont", 1 * 32, 8 * 32,
+				32, 32), '6'));
+		letters3.put('7', new GLLetter(new Sprite("bitmapfont", 2 * 32, 8 * 32,
+				32, 32), '7'));
+		letters3.put('8', new GLLetter(new Sprite("bitmapfont", 3 * 32, 8 * 32,
+				32, 32), '8'));
+		letters3.put('9', new GLLetter(new Sprite("bitmapfont", 4 * 32, 8 * 32,
+				32, 32), '9'));
+		Map<Character, GLLetter> letters4 = new HashMap<Character, GLLetter>();
+		letters4.put('W', new GLLetter(new Sprite("bitmapfont", 6 * 32, 2 * 32,
+				32, 32), 'W'));
+		letters4.put('a', new GLLetter(new Sprite("bitmapfont", 0 * 32, 4 * 32,
+				32, 32), 'a'));
+		letters4.put('v', new GLLetter(new Sprite("bitmapfont", 5 * 32, 6 * 32,
+				32, 32), 'v'));
+		letters4.put('e', new GLLetter(new Sprite("bitmapfont", 4 * 32, 4 * 32,
+				32, 32), 'e'));
+		letters4.put(':', new GLLetter(new Sprite("bitmapfont", 6 * 32, 8 * 32,
+				32, 32), ':'));
+		letters4.put(' ', new GLLetter(new Sprite("bitmapfont", 7 * 32, 3 * 32,
+				32, 32), ' '));
+		letters4.put('0', new GLLetter(new Sprite("bitmapfont", 5 * 32, 8 * 32,
+				32, 32), '0'));
+		letters4.put('1', new GLLetter(new Sprite("bitmapfont", 4 * 32, 7 * 32,
+				32, 32), '1'));
+		letters4.put('2', new GLLetter(new Sprite("bitmapfont", 5 * 32, 7 * 32,
+				32, 32), '2'));
+		letters4.put('3', new GLLetter(new Sprite("bitmapfont", 6 * 32, 7 * 32,
+				32, 32), '3'));
+		letters4.put('4', new GLLetter(new Sprite("bitmapfont", 7 * 32, 7 * 32,
+				32, 32), '4'));
+		letters4.put('5', new GLLetter(new Sprite("bitmapfont", 0 * 32, 8 * 32,
+				32, 32), '5'));
+		letters4.put('6', new GLLetter(new Sprite("bitmapfont", 1 * 32, 8 * 32,
+				32, 32), '6'));
+		letters4.put('7', new GLLetter(new Sprite("bitmapfont", 2 * 32, 8 * 32,
+				32, 32), '7'));
+		letters4.put('8', new GLLetter(new Sprite("bitmapfont", 3 * 32, 8 * 32,
+				32, 32), '8'));
+		letters4.put('9', new GLLetter(new Sprite("bitmapfont", 4 * 32, 8 * 32,
+				32, 32), '9'));
+		this.hpMeter = new GLBitmapFont(("Hp: " + 0), new Rectangle(0, 20, 60,
+				10), letters1, 8);
+		this.fpsMeter = new GLBitmapFont(("FPS: " + 0), new Rectangle(0, 0, 60,
+				10), letters2, 8);
+		this.ammoMeter = new GLBitmapFont(("Ammo: " + 0), new Rectangle(0,
+				this.screen.getBounds().getHeight() - 10, 60, 10), letters3, 8);
+		this.waveMeter = new GLBitmapFont(("Wave: " + 0), new Rectangle(0,
+				this.screen.getBounds().getHeight() - 20, 60, 10), letters4, 8);
 		this.overlayObjects.add(this.hpMeter);
 		this.overlayObjects.add(this.fpsMeter);
 		this.overlayObjects.add(this.ammoMeter);
@@ -199,9 +271,9 @@ public class ViewController implements IEventHandler, GLEventListener {
 		this.hpMeter.setColor(0f, 1f, 0f);
 		this.ammoMeter.setColor(0f, 0f, 1f);
 		this.waveMeter.setColor(1f, 0f, 1f);
-		
+
 		this.isInLSDMode = PreferenceLoader.getBoolean("LSD_MODE", false);
-		
+
 		FPSAnimator anim = new FPSAnimator(canvas, 60);
 		anim.start();
 	}
@@ -214,7 +286,7 @@ public class ViewController implements IEventHandler, GLEventListener {
 			this.tilemap = ObjectFactory.newTileMap();
 
 			this.screen.addDrawableToLayer(this.tilemap, 0);
-			
+
 			this.player = ObjectFactory.newActor(gm.getPlayer());
 			this.player.setCurrentAnimation("moveS");
 			this.screen.addDrawableToLayer(this.player, 1);
@@ -227,11 +299,10 @@ public class ViewController implements IEventHandler, GLEventListener {
 				this.screen.removeDrawableFromLayer(actor);
 			}
 
-			GameModel gm = (GameModel) evt
-					.getValue();
-		
+			GameModel gm = (GameModel) evt.getValue();
+
 			if (this.waveMeter != null)
-				this.waveMeter.setText("Wave:"+gm.getCurrentWaveCount());
+				this.waveMeter.setText("Wave:" + gm.getCurrentWaveCount());
 			List<CollidableObject> entities = (List) gm.getObjects();
 
 			for (CollidableObject e : entities) {
@@ -260,6 +331,16 @@ public class ViewController implements IEventHandler, GLEventListener {
 
 				this.screen.removeDrawableFromLayer(this.actors.remove(cObj));
 				// this.actors.remove(cObj);
+
+				if (cObj instanceof Projectile && ((Projectile) cObj).getOwner() instanceof Grenade) {
+					Actor explosion = ObjectFactory.newActor(null);
+					explosion.addAnimationListener(this);
+					explosion.setShouldRepeat(false);
+					explosion.setCurrentAnimation("default");
+					explosion.setX(cObj.getPosition().x-(explosion.getWidth()/2));
+					explosion.setY(cObj.getPosition().y-(explosion.getHeight()/2));
+					this.screen.addDrawableToLayer(explosion, 1);
+				}
 			}
 		}
 	}
@@ -276,9 +357,9 @@ public class ViewController implements IEventHandler, GLEventListener {
 		// TimerTool.start("GL-Screen");
 		if (doneLoading) {
 			if (this.isInLSDMode) {
-			gl.glPushMatrix();
-			this.rotationAngle += 1;
-			gl.glRotated(this.rotationAngle, 0, 0, 1);
+				gl.glPushMatrix();
+				this.rotationAngle += 1;
+				gl.glRotated(this.rotationAngle, 0, 0, 1);
 			}
 			this.screen.setViewPort(this.player.getCollidableObject()
 					.getPosition());
@@ -286,20 +367,23 @@ public class ViewController implements IEventHandler, GLEventListener {
 					this.screen.getBounds(), arg0, 0);
 			if (this.isInLSDMode)
 				gl.glPopMatrix();
-			
+
 			if (this.player != null) {
 				Player p = (Player) this.player.getCollidableObject();
 				if (p != null && this.hpMeter != null) {
-					this.hpMeter.setText("Hp:"+p.getHealth());
-					this.ammoMeter.setText("Ammo:"+p.getCurrentWeapon().getCurrentAmmo());
+					this.hpMeter.setText("Hp:" + p.getHealth());
+					this.ammoMeter.setText("Ammo:"
+							+ p.getCurrentWeapon().getCurrentAmmo());
 				}
 			}
-			
-			this.fpsMeter.setText(("FPS:"+this.fpsmeter.currentFPS));
+
+			this.fpsMeter.setText(("FPS:" + this.fpsmeter.currentFPS));
 			gl.glPushMatrix();
 			gl.glLoadIdentity();
 			for (GLRenderableObject ro : this.overlayObjects) {
-				ro.render(ro.getBounds(), this.screen.getBounds(), arg0, (20 + this.tilemap.getTileMapSize().getHeight() * this.tilemap.getTileSize().getHeight()));
+				ro.render(ro.getBounds(), this.screen.getBounds(), arg0,
+						(20 + this.tilemap.getTileMapSize().getHeight()
+								* this.tilemap.getTileSize().getHeight()));
 			}
 			gl.glPopMatrix();
 		}
@@ -316,7 +400,7 @@ public class ViewController implements IEventHandler, GLEventListener {
 		gl.glEnable(GL.GL_DEPTH_TEST);
 		gl.glDepthFunc(GL.GL_LESS);
 		gl.glEnable(GL2.GL_ALPHA_TEST);
-		
+
 		if (this.isInLSDMode)
 			gl.glRotated(45, -1, -1, -1);
 	}
@@ -329,4 +413,16 @@ public class ViewController implements IEventHandler, GLEventListener {
 	public void reshape(GLAutoDrawable arg0, int arg1, int arg2, int arg3,
 			int arg4) {
 	}
+
+	@Override
+	public void animationDoneAnimating(Object value) {
+		System.out.println("1");
+		if (value instanceof Actor) {
+			Actor actor = (Actor) value;
+			this.screen.removeDrawableFromLayer(actor);
+			this.actors.remove(actor.getCollidableObject());
+			System.out.println("2");
+		}
+	}
+
 }

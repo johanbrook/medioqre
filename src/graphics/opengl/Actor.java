@@ -1,6 +1,8 @@
 package graphics.opengl;
 
 import java.util.IdentityHashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -32,7 +34,7 @@ import core.Rectangle;
  * 
  * @author John Barbero Unenge
  */
-public class Actor implements JSONSerializable, GLRenderableObject {
+public class Actor implements JSONSerializable, GLRenderableObject, AnimationListener {
 
 	// Animation
 	private Animation currentAnimation;
@@ -47,6 +49,9 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	// Entity
 	private CollidableObject object;
 	private boolean showCollisionBox = false;
+	
+	// AnimationListeners
+	private List<AnimationListener> animationListeners;
 
 	// ************* Getters *************
 	/**
@@ -129,7 +134,7 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	public boolean isShowingCollisionBox() {
 		return this.showCollisionBox;
 	}
-	
+
 	// ************* Setters *************
 	/**
 	 * Set the x coordinate of the actor.
@@ -217,13 +222,47 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	public void setShowCollisionBox(boolean showCollisionBox) {
 		this.showCollisionBox = showCollisionBox;
 	}
-	
+
 	public void setColor(float r, float g, float b) {
 		for (Animation a : this.animations.values()) {
 			a.setColor(r, g, b);
 		}
 	}
-	
+
+	public void addAnimationListener(AnimationListener l) {
+
+		if (this.animations == null)
+			return;
+		
+		for (Animation a : this.animations.values()) {
+			a.addAnimationListener(this);
+		}
+		
+		if (this.animationListeners == null) this.animationListeners = new LinkedList<AnimationListener>();
+		
+		this.animationListeners.add(l);
+	}
+
+	public void removeAnimationListener(AnimationListener l) {
+		if (this.animations == null)
+			return;
+
+		for (Animation a : this.animations.values()) {
+			a.removeAnimationListener(l);
+		}
+		this.animationListeners.remove(l);
+	}
+
+	public void setShouldRepeat(boolean shouldRepeat) {
+		if (this.animations == null)
+			return;
+
+		for (Animation a : this.animations.values()) {
+			a.setShouldRepeat(shouldRepeat);
+		}
+
+	}
+
 	// ************* Animations *************
 	/**
 	 * Add an animation to the actor.
@@ -242,60 +281,62 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	// Update
 	@Override
 	public void update(double dt) {
-		if (this.object != null) {
-			String animation = "";
 
-			if (this.object instanceof Entity) {
-				Entity entity = (Entity) this.object;
+		String animation = "default";
 
-				if (entity instanceof model.character.AbstractCharacter) {
-					switch (entity.getDirection()) {
-						case SOUTH :
-							animation = entity.isMoving() ? "moveS" : "stopS";
-							break;
-						case SOUTH_WEST :
-							animation = entity.isMoving() ? "moveSW" : "stopSW";
-							break;
-						case WEST :
-							animation = entity.isMoving() ? "moveW" : "stopW";
-							break;
-						case NORTH_WEST :
-							animation = entity.isMoving() ? "moveNW" : "stopNW";
-							break;
-						case NORTH :
-							animation = entity.isMoving() ? "moveN" : "stopN";
-							break;
-						case NORTH_EAST :
-							animation = entity.isMoving() ? "moveNE" : "stopNE";
-							break;
-						case EAST :
-							animation = entity.isMoving() ? "moveE" : "stopE";
-							break;
-						case SOUTH_EAST :
-							animation = entity.isMoving() ? "moveSE" : "stopSE";
-							break;
-					}
-				} else if (entity instanceof Projectile) {
-					Projectile p = (Projectile) this.object;
-					animation = "default";
+		if (this.object instanceof Entity) {
+			Entity entity = (Entity) this.object;
+
+			if (entity instanceof model.character.AbstractCharacter) {
+				switch (entity.getDirection()) {
+					case SOUTH :
+						animation = entity.isMoving() ? "moveS" : "stopS";
+						break;
+					case SOUTH_WEST :
+						animation = entity.isMoving() ? "moveSW" : "stopSW";
+						break;
+					case WEST :
+						animation = entity.isMoving() ? "moveW" : "stopW";
+						break;
+					case NORTH_WEST :
+						animation = entity.isMoving() ? "moveNW" : "stopNW";
+						break;
+					case NORTH :
+						animation = entity.isMoving() ? "moveN" : "stopN";
+						break;
+					case NORTH_EAST :
+						animation = entity.isMoving() ? "moveNE" : "stopNE";
+						break;
+					case EAST :
+						animation = entity.isMoving() ? "moveE" : "stopE";
+						break;
+					case SOUTH_EAST :
+						animation = entity.isMoving() ? "moveSE" : "stopSE";
+						break;
 				}
-			} else if (this.object instanceof Portal) {
-				Portal p = (Portal) this.object;
-
-				if (p.getMode() == PortalGun.Mode.BLUE)
-					animation = "blue";
-				else if (p.getMode() == PortalGun.Mode.ORANGE)
-					animation = "orange";
-			} else if (this.object instanceof ICollectableItem) {
-				ICollectableItem iCi = (ICollectableItem) this.object;
-				if (iCi instanceof AmmoCrate) {
-					animation = "ammopack";
-				} else if (iCi instanceof MedPack) {
-					animation = "medpack";
-				}
+			} else if (entity instanceof Projectile) {
+				Projectile p = (Projectile) this.object;
+				animation = "default";
 			}
+		} else if (this.object instanceof Portal) {
+			Portal p = (Portal) this.object;
 
-			this.setCurrentAnimation(animation);
+			if (p.getMode() == PortalGun.Mode.BLUE)
+				animation = "blue";
+			else if (p.getMode() == PortalGun.Mode.ORANGE)
+				animation = "orange";
+		} else if (this.object instanceof ICollectableItem) {
+			ICollectableItem iCi = (ICollectableItem) this.object;
+			if (iCi instanceof AmmoCrate) {
+				animation = "ammopack";
+			} else if (iCi instanceof MedPack) {
+				animation = "medpack";
+			}
+		}
+
+		this.setCurrentAnimation(animation);
+		
+		if (this.object != null) {
 			this.rectangle.setX(this.object.getPosition().x);
 			this.rectangle.setY(this.object.getPosition().y);
 		}
@@ -372,8 +413,8 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 
 	@Override
 	public void render(Rectangle object, Rectangle target,
-			GLAutoDrawable canvas, int zIndex) {	
-		
+			GLAutoDrawable canvas, int zIndex) {
+
 		if (this.currentAnimation != null)
 			this.currentAnimation.render(object, target, canvas, this.getY()
 					+ this.getHeight());
@@ -445,5 +486,12 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	@Override
 	public Rectangle getBounds() {
 		return this.rectangle;
+	}
+
+	@Override
+	public void animationDoneAnimating(Object value) {
+		for (AnimationListener l : this.animationListeners) {
+			l.animationDoneAnimating(this);
+		}
 	}
 }
