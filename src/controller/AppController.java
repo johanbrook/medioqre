@@ -9,6 +9,8 @@ package controller;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import quicktime.app.actions.NotifyListener;
+
 import static tools.Logger.*;
 
 import tools.TimerTool;
@@ -46,7 +48,7 @@ public class AppController implements Runnable{
 	 * Current mode
 	 */
 	public static int MODE = PRODUCTION;
-
+	
 	private static final double DELTA_RATIO = 10E7;
 
 	private IGameModel game;
@@ -54,6 +56,8 @@ public class AppController implements Runnable{
 	private AIController ai;
 	private AudioController audio;
 	private NavigationController navigation;
+	
+	public static boolean paused = false;
 		
 	/**
 	 * New AppController. 
@@ -98,12 +102,19 @@ public class AppController implements Runnable{
 
 		this.game.newGame();
 		this.game.newWave();
-		new Thread(this).start();
+		Thread loop = new Thread(this);
+		loop.setName("Game-loop");
+		loop.start();
 
-		EventBus.INSTANCE.publish(new Event(Event.Property.INIT_MODEL,
-				this.game));
+		EventBus.INSTANCE.publish(new Event(Event.Property.INIT_MODEL, this.game));
 	}
 
+	public static void togglePaused() {
+		paused = !paused;
+		log("Paused: "+paused);
+	}
+	
+	
 	
 	/**
 	 * If the app is in debug mode or not.
@@ -123,22 +134,25 @@ public class AppController implements Runnable{
 		long lastLoopTime = System.nanoTime();
 
 		while (!Thread.interrupted()) {
-			long now = System.nanoTime();
-			long updateLength = now - lastLoopTime;
-			lastLoopTime = now;
-
-			double dt = (double) updateLength / DELTA_RATIO;
-			// TimerTool.start("Update");
-			this.ai.updateAI(dt);
-			this.game.update(dt);
-			audio.update();
-			// TimerTool.stop();
-
 			try {
 				Thread.sleep(1000 / FPS);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+			
+			long now = System.nanoTime();
+			long updateLength = now - lastLoopTime;
+			lastLoopTime = now;
+			double dt = (double) updateLength / DELTA_RATIO;
+			
+			// Pause game
+			if(paused) {
+				continue;
+			}
+			
+			this.ai.updateAI(dt);
+			this.game.update(dt);
+			audio.update();
 		}
 	}
 
