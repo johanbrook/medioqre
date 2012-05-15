@@ -5,7 +5,7 @@ import java.util.List;
 
 public class AStarTile {
 
-	private double g, f, h;
+	private double g, h;
 
 	private boolean open, closed;
 
@@ -55,12 +55,13 @@ public class AStarTile {
 	}
 
 	/**
-	 * get the F-value of this AStarTile
+	 * get the F-value of this AStarTile.
+	 * The F-value is the combined value of H and G.
 	 * 
 	 * @return the F-value of this AStarTile
 	 */
 	public double getF() {
-		return this.h;
+		return this.h + this.g;
 	}
 
 	/**
@@ -139,11 +140,7 @@ public class AStarTile {
 	 */
 	public void setG(double g) {
 		this.g = g;
-		if (this.h > 0) {
-			// Updates the value of F, since F is dependent on the constant
-			// value of h and G.
-			updateF();
-		}
+
 	}
 
 	/**
@@ -160,13 +157,7 @@ public class AStarTile {
 				- stop.getColumn()));
 	}
 
-	/**
-	 * Update this tiles F-value. The F-value is simply G+H, so no parameter is
-	 * needed.
-	 */
-	public void updateF() {
-		this.f = this.h + this.g;
-	}
+
 
 	/**
 	 * Specify whether this tile is to be counted as a solid or not.
