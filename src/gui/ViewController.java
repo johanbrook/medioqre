@@ -19,6 +19,7 @@ import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
 import com.jogamp.opengl.util.FPSAnimator;
+import com.jogamp.opengl.util.gl2.GLUT;
 
 import core.GLRenderableObject;
 import core.Rectangle;
@@ -304,7 +305,7 @@ public class ViewController
 
 			if (this.waveMeter != null)
 				this.waveMeter.setText("Wave:" + gm.getCurrentWaveCount());
-			List<CollidableObject> entities = (List) gm.getObjects();
+			List<CollidableObject> entities = (List<CollidableObject>) gm.getObjects();
 
 			for (CollidableObject e : entities) {
 				if (e instanceof Player)
@@ -320,6 +321,7 @@ public class ViewController
 				Actor newA = ObjectFactory.newActor(cObj);
 				this.actors.put(cObj, newA);
 				this.screen.addDrawableToLayer(newA, 1);
+				System.out.println("Creating projectile!");
 			}
 		} else if (evt.getProperty() == Event.Property.PORTAL_CREATED) {
 			Portal p = (Portal) evt.getValue();
@@ -338,7 +340,7 @@ public class ViewController
 					explosion.addAnimationListener(this);
 					explosion.setShouldRepeat(false);
 					explosion.setCurrentAnimation("default");
-					explosion.setX(cObj.getPosition().x-(explosion.getWidth()/2));
+					explosion.setX((cObj.getPosition().x-(explosion.getWidth()/2)));
 					explosion.setY(cObj.getPosition().y-(explosion.getHeight()/2));
 					this.screen.addDrawableToLayer(explosion, 1);
 				}
@@ -388,6 +390,7 @@ public class ViewController
 			}
 			gl.glPopMatrix();
 		}
+		gl.glFlush();
 		// TimerTool.stop();
 	}
 

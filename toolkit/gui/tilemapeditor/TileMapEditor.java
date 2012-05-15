@@ -91,8 +91,8 @@ public class TileMapEditor extends JFrame implements TileSelectorListener {
 				saveFile(currentFile);
 			}
 		} else {
-			BufferedImage img = new BufferedImage(this.currentTileMap
-					.getTileMapSize().getWidth(), this.currentTileMap
+			BufferedImage img = new BufferedImage((int)this.currentTileMap
+					.getTileMapSize().getWidth(), (int)this.currentTileMap
 					.getTileMapSize().getHeight(), BufferedImage.TYPE_INT_ARGB);
 
 			int[] pixels = ((DataBufferInt) img.getRaster().getDataBuffer())

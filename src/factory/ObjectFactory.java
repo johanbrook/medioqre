@@ -282,16 +282,12 @@ public class ObjectFactory {
 
 				Random random = new Random();
 
-				int x = SPAWN_MARGIN
-						+ random.nextInt(tileMapInstance.getTileMapSize()
-								.getWidth()
-								* tileMapInstance.getTileSize().getWidth()
-								- (2 * SPAWN_MARGIN));
-				int y = SPAWN_MARGIN
-						+ random.nextInt(tileMapInstance.getTileMapSize()
-								.getHeight()
-								* tileMapInstance.getTileSize().getHeight()
-								- (2 * SPAWN_MARGIN));
+				int x = (int) (SPAWN_MARGIN + random.nextFloat()
+						* (tileMapInstance.getTileMapSize().getWidth()
+								* tileMapInstance.getTileSize().getWidth() - (2 * SPAWN_MARGIN)));
+				int y = (int) (SPAWN_MARGIN + random.nextFloat()
+						* (tileMapInstance.getTileMapSize().getHeight()
+								* tileMapInstance.getTileSize().getHeight() - (2 * SPAWN_MARGIN)));
 
 				e.setPosition(x, y);
 				enemies.add(e);
@@ -320,16 +316,12 @@ public class ObjectFactory {
 
 			for (int i = 0; i < items.length(); i++) {
 
-				int x = SPAWN_MARGIN
-						+ random.nextInt(tileMapInstance.getTileMapSize()
-								.getWidth()
-								* tileMapInstance.getTileSize().getWidth()
-								- (2 * SPAWN_MARGIN));
-				int y = SPAWN_MARGIN
-						+ random.nextInt(tileMapInstance.getTileMapSize()
-								.getHeight()
-								* tileMapInstance.getTileSize().getHeight()
-								- (2 * SPAWN_MARGIN));
+				int x = (int) (SPAWN_MARGIN + random.nextFloat()
+						* (tileMapInstance.getTileMapSize().getWidth()
+								* tileMapInstance.getTileSize().getWidth() - (2 * SPAWN_MARGIN)));
+				int y = (int) (SPAWN_MARGIN + random.nextFloat()
+						* (tileMapInstance.getTileMapSize().getHeight()
+								* tileMapInstance.getTileSize().getHeight() - (2 * SPAWN_MARGIN)));
 
 				JSONObject it = items.getJSONObject(i);
 				JSONObject bounds = it.getJSONObject("bounds");
@@ -368,12 +360,12 @@ public class ObjectFactory {
 			try {
 				if (items.getJSONObject(i).getString("type").equals(type)) {
 
-					int x = random.nextInt(tileMapInstance.getTileMapSize()
-							.getWidth()
-							* tileMapInstance.getTileSize().getWidth());
-					int y = random.nextInt(tileMapInstance.getTileMapSize()
-							.getHeight()
-							* tileMapInstance.getTileSize().getHeight());
+					int x = (int) (random.nextFloat()
+							* tileMapInstance.getTileMapSize().getWidth() * tileMapInstance
+							.getTileSize().getWidth());
+					int y = (int) (random.nextFloat() * (tileMapInstance
+							.getTileMapSize().getHeight() * tileMapInstance
+							.getTileSize().getHeight()));
 
 					JSONObject it = items.getJSONObject(i);
 					JSONObject bounds = it.getJSONObject("bounds");
@@ -398,8 +390,8 @@ public class ObjectFactory {
 
 		boolean[][] coll = getCollidables();
 
-		int tileWidth = tileMapInstance.getTileSize().getWidth();
-		int tileHeight = tileMapInstance.getTileSize().getHeight();
+		int tileWidth = (int) tileMapInstance.getTileSize().getWidth();
+		int tileHeight = (int) tileMapInstance.getTileSize().getHeight();
 
 		for (int x = 0; x < coll.length; x++) {
 			for (int y = 0; y < coll[x].length; y++) {

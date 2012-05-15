@@ -43,7 +43,7 @@ public class GLLetter implements GLRenderableObject, JSONSerializable {
 	
 	@Override
 	public void render(Rectangle object, Rectangle target,
-			GLAutoDrawable canvas, int zIndex) {
+			GLAutoDrawable canvas, float zIndex) {
 		this.sprite.render(object, target, canvas, zIndex);
 	}
 	@Override

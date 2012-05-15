@@ -8,27 +8,27 @@ package core;
  */
 public class Size {
 
-	private int width;
-	private int height;
+	private float width;
+	private float height;
 
-	public Size(int width, int height) {
+	public Size(float width, float height) {
 		this.width = width;
 		this.height = height;
 	}
 
 	// Setters
-	public void setWidth(int width) {
+	public void setWidth(float width) {
 		this.width = width;
 	}
-	public void setHeight(int height) {
+	public void setHeight(float height) {
 		this.height = height;
 	}
 
 	// Getters
-	public int getWidth() {
+	public float getWidth() {
 		return this.width;
 	}
-	public int getHeight() {
+	public float getHeight() {
 		return this.height;
 	}
 	public String toString() {

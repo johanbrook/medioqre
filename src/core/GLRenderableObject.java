@@ -21,7 +21,7 @@ public interface GLRenderableObject {
 	 *            The canvas to draw to.
 	 */
 	public void render(Rectangle object, Rectangle target,
-			GLAutoDrawable canvas, int zIndex);
+			GLAutoDrawable canvas, float zIndex);
 
 	/**
 	 * Updates the state of the GLRenderableObject.

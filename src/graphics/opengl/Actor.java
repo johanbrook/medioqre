@@ -59,7 +59,7 @@ public class Actor implements JSONSerializable, GLRenderableObject, AnimationLis
 	 * 
 	 * @return The x coordinate.
 	 */
-	public int getX() {
+	public float getX() {
 		return this.rectangle.getX();
 	}
 
@@ -68,7 +68,7 @@ public class Actor implements JSONSerializable, GLRenderableObject, AnimationLis
 	 * 
 	 * @return The y coordinate.
 	 */
-	public int getY() {
+	public float getY() {
 		return this.rectangle.getY();
 	}
 
@@ -77,7 +77,7 @@ public class Actor implements JSONSerializable, GLRenderableObject, AnimationLis
 	 * 
 	 * @return The width.
 	 */
-	public int getWidth() {
+	public float getWidth() {
 		return this.rectangle.getWidth();
 	}
 
@@ -86,7 +86,7 @@ public class Actor implements JSONSerializable, GLRenderableObject, AnimationLis
 	 * 
 	 * @return The height.
 	 */
-	public int getHeight() {
+	public float getHeight() {
 		return this.rectangle.getHeight();
 	}
 
@@ -139,11 +139,11 @@ public class Actor implements JSONSerializable, GLRenderableObject, AnimationLis
 	/**
 	 * Set the x coordinate of the actor.
 	 * 
-	 * @param x
+	 * @param f
 	 *            The x coordinate.
 	 */
-	public void setX(int x) {
-		this.rectangle.setX(x);
+	public void setX(float f) {
+		this.rectangle.setX(f);
 	}
 
 	/**
@@ -152,7 +152,7 @@ public class Actor implements JSONSerializable, GLRenderableObject, AnimationLis
 	 * @param y
 	 *            The y coordinate.
 	 */
-	public void setY(int y) {
+	public void setY(float y) {
 		this.rectangle.setY(y);
 	}
 
@@ -162,7 +162,7 @@ public class Actor implements JSONSerializable, GLRenderableObject, AnimationLis
 	 * @param width
 	 *            The width.
 	 */
-	public void setWidth(int width) {
+	public void setWidth(float width) {
 		this.rectangle.setWidth(width);
 	}
 
@@ -172,7 +172,7 @@ public class Actor implements JSONSerializable, GLRenderableObject, AnimationLis
 	 * @param height
 	 *            The height of the actor.
 	 */
-	public void setHeight(int height) {
+	public void setHeight(float height) {
 		this.rectangle.setHeight(height);
 	}
 
@@ -413,7 +413,7 @@ public class Actor implements JSONSerializable, GLRenderableObject, AnimationLis
 
 	@Override
 	public void render(Rectangle object, Rectangle target,
-			GLAutoDrawable canvas, int zIndex) {
+			GLAutoDrawable canvas, float zIndex) {
 
 		if (this.currentAnimation != null)
 			this.currentAnimation.render(object, target, canvas, this.getY()

@@ -67,7 +67,7 @@ public class GLBitmapFont implements JSONSerializable, GLRenderableObject {
 
 	@Override
 	public void render(Rectangle object, Rectangle target,
-			GLAutoDrawable canvas, int zIndex) {
+			GLAutoDrawable canvas, float zIndex) {
 
 		int i = 0;
 		for (char c : this.text.toCharArray()) {

@@ -223,7 +223,7 @@ public class TileMap implements GLRenderableObject {
 	 *         collidable
 	 */
 	public boolean[][] getCollidables() {
-		boolean[][] collidables = new boolean[this.tileMapSize.getWidth()][this.tileMapSize
+		boolean[][] collidables = new boolean[(int)this.tileMapSize.getWidth()][(int)this.tileMapSize
 				.getHeight()];
 		for (int y = 0; y < collidables.length; y++) {
 			for (int x = 0; x < collidables[y].length; x++) {
@@ -238,7 +238,7 @@ public class TileMap implements GLRenderableObject {
 
 	@Override
 	public void render(Rectangle object, Rectangle target,
-			GLAutoDrawable canvas, int zIndex) {
+			GLAutoDrawable canvas, float zIndex) {
 		if (this.tileRenderRect == null)
 			this.tileRenderRect = new Rectangle(0, 0, 0, 0);
 
@@ -247,8 +247,8 @@ public class TileMap implements GLRenderableObject {
 
 		for (int x = 0; x < this.tiles.length; x++) {
 			for (int y = 0; y < this.tiles[x].length; y++) {
-				tileRenderRect.setX(x * tileSize.getWidth() + object.getX());
-				tileRenderRect.setY(y * tileSize.getHeight() + object.getY());
+				tileRenderRect.setX((float)x * tileSize.getWidth() + object.getX());
+				tileRenderRect.setY((float)y * tileSize.getHeight() + object.getY());
 
 				if (this.tileSheet.getTile(this.tiles[x][y]) == null) {
 					System.out

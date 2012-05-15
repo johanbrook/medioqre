@@ -152,7 +152,7 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 	 * 
 	 * @return The x coordinate.
 	 */
-	public int getX() {
+	public float getX() {
 		return this.rectangle.getX();
 	}
 
@@ -161,7 +161,7 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 	 * 
 	 * @return The y coordinate.
 	 */
-	public int getY() {
+	public float getY() {
 		return this.rectangle.getY();
 	}
 
@@ -170,7 +170,7 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 	 * 
 	 * @return The width.
 	 */
-	public int getWidth() {
+	public float getWidth() {
 		return this.rectangle.getWidth();
 	}
 
@@ -179,7 +179,7 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 	 * 
 	 * @return The height.
 	 */
-	public int getHeight() {
+	public float getHeight() {
 		return this.rectangle.getHeight();
 	}
 
@@ -191,7 +191,7 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 	// ************* Interface methods *************
 	@Override
 	public void render(Rectangle object, Rectangle target,
-			GLAutoDrawable canvas, int zIndex) {
+			GLAutoDrawable canvas, float zIndex) {
 		if (object != null && object.intersectsRectangle(target)) {
 
 			GL2 gl = canvas.getGL().getGL2();
@@ -202,34 +202,34 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 			float tX1, tX2, tY1, tY2;
 
 			if (this.texture.getMustFlipVertically()) {
-				tX1 = (float) this.rectangle.getX()
-						/ (float) texture.getWidth();
-				tX2 = ((float) this.rectangle.getX() + (float) this.rectangle
-						.getWidth()) / (float) texture.getWidth();
-				tY1 = (float) this.rectangle.getY()
-						/ (float) texture.getHeight();
-				tY2 = ((float) this.rectangle.getY() + (float) this.rectangle
-						.getHeight()) / (float) texture.getHeight();
+				tX1 = this.rectangle.getX()
+						/ texture.getWidth();
+				tX2 = (this.rectangle.getX() + this.rectangle
+						.getWidth()) / texture.getWidth();
+				tY1 = this.rectangle.getY()
+						/ texture.getHeight();
+				tY2 = (this.rectangle.getY() + this.rectangle
+						.getHeight()) / texture.getHeight();
 			} else {
-				tX1 = (float) this.rectangle.getX()
-						/ (float) texture.getWidth();
-				tX2 = ((float) this.rectangle.getX() + (float) this.rectangle
-						.getWidth()) / (float) texture.getWidth();
-				tY1 = ((float) texture.getHeight() - (float) this.rectangle
-						.getY()) / (float) texture.getHeight();
-				tY2 = ((float) texture.getHeight() - ((float) this.rectangle
-						.getY() + (float) this.rectangle.getHeight()))
-						/ (float) texture.getHeight();
+				tX1 = this.rectangle.getX()
+						/ texture.getWidth();
+				tX2 = (this.rectangle.getX() + this.rectangle
+						.getWidth()) / texture.getWidth();
+				tY1 = (texture.getHeight() - this.rectangle
+						.getY()) / texture.getHeight();
+				tY2 = (texture.getHeight() - (this.rectangle
+						.getY() + this.rectangle.getHeight()))
+						/ texture.getHeight();
 			}
 
-			float rX1 = (float) ((2.0f * object.getX()) - (float) target
-					.getWidth()) / (float) target.getWidth();
-			float rX2 = (float) (2.0f * (object.getX() + object.getWidth()) - (float) target
-					.getWidth()) / (float) target.getWidth();
-			float rY1 = (float) (2.0f * (object.getY() + object.getHeight()) - (float) target
-					.getHeight()) / (float) target.getHeight();
-			float rY2 = (float) (2.0f * object.getY() - (float) target
-					.getHeight()) / (float) target.getHeight();
+			float rX1 = ((2.0f * object.getX()) - target
+					.getWidth()) /  target.getWidth();
+			float rX2 =  ((2.0f * (object.getX() + object.getWidth()) -  target
+					.getWidth()) /  target.getWidth());
+			float rY1 =  (2.0f * (object.getY() + object.getHeight()) -  target
+					.getHeight()) /  target.getHeight();
+			float rY2 =  ((2.0f * object.getY() -  target
+					.getHeight()) /  target.getHeight());
 
 			gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER,
 					GL.GL_NEAREST);
@@ -242,7 +242,7 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 
 			gl.glBegin(GL2.GL_QUADS);
 			gl.glColor3f(this.color[0], this.color[1], this.color[2]);
-			float renderZ = ((float) -zIndex) / 1000000f;
+			float renderZ = ( -zIndex) / 1000000f;
 			
 			gl.glTexCoord2f(tX1, tY1);
 			gl.glVertex3f(rX1, -rY2, renderZ);

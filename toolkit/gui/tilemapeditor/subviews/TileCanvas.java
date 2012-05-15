@@ -172,8 +172,8 @@ public class TileCanvas extends GLCanvas
 
 		this.currentTileMap.setTileTypeFor(x, y, activeTile.getType());
 		if (tmpTile != null) {
-			this.currentTileMap.setTileTypeFor(this.stashTilePosition.getX(),
-					this.stashTilePosition.getY(), tmpTile.getType());
+			this.currentTileMap.setTileTypeFor((int)this.stashTilePosition.getX(),
+					(int)this.stashTilePosition.getY(), tmpTile.getType());
 		}
 		this.stashTilePosition.setX(x);
 		this.stashTilePosition.setY(y);
@@ -227,8 +227,8 @@ public class TileCanvas extends GLCanvas
 		this.stashTile = null;
 
 		if (tmpTile != null) {
-			this.currentTileMap.setTileTypeFor(this.stashTilePosition.getX(),
-					this.stashTilePosition.getY(), tmpTile.getType());
+			this.currentTileMap.setTileTypeFor((int)this.stashTilePosition.getX(),
+					(int)this.stashTilePosition.getY(), tmpTile.getType());
 		}
 		this.stashTilePosition.setX(0);
 		this.stashTilePosition.setY(0);

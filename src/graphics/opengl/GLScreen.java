@@ -142,7 +142,7 @@ public class GLScreen implements GLRenderableObject {
 
 	@Override
 	public void render(Rectangle object, Rectangle target,
-			GLAutoDrawable canvas, int zIndex) {
+			GLAutoDrawable canvas, float zIndex) {
 
 		GL2 gl = canvas.getGL().getGL2();
 
@@ -163,10 +163,10 @@ public class GLScreen implements GLRenderableObject {
 						glR.update(16);
 						if (glR.getBounds() != null) {
 
-							int x = glR.getBounds().getX();
-							int y = glR.getBounds().getY();
-							int width = glR.getBounds().getWidth();
-							int height = glR.getBounds().getHeight();
+							float x = glR.getBounds().getX();
+							float y = glR.getBounds().getY();
+							float width = glR.getBounds().getWidth();
+							float height = glR.getBounds().getHeight();
 
 							this.renderRect.setX(x - this.screenOffset.x);
 							this.renderRect.setY(y - this.screenSize.getY() / 2

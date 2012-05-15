@@ -188,7 +188,7 @@ public class Animation implements JSONSerializable, GLRenderableObject {
 	// ************* Interface methods *************
 	@Override
 	public void render(Rectangle object, Rectangle target,
-			GLAutoDrawable canvas, int zIndex) {
+			GLAutoDrawable canvas, float zIndex) {
 
 		if (this.timePassed == -1)
 			return;
