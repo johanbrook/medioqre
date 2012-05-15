@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<diagram program="umlet" version="11.5">
+<diagram program="umlet" version="11.4">
   <zoom_level>8</zoom_level>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>368</x>
-      <y>200</y>
+      <x>272</x>
+      <y>176</y>
       <w>152</w>
       <h>32</h>
     </coordinates>
-    <panel_attributes>Game
+    <panel_attributes>*Game*
 
 bg=orange</panel_attributes>
     <additional_attributes/>
@@ -17,14 +17,14 @@ bg=orange</panel_attributes>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>360</x>
-      <y>344</y>
+      <x>264</x>
+      <y>320</y>
       <w>152</w>
       <h>112</h>
     </coordinates>
     <panel_attributes>Player
 --
--position:Position
+-position:Point
 -health:int
 -currentWeapon:Weapon
 -weapons:Weapon[]
@@ -36,8 +36,8 @@ bg=orange</panel_attributes>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>288</x>
-      <y>592</y>
+      <x>192</x>
+      <y>568</y>
       <w>152</w>
       <h>72</h>
     </coordinates>
@@ -52,14 +52,14 @@ bg=orange</panel_attributes>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>232</x>
-      <y>344</y>
+      <x>136</x>
+      <y>320</y>
       <w>112</w>
       <h>80</h>
     </coordinates>
     <panel_attributes>Enemy
 --
--position:Position
+-position:Point
 -health:int
 --
 +move():void</panel_attributes>
@@ -68,14 +68,14 @@ bg=orange</panel_attributes>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>584</x>
-      <y>384</y>
+      <x>488</x>
+      <y>360</y>
       <w>112</w>
       <h>88</h>
     </coordinates>
     <panel_attributes>Projectile
 --
--position:Position
+-position:Point
 -damage:int
 -range:Range
 -owner:Weapon
@@ -86,55 +86,55 @@ bg=orange</panel_attributes>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>728</x>
-      <y>144</y>
+      <x>632</x>
+      <y>120</y>
       <w>112</w>
       <h>56</h>
     </coordinates>
     <panel_attributes>MedPack
 --
 -amount:double
--position:Position</panel_attributes>
+-position:Point</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>728</x>
-      <y>208</y>
+      <x>632</x>
+      <y>184</y>
       <w>112</w>
       <h>56</h>
     </coordinates>
     <panel_attributes>AmmoCrate
 --
 -amount:double
--position:Position</panel_attributes>
+-position:Point</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>728</x>
-      <y>96</y>
+      <x>632</x>
+      <y>72</y>
       <w>112</w>
       <h>40</h>
     </coordinates>
     <panel_attributes>Walls
 --
--position:Position</panel_attributes>
+-position:Point</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>728</x>
-      <y>272</y>
+      <x>632</x>
+      <y>248</y>
       <w>112</w>
       <h>64</h>
     </coordinates>
     <panel_attributes>Portal
 --
--position:Position
+-position:Point
 -mode:Mode
 -otherPortal:Portal
 </panel_attributes>
@@ -143,8 +143,8 @@ bg=orange</panel_attributes>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>400</x>
-      <y>208</y>
+      <x>304</x>
+      <y>184</y>
       <w>56</w>
       <h>152</h>
     </coordinates>
@@ -157,8 +157,8 @@ m1=  1
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>352</x>
-      <y>432</y>
+      <x>256</x>
+      <y>408</y>
       <w>88</w>
       <h>176</h>
     </coordinates>
@@ -171,8 +171,8 @@ m1=   n
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>464</x>
-      <y>208</y>
+      <x>368</x>
+      <y>184</y>
       <w>176</w>
       <h>192</h>
     </coordinates>
@@ -185,8 +185,8 @@ m1=   n
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>264</x>
-      <y>208</y>
+      <x>168</x>
+      <y>184</y>
       <w>152</w>
       <h>152</h>
     </coordinates>
@@ -199,8 +199,8 @@ m1=n
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>416</x>
-      <y>448</y>
+      <x>320</x>
+      <y>424</y>
       <w>244</w>
       <h>212</h>
     </coordinates>
@@ -215,8 +215,8 @@ m1= n
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>496</x>
-      <y>200</y>
+      <x>400</x>
+      <y>176</y>
       <w>248</w>
       <h>96</h>
     </coordinates>
@@ -229,8 +229,8 @@ m1=0..2
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>496</x>
-      <y>176</y>
+      <x>400</x>
+      <y>152</y>
       <w>248</w>
       <h>56</h>
     </coordinates>
@@ -243,8 +243,8 @@ m1= n
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>496</x>
-      <y>128</y>
+      <x>400</x>
+      <y>104</y>
       <w>248</w>
       <h>96</h>
     </coordinates>
@@ -257,8 +257,8 @@ has</panel_attributes>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>480</x>
-      <y>64</y>
+      <x>384</x>
+      <y>40</y>
       <w>264</w>
       <h>152</h>
     </coordinates>
@@ -271,8 +271,8 @@ m1=  n
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>264</x>
-      <y>400</y>
+      <x>168</x>
+      <y>376</y>
       <w>72</w>
       <h>208</h>
     </coordinates>
