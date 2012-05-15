@@ -19,4 +19,5 @@
 	
 	"tileMapConfig": 	"spritesheets/levels/level2.lvl",
 	"actorsConfig": 	"gamedata/actors.json"
+	"bitmapsConfig":	"gamedata/bitmaps.json"
 }
