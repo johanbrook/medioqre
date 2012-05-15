@@ -158,10 +158,21 @@ public class AIController implements IMessageSender, IMessageListener {
 		
 	}
 
+	/**
+	 * Checks whether two positions are close to each other. 
+	 * @param myPos
+	 * @param targetPos
+	 * @return True if the specified positions are close.
+	 */
 	private boolean positionsAreClose (Point myPos, Point targetPos){
 		return (Math.abs(myPos.x - targetPos.x) < 8 && Math.abs(myPos.y - targetPos.y) < 8);
 	}
 
+	/**
+	 * Will calculate a new path between the specified aiPlayer's controlled unit and the player. Sets it if algorithm works and a path is found.
+	 * If no path is found, the AIPlayers path won't be changed.
+	 * @param aiPlayer
+	 */
 	private void getNewPath(AIPlayer aiPlayer) {
 		List <Point> pathInTiles = this.pathfinder.getPath(aiPlayer.getCurrentTile(), playerTile);
 		if (pathInTiles != null){
@@ -169,7 +180,6 @@ public class AIController implements IMessageSender, IMessageListener {
 		}
 	}
 
-	//	}// end updateEnemy
 
 	/**
 	 * If enemy is in range of player, will try to send projectiles into the
