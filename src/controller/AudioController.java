@@ -9,6 +9,7 @@ import paulscode.sound.SoundSystem;
 import paulscode.sound.SoundSystemConfig;
 import paulscode.sound.SoundSystemException;
 import paulscode.sound.codecs.CodecWav;
+import paulscode.sound.codecs.CodecJOgg;
 import paulscode.sound.libraries.LibraryJavaSound;
 import tools.datamanagement.PreferenceLoader;
 import audio.AudioConstants;
@@ -32,7 +33,7 @@ public class AudioController implements IEventHandler {
 	private static SoundLibrary lib = new SoundLibrary();
 	private double playerMaxHealth;
 
-	private int bgmID = 1;
+	private int bgmID = 2;
 
 	/**
 	 * Returns the AudioController instance
@@ -60,6 +61,9 @@ public class AudioController implements IEventHandler {
 
 			// Link to Wav Codec
 			SoundSystemConfig.setCodec("wav", CodecWav.class);
+			
+			//Link to JOgg
+			SoundSystemConfig.setCodec("ogg", CodecJOgg.class);
 
 		} catch (SoundSystemException e) {
 		}
@@ -293,9 +297,10 @@ public class AudioController implements IEventHandler {
 	 * Plays start up sound. Used only by launcher.
 	 */
 	public void playStartUpSound() {
-		soundSys.newSource(false, "startUpSound", lib.getStartUpSound(),
-				"startUpSound.wav", false, 0.5f, 0.5f, 1f, 1, 1f);
-		soundSys.play("startUpSound");
+		soundSys.backgroundMusic("BGM", lib.getBGMURL(1),
+				lib.getBGMId(1), true);
+		soundSys.setVolume("BGM", 0.3f);
+		soundSys.play("BGM");
 	}
 
 }
