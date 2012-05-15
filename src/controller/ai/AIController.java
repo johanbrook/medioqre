@@ -36,6 +36,7 @@ public class AIController implements IMessageSender, IMessageListener {
 	private Player player;
 
 	private Messager messager = new Messager();
+	
 
 	public AIController(int rows, int columns, int width, int height) {
 		this.pathfinder = new PathFinder(rows, columns);
@@ -110,7 +111,9 @@ public class AIController implements IMessageSender, IMessageListener {
 			//If no path is set, or if the player is not left in the set path, calculate new path.
 			if (aiPlayer.getPath() == null || !aiPlayer.getPath().get(aiPlayer.getPath().size()-1).equals(playerTile)){
 				aiPlayer.setCurrentTile(calculateTile(aiPlayer.getMidPos()));
-				if (aiPlayer.getCount() < aiPlayer.getDistance()/this.width){
+				
+				//Update more often if closer to player. No need for enemies far away to update each frame.
+				if (aiPlayer.getCount() > aiPlayer.getDistance()/this.width){
 					getNewPath(aiPlayer);
 					aiPlayer.resetCount();
 				}else {
