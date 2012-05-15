@@ -413,9 +413,7 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 							
 							//Manually tell projectiles they collided with a wall, they are the only 
 							//kind of entity that have an actual behavior related to wall-collisions.
-							if (temp instanceof Projectile){
-								temp.didCollide(o);
-							}
+							temp.didCollide(o);
 						}
 				}
 				if (!canMove){
