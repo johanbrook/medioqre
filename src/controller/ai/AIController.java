@@ -1,6 +1,7 @@
 package controller.ai;
 
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -27,17 +28,23 @@ public class AIController implements IMessageSender, IMessageListener {
 
 	private List<AIPlayer> enemies;
 	private PathFinder pathfinder;
+
 	private int width, height;
+	private int rows, columns;
+
 	private Point playerPos, playerTile;
 	private Player player;
+
 	private Messager messager = new Messager();
 
 	public AIController(int rows, int columns, int width, int height) {
 		this.pathfinder = new PathFinder(rows, columns);
 		this.width = width;
 		this.height = height;
+		this.rows = rows;
+		this.columns = columns;
 		this.enemies = new CopyOnWriteArrayList<AIPlayer>();
-		
+
 	}
 
 	@SuppressWarnings("unchecked")
@@ -82,6 +89,8 @@ public class AIController implements IMessageSender, IMessageListener {
 		}
 	}// end updateAI
 
+
+
 	/**
 	 * Given a aiPlayer, will update the direction of the players unit.
 	 * Depending on the players updatecount, the length between the unit and the
@@ -92,51 +101,75 @@ public class AIController implements IMessageSender, IMessageListener {
 	 */
 	private void updateEnemy(AIPlayer aiPlayer, double dt) {
 		if (this.pathfinder.isInitiated()){
-			Point enemyTile = calculateTile(aiPlayer.getEnemy().getPosition());
 
-			aiPlayer.setDistance(Math.abs(aiPlayer.getMidPos().x
-					- playerPos.x)
-					+ Math.abs(aiPlayer.getMidPos().y - playerPos.y));
+			aiPlayer.setDistance(Math.abs(aiPlayer.getMidPos().x - getMidOfPlayerPos().x) +
+					Math.abs(aiPlayer.getMidPos().y - getMidOfPlayerPos().y));
 
-			aiPlayer.getEnemy().getCurrentWeapon().updateCooldown(dt);
 			handleAttack(aiPlayer, dt);
-			if (aiPlayer.getCount() < (aiPlayer.getDistance() / 15)
-					+ enemies.size() / 15) {
-				aiPlayer.updateCount();
+
+			//If no path is set, or if the player is not left in the set path, calculate new path.
+			if (aiPlayer.getPath() == null || !aiPlayer.getPath().get(aiPlayer.getPath().size()-1).equals(playerTile)){
+				aiPlayer.setCurrentTile(calculateTile(aiPlayer.getMidPos()));
+				getNewPath(aiPlayer);
+
+			}
+			if (aiPlayer.getPath() != null) {
+				
+				followPath(aiPlayer);
 
 			} else {
-				if (enemyTile.x >= 0 && enemyTile.y >= 0 && enemyTile.x < 48
-						&& enemyTile.y < 48) {
-					aiPlayer.resetCount();
-
-					aiPlayer.setPath(pathfinder.getPath(enemyTile, playerTile));
-					if (aiPlayer.getPath() != null) {
-
-						// Update direction of the enemy depending on what the
-						// current path is.
-
-						// If path is longer than 2 tiles, just calculate the
-						// direction from the path
-						if (aiPlayer.getPath().size() >= 2) {
-							Point nextPos =aiPlayer.getPath().get(aiPlayer.getPath().size()-2);
-							aiPlayer.updateEnemy(calculateDirection(enemyTile, nextPos));
-						} else {
-
-							// If path is shorter, manually inserts enemy and player
-							// positions and walk straight towards them, they should
-							// be to close for there to
-							// be any kind of obstacle in the way.
-							aiPlayer.getEnemy().setDirection(
-									findLineToPlayer(aiPlayer));
-						}
-					} else {
-						tools.Logger.log("Random direction... for some reason");
-						aiPlayer.getEnemy().setDirection(randomDir());
-					}
-				}
+				aiPlayer.updateEnemy(findLineToPlayer(aiPlayer));
+				getNewPath(aiPlayer);
 			}
 		}
-	}// end updateEnemy
+	}
+
+
+
+
+
+	/**
+	 * Given a AIPlayer, will update the unit controlled by the AIPlayer according to its internally stored path.
+	 * @param aiPlayer
+	 */
+	private void followPath(AIPlayer aiPlayer) {
+		
+
+	
+
+		// If path is longer than two tiles, just follow the path.
+		if (aiPlayer.getPath().size() >= 2){
+			aiPlayer.updateEnemy(calculateDirection(aiPlayer.getMidPos(), getMidOfTile(aiPlayer.getPath().get(1))));
+			
+			// If the unit is close to the center of the next tile in the path, remove the tile in
+			// index 0, which represents the last tile. Calculate new current tile.
+			if (positionsAreClose(aiPlayer.getMidPos(), getMidOfTile(aiPlayer.getPath().get(1)))){
+				aiPlayer.setCurrentTile(calculateTile(aiPlayer.getMidPos()));
+				aiPlayer.getPath().remove(0);
+			}
+
+			// If path is shorter than two tiles, manually insert enemy and player
+			// positions and follow the line between them, they should
+			// be to close for there to
+			// be any kind of obstacle in the way.
+		}else{	aiPlayer.getEnemy().setDirection(
+				findLineToPlayer(aiPlayer));
+		}
+		
+	}
+
+	private boolean positionsAreClose (Point myPos, Point targetPos){
+		return (Math.abs(myPos.x - targetPos.x) < 8 && Math.abs(myPos.y - targetPos.y) < 8);
+	}
+
+	private void getNewPath(AIPlayer aiPlayer) {
+		List <Point> pathInTiles = this.pathfinder.getPath(aiPlayer.getCurrentTile(), playerTile);
+		if (pathInTiles != null){
+			aiPlayer.setPath(pathInTiles);
+		}
+	}
+
+	//	}// end updateEnemy
 
 	/**
 	 * If enemy is in range of player, will try to send projectiles into the
@@ -148,6 +181,8 @@ public class AIController implements IMessageSender, IMessageListener {
 	 *            time since last update
 	 */
 	private void handleAttack(AIPlayer ai, double dt) {
+		ai.getEnemy().getCurrentWeapon().updateCooldown(dt);
+
 		if (ai.inRange()) {
 			if (!ai.getEnemy().getCurrentWeapon().inCooldown()) {
 				Projectile proj = ai.doAttack();
@@ -166,9 +201,13 @@ public class AIController implements IMessageSender, IMessageListener {
 	 * @return
 	 */
 	private Direction findLineToPlayer(AIPlayer aiPlayer) {
-		
-		return calculateDirection(aiPlayer.getEnemy().getPosition(), this.playerPos);
 
+		return calculateDirection(aiPlayer.getMidPos(), getMidOfPlayerPos());
+
+	}
+
+	private Point getMidOfPlayerPos() {
+		return new Point ((int)this.player.getCollisionBox().getCenterX(),(int) this.player.getCollisionBox().getCenterY());
 	}
 
 	/**
@@ -255,12 +294,12 @@ public class AIController implements IMessageSender, IMessageListener {
 	 */
 	public Direction calculateDirection(Point start, Point stop) {
 		// Compare enemy position with next calculated position in path.
-		
-		
-		
+
+
+
 		int dx = (int) Math.signum(stop.x - start.x);
 		int dy = (int) Math.signum(stop.y - start.y);
-		
+
 
 		// Return direction depending on the values of dx and dy.
 		switch (dx) {
@@ -308,7 +347,7 @@ public class AIController implements IMessageSender, IMessageListener {
 	private Point calculateTile(Point point) {
 		return new Point(point.x / this.width, point.y / this.height);
 	}
-	
+
 	/**
 	 * Given a tile, will return the point that represent the center of that tile.
 	 * @param tile
@@ -318,7 +357,7 @@ public class AIController implements IMessageSender, IMessageListener {
 		int x = (tile.x * this.width) + this.width / 2;
 		int y = (tile.y * this.height) + this.height / 2;
 		return new Point (x,y);
-		
+
 	}
 
 	@Override
