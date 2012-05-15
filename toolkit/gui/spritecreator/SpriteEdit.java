@@ -111,10 +111,10 @@ public class SpriteEdit extends JPanel {
 	public void saveState() {
 		if (this.selectedSprite != null) {
 			this.selectedSprite.setTexture(this.tfTexture.getText());
-			this.selectedSprite.setX(Integer.valueOf(this.tfX.getText()));
-			this.selectedSprite.setY(Integer.valueOf(this.tfY.getText()));
-			this.selectedSprite.setWidth(Integer.valueOf(this.tfW.getText()));
-			this.selectedSprite.setHeight(Integer.valueOf(this.tfH.getText()));
+			this.selectedSprite.setX(Float.valueOf(this.tfX.getText()));
+			this.selectedSprite.setY(Float.valueOf(this.tfY.getText()));
+			this.selectedSprite.setWidth(Float.valueOf(this.tfW.getText()));
+			this.selectedSprite.setHeight(Float.valueOf(this.tfH.getText()));
 		}
 	}
 

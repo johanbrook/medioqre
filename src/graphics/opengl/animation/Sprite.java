@@ -87,7 +87,7 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 	 * @param x
 	 *            The x coordinate.
 	 */
-	public void setX(int x) {
+	public void setX(float x) {
 		if (this.rectangle != null)
 			this.rectangle.setX(x);
 	}
@@ -98,7 +98,7 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 	 * @param y
 	 *            The y coordinate.
 	 */
-	public void setY(int y) {
+	public void setY(float y) {
 		if (this.rectangle != null)
 			this.rectangle.setY(y);
 	}
@@ -109,7 +109,7 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 	 * @param width
 	 *            The width.
 	 */
-	public void setWidth(int width) {
+	public void setWidth(float width) {
 		if (this.rectangle != null)
 			this.rectangle.setWidth(width);
 	}
@@ -120,7 +120,7 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 	 * @param height
 	 *            The height.
 	 */
-	public void setHeight(int height) {
+	public void setHeight(float height) {
 		if (this.rectangle != null)
 			this.rectangle.setHeight(height);
 	}

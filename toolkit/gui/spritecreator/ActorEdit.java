@@ -111,13 +111,13 @@ public class ActorEdit extends JPanel {
 	public void saveState() {
 		if (this.actors[this.selectedActor] != null) {
 			this.actors[this.selectedActor].setName(this.tfName.getText());
-			this.actors[this.selectedActor].setX(Integer.valueOf(this.tfX
+			this.actors[this.selectedActor].setX(Float.valueOf(this.tfX
 					.getText()));
-			this.actors[this.selectedActor].setY(Integer.valueOf(this.tfY
+			this.actors[this.selectedActor].setY(Float.valueOf(this.tfY
 					.getText()));
-			this.actors[this.selectedActor].setWidth(Integer.valueOf(this.tfW
+			this.actors[this.selectedActor].setWidth(Float.valueOf(this.tfW
 					.getText()));
-			this.actors[this.selectedActor].setHeight(Integer.valueOf(this.tfH
+			this.actors[this.selectedActor].setHeight(Float.valueOf(this.tfH
 					.getText()));
 		}
 	}
