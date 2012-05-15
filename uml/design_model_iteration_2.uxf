@@ -470,7 +470,7 @@ has n</panel_attributes>
     <coordinates>
       <x>312</x>
       <y>184</y>
-      <w>152</w>
+      <w>154</w>
       <h>216</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
@@ -611,7 +611,7 @@ bg=orange</panel_attributes>
       <w>704</w>
       <h>496</h>
     </coordinates>
-    <panel_attributes>EmptyPackage
+    <panel_attributes>Model
 bg=orange</panel_attributes>
     <additional_attributes/>
   </element>
