@@ -20,7 +20,7 @@ public class AIPlayer {
 	private Enemy unit;
 	private List<Point> path;
 	private int iq, updateCount, distance;
-	private Point midPos;
+	private Point currentTile;
 
 	public AIPlayer(Enemy unit) {
 		this.unit = unit;
@@ -143,7 +143,14 @@ public class AIPlayer {
 	}
 	
 	public Point getMidPos(){
-		return new Point (this.unit.getPosition().x + (this.unit.getCollisionBox().width / 2) + this.unit.getOffsetX(), 
-				this.unit.getPosition().y + (this.unit.getCollisionBox().height / 2) + this.unit.getOffsetY());
+		return new Point ((int) this.unit.getCollisionBox().getCenterX(),(int) this.unit.getCollisionBox().getCenterY());
+	}
+
+	public Point getCurrentTile() {
+		return currentTile;
+	}
+
+	public void setCurrentTile(Point currentTile) {
+		this.currentTile = currentTile;
 	}
 }
