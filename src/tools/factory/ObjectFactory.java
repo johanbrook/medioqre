@@ -24,6 +24,7 @@ import model.character.Player;
 import model.item.ICollectableItem;
 import model.weapon.AbstractWeapon;
 import model.weapon.Grenade;
+import model.weapon.MachineGun;
 import model.weapon.Portal;
 import model.weapon.WeaponBelt;
 import model.weapon.PortalGun.Mode;
@@ -550,12 +551,17 @@ public class ObjectFactory {
 				newA = new Actor(actors.getJSONObject(1));
 			else if (collidableObject instanceof ICollectableItem)
 				newA = new Actor(actors.getJSONObject(2));
-			else if (collidableObject instanceof Projectile)
-				newA = new Actor(actors.getJSONObject(3));
+			else if (collidableObject instanceof Projectile) {
+				Projectile p = (Projectile) collidableObject;
+				 if (p.getOwner() instanceof MachineGun)
+					 newA = new Actor(actors.getJSONObject(3));
+				 else if (p.getOwner() instanceof Grenade)
+					 newA = new Actor(actors.getJSONObject(4));
+			}
 			else if (collidableObject instanceof Portal)
-				newA = new Actor(actors.getJSONObject(4));
-			else if (collidableObject == null)
 				newA = new Actor(actors.getJSONObject(5));
+			else if (collidableObject == null)
+				newA = new Actor(actors.getJSONObject(6));
 		} catch (JSONException e1) {
 			e1.printStackTrace();
 		}
