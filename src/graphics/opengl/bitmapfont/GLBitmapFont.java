@@ -60,6 +60,11 @@ public class GLBitmapFont implements JSONSerializable, GLRenderableObject {
 		}
 		
 	}
+	
+	public void setLetterWidth(int letterWidth) {
+		this.letterWidth = letterWidth;
+	}
+	
 	// Getters
 
 	// ---
@@ -135,6 +140,11 @@ public class GLBitmapFont implements JSONSerializable, GLRenderableObject {
 				GLLetter l = new GLLetter(lettersArray.getJSONObject(i));
 				this.letters.put(l.getCharacter(), l);
 			}
+			this.text = o.getString("text");
+			JSONObject rect = o.getJSONObject("rect");
+			this.rectangle = new Rectangle((float) rect.getInt("x"), (float) rect.getInt("y"), (float) rect.getInt("width"), (float) rect.getInt("height"));
+			
+			this.letterWidth = o.getInt("letterwidth");
 		} catch (JSONException e) {
 			Logger.log("Failed to deserialize BitmapFont!");
 			e.printStackTrace();
