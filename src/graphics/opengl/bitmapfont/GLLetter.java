@@ -72,7 +72,7 @@ public class GLLetter implements GLRenderableObject, JSONSerializable {
 	public void deserialize(JSONObject o) {
 		try {
 			this.character = (char) o.getInt("char");
-			this.sprite = new Sprite(o);
+			this.sprite = new Sprite(o.getJSONObject("sprite"));
 		} catch (JSONException e) {
 			Logger.log("Couldn't deserialize Letter!");
 			e.printStackTrace();
