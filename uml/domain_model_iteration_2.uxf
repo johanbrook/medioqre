@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="11.5">
+  <zoom_level>8</zoom_level>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>368</x>
+      <y>200</y>
+      <w>152</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>Game
+
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>360</x>
+      <y>344</y>
+      <w>152</w>
+      <h>112</h>
+    </coordinates>
+    <panel_attributes>Player
+--
+-position:Position
+-health:int
+-currentWeapon:Weapon
+-weapons:Weapon[]
+--
++move():void
++fireWeapon():void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>288</x>
+      <y>592</y>
+      <w>152</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>Weapon
+--
+-ammo:int
+-owner:Player
+--
++fire():boolean</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>232</x>
+      <y>344</y>
+      <w>112</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>Enemy
+--
+-position:Position
+-health:int
+--
++move():void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>584</x>
+      <y>384</y>
+      <w>112</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>Projectile
+--
+-position:Position
+-damage:int
+-range:Range
+-owner:Weapon
+--
++move():void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>728</x>
+      <y>144</y>
+      <w>112</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>MedPack
+--
+-amount:double
+-position:Position</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>728</x>
+      <y>208</y>
+      <w>112</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>AmmoCrate
+--
+-amount:double
+-position:Position</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>728</x>
+      <y>96</y>
+      <w>112</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>Walls
+--
+-position:Position</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>728</x>
+      <y>272</y>
+      <w>112</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>Portal
+--
+-position:Position
+-mode:Mode
+-otherPortal:Portal
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>400</x>
+      <y>208</y>
+      <w>56</w>
+      <h>152</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;
+m1=  1
+
+    has</panel_attributes>
+    <additional_attributes>32;136;32;24</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>352</x>
+      <y>432</y>
+      <w>88</w>
+      <h>176</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;
+m1=   n
+
+    has</panel_attributes>
+    <additional_attributes>24;160;24;80;72;80;72;24</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>464</x>
+      <y>208</y>
+      <w>176</w>
+      <h>192</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;
+m1=   n
+
+    has</panel_attributes>
+    <additional_attributes>160;176;160;72;24;72;24;24</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>264</x>
+      <y>208</y>
+      <w>152</w>
+      <h>152</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;
+m1=n
+
+    has</panel_attributes>
+    <additional_attributes>24;136;24;88;136;88;136;24</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>416</x>
+      <y>448</y>
+      <w>244</w>
+      <h>212</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;
+m1= n
+
+       
+    
+ creates</panel_attributes>
+    <additional_attributes>208;24;208;168;24;168</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>496</x>
+      <y>200</y>
+      <w>248</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;
+m1=0..2
+
+    has</panel_attributes>
+    <additional_attributes>232;80;176;80;176;24;24;24</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>496</x>
+      <y>176</y>
+      <w>248</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;
+m1= n
+
+    has</panel_attributes>
+    <additional_attributes>232;40;24;40</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>496</x>
+      <y>128</y>
+      <w>248</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;
+m1=  n
+
+has</panel_attributes>
+    <additional_attributes>232;24;64;24;64;80;24;80</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>480</x>
+      <y>64</y>
+      <w>264</w>
+      <h>152</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;
+m1=  n
+
+  has</panel_attributes>
+    <additional_attributes>248;40;32;40;32;136</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>264</x>
+      <y>400</y>
+      <w>72</w>
+      <h>208</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;
+m1=   n
+
+    has</panel_attributes>
+    <additional_attributes>56;192;56;112;24;112;24;24</additional_attributes>
+  </element>
+</diagram>
