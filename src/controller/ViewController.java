@@ -34,9 +34,14 @@ import event.IEventHandler;
 import model.CollidableObject;
 import model.GameModel;
 import model.character.Player;
+import model.weapon.AbstractWeapon;
 import model.weapon.Grenade;
+import model.weapon.MachineGun;
+import model.weapon.Melee;
 import model.weapon.Portal;
+import model.weapon.PortalGun;
 import model.weapon.Projectile;
+import model.weapon.Sword;
 
 import graphics.opengl.GLScreen;
 import graphics.opengl.animation.Actor;
@@ -70,10 +75,14 @@ public class ViewController
 
 	// Overlay
 	private List<GLRenderableObject> overlayObjects = new LinkedList<GLRenderableObject>();
+	private GLBitmapFont ammoMeter;
+	private GLBitmapFont scoreMeter;
+	
 	private GLBitmapFont hpMeter;
 	private GLBitmapFont fpsMeter;
-	private GLBitmapFont ammoMeter;
+	
 	private GLBitmapFont waveMeter;
+	private Actor statusHud;
 
 	// Map
 	private TileMap tilemap;
@@ -261,17 +270,25 @@ public class ViewController
 				10), letters1, 10);
 		this.fpsMeter = new GLBitmapFont(("FPS: " + 0), new Rectangle(10, 10, 60,
 				10), letters2, 10);
-		this.ammoMeter = new GLBitmapFont(("Ammo: " + 0), new Rectangle(10,
-				this.screen.getBounds().getHeight() - 20, 60, 10), letters3, 10);
 		this.waveMeter = new GLBitmapFont(("Wave: " + 0), new Rectangle(10,
 				this.screen.getBounds().getHeight() - 40, 60, 10), letters4, 10);
+		
+		this.ammoMeter = new GLBitmapFont(("" + 0), new Rectangle(this.screen.getBounds().getWidth()-70,
+				this.screen.getBounds().getHeight() - 50, 60, 40), letters3, 16);
+		this.overlayObjects.add(this.ammoMeter);
+		
+		this.scoreMeter = new GLBitmapFont(("" + 0), new Rectangle(this.screen.getBounds().getWidth()-70,
+				this.screen.getBounds().getHeight() - 87, 60, 20), letters3, 10);
+		this.overlayObjects.add(this.scoreMeter);
+		this.ammoMeter.setColor(0.8f, 0.8f, 0.8f);
+		
 		this.overlayObjects.add(this.hpMeter);
 		this.overlayObjects.add(this.fpsMeter);
-		this.overlayObjects.add(this.ammoMeter);
+		
 		this.overlayObjects.add(this.waveMeter);
 		this.fpsMeter.setColor(1f, 0f, 0f);
 		this.hpMeter.setColor(0f, 1f, 0f);
-		this.ammoMeter.setColor(0f, 0f, 1f);
+		
 		this.waveMeter.setColor(1f, 0f, 1f);
 
 		this.isInLSDMode = PreferenceLoader.getBoolean("LSD_MODE", false);
@@ -294,6 +311,10 @@ public class ViewController
 			this.screen.addDrawableToLayer(this.player, 1);
 
 			this.player.setColor(1f, 1f, 1f);
+			this.statusHud = ObjectFactory.newActor(1);
+			this.statusHud.setX(this.screen.getBounds().getWidth()-this.statusHud.getWidth());
+			this.statusHud.setY(this.screen.getBounds().getHeight()-this.statusHud.getHeight());
+			this.overlayObjects.add(this.statusHud);
 			this.doneLoading = true;
 		} else if (evt.getProperty() == Event.Property.NEW_WAVE) {
 
@@ -336,7 +357,7 @@ public class ViewController
 				// this.actors.remove(cObj);
 
 				if (cObj instanceof Projectile && ((Projectile) cObj).getOwner() instanceof Grenade) {
-					Actor explosion = ObjectFactory.newActor(null);
+					Actor explosion = ObjectFactory.newActor(0);
 					explosion.addAnimationListener(this);
 					explosion.setShouldRepeat(false);
 					explosion.setCurrentAnimation("default");
@@ -375,8 +396,30 @@ public class ViewController
 				Player p = (Player) this.player.getCollidableObject();
 				if (p != null && this.hpMeter != null) {
 					this.hpMeter.setText("Hp:" + p.getHealth());
-					this.ammoMeter.setText("Ammo:"
+					this.ammoMeter.setText(""
 							+ p.getCurrentWeapon().getCurrentAmmo());
+				}
+				if (p != null) {
+					AbstractWeapon aw = p.getCurrentWeapon();
+					
+					if (aw instanceof MachineGun)
+						this.statusHud.setCurrentAnimation("machinegun");
+					else if (aw instanceof Grenade)
+						this.statusHud.setCurrentAnimation("grenade");
+					else if (aw instanceof Melee)
+						this.statusHud.setCurrentAnimation("sword");
+					else if (aw instanceof PortalGun) {
+						switch (((PortalGun) aw).getMode()) {
+							case BLUE :
+								this.statusHud.setCurrentAnimation("portal_blue");
+								break;
+							case ORANGE :
+								this.statusHud.setCurrentAnimation("portal_orange");
+								break;
+						}
+					}
+					
+					this.scoreMeter.setText(""+1337);
 				}
 			}
 

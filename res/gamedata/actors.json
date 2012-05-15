@@ -6,6 +6,7 @@
 		"spritesheets/json/machinegun_projectile.act",
 		"spritesheets/json/grenade_projectile.act",
 		"spritesheets/json/portal.act",
-		"spritesheets/json/explosion.act"
+		"spritesheets/json/explosion.act",
+		"spritesheets/json/status_hud.act"
 	]
 }
