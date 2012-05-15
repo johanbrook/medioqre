@@ -73,7 +73,7 @@ public class AIController implements IMessageSender, IMessageListener {
 	 *            Time since last update
 	 */
 	public void updateAI(double dt) {
-		this.playerPos = player.getPosition();
+		this.playerPos = getMidOfPlayerPos();
 		playerTile = calculateTile(playerPos);
 
 		if (playerTile.x >= 0 && playerTile.y >= 0 && playerTile.x < 48
