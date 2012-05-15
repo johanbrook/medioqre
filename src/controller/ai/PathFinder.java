@@ -99,8 +99,6 @@ public class PathFinder {
 					for (int k = 0; k <= path.size()-1; k++){
 						reversePath.add(path.get((path.size()-1)-k));
 					}
-					tools.Logger.log("pathsize :" + path.size() + " reveresePathsize: " + reversePath.size() + " converted reversePath size: " +
-					convertPath(reversePath).size());
 					return convertPath(reversePath);
 
 					// The goal was not found in the openList
