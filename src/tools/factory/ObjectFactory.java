@@ -540,7 +540,7 @@ public class ObjectFactory {
 	 *            A CollidableObject to follow
 	 * @return A new Actor
 	 */
-	public static Actor newActor(CollidableObject collidableObject) {
+	public static Actor newActor(Object collidableObject) {
 		Actor newA = null;
 
 		try {
@@ -560,13 +560,20 @@ public class ObjectFactory {
 			}
 			else if (collidableObject instanceof Portal)
 				newA = new Actor(actors.getJSONObject(5));
-			else if (collidableObject == null)
-				newA = new Actor(actors.getJSONObject(6));
+			else if (collidableObject instanceof Integer) {
+				Integer i = (Integer) collidableObject;
+				
+				if (i == 0) {
+					newA = new Actor(actors.getJSONObject(6));
+				} else if (i == 1) {
+					newA = new Actor(actors.getJSONObject(7));
+				}
+			}
 		} catch (JSONException e1) {
 			e1.printStackTrace();
 		}
-		if (newA != null) {
-			newA.setObject(collidableObject);
+		if (newA != null && collidableObject instanceof CollidableObject) {
+			newA.setObject((CollidableObject)collidableObject);
 
 			if (AppController.isDebugMode()) {
 				newA.setShowCollisionBox(true);
