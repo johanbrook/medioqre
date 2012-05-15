@@ -36,6 +36,7 @@ public class AIController implements IMessageSender, IMessageListener {
 	private Player player;
 
 	private Messager messager = new Messager();
+	
 
 	public AIController(int rows, int columns, int width, int height) {
 		this.pathfinder = new PathFinder(rows, columns);
@@ -110,11 +111,18 @@ public class AIController implements IMessageSender, IMessageListener {
 			//If no path is set, or if the player is not left in the set path, calculate new path.
 			if (aiPlayer.getPath() == null || !aiPlayer.getPath().get(aiPlayer.getPath().size()-1).equals(playerTile)){
 				aiPlayer.setCurrentTile(calculateTile(aiPlayer.getMidPos()));
-				getNewPath(aiPlayer);
+				
+				//Update more often if closer to player. No need for enemies far away to update each frame.
+				if (aiPlayer.getCount() > aiPlayer.getDistance()/this.width){
+					getNewPath(aiPlayer);
+					aiPlayer.resetCount();
+				}else {
+					aiPlayer.updateCount();
+				}
 
 			}
 			if (aiPlayer.getPath() != null) {
-				
+
 				followPath(aiPlayer);
 
 			} else {
@@ -133,14 +141,12 @@ public class AIController implements IMessageSender, IMessageListener {
 	 * @param aiPlayer
 	 */
 	private void followPath(AIPlayer aiPlayer) {
-		
 
-	
 
 		// If path is longer than two tiles, just follow the path.
 		if (aiPlayer.getPath().size() >= 2){
 			aiPlayer.updateEnemy(calculateDirection(aiPlayer.getMidPos(), getMidOfTile(aiPlayer.getPath().get(1))));
-			
+
 			// If the unit is close to the center of the next tile in the path, remove the tile in
 			// index 0, which represents the last tile. Calculate new current tile.
 			if (positionsAreClose(aiPlayer.getMidPos(), getMidOfTile(aiPlayer.getPath().get(1)))){
@@ -155,7 +161,7 @@ public class AIController implements IMessageSender, IMessageListener {
 		}else{	aiPlayer.getEnemy().setDirection(
 				findLineToPlayer(aiPlayer));
 		}
-		
+
 	}
 
 	/**
