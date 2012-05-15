@@ -14,5 +14,7 @@
 	<classpathentry exported="true" kind="lib" path="libs/jogamp-all-platforms/jogamp-all-platforms/jar/jogl.all.jar" sourcepath="libs/jogamp-all-platforms/jogamp-all-platforms/jogl-java-src.zip"/>
 	<classpathentry kind="lib" path="libs/macify-1.6.jar"/>
 	<classpathentry kind="lib" path="libs/CodecJOgg.jar"/>
+	<classpathentry kind="lib" path="libs/LibraryJOAL.jar"/>
+	<classpathentry kind="lib" path="libs/jogamp-all-platforms/jogamp-all-platforms/jar/joal.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

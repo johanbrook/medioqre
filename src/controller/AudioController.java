@@ -10,6 +10,7 @@ import paulscode.sound.SoundSystemConfig;
 import paulscode.sound.SoundSystemException;
 import paulscode.sound.codecs.CodecWav;
 import paulscode.sound.codecs.CodecJOgg;
+import paulscode.sound.libraries.LibraryJOAL;
 import paulscode.sound.libraries.LibraryJavaSound;
 import tools.datamanagement.PreferenceLoader;
 import audio.AudioConstants;
@@ -56,8 +57,18 @@ public class AudioController implements IEventHandler {
 
 		// Link to system sound
 		try {
-
-			SoundSystemConfig.addLibrary(LibraryJavaSound.class);
+			Class lib;
+			
+			//Use JOAL if Compatible
+			if (SoundSystem.libraryCompatible( LibraryJOAL.class )){
+				lib = LibraryJOAL.class;
+			} else{
+				//Use JavaSound
+				lib = LibraryJavaSound.class;
+			}
+			
+			
+			
 
 			// Link to Wav Codec
 			SoundSystemConfig.setCodec("wav", CodecWav.class);
@@ -65,11 +76,13 @@ public class AudioController implements IEventHandler {
 			//Link to JOgg
 			SoundSystemConfig.setCodec("ogg", CodecJOgg.class);
 
+			// Initialize Sound Engine
+			soundSys = new SoundSystem(lib);
+			
 		} catch (SoundSystemException e) {
 		}
 
-		// Initialize Sound Engine
-		soundSys = new SoundSystem();
+		
 		// soundSys.setListenerOrientation(1, 1, 0, 1, 1, 1);
 
 	}
