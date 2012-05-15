@@ -67,7 +67,7 @@ public class AppController implements Runnable{
 		this.game = new GameModel();
 		this.navigation = new NavigationController();
 
-		this.view = new ViewController(this.navigation, 20 * 48, 12 * 48);
+		new ViewController(this.navigation, 20 * 48, 12 * 48);
 		this.ai = new AIController(48, 48, 48, 48);
 
 		this.navigation.addReceiver((IMessageListener) this.game);
