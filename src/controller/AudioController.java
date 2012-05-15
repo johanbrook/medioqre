@@ -1,6 +1,5 @@
 package controller;
 
-import datamanagement.PreferenceLoader;
 import model.Entity;
 import model.IGameModel;
 import model.character.Enemy;
@@ -11,6 +10,7 @@ import paulscode.sound.SoundSystemConfig;
 import paulscode.sound.SoundSystemException;
 import paulscode.sound.codecs.CodecWav;
 import paulscode.sound.libraries.LibraryJavaSound;
+import tools.datamanagement.PreferenceLoader;
 import audio.AudioConstants;
 import audio.SoundLibrary;
 import event.Event;

@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
+
+import tools.factory.ObjectFactory;
 import static tools.Logger.log;
 
 import model.character.AbstractCharacter;
@@ -19,7 +21,6 @@ import model.weapon.Portal;
 import model.weapon.PortalGun;
 import model.weapon.PortalGun.Mode;
 import model.weapon.Projectile;
-import constants.Direction;
 import controller.AppController;
 import event.Event;
 import event.Event.Property;
@@ -27,7 +28,6 @@ import event.EventBus;
 import event.IMessageListener;
 import event.IMessageSender;
 import event.Messager;
-import factory.ObjectFactory;
 
 /**
  * Model for a game.

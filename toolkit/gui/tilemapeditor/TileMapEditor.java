@@ -1,5 +1,8 @@
 package gui.tilemapeditor;
 
+import graphics.opengl.tilemap.Tile;
+import graphics.opengl.tilemap.TileMap;
+import graphics.opengl.tilemap.TileSheet;
 import graphics.tools.PixelCastingTool;
 import gui.tilemapeditor.subviews.TileCanvas;
 import gui.tilemapeditor.subviews.TileInspector;
@@ -51,11 +54,9 @@ import org.apache.commons.io.IOUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import datamanagement.ResourceLoader;
+import tools.datamanagement.ResourceLoader;
 
-import tilemap.Tile;
-import tilemap.TileMap;
-import tilemap.TileSheet;
+
 
 public class TileMapEditor extends JFrame implements TileSelectorListener {
 

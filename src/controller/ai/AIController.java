@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import model.Direction;
 import model.GameModel;
 import model.character.Enemy;
 import model.character.Player;
 import model.weapon.Projectile;
-import constants.Direction;
 import event.Event;
 import event.IMessageListener;
 import event.IMessageSender;

@@ -4,12 +4,12 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import static tools.Logger.log;
 
-import constants.Direction;
 
 import event.Event;
 import event.EventBus;
 import event.Event.Property;
 
+import model.Direction;
 import model.Entity;
 import model.weapon.AbstractWeapon;
 import model.weapon.Projectile;

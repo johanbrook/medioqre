@@ -1,5 +1,8 @@
 package gui.tilemapeditor.subviews;
 
+import graphics.opengl.core.Rectangle;
+import graphics.opengl.tilemap.Tile;
+import graphics.opengl.tilemap.TileSheet;
 import gui.tilemapeditor.util.TileSelectorListener;
 
 import java.awt.Color;
@@ -28,10 +31,7 @@ import com.jogamp.gluegen.runtime.opengl.GLProcAddressResolver;
 import com.jogamp.opengl.util.FPSAnimator;
 import com.jogamp.opengl.util.packrect.Rect;
 
-import core.Rectangle;
 
-import tilemap.Tile;
-import tilemap.TileSheet;
 
 public class TileSelector extends GLCanvas
 		implements

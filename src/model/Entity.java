@@ -2,7 +2,6 @@ package model;
 
 import java.awt.Point;
 
-import constants.Direction;
 import event.Event;
 import event.Event.Property;
 import event.EventBus;

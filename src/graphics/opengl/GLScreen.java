@@ -1,6 +1,8 @@
 package graphics.opengl;
 
-import factory.ObjectFactory;
+import graphics.opengl.animation.Actor;
+import graphics.opengl.core.GLRenderableObject;
+import graphics.opengl.core.Rectangle;
 
 import java.awt.Point;
 import java.util.Collection;
@@ -11,8 +13,8 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLDrawable;
 
-import core.GLRenderableObject;
-import core.Rectangle;
+import tools.factory.ObjectFactory;
+
 
 /**
  * A class used for drawing on screen.

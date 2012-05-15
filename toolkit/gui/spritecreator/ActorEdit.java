@@ -1,6 +1,6 @@
 package gui.spritecreator;
 
-import graphics.opengl.Actor;
+import graphics.opengl.animation.Actor;
 
 import javax.swing.JPanel;
 import javax.swing.JComboBox;

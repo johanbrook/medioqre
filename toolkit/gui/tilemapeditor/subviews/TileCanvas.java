@@ -1,5 +1,9 @@
 package gui.tilemapeditor.subviews;
 
+import graphics.opengl.core.Rectangle;
+import graphics.opengl.core.Size;
+import graphics.opengl.tilemap.Tile;
+import graphics.opengl.tilemap.TileMap;
 import gui.tilemapeditor.util.TileSelectorListener;
 
 import java.awt.event.MouseEvent;
@@ -16,15 +20,11 @@ import javax.media.opengl.GLEventListener;
 import javax.media.opengl.GLException;
 import javax.media.opengl.awt.GLCanvas;
 
-import tilemap.Tile;
-import tilemap.TileMap;
 
 import com.jogamp.opengl.util.FPSAnimator;
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureIO;
 
-import core.Rectangle;
-import core.Size;
 
 public class TileCanvas extends GLCanvas
 		implements

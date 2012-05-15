@@ -8,6 +8,9 @@ package controller;
 
 import org.json.JSONException;
 
+import tools.factory.Level;
+import tools.factory.ObjectFactory;
+
 import static tools.Logger.*;
 
 import controller.ai.AIController;
@@ -16,9 +19,6 @@ import event.Event;
 import event.EventBus;
 import event.IMessageListener;
 import event.IMessageSender;
-import factory.Level;
-import factory.ObjectFactory;
-import gui.ViewController;
 import model.GameModel;
 import model.IGameModel;
 
@@ -47,7 +47,6 @@ public class AppController implements Runnable{
 	private static final double DELTA_RATIO = 10E7;
 
 	private IGameModel game;
-	private ViewController view;
 	private AIController ai;
 	private AudioController audio;
 	private NavigationController navigation;

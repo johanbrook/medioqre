@@ -1,6 +1,8 @@
 package main;
 
 
+import gui.Launcher;
+
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -9,7 +11,6 @@ import tools.Logger;
 
 import controller.AppController;
 
-import launcher.Launcher;
 import static tools.Logger.*;
 
 import org.simplericity.macify.eawt.*;

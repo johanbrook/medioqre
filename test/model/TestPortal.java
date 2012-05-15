@@ -19,7 +19,6 @@ import model.weapon.PortalGun.Mode;
 import org.junit.Before;
 import org.junit.Test;
 
-import constants.Direction;
 
 public class TestPortal {
 

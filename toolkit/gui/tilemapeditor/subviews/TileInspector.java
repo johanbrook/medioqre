@@ -1,13 +1,14 @@
 package gui.tilemapeditor.subviews;
 
+import graphics.opengl.tilemap.Tile;
+import graphics.opengl.tilemap.TileMap;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
-import tilemap.Tile;
-import tilemap.TileMap;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.UIManager;

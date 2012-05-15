@@ -1,6 +1,6 @@
 package gui.tilemapeditor.util;
 
-import tilemap.Tile;
+import graphics.opengl.tilemap.Tile;
 
 public interface TileSelectorListener {
 

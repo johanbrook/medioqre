@@ -19,7 +19,8 @@ import model.weapon.Projectile.Range;
 import org.junit.Before;
 import org.junit.Test;
 
-import factory.ObjectFactory;
+import tools.factory.ObjectFactory;
+
 
 public class TestPlayer {
 

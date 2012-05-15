@@ -7,10 +7,10 @@ import org.json.JSONObject;
 
 import tools.Logger;
 
-import core.GLRenderableObject;
-import core.JSONSerializable;
-import core.Rectangle;
-import graphics.opengl.Sprite;
+import graphics.json.JSONSerializable;
+import graphics.opengl.animation.Sprite;
+import graphics.opengl.core.GLRenderableObject;
+import graphics.opengl.core.Rectangle;
 
 public class GLLetter implements GLRenderableObject, JSONSerializable {
 

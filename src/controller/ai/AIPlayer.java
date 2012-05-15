@@ -3,9 +3,9 @@ package controller.ai;
 import java.awt.Point;
 import java.util.List;
 
+import model.Direction;
 import model.character.Enemy;
 import model.weapon.Projectile;
-import constants.Direction;
 
 /**
  * Class for representing a player. Each AIPlayer will control one enemy. Keeps

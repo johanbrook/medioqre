@@ -6,7 +6,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import constants.Direction;
+import model.Direction;
+
 
 /**
  * A unique list with a maximum size.

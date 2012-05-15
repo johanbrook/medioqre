@@ -12,13 +12,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import constants.Direction;
+import tools.factory.Level;
+import tools.factory.ObjectFactory;
+
 import event.Event;
 import event.Event.Property;
 import event.EventBus;
 import event.IEventHandler;
-import factory.Level;
-import factory.ObjectFactory;
 import model.Entity;
 
 public class TestGameModel implements IEventHandler {

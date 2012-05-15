@@ -2,10 +2,11 @@ package tools;
 
 import org.json.JSONObject;
 
+import tools.datamanagement.ResourceLoader;
+
 import com.sun.jmx.snmp.Timestamp;
 
 import controller.AppController;
-import datamanagement.ResourceLoader;
 
 /**
  *	Logger class

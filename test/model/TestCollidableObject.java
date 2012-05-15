@@ -19,7 +19,6 @@ import org.junit.Test;
 
 import tools.Logger;
 
-import constants.Direction;
 
 import model.CollidableObject;
 import model.character.AbstractCharacter;

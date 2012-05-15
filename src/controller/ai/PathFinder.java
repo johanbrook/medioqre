@@ -4,7 +4,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-import factory.ObjectFactory;
+import tools.factory.ObjectFactory;
+
 
 /**
  * Class capable of finding a path between different spots on a matrice of

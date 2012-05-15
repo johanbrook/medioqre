@@ -12,12 +12,12 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+import model.Direction;
 import model.character.*;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import constants.Direction;
 
 public class TestCharacterMove {
 
@@ -43,7 +43,7 @@ public class TestCharacterMove {
 
 	@Test
 	public void testMoveNorth() {
-		this.player.setDirection(constants.Direction.NORTH);
+		this.player.setDirection(model.Direction.NORTH);
 		this.player.move(DELTA);
 
 		assertEquals(new Point(0, -this.playerMovement),
@@ -52,7 +52,7 @@ public class TestCharacterMove {
 
 	@Test
 	public void testMoveSouth() {
-		this.player.setDirection(constants.Direction.SOUTH);
+		this.player.setDirection(model.Direction.SOUTH);
 		this.player.move(DELTA);
 
 		assertEquals(new Point(0, this.playerMovement),
@@ -61,7 +61,7 @@ public class TestCharacterMove {
 
 	@Test
 	public void testMoveEast() {
-		this.player.setDirection(constants.Direction.EAST);
+		this.player.setDirection(model.Direction.EAST);
 		this.player.move(DELTA);
 
 		assertEquals(new Point(this.playerMovement, 0),
@@ -70,7 +70,7 @@ public class TestCharacterMove {
 
 	@Test
 	public void testMoveWest() {
-		this.player.setDirection(constants.Direction.WEST);
+		this.player.setDirection(model.Direction.WEST);
 		this.player.move(DELTA);
 
 		assertEquals(new Point(-this.playerMovement, 0),
@@ -79,7 +79,7 @@ public class TestCharacterMove {
 
 	@Test
 	public void testMoveNorthWest() {
-		this.player.setDirection(constants.Direction.NORTH_WEST);
+		this.player.setDirection(model.Direction.NORTH_WEST);
 		this.player.move(DELTA);
 		int xmovement = (int) (Direction.NORTH_WEST.getXRatio() * this.playerMovement);
 		int ymovement = (int) (Direction.NORTH_WEST.getYRatio() * this.playerMovement);
@@ -89,7 +89,7 @@ public class TestCharacterMove {
 
 	@Test
 	public void testMoveNorthEast() {
-		this.player.setDirection(constants.Direction.NORTH_EAST);
+		this.player.setDirection(model.Direction.NORTH_EAST);
 		this.player.move(DELTA);
 
 		int xmovement = (int) (Direction.NORTH_EAST.getXRatio() * this.playerMovement);
@@ -100,7 +100,7 @@ public class TestCharacterMove {
 
 	@Test
 	public void testMoveSouthWest() {
-		this.player.setDirection(constants.Direction.SOUTH_WEST);
+		this.player.setDirection(model.Direction.SOUTH_WEST);
 		this.player.move(DELTA);
 
 		int xmovement = (int) (Direction.SOUTH_WEST.getXRatio() * this.playerMovement);
@@ -111,7 +111,7 @@ public class TestCharacterMove {
 
 	@Test
 	public void testMoveSouthEast() {
-		this.player.setDirection(constants.Direction.SOUTH_EAST);
+		this.player.setDirection(model.Direction.SOUTH_EAST);
 		this.player.move(DELTA);
 
 		int xmovement = (int) (Direction.SOUTH_EAST.getXRatio() * this.playerMovement);

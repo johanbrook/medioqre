@@ -1,6 +1,7 @@
 package gui.spritecreator;
 
-import graphics.opengl.Actor;
+import graphics.opengl.animation.Actor;
+import graphics.opengl.core.Rectangle;
 
 import java.awt.Dimension;
 import java.awt.Frame;
@@ -16,7 +17,6 @@ import javax.swing.JFrame;
 
 import com.jogamp.opengl.util.Animator;
 
-import core.Rectangle;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;

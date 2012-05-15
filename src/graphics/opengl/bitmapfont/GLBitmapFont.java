@@ -1,5 +1,9 @@
 package graphics.opengl.bitmapfont;
 
+import graphics.json.JSONSerializable;
+import graphics.opengl.core.GLRenderableObject;
+import graphics.opengl.core.Rectangle;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,13 +13,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import tools.CounterObject;
-import tools.CounterTool;
 import tools.Logger;
+import tools.timer.CounterObject;
+import tools.timer.CounterTool;
 
-import core.GLRenderableObject;
-import core.JSONSerializable;
-import core.Rectangle;
 
 public class GLBitmapFont implements JSONSerializable, GLRenderableObject {
 

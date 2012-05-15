@@ -8,7 +8,6 @@ import model.character.Player;
 
 import tools.Logger;
 
-import constants.Direction;
 import event.Event;
 import event.EventBus;
 import event.IMessageListener;

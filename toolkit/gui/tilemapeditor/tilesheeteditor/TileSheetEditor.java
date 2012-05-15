@@ -1,6 +1,9 @@
 package gui.tilemapeditor.tilesheeteditor;
 
-import graphics.opengl.Sprite;
+import graphics.opengl.animation.Sprite;
+import graphics.opengl.core.Rectangle;
+import graphics.opengl.tilemap.Tile;
+import graphics.opengl.tilemap.TileSheet;
 
 import java.awt.Dimension;
 
@@ -21,20 +24,18 @@ import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
 
-import math.Util;
 
 import org.apache.commons.io.IOUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import tools.Math;
+
 import com.jogamp.opengl.util.FPSAnimator;
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureIO;
 
-import core.Rectangle;
 
-import tilemap.Tile;
-import tilemap.TileSheet;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -258,10 +259,10 @@ public class TileSheetEditor implements GLEventListener {
 				tile.getSprite().setY(Integer.valueOf(tfY.getText()));
 				tile.getSprite().setWidth(Integer.valueOf(tfWidth.getText()));
 				tile.getSprite().setHeight(Integer.valueOf(tfHeight.getText()));
-				tile.setType(Util.intFromHexString(tfType.getText()));
+				tile.setType(Math.intFromHexString(tfType.getText()));
 				tile.setCollidable(chbxColl.isSelected());
 				System.out.println("Int: "
-						+ Util.intFromHexString(tfType.getText()));
+						+ Math.intFromHexString(tfType.getText()));
 			}
 		}
 	}
@@ -370,7 +371,7 @@ public class TileSheetEditor implements GLEventListener {
 		JMenuItem mntmSetTiletype = new JMenuItem("Set tiletype...");
 		mntmSetTiletype.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				lastColor = Util.intFromHexString(JOptionPane.showInputDialog(frame.getParent(), "Default color"));
+				lastColor = Math.intFromHexString(JOptionPane.showInputDialog(frame.getParent(), "Default color"));
 			}
 		});
 		mnToolkit.add(mntmSetTiletype);

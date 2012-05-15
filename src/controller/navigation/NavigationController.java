@@ -5,7 +5,8 @@ import java.awt.event.KeyListener;
 import java.util.HashMap;
 import java.util.Map;
 
-import constants.Direction;
+import model.Direction;
+
 import event.Event;
 import event.EventBus;
 import event.IMessageListener;

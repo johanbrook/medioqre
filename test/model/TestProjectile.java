@@ -22,7 +22,6 @@ import model.weapon.Projectile.Range;
 import org.junit.Before;
 import org.junit.Test;
 
-import constants.Direction;
 
 public class TestProjectile {
 

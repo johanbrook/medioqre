@@ -1,7 +1,7 @@
 package controller.navigation;
 
+import model.Direction;
 import model.character.Player;
-import constants.Direction;
 
 /**
  * Callable interface.
