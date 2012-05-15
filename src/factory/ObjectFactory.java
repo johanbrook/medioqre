@@ -587,8 +587,8 @@ public class ObjectFactory {
 		try {
 			tileMapInstance.setTileSheet(ResourceLoader
 					.loadTileSheetFromResource(tileMap.getString("tilesheet")));
-			tileMapInstance.setViewPortSize(new Size(32 * 12, 32 * 20));
-			tileMapInstance.setTileSize(new Size(32, 32));
+			tileMapInstance.setViewPortSize(new Size(48 * 12, 48 * 20));
+			tileMapInstance.setTileSize(new Size(48, 48));
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
