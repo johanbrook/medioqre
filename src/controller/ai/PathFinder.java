@@ -1,5 +1,6 @@
 package controller.ai;
 
+
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,12 @@ public class PathFinder {
 	private AStarTile currentTile;
 	// Using a approx value of sqrt(2) for diagonalcost, in order to save time.
 	private final double DIAGONALCOST = 1.41421356;
+
+	// This cost is added to the G-value of a tile, if the current path would change direction to reach it.
+	// The cost is small enough that it won't chose a longer path over a shorter, but will ensure that out of a
+	// number of paths of the same length, the one with the fewest turns will be chosen.
+	private final double TURNCOST = 0.0002;
+
 	private int rows, columns;
 	private boolean initiated;
 
@@ -144,40 +151,34 @@ public class PathFinder {
 		return pointer;
 	}
 
-	/*
-	 Loop through all neighbors of the currently considered tile
-	 updating their G-values, and whether they belong to the open list och closed list. 
-	The G-value is only updated if the path to the currently considered tile is shorter than any other 
-	considered path to the neighbor in question (that is, if the current G-value is higher than the one we
-	are calculating through the current tile)
+	/**
+	 * For each neighbor in the current, will update it's open/closed-status, as well as it's
+	 * G-value, depending on the current path as well as the internal state of the tile.
+	 * @param currentNeighbors
 	 */
 	private void updateNeighbors(List<AStarTile> currentNeighbors) {
 
 		for (int k = 0; k < currentNeighbors.size(); k++) {
 
-			// if a tile is closed and the current paths g-value would be lower
-			// than the tiles old g-value, we update the tiles g-value and sets it to the newly calculated value
-			// Should this be the case, the neighbor will set the current tile as its parrent
-			if (currentNeighbors.get(k).isClosed()
+
+			// if a tile is open and the current paths g-value would be
+			// lower than its old g-value, we update the tiles g-value and
+			// adds currentTile as parent
+			if (currentNeighbors.get(k).isOpen()
 					&& currentPathIsShorter(currentNeighbors.get(k))) {
 
-				currentNeighbors.get(k).setG(
-						currentTile.isDiagonal(currentNeighbors.get(k))
-						? currentTile.getG() + DIAGONALCOST
-								: currentTile.getG() + 1);
+				currentNeighbors.get(k).setG(currentTile.isDiagonal(currentNeighbors.get(k)) ?
+						currentTile.getG() + DIAGONALCOST :
+							currentTile.getG() + 1);
 
 				currentNeighbors.get(k).setParent(currentTile);
 
-				// if a tile is open and the current paths g-value would be
-				// lower than its old g-value, we update the tiles g-value and
-				// adds currentTile as parent
-			} else if (currentNeighbors.get(k).isOpen()
-					&& currentPathIsShorter(currentNeighbors.get(k))) {
-				currentNeighbors.get(k).setG(
-						currentTile.isDiagonal(currentNeighbors.get(k))
-						? currentTile.getG() + DIAGONALCOST
-								: currentTile.getG() + 1);
-				currentNeighbors.get(k).setParent(currentTile);
+				// If the current path would have to change direction in order to reach the specific tile, add a small cost.
+				// The cost is 
+
+				if (willTurn(currentNeighbors.get(k))){
+					currentNeighbors.get(k).setG(currentNeighbors.get(k).getG() + TURNCOST);
+				}
 
 				// if a tile is neither open nor closed, adds tile to the
 				// openList
@@ -187,11 +188,18 @@ public class PathFinder {
 
 				currentNeighbors.get(k).setOpen(true);
 				openList.add(currentNeighbors.get(k));
+				
 				currentNeighbors.get(k).setParent(currentTile);
-				currentNeighbors.get(k).setG(
-						currentTile.isDiagonal(currentNeighbors.get(k))
-						? currentTile.getG() + DIAGONALCOST
-								: currentTile.getG() + 1);
+				currentNeighbors.get(k).setG(currentTile.isDiagonal(currentNeighbors.get(k)) ?
+						 currentTile.getG() + DIAGONALCOST :
+								 currentTile.getG() + 1);
+				
+				// If the current path would have to change direction in order to reach the specific tile, add a small cost.
+				// The cost is 
+
+				if (willTurn(currentNeighbors.get(k))){
+					currentNeighbors.get(k).setG(currentNeighbors.get(k).getG() + TURNCOST);
+				}
 			}
 		}
 	}// end updateNeighbors
@@ -282,10 +290,11 @@ public class PathFinder {
 		}
 	}
 
-	/*
+	/**
 	 * Checks if a certain tile should be added to the current Tiles list of
 	 * neighbors
-	 * 
+	 * @param currentTile
+	 * @param consideredTile
 	 * @return True if the considered tile is not a solid, and the path between
 	 * the two tiles will not go through a wall.
 	 */
@@ -299,6 +308,19 @@ public class PathFinder {
 			                                              .getColumn()].isSolid() && !logicList[currentTile.getRow()][currentTile
 			                                                                                                          .getColumn() + dy].isSolid());
 		}
+	}
+
+	/**
+	 * Check if the current path would have to change direction in order to reach the considered tile.
+	 * @param consideredTile
+	 * @return true if the path would have to change direction in order to reach the considered tile.
+	 */
+	private boolean willTurn(AStarTile consideredTile){
+		if (currentTile.getParent() != null){
+			return (currentTile.getParent().getColumn() - currentTile.getColumn() != currentTile.getColumn() - consideredTile.getColumn() 
+					|| currentTile.getParent().getRow() - currentTile.getRow() != currentTile.getRow() - consideredTile.getRow());
+		}
+		return false;
 	}
 
 	/**
