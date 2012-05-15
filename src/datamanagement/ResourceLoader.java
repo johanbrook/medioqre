@@ -51,6 +51,7 @@ public class ResourceLoader {
 			relativeJSONObjects = new HashMap<String, JSONObject>();
 
 		JSONObject jsonObject = relativeJSONObjects.get(pathToJsonFile);
+		
 		if (jsonObject == null) {
 			try {
 				String json = loadJSONStringFromResources(pathToJsonFile);

@@ -231,14 +231,15 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 			float rY2 =  ((2.0f * object.getY() -  target
 					.getHeight()) /  target.getHeight());
 
-			gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER,
+			gl.glTexParameteri(GL.GL_TEXTURE_2D, 
+					GL.GL_TEXTURE_MIN_FILTER,
 					GL.GL_NEAREST);
-			gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER,
+			
+			gl.glTexParameteri(GL.GL_TEXTURE_2D, 
+					GL.GL_TEXTURE_MAG_FILTER,
 					GL.GL_NEAREST);
+			
 			gl.glAlphaFunc(GL2.GL_GREATER, 0.10f);
-
-			// gl.glEnable(GL.GL_BLEND);
-			// gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 
 			gl.glBegin(GL2.GL_QUADS);
 			gl.glColor3f(this.color[0], this.color[1], this.color[2]);

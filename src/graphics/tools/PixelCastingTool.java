@@ -31,7 +31,7 @@ public class PixelCastingTool {
 			byte[] data = ((DataBufferByte) buffer).getData();
 
 			if (data.length == pixels.length * 4) {
-				System.out.println("Image has alpha");
+				tools.Logger.log("Image has alpha");
 
 				for (int i = 0; i < pixels.length; i++) {
 					int a = 0xff000000 & (data[i * 4] << 24);
@@ -55,7 +55,7 @@ public class PixelCastingTool {
 			}
 			return pixels;
 		} else if (buffer.getClass() == DataBufferInt.class) {
-			System.out.println("Getting pixels from DataBufferInt");
+			tools.Logger.log("Getting pixels from DataBufferInt");
 			return ((DataBufferInt) buffer).getData();
 		}
 		return null;
