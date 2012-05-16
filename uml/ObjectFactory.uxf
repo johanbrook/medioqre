@@ -1,38 +1,126 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<diagram program="umlet" version="11.5">
+<diagram program="umlet" version="11.4">
   <zoom_level>10</zoom_level>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>430</x>
-      <y>140</y>
+      <x>20</x>
+      <y>40</y>
       <w>430</w>
-      <h>340</h>
+      <h>410</h>
     </coordinates>
     <panel_attributes> 
 ObjectFactory
  
 --
 Setup
-+ setLevel(Level)
-+ getLevels:Level[]
---
++ setLevel(Level):void
++ getLevel():Level
+- config:JSONObject
 --
 Model
 + newPlayer:Player
++ newEnemy:Enemy
 + newEnemiesForWave(int waveNumber):List&lt;Enemy&gt;
-+ newItemsForWave(int waveNumber):List&lt;CollectableItem&gt;
-+ newWalls:List&lt;Wall&gt;
-+ newProjectile(Weapon owner):Projectile
-+ newWeapons:List&lt;Weapon&gt;
++ newItem:CollidableObject
++ newItemsForWave(int waveNumber):List&lt;CollidableObject&gt;
++ newWalls:List&lt;ConcreteCollidableObject&gt;
++ newProjectil:Projectile
++ newWeaponBelt:WeaponBelt
++ newPortal:Portal
 --
 ViewController
-+ newActor(Entity):Actor
++ newActor:Actor
 + newTileMap:TileMap
 + newScreen:Screen
 --
 AIController
 + getCollidables:boolean[][]</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>540</x>
+      <y>40</y>
+      <w>420</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes> 
+Level
+ 
+--
+ 
+Level(configPath:String)
+ 
+--
+
++ getConfig():JSONObject
+- parseNestedConfigFiles(config:JSONObject):void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>150</x>
+      <y>130</y>
+      <w>410</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=-</panel_attributes>
+    <additional_attributes>30;30;390;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>540</x>
+      <y>530</y>
+      <w>420</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes> 
+ResourceLoader
+ 
+--
++ parseJSONFromPath(path:String):JSONObject
++ loadJSONStringFromResource(resource:String):String
++ loadTileMapFromResource(resource:String):TileMap
++ loadTileSheetFromResource(resource:String):TileSheet</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>710</x>
+      <y>170</y>
+      <w>50</w>
+      <h>380</h>
+    </coordinates>
+    <panel_attributes>lt=-</panel_attributes>
+    <additional_attributes>30;360;30;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Package</type>
+    <coordinates>
+      <x>0</x>
+      <y>0</y>
+      <w>980</w>
+      <h>470</h>
+    </coordinates>
+    <panel_attributes>tools.factory
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Package</type>
+    <coordinates>
+      <x>520</x>
+      <y>490</y>
+      <w>460</w>
+      <h>210</h>
+    </coordinates>
+    <panel_attributes>tools.datamanagement
+bg=orange</panel_attributes>
     <additional_attributes/>
   </element>
 </diagram>
