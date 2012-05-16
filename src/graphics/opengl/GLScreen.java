@@ -152,7 +152,7 @@ public class GLScreen implements GLRenderableObject {
 			return;
 
 		if (this.screenSize == null)
-			System.out.println("Screen size is null.");
+			tools.Logger.err("Screen size is null.");
 
 		if (renderRect == null)
 			this.renderRect = new Rectangle(0, 0, 0, 0);

@@ -25,7 +25,7 @@ public class PixelCastingTool {
 		DataBuffer buffer = raster.getDataBuffer();
 
 		if (buffer.getClass() == DataBufferByte.class) {
-			System.out.println("Getting pixels from DataBufferByte");
+			tools.Logger.log("Getting pixels from DataBufferByte");
 
 			int[] pixels = new int[imageWidth * imageHeight];
 			byte[] data = ((DataBufferByte) buffer).getData();
@@ -41,7 +41,7 @@ public class PixelCastingTool {
 					pixels[i] = (a | r | g | b);
 				}
 			} else if (data.length == pixels.length * 3) {
-				System.out.println("Image doesn't have alpha");
+				tools.Logger.log("Image doesn't have alpha");
 				for (int i = 0; i < pixels.length; i++) {
 					int a = 0xff000000;
 					int r = 0x00ff0000 & (data[i * 3 + 2] << 16);

@@ -439,7 +439,7 @@ public class Actor implements JSONSerializable, GLRenderableObject, AnimationLis
 
 			retObj.put("animations", anim);
 		} catch (JSONException e) {
-			System.out.println("Failed to serialize!");
+			tools.Logger.err("Failed to serialize!");
 			e.printStackTrace();
 		}
 		return retObj;
@@ -452,7 +452,7 @@ public class Actor implements JSONSerializable, GLRenderableObject, AnimationLis
 			this.rectangle = new Rectangle(o.getInt("x"), o.getInt("y"),
 					o.getInt("width"), o.getInt("height"));
 
-			System.out.println("Loading: " + o.getInt("x") + ","
+			tools.Logger.log("Loading: " + o.getInt("x") + ","
 					+ o.getInt("y") + "," + o.getInt("width") + ","
 					+ o.getInt("height"));
 
@@ -463,8 +463,7 @@ public class Actor implements JSONSerializable, GLRenderableObject, AnimationLis
 				this.animations.put(a.getName(), a);
 			}
 		} catch (JSONException e) {
-			System.out.println("Failed to deserialize!");
-			// TODO Auto-generated catch block
+			tools.Logger.err("Failed to deserialize!");
 			e.printStackTrace();
 		}
 	}
