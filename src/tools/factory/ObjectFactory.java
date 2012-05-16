@@ -178,6 +178,15 @@ public class ObjectFactory {
 	public static Level getLevel() {
 		return level;
 	}
+	
+	
+	/**
+	 * Get the current tilemap
+	 * @return The tilemap
+	 */
+	public static TileMap getTileMap(){
+		return tileMapInstance;
+	}
 
 	// Model objects
 

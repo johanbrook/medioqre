@@ -1,26 +1,22 @@
 package model;
 
+import static tools.Logger.log;
+
 import java.awt.Point;
-import java.awt.Rectangle;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import tools.factory.ObjectFactory;
-import static tools.Logger.log;
-
 import model.character.AbstractCharacter;
 import model.character.Enemy;
 import model.character.Player;
-import model.item.AmmoCrate;
 import model.item.ICollectableItem;
-import model.item.MedPack;
 import model.weapon.Grenade;
 import model.weapon.Portal;
 import model.weapon.PortalGun;
 import model.weapon.PortalGun.Mode;
 import model.weapon.Projectile;
+import tools.factory.ObjectFactory;
 import controller.AppController;
 import event.Event;
 import event.Event.Property;
@@ -28,6 +24,7 @@ import event.EventBus;
 import event.IMessageListener;
 import event.IMessageSender;
 import event.Messager;
+import graphics.opengl.tilemap.TileMap;
 
 /**
  * Model for a game.
@@ -269,6 +266,10 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 
 		for (CollidableObject item : items) {
 			item.addReceiver(this);
+			//If spawn point is to close to player or inside a wall, set new randomly chosen position.
+			while (!spawnPointIsOkay(item)){
+				item.setPosition(getRandomPosition());
+			}
 		}
 
 		this.objects.addAll(items);
@@ -296,6 +297,10 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 
 		for (Enemy temp : tempEnemies) {
 			temp.addReceiver(this);
+			//If spawn point is to close to player or inside a wall, set new randomly chosen position.
+			while (!spawnPointIsOkay(temp)){
+				temp.setPosition(getRandomPosition());
+			}
 		}
 
 		this.enemies.addAll(tempEnemies);
@@ -312,6 +317,53 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 
 		this.objects.add(this.player);
 		this.player.addReceiver(this);
+	}
+	
+	/**
+	 * Check if the specified object is colliding with a wall
+	 * @param o
+	 * @return True if the specified object is not colliding with a wall.
+	 */
+	private boolean spawnPointIsOkay(CollidableObject o){
+		//If CollidableObject o intersects with a wall, return false.
+		for (CollidableObject obj : this.objects){
+			if (obj instanceof ConcreteCollidableObject){
+				if (obj.isColliding(o)){
+					return false;
+				}
+			}
+		}
+		
+		//Get width of a tile
+		TileMap tileMap = ObjectFactory.getTileMap();
+		int width = (int)tileMap.getTileSize().getWidth();
+		
+		//If distance between CollidableObject o and the player is less than 5 tiles, return false.
+		if (Math.abs((o.getPosition().x - this.player.getPosition().x)) + 
+				Math.abs(o.getPosition().y - this.player.getPosition().y) < 5*width){
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * get a randomly chosen point on the map.
+	 * @return a randomly chosen point on the map.
+	 */
+	private Point getRandomPosition(){
+		TileMap tilemap = ObjectFactory.getTileMap();
+		
+		int rows = (int) tilemap.getTileMapSize().getWidth();
+		int columns = (int) tilemap.getTileMapSize().getHeight();
+		int width = (int) tilemap.getTileSize().getWidth();
+		int height = (int) tilemap.getTileSize().getHeight();
+		
+		Random random = new Random();
+		
+		int x = random.nextInt(width*rows);
+		int y = random.nextInt(height*columns);
+		
+		return new Point (x,y);
 	}
 
 	/**
