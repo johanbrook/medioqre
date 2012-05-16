@@ -9,7 +9,7 @@
 		"projectile": {
 			"damage": 15,
 			"range": "FAR_RANGE",
-			"speed": 50,
+			"speed": 150,
 			"bounds": {
 				"height": 8,
 				"width": 8,
