@@ -1,5 +1,5 @@
 {
-	"speed": 10,
+	"speed": 15,
 	"health": 100,
 	"weapon": {
 		"type": "Melee",
