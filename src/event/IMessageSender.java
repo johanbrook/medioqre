@@ -13,5 +13,5 @@ public interface IMessageSender {
 	 * @param listener
 	 *            The receiver
 	 */
-	public void addReceiver(IMessageListener listener);
+	public void addReceiver(IEventHandler listener);
 }

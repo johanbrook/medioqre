@@ -48,19 +48,18 @@ public class TestEventBus {
 	@Test
 	public void testDidReceiveEvent() {
 
-		assertTrue(this.handler.didReceiveEvent());
+		assertTrue(this.handler.didReceiveEvent);
 	}
 
 	@Test
 	public void testProperty() {
 
-		assertEquals(Property.CHANGED_WEAPON, this.handler.getEvent()
-				.getProperty());
+		assertEquals(Property.CHANGED_WEAPON, this.handler.event.getProperty());
 	}
 
 	@Test
 	public void testSource() {
-		Player p = (Player) this.handler.getEvent().getValue();
+		Player p = (Player) this.handler.event.getValue();
 		assertEquals(this.publisher, p);
 	}
 
@@ -84,21 +83,13 @@ public class TestEventBus {
 	}
 
 	private class Subscriber implements IEventHandler {
-		private boolean didReceiveEvent = false;
-		private Event event;
+		boolean didReceiveEvent = false;
+		Event event;
 
 		@Override
 		public void onEvent(Event evt) {
 			this.didReceiveEvent = true;
 			this.event = evt;
-		}
-
-		public boolean didReceiveEvent() {
-			return this.didReceiveEvent;
-		}
-
-		public Event getEvent() {
-			return this.event;
 		}
 
 	}

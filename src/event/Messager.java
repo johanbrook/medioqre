@@ -10,13 +10,13 @@ import java.util.List;
  */
 public class Messager {
 
-	private List<IMessageListener> listeners;
+	private List<IEventHandler> listeners;
 
 	/**
 	 * Create a new messager.
 	 */
 	public Messager() {
-		listeners = new LinkedList<IMessageListener>();
+		listeners = new LinkedList<IEventHandler>();
 	}
 
 	/**
@@ -25,7 +25,7 @@ public class Messager {
 	 * @param listener
 	 *            The listener.
 	 */
-	public void addListener(IMessageListener listener) {
+	public void addListener(IEventHandler listener) {
 		listeners.add(listener);
 	}
 
@@ -36,8 +36,8 @@ public class Messager {
 	 *            The event
 	 */
 	public void sendMessage(Event evt) {
-		for (IMessageListener l : listeners) {
-			l.onMessage(evt);
+		for (IEventHandler l : listeners) {
+			l.onEvent(evt);
 		}
 	}
 

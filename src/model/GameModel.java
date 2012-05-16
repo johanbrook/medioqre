@@ -21,7 +21,7 @@ import controller.AppController;
 import event.Event;
 import event.Event.Property;
 import event.EventBus;
-import event.IMessageListener;
+import event.IEventHandler;
 import event.IMessageSender;
 import event.Messager;
 import graphics.opengl.tilemap.TileMap;
@@ -32,7 +32,7 @@ import graphics.opengl.tilemap.TileMap;
  * @author Johan
  * 
  */
-public class GameModel implements IGameModel, IMessageListener, IMessageSender {
+public class GameModel implements IGameModel, IEventHandler, IMessageSender {
 
 	private Messager messager = new Messager();
 
@@ -64,7 +64,7 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 	}
 
 	@Override
-	public void onMessage(Event evt) {
+	public void onEvent(Event evt) {
 		Property name = evt.getProperty();
 
 		switch (name) {
@@ -696,7 +696,7 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 	}
 
 	@Override
-	public void addReceiver(IMessageListener listener) {
+	public void addReceiver(IEventHandler listener) {
 		this.messager.addListener(listener);
 	}
 

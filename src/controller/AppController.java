@@ -17,6 +17,7 @@ import controller.ai.AIController;
 import controller.navigation.NavigationController;
 import event.Event;
 import event.EventBus;
+import event.IEventHandler;
 import event.IMessageListener;
 import event.IMessageSender;
 import model.GameModel;
@@ -70,9 +71,9 @@ public class AppController implements Runnable{
 		new ViewController(this.navigation, 20 * 48, 12 * 48);
 		this.ai = new AIController(48, 48, 48, 48);
 
-		this.navigation.addReceiver((IMessageListener) this.game);
-		this.ai.addReceiver((IMessageListener) this.game);
-		((IMessageSender) this.game).addReceiver((IMessageListener) this.ai);
+		this.navigation.addReceiver((IEventHandler) this.game);
+		this.ai.addReceiver((IEventHandler) this.game);
+		((IMessageSender) this.game).addReceiver((IEventHandler) this.ai);
 
 		this.audio = AudioController.getInstance();
 		audio.setGame(game);

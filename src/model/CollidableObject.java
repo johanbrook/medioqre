@@ -10,6 +10,7 @@ import tools.Logger;
 
 import event.Event;
 import event.EventBus;
+import event.IEventHandler;
 import event.IMessageListener;
 import event.Event.Property;
 import event.IMessageSender;
@@ -77,7 +78,7 @@ public abstract class CollidableObject implements IMessageSender {
 	}
 
 	@Override
-	public void addReceiver(IMessageListener listener) {
+	public void addReceiver(IEventHandler listener) {
 		this.messager.addListener(listener);
 	}
 

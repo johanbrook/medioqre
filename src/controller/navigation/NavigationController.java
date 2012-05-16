@@ -9,6 +9,7 @@ import model.Direction;
 
 import event.Event;
 import event.EventBus;
+import event.IEventHandler;
 import event.IMessageListener;
 import event.IMessageSender;
 import event.Event.Property;
@@ -60,7 +61,7 @@ public class NavigationController implements KeyListener, IMessageSender {
 	}
 
 	@Override
-	public void addReceiver(IMessageListener listener) {
+	public void addReceiver(IEventHandler listener) {
 		this.messager.addListener(listener);
 	}
 

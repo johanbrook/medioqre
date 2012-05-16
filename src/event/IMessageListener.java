@@ -4,6 +4,7 @@ package event;
  * A message listener.
  * 
  * @author Johan
+ * @deprecated 2012-05-16. Use IEventHandler instead.
  */
 public interface IMessageListener {
 

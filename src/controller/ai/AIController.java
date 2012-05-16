@@ -12,7 +12,8 @@ import model.character.Enemy;
 import model.character.Player;
 import model.weapon.Projectile;
 import event.Event;
-import event.IMessageListener;
+import event.IEventHandler;
+import event.IEventHandler;
 import event.IMessageSender;
 import event.Messager;
 
@@ -24,7 +25,7 @@ import event.Messager;
  * @author jesperpersson
  * 
  */
-public class AIController implements IMessageSender, IMessageListener {
+public class AIController implements IMessageSender, IEventHandler {
 
 	private List<AIPlayer> enemies;
 	private PathFinder pathfinder;
@@ -50,7 +51,7 @@ public class AIController implements IMessageSender, IMessageListener {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void onMessage(Event evt) {
+	public void onEvent(Event evt) {
 
 		switch (evt.getProperty()) {
 		case NEW_GAME :
@@ -377,7 +378,7 @@ public class AIController implements IMessageSender, IMessageListener {
 	}
 
 	@Override
-	public void addReceiver(IMessageListener listener) {
+	public void addReceiver(IEventHandler listener) {
 		this.messager.addListener(listener);
 
 	}
