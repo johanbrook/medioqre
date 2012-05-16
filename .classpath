@@ -16,5 +16,6 @@
 	<classpathentry kind="lib" path="libs/CodecJOgg.jar"/>
 	<classpathentry kind="lib" path="libs/LibraryJOAL.jar"/>
 	<classpathentry kind="lib" path="libs/jogamp-all-platforms/jogamp-all-platforms/jar/joal.jar"/>
+	<classpathentry kind="lib" path="libs/CodecJOrbis.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
