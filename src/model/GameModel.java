@@ -214,10 +214,8 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 	 */
 	public void newGame() {
 		initPlayer();
+		initWalls();
 		this.messager.sendMessage(new Event(Event.Property.NEW_GAME, this));
-		for (CollidableObject co : ObjectFactory.newWalls()) {
-			this.objects.add(co);
-		}
 	}
 
 	/**
@@ -248,6 +246,16 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 		log("New wave: " + this.currentWave);
 	}
 
+	/**
+	 * Add new walls to the game world.
+	 * 
+	 */
+	private void initWalls() {
+		List<ConcreteCollidableObject> walls = ObjectFactory.newWalls();
+		for (CollidableObject co : walls) {
+			this.objects.add(co);
+		}
+	}
 	
 	/**
 	 * Add relevant items to the game world from the factory. Sets up
