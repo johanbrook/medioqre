@@ -8,7 +8,9 @@ import model.weapon.Projectile;
 import paulscode.sound.SoundSystem;
 import paulscode.sound.SoundSystemConfig;
 import paulscode.sound.SoundSystemException;
+import paulscode.sound.codecs.CodecJOrbis;
 import paulscode.sound.codecs.CodecWav;
+import paulscode.sound.libraries.LibraryJOAL;
 import paulscode.sound.libraries.LibraryJavaSound;
 import tools.datamanagement.PreferenceLoader;
 import audio.AudioConstants;
@@ -32,7 +34,7 @@ public class AudioController implements IEventHandler {
 	private static SoundLibrary lib = new SoundLibrary();
 	private double playerMaxHealth;
 
-	private int bgmID = 1;
+	private int bgmID = 2;
 
 	/**
 	 * Returns the AudioController instance
@@ -49,25 +51,39 @@ public class AudioController implements IEventHandler {
 	}
 
 	/**
-	 * Creates the audiocontroller and links it to System audio.
+	 * Creates the audiocontroller instance and links it to System audio.
 	 */
 	private AudioController() {
 
 		// Link to system sound
 		try {
-
-			SoundSystemConfig.addLibrary(LibraryJavaSound.class);
+			Class<?> lib;
+			
+			//Use JOAL if Compatible
+			if (SoundSystem.libraryCompatible( LibraryJOAL.class )){
+				lib = LibraryJOAL.class;
+			} else{
+				//Use JavaSound
+				lib = LibraryJavaSound.class;
+			}
+			
+			
+			
 
 			// Link to Wav Codec
 			SoundSystemConfig.setCodec("wav", CodecWav.class);
+			
+			//Link to JOgg
+			SoundSystemConfig.setCodec("ogg", CodecJOrbis.class);
 
+			// Initialize Sound Engine
+			soundSys = new SoundSystem(lib);
+			
 		} catch (SoundSystemException e) {
+			e.printStackTrace();
 		}
 
-		// Initialize Sound Engine
-		soundSys = new SoundSystem();
-		// soundSys.setListenerOrientation(1, 1, 0, 1, 1, 1);
-
+		
 	}
 
 	public void setGame(IGameModel game) {
@@ -93,7 +109,6 @@ public class AudioController implements IEventHandler {
 	/**
 	 * Stops player's walk sound.
 	 */
-
 	public void stopPlayerWalk() {
 		soundSys.stop("playerWalk");
 	}
@@ -109,7 +124,6 @@ public class AudioController implements IEventHandler {
 	/**
 	 * Audio update method, sets listener position and positions sound sources.
 	 */
-
 	public void update() {
 
 		soundSys.setListenerPosition(game.getPlayer().getPosition().x, game
@@ -117,17 +131,17 @@ public class AudioController implements IEventHandler {
 
 	}
 
+
+	
 	/**
 	 * Plays sound effects for weapons given their class.
 	 * 
-	 * @param wType
-	 *            weapon type (Class)
 	 */
-	public void playPlayerWeaponSound(Class<?> wType) {
+	public void playPlayerWeaponSound() {
 		if (PreferenceLoader.getFloat("FX_VOLUME",AudioConstants.standardFXVolume) != 0.0) {
-
+			
 			soundSys.newSource(false, "playerWeaponSound",
-					lib.getWeaponSound(wType), lib.getWeaponId(wType), false,
+					lib.getWeaponSound(game.getPlayer().getCurrentWeapon().getClass()), lib.getWeaponId(game.getPlayer().getCurrentWeapon().getClass()), false,
 					1f, 1f, 1.0f, SoundSystemConfig.ATTENUATION_NONE, 0.0f);
 
 			soundSys.setVolume("playerWeaponSound",
@@ -174,6 +188,7 @@ public class AudioController implements IEventHandler {
 				if (evt.getProperty() == Event.Property.WAS_DAMAGED) {
 					pitchBGM();
 				}
+				
 
 			}
 
@@ -203,9 +218,9 @@ public class AudioController implements IEventHandler {
 			if (evt.getValue() instanceof Projectile) {
 
 				Projectile p = ((Projectile) evt.getValue());
+				
 				if (!(p.getOwner() instanceof Melee)) {
-					playPlayerWeaponSound(game.getPlayer().getCurrentWeapon()
-							.getClass());
+					playPlayerWeaponSound();
 				}
 			}
 		}
@@ -293,9 +308,10 @@ public class AudioController implements IEventHandler {
 	 * Plays start up sound. Used only by launcher.
 	 */
 	public void playStartUpSound() {
-		soundSys.newSource(false, "startUpSound", lib.getStartUpSound(),
-				"startUpSound.wav", false, 0.5f, 0.5f, 1f, 1, 1f);
-		soundSys.play("startUpSound");
+		soundSys.backgroundMusic("BGM", lib.getBGMURL(1),
+				lib.getBGMId(1), true);
+		soundSys.setVolume("BGM", 0.3f);
+		soundSys.play("BGM");
 	}
 
 }

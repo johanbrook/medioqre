@@ -4,7 +4,7 @@
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="src" path="res"/>
 	<classpathentry kind="src" path="toolkit"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="libs"/>
 	<classpathentry kind="lib" path="libs/CodecWav.jar"/>
@@ -13,5 +13,8 @@
 	<classpathentry exported="true" kind="lib" path="libs/jogamp-all-platforms/jogamp-all-platforms/jar/gluegen-rt.jar" sourcepath="libs/jogamp-all-platforms/jogamp-all-platforms/gluegen-java-src.zip"/>
 	<classpathentry exported="true" kind="lib" path="libs/jogamp-all-platforms/jogamp-all-platforms/jar/jogl.all.jar" sourcepath="libs/jogamp-all-platforms/jogamp-all-platforms/jogl-java-src.zip"/>
 	<classpathentry kind="lib" path="libs/macify-1.6.jar"/>
+	<classpathentry kind="lib" path="libs/LibraryJOAL.jar"/>
+	<classpathentry kind="lib" path="libs/jogamp-all-platforms/jogamp-all-platforms/jar/joal.jar"/>
+	<classpathentry kind="lib" path="libs/CodecJOrbis.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

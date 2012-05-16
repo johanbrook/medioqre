@@ -45,7 +45,7 @@ public class SoundLibrary {
 				c.getResource("sounds/weapon/machineGun.wav"));
 		weapon.put(model.weapon.Grenade.class,
 				c.getResource("sounds/weapon/grenade.wav"));
-		weapon.put(model.weapon.Sword.class,
+		weapon.put(model.weapon.Melee.class,
 				c.getResource("sounds/weapon/sword.wav"));
 		weapon.put(model.weapon.PortalGun.class,
 				c.getResource("sounds/weapon/portalGun.wav"));
@@ -61,7 +61,8 @@ public class SoundLibrary {
 	private Map<Integer, URL> initializeBGMLibrary() {
 		Map<Integer, URL> bgml = new HashMap<Integer, URL>();
 
-		bgml.put(1, c.getResource("sounds/bgm/frankTheTank.wav"));
+		bgml.put(1, c.getResource("sounds/bgm/launcher.ogg"));
+		bgml.put(2, c.getResource("sounds/bgm/main.ogg"));
 
 		return Collections.unmodifiableMap(bgml);
 	}
@@ -127,7 +128,7 @@ public class SoundLibrary {
 	 * @return URL to Startup Sound
 	 */
 	public URL getStartUpSound() {
-		return fxSoundLibrary.get("startUpSound");
+		return bgmLibrary.get(1);
 	}
 
 }
