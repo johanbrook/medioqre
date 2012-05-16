@@ -231,6 +231,7 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 	 * Initializes a new wave of enemies and items. Increments the wave number,
 	 * and sends an event to the bus and listeners of the type <code>NEW_WAVE</code>
 	 * and with the value <code>this</code>.
+	 * 
 	 */
 	public void newWave() {
 		this.currentWave++;
@@ -269,7 +270,7 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 		for (CollidableObject item : items) {
 			item.addReceiver(this);
 			//If spawn point is to close to player or inside a wall, set new randomly chosen position.
-			while (!spawnPointIsOkay(item)){
+			while (objectCollidesWithPlayer(item) && objectCollidesWithWall(item)){
 				item.setPosition(getRandomPosition());
 			}
 		}
@@ -299,8 +300,8 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 
 		for (Enemy temp : tempEnemies) {
 			temp.addReceiver(this);
-			//If spawn point is to close to player or inside a wall, set new randomly chosen position.
-			while (!spawnPointIsOkay(temp)){
+			// If spawn point is to close to player or inside a wall, set new randomly chosen position.
+			while (objectCollidesWithPlayer(temp) && objectCollidesWithWall(temp)){
 				temp.setPosition(getRandomPosition());
 			}
 		}
@@ -322,30 +323,46 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 	}
 	
 	/**
-	 * Check if the specified object is colliding with a wall
+	 * Check if the specified object is colliding with a wall.
+	 * 
 	 * @param o
-	 * @return True if the specified object is not colliding with a wall.
+	 * @return True if the specified object is not colliding with a wall, otherwise
+	 * false. Also returns false if player is null
 	 */
-	private boolean spawnPointIsOkay(CollidableObject o){
-		//If CollidableObject o intersects with a wall, return false.
+	private boolean objectCollidesWithPlayer(CollidableObject o){
+		if(this.player == null) {
+			return false;
+		}
+		
+		// Get width of a single tile
+		TileMap tileMap = ObjectFactory.getTileMap();
+		int width = (int) tileMap.getTileSize().getWidth();
+		
+		// If distance between the object and the player is less than 5 tiles, return false.
+		if (Math.abs((o.getPosition().x - this.player.getPosition().x)) + 
+						Math.abs(o.getPosition().y - this.player.getPosition().y) < 5*width) {
+			return false;
+		}
+		
+		return true;
+	}
+	
+	/**
+	 * Check if the specified object is colliding with a wall in the game.
+	 * 
+	 * @param o The object to check
+	 * @return True if the object collides with a wall, otherwise false
+	 */
+	private boolean objectCollidesWithWall(CollidableObject o) {
+		// If the collidable collides with a wall, return true
+		
 		for (CollidableObject obj : this.objects){
-			if (obj instanceof ConcreteCollidableObject){
-				if (obj.isColliding(o)){
-					return false;
-				}
+			if (obj instanceof ConcreteCollidableObject && obj.isColliding(o)){
+				return true;
 			}
 		}
 		
-		//Get width of a tile
-		TileMap tileMap = ObjectFactory.getTileMap();
-		int width = (int)tileMap.getTileSize().getWidth();
-		
-		//If distance between CollidableObject o and the player is less than 5 tiles, return false.
-		if (Math.abs((o.getPosition().x - this.player.getPosition().x)) + 
-				Math.abs(o.getPosition().y - this.player.getPosition().y) < 5*width){
-			return false;
-		}
-		return true;
+		return false;
 	}
 	
 	/**
