@@ -344,7 +344,6 @@ public class PathFinder {
 			for (int l = 0; l < logicList[i].length; l++) {
 				logicList[i][l].setOpen(false);
 				logicList[i][l].setClosed(false);
-				logicList[i][l].setG(0);
 			}
 		}
 		clearOpen();
