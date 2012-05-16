@@ -10,14 +10,12 @@ import paulscode.sound.SoundSystemConfig;
 import paulscode.sound.SoundSystemException;
 import paulscode.sound.codecs.CodecJOrbis;
 import paulscode.sound.codecs.CodecWav;
-import paulscode.sound.codecs.CodecJOgg;
 import paulscode.sound.libraries.LibraryJOAL;
 import paulscode.sound.libraries.LibraryJavaSound;
 import tools.datamanagement.PreferenceLoader;
 import audio.AudioConstants;
 import audio.SoundLibrary;
 import event.Event;
-import event.Event.Property;
 import event.EventBus;
 import event.IEventHandler;
 
@@ -53,7 +51,7 @@ public class AudioController implements IEventHandler {
 	}
 
 	/**
-	 * Creates the audiocontroller and links it to System audio.
+	 * Creates the audiocontroller instance and links it to System audio.
 	 */
 	private AudioController() {
 
@@ -82,10 +80,9 @@ public class AudioController implements IEventHandler {
 			soundSys = new SoundSystem(lib);
 			
 		} catch (SoundSystemException e) {
+			e.printStackTrace();
 		}
 
-		
-		// soundSys.setListenerOrientation(1, 1, 0, 1, 1, 1);
 		
 	}
 
@@ -112,7 +109,6 @@ public class AudioController implements IEventHandler {
 	/**
 	 * Stops player's walk sound.
 	 */
-
 	public void stopPlayerWalk() {
 		soundSys.stop("playerWalk");
 	}
@@ -128,7 +124,6 @@ public class AudioController implements IEventHandler {
 	/**
 	 * Audio update method, sets listener position and positions sound sources.
 	 */
-
 	public void update() {
 
 		soundSys.setListenerPosition(game.getPlayer().getPosition().x, game
@@ -136,27 +131,21 @@ public class AudioController implements IEventHandler {
 
 	}
 
-	public void changeWeaponSound(){
 
-		
-		soundSys.newSource(false, "playerWeaponSound",
-				lib.getWeaponSound(game.getPlayer().getCurrentWeapon().getClass()), lib.getWeaponId(game.getPlayer().getCurrentWeapon().getClass()), false,
-				1f, 1f, 1.0f, SoundSystemConfig.ATTENUATION_NONE, 0.0f);
-
-		soundSys.setVolume("playerWeaponSound",
-				PreferenceLoader.getFloat("FX_VOLUME",AudioConstants.standardFXVolume));
-	}
-	
 	
 	/**
 	 * Plays sound effects for weapons given their class.
 	 * 
-	 * @param wType
-	 *            weapon type (Class)
 	 */
 	public void playPlayerWeaponSound() {
 		if (PreferenceLoader.getFloat("FX_VOLUME",AudioConstants.standardFXVolume) != 0.0) {
+			
+			soundSys.newSource(false, "playerWeaponSound",
+					lib.getWeaponSound(game.getPlayer().getCurrentWeapon().getClass()), lib.getWeaponId(game.getPlayer().getCurrentWeapon().getClass()), false,
+					1f, 1f, 1.0f, SoundSystemConfig.ATTENUATION_NONE, 0.0f);
 
+			soundSys.setVolume("playerWeaponSound",
+					PreferenceLoader.getFloat("FX_VOLUME",AudioConstants.standardFXVolume));
 
 			soundSys.play("playerWeaponSound");
 		}
@@ -200,9 +189,6 @@ public class AudioController implements IEventHandler {
 					pitchBGM();
 				}
 				
-				if (evt.getProperty() == Event.Property.CHANGED_WEAPON){
-//					changeWeaponSound();
-				}
 
 			}
 
@@ -232,6 +218,7 @@ public class AudioController implements IEventHandler {
 			if (evt.getValue() instanceof Projectile) {
 
 				Projectile p = ((Projectile) evt.getValue());
+				
 				if (!(p.getOwner() instanceof Melee)) {
 					playPlayerWeaponSound();
 				}

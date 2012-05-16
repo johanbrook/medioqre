@@ -45,7 +45,7 @@ public class SoundLibrary {
 				c.getResource("sounds/weapon/machineGun.wav"));
 		weapon.put(model.weapon.Grenade.class,
 				c.getResource("sounds/weapon/grenade.wav"));
-		weapon.put(model.weapon.Sword.class,
+		weapon.put(model.weapon.Melee.class,
 				c.getResource("sounds/weapon/sword.wav"));
 		weapon.put(model.weapon.PortalGun.class,
 				c.getResource("sounds/weapon/portalGun.wav"));
