@@ -273,7 +273,7 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 			retObj.put("width", this.rectangle.getWidth());
 			retObj.put("height", this.rectangle.getHeight());
 		} catch (JSONException e) {
-			System.out.println("Failed to serialize Sprite!");
+			tools.Logger.err("Failed to serialize Sprite!");
 			e.printStackTrace();
 		}
 		return retObj;
@@ -287,7 +287,7 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 			this.rectangle = new Rectangle(o.getInt("x"), o.getInt("y"),
 					o.getInt("width"), o.getInt("height"));
 		} catch (JSONException e) {
-			System.out.println("Failed to deserialize Sprite!");
+			tools.Logger.err("Failed to deserialize Sprite!");
 			e.printStackTrace();
 		}
 	}

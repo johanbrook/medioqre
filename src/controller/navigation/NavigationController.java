@@ -92,14 +92,14 @@ public class NavigationController implements KeyListener, IMessageSender {
 			@Override
 			public void on() {
 				doNavigation = false;
-				System.out.println("Navigation is inactive");
+				tools.Logger.log("Navigation is inactive");
 				EventBus.INSTANCE.publish(new Event(Property.WEAPON_MENU_SHOW));
 			}
 
 			@Override
 			public void off() {
 				doNavigation = true;
-				System.out.println("Navigation is active");
+				tools.Logger.log("Navigation is active");
 				EventBus.INSTANCE.publish(new Event(Property.WEAPON_MENU_HIDE));
 			}
 		});

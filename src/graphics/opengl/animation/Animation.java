@@ -215,7 +215,7 @@ public class Animation implements JSONSerializable, GLRenderableObject {
 			retObj.put("frames", array);
 
 		} catch (JSONException e) {
-			System.out.println("Failed to serialize Animation: " + this.name);
+			tools.Logger.err("Failed to serialize Animation: " + this.name);
 			e.printStackTrace();
 		}
 		return retObj;
@@ -232,7 +232,7 @@ public class Animation implements JSONSerializable, GLRenderableObject {
 				this.frames[i] = new Sprite(array.getJSONObject(i));
 			}
 		} catch (JSONException e) {
-			System.out.println("Failed to deserialize Animation!");
+			tools.Logger.err("Failed to deserialize Animation!");
 			e.printStackTrace();
 		}
 	}
