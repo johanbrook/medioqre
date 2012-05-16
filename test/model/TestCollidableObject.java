@@ -17,6 +17,10 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import event.Event;
+import event.EventBus;
+import event.IEventHandler;
+
 import tools.Logger;
 
 
@@ -24,10 +28,11 @@ import model.CollidableObject;
 import model.character.AbstractCharacter;
 import model.character.Player;
 
-public class TestCollidableObject {
+public class TestCollidableObject implements IEventHandler {
 
 	private CollidableObject obj;
 	private AbstractCharacter player;
+	private Event catchedEvent;
 
 	@Before
 	public void setUp() throws Exception {
@@ -35,6 +40,7 @@ public class TestCollidableObject {
 		
 		// I chose Player since then the sizes would be the same
 		this.player = new Player(30, new Rectangle(20, 20), new Dimension(20, 48), 0, 16);
+		EventBus.INSTANCE.register(this);
 	}
 
 	@Test
@@ -117,5 +123,15 @@ public class TestCollidableObject {
 
 		assertEquals(Direction.SOUTH, dir);
 	}
-
+	
+	@Test
+	public void testDestroy() {
+		this.obj.destroy();
+		assertEquals(Event.Property.WAS_DESTROYED, this.catchedEvent.getProperty());
+	}
+	
+	@Override
+	public void onEvent(Event evt) {
+		this.catchedEvent = evt;
+	}
 }

@@ -123,6 +123,7 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 
 			} else if (evt.getValue() instanceof Player) {
 				gameOver();
+				newGame();
 			}
 
 			log(evt.getValue().getClass().getSimpleName()
@@ -215,17 +216,18 @@ public class GameModel implements IGameModel, IMessageListener, IMessageSender {
 	public void newGame() {
 		initPlayer();
 		initWalls();
-		this.messager.sendMessage(new Event(Event.Property.NEW_GAME, this));
+		Event evt = new Event(Event.Property.NEW_GAME, this);
+		EventBus.INSTANCE.publish(evt);
+		this.messager.sendMessage(evt);
 	}
 
 	/**
 	 * Game over handling.
 	 */
-	private void gameOver() {
+	public void gameOver() {
 		log("Noob, game over");
 		EventBus.INSTANCE.publish(new Event(Event.Property.GAME_OVER, this));
 		this.objects.clear();
-		newGame();
 	}
 
 	/**

@@ -24,36 +24,68 @@ import model.Entity;
 public class TestGameModel implements IEventHandler {
 
 	private GameModel game;
-	private Direction newDir;
+	private Event catchedEvent;
 
 	@Before
 	public void setUp() throws Exception {
 		ObjectFactory.setLevel(new Level());
-		this.game = new GameModel();
-		this.game.newGame();
-		this.game.newWave();
 		EventBus.INSTANCE.register(this);
+		
+		this.game = new GameModel();
 	}
 
 	@Test
-	public void testUpdateDirection() {
-		this.game.getPlayer().setDirection(Direction.NORTH);
-
-		assertEquals(Direction.NORTH, this.newDir);
+	public void testNewGame() {
+		this.game.newGame();
+		
+		assertEquals(Event.Property.NEW_GAME, this.catchedEvent.getProperty());
+		assertNotNull(this.game.getObjects());
+		assertNotNull(this.game.getPlayer());
+		assertEquals(0, this.game.getCurrentWaveCount());
 	}
-
+	
+	@Test
+	public void testNewWave() {
+		this.game.newWave();
+		
+		assertEquals(Event.Property.NEW_WAVE, this.catchedEvent.getProperty());
+		assertEquals(1, this.game.getCurrentWaveCount());
+		assertNotNull(this.game.getEnemies());
+	}
+	
+	@Test
+	public void testMoreWaves() {
+		this.game.newWave();
+		int waveCount = this.game.getCurrentWaveCount();
+		assertEquals(1, waveCount);
+		
+		this.game.newWave();
+		assertEquals(waveCount+1, this.game.getCurrentWaveCount());
+	}
+	
+	@Test
+	public void testWaveEnemyMultiplier() {
+		this.game.newWave();
+		assertNotNull(this.game.getEnemies());
+		
+		assertEquals(tools.Math.fib(1), this.game.getEnemies().size());
+		
+		this.game.newGame();
+		assertEquals(tools.Math.fib(2), this.game.getEnemies().size());
+	}
+	
+	@Test
+	public void testGameOver() {
+		this.game.newGame();
+		this.game.gameOver();
+		
+		assertEquals(Event.Property.GAME_OVER, this.catchedEvent.getProperty());
+		assertEquals(0, this.game.getObjects().size());
+	}
+	
 	@Override
 	public void onEvent(Event evt) {
-
-		if (evt.getProperty() == Property.CHANGED_DIRECTION) {
-			this.newDir = ((Entity) evt.getValue()).getDirection();
-		}
-
-	}
-
-	@After
-	public void cleanUp() {
-		EventBus.INSTANCE.remove(this);
+		this.catchedEvent = evt;
 	}
 
 }

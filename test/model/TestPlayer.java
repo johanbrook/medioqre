@@ -19,15 +19,22 @@ import model.weapon.Projectile.Range;
 import org.junit.Before;
 import org.junit.Test;
 
+import event.Event;
+import event.EventBus;
+import event.IEventHandler;
+
 import tools.factory.ObjectFactory;
 
 
-public class TestPlayer {
+public class TestPlayer implements IEventHandler {
 
 	private Player player;
+	private Event catchedEvent;
 
 	@Before
 	public void setUp() throws Exception {
+		EventBus.INSTANCE.register(this);
+		
 		this.player = new Player(30, new Rectangle(20, 20), new Dimension(20,
 				48), 0, 16);
 
@@ -105,5 +112,24 @@ public class TestPlayer {
 
 		assertEquals(w, this.player.getCurrentWeapon());
 	}
+	
+	@Test
+	public void testTakeDamage() {
+		this.player.takeDamage(50);
+		assertEquals(Event.Property.WAS_DAMAGED, this.catchedEvent.getProperty());
+		assertEquals(50, this.player.getHealth());
+	}
 
+	@Test
+	public void testDestroy() {
+		this.player.takeDamage(100);
+		
+		assertEquals(0, this.player.getHealth());
+		assertEquals(Event.Property.WAS_DESTROYED, this.catchedEvent.getProperty());
+	}
+
+	@Override
+	public void onEvent(Event evt) {
+		this.catchedEvent = evt;
+	}
 }
