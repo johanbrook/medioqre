@@ -17,6 +17,8 @@ public abstract class AbstractWeapon {
 	private double ammoMultiplier;
 
 	private double fireInterval, cooldown;
+	
+	private int tag = 0;
 
 	/**
 	 * Create a new weapon.
@@ -170,7 +172,7 @@ public abstract class AbstractWeapon {
 	}
 	
 	/**
-	 * Set the fireInterval of this weapon. Lestt fireIntervall means faster firerate.
+	 * Set the fireInterval of this weapon. Less fireInterval means faster fire rate.
 	 * @param fireInterval
 	 */
 	public void setFireInterval(double fireInterval){
@@ -183,6 +185,14 @@ public abstract class AbstractWeapon {
 	 */
 	public double getFireInterval (){
 		return this.fireInterval;
+	}
+	
+	public int getTag() {
+		return this.tag;
+	}
+	
+	public void setBit(int weaponType) {
+		this.tag |= (weaponType << 4*4);
 	}
 
 }

@@ -19,7 +19,7 @@ public abstract class Entity extends CollidableObject {
 	private boolean isMoving;
 	private Direction direction;
 	private boolean portalVictim;
-
+	
 	/**
 	 * Create a new Entity.
 	 * 
@@ -167,4 +167,11 @@ public abstract class Entity extends CollidableObject {
 		this.portalVictim = portalVictim;
 	}
 
+	
+	@Override
+	public int getTag() {
+		int intIsMoving = isMoving ? 1 : 0;
+		int intDirection = this.direction.ordinal();
+		return super.getTag() | intIsMoving | (intDirection << 4);
+	}
 }

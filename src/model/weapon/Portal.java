@@ -112,4 +112,11 @@ public class Portal extends CollidableObject {
 		}
 		
 	}
+	
+	
+	@Override
+	public int getTag() {
+		int mode = ((this.mode == Mode.BLUE) ? 1 : 0);
+		return super.getTag() | (mode << 4*5);
+	}
 }

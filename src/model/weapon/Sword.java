@@ -38,4 +38,5 @@ public class Sword extends AbstractWeapon {
 	public void setProjectile(Projectile projectile) {
 		this.projectile = projectile;
 	}
+	
 }

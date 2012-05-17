@@ -61,6 +61,7 @@ public class ObjectFactory {
 	private static JSONArray items;
 
 	private static JSONObject config;
+	private static JSONObject objectTypes;
 
 	private static final int SPAWN_MARGIN = 100;
 
@@ -83,6 +84,7 @@ public class ObjectFactory {
 			items = config.getJSONObject("itemConfig").getJSONArray("items");
 			weapons = config.getJSONObject("weaponConfig").getJSONArray(
 					"weapons");
+			objectTypes = config.getJSONObject("objectTypes");
 
 			// View
 
@@ -215,8 +217,10 @@ public class ObjectFactory {
 			Class startingWeapon = Class.forName("model.weapon."
 					+ player.getString("startingWeapon"));
 			p.setCurrentWeapon(startingWeapon);
-
+			p.setBit(objectTypes.getInt("player"), 4);
+			
 			p.stop();
+			
 			return p;
 
 		} catch (JSONException e) {
@@ -245,7 +249,21 @@ public class ObjectFactory {
 					bounds.getInt("offsetY"));
 
 			en.setHealth(enemy.getInt("health"));
+			
+			JSONObject weaponObj = enemy.getJSONObject("weapon");
 
+			AbstractWeapon melee = createWeaponFromString(
+					weaponObj.getString("type"),
+					new Object[]{en, weaponObj.getInt("ammo"),
+							weaponObj.getDouble("ammoMultiplier"),
+							weaponObj.getDouble("fireInterval")});
+
+			Projectile projectile = newProjectile(melee, weaponObj);
+
+			melee.setProjectile(projectile);
+			en.setCurrentWeapon(melee);
+			en.setBit(objectTypes.getInt("enemy"), 4);
+			
 			return en;
 		} catch (JSONException e) {
 			err(e.getMessage());
@@ -272,25 +290,11 @@ public class ObjectFactory {
 		List<Enemy> enemies = new ArrayList<Enemy>();
 		int enemiesToAdd = tools.Math.fib(waveNumber);
 
-		try {
+//		try {
 
 			for (int i = 0; i < enemiesToAdd; i++) {
 
 				Enemy e = newEnemy();
-
-				JSONObject weaponObj = enemy.getJSONObject("weapon");
-
-				AbstractWeapon melee = createWeaponFromString(
-						weaponObj.getString("type"),
-						new Object[]{e, weaponObj.getInt("ammo"),
-								weaponObj.getDouble("ammoMultiplier"),
-								weaponObj.getDouble("fireInterval")});
-
-				Projectile projectile = newProjectile(melee, weaponObj);
-
-				melee.setProjectile(projectile);
-				e.setCurrentWeapon(melee);
-
 				Random random = new Random();
 
 				int x = (int) (SPAWN_MARGIN + random.nextFloat()
@@ -303,10 +307,10 @@ public class ObjectFactory {
 				e.setPosition(x, y);
 				enemies.add(e);
 			}
-		} catch (JSONException e) {
-			err(e.getMessage());
-			e.printStackTrace();
-		}
+//		} catch (JSONException e) {
+//			err(e.getMessage());
+//			e.printStackTrace();
+//		}
 
 		return enemies;
 	}
@@ -460,8 +464,9 @@ public class ObjectFactory {
 					}
 				}
 
+				weapon.setBit(objectTypes.getInt("weapon"));
 				Projectile projectile = newProjectile(weapon, wp);
-
+				
 				weapon.setProjectile(projectile);
 				weaponsList.add(weapon);
 			}
@@ -498,6 +503,7 @@ public class ObjectFactory {
 					projTemplate.getInt("damage"), Range.valueOf(projTemplate
 							.getString("range")), projTemplate.getInt("speed"));
 
+			projectile.setBit(objectTypes.getInt("projectile"), 4);
 			return projectile;
 
 		} catch (JSONException e) {
@@ -527,7 +533,9 @@ public class ObjectFactory {
 					new Dimension(bounds.getInt("width"), bounds
 							.getInt("height")), bounds.getInt("offsetX"),
 					bounds.getInt("offsetY"));
-
+			
+			p.setBit(objectTypes.getInt("portal"), 4);
+			
 			return p;
 
 		} catch (JSONException e) {
@@ -688,6 +696,12 @@ public class ObjectFactory {
 				new Class[]{AbstractCharacter.class, int.class, double.class,
 						double.class}, objectParams);
 
+		try {
+			((AbstractWeapon) obj).setBit(objectTypes.getInt("weapon"));
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		
 		return (AbstractWeapon) obj;
 	}
 
@@ -706,6 +720,11 @@ public class ObjectFactory {
 		Object obj = createObjectFromString("model.item." + type, new Class[]{
 				int.class, int.class, int.class, int.class, int.class},
 				objectParams);
+		try {
+			((CollidableObject) obj).setBit(objectTypes.getInt(type), 4);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 
 		return (CollidableObject) obj;
 	}
