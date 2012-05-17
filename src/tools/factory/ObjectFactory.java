@@ -2,6 +2,7 @@ package tools.factory;
 
 import graphics.opengl.GLScreen;
 import graphics.opengl.animation.Actor;
+import graphics.opengl.bitmapfont.GLBitmapFont;
 import graphics.opengl.core.Size;
 import graphics.opengl.tilemap.TileMap;
 
@@ -68,6 +69,8 @@ public class ObjectFactory {
 	private static JSONArray actors;
 	private static JSONObject tileMap;
 	private static TileMap tileMapInstance;
+	
+	private static JSONArray bitmapFonts;
 
 	private ObjectFactory() {
 	}
@@ -101,6 +104,12 @@ public class ObjectFactory {
 			tileMapInstance = ResourceLoader.loadTileMapFromResources(tileMap
 					.getString("levelbitmap"));
 
+			JSONArray bitmapFontData = config.getJSONObject("bitmapsConfig").getJSONArray("bitmaps");
+			bitmapFonts = new JSONArray();
+			for (int i = 0; i < bitmapFontData.length(); i++) {
+				bitmapFonts.put(new JSONObject(ResourceLoader.loadJSONStringFromResources(bitmapFontData.getString(i))));
+			}
+			
 			log("Config initialized");
 
 		} catch (JSONException e) {
@@ -619,6 +628,16 @@ public class ObjectFactory {
 		return null;
 	}
 
+	public static GLBitmapFont newBitmapFont() {
+		try {
+			return new GLBitmapFont(bitmapFonts.getJSONObject(0));
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	// AI objects
 
 	/**
