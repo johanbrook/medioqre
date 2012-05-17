@@ -3,9 +3,6 @@ package model.weapon;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 
-import org.json.JSONObject;
-
-import tools.Logger;
 import model.CollidableObject;
 import model.ConcreteCollidableObject;
 import model.Entity;
