@@ -28,8 +28,10 @@ public class Actor implements JSONSerializable {
 	 * 
 	 * @param o
 	 *            JSONObject with Actor info
+	 * @throws JSONException
+	 *             If the JSONObject doesn't contain some of the required keys
 	 */
-	public Actor(JSONObject o) throws JSONException{
+	public Actor(JSONObject o) throws JSONException {
 		this.deserialize(o);
 	}
 
@@ -146,7 +148,7 @@ public class Actor implements JSONSerializable {
 	}
 
 	@Override
-	public void deserialize(JSONObject o) throws JSONException{
+	public void deserialize(JSONObject o) throws JSONException {
 
 		this.textureName = o.getString("textureName");
 
