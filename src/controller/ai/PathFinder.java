@@ -19,7 +19,7 @@ public class PathFinder {
 
 	private List<AStarTile> openList;
 	private AStarTile[][] logicList;
-	private AStarTile currentTile;
+	private AStarTile currentTile, stop;
 	// Using a approx value of sqrt(2) for diagonalcost, in order to save time.
 	private final double DIAGONALCOST = 1.41421356;
 
@@ -81,15 +81,12 @@ public class PathFinder {
 	 */
 	public List<Point> getPath(Point startPoint, Point endPoint) {
 		AStarTile start = logicList[startPoint.x][startPoint.y];
-		AStarTile stop = logicList[endPoint.x][endPoint.y];
-		for (int i = 0; i < rows; i++) {
-			for (int l = 0; l < columns; l++) {
-				logicList[i][l].setH(stop);
-			}
-		}
+		this.stop = logicList[endPoint.x][endPoint.y];
+
 		openList = new ArrayList<AStarTile>();
 		ArrayList<AStarTile> path = new ArrayList<AStarTile>();
 		openList.add(start);
+		start.setH(stop);
 
 		while (!openList.isEmpty()) {
 			// Start by finding the tile in the open list with the best
@@ -188,6 +185,7 @@ public class PathFinder {
 					&& !currentNeighbors.get(k).isClosed()) {
 
 				currentNeighbors.get(k).setOpen(true);
+				currentNeighbors.get(k).setH(this.stop);
 				openList.add(currentNeighbors.get(k));
 
 				currentNeighbors.get(k).setParent(currentTile);
