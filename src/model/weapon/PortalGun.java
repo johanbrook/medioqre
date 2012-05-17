@@ -81,4 +81,5 @@ public class PortalGun extends AbstractWeapon {
 	public void setProjectile(Projectile projectile) {
 		this.projectile = projectile;
 	}
+
 }

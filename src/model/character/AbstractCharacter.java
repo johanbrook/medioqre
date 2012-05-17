@@ -153,4 +153,9 @@ public abstract class AbstractCharacter extends Entity {
 	public String toString() {
 		return super.toString() + " [hp:" + this.health + "]";
 	}
+	
+	@Override
+	public int getTag() {
+		return super.getTag() | (this.currentWeapon.getTag() >> 8 );
+	}
 }

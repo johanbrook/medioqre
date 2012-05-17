@@ -80,4 +80,5 @@ public class Grenade extends AbstractWeapon {
 	public int getSplashDamageFactor(){
 		return this.splashDamageFactor;
 	}
+	
 }

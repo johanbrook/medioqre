@@ -134,4 +134,5 @@ public class TestCollidableObject implements IEventHandler {
 	public void onEvent(Event evt) {
 		this.catchedEvent = evt;
 	}
+	
 }

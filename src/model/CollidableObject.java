@@ -37,6 +37,8 @@ public abstract class CollidableObject implements IMessageSender {
 	private int yoffset;
 
 	private Messager messager = new Messager();
+	
+	protected int tag = 0x00000000;
 
 	/**
 	 * Point is located on top.
@@ -281,4 +283,12 @@ public abstract class CollidableObject implements IMessageSender {
 	 * @param w The other object
 	 */
 	public abstract void didCollide(CollidableObject w);
+	
+	public int getTag() {
+		return this.tag;
+	}
+	
+	public void setBit(int type, int position) {
+		this.tag |= (type << position*4);
+	}
 }

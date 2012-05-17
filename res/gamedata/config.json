@@ -1,5 +1,6 @@
 {
 	"portal": {
+		"objectType": 5,
 		"bounds": {
 			"width": 25,
 			"height": 30,
@@ -8,6 +9,16 @@
 			"offsetX": 8,
 			"offsetY": 30
 		}
+	},
+	
+	"objectTypes": {
+		"projectile": 1,
+		"player": 2,
+		"enemy": 3,
+		"portal": 4,
+		"MedPack": 5,
+		"AmmoCrate": 6,
+		"weapon": 7
 	},
 	
 	"loggingFormat": 	"H:m:s",

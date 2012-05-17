@@ -2,6 +2,7 @@
 	"weapons": [
 	{
 		"type": "MachineGun",
+		"id": 1,
 		"ammo": 300,
 		"ammoMultiplier": 2,
 		"fireInterval": 0.5,
@@ -19,6 +20,7 @@
 	
 	{
 		"type": "Grenade",
+		"id": 2,
 		"radius": 70,
 		"ammoMultiplier": 0.1,
 		"fireInterval": 5,
@@ -38,11 +40,13 @@
 	
 	{
 		"type": "Melee",
+		"id": 3,
 		"ammo": -1,
 		"ammoMultiplier": 0,
 		"fireInterval": 5,
 		"slot": 3,
 		"projectile": {
+			"objectType": 2,
 			"damage": 100,
 			"range":  "SHORT_RANGE",
 			"speed": 100,
@@ -55,6 +59,7 @@
 	
 	{
 		"type": "PortalGun",
+		"id": 4,
 		"ammo": -1,
 		"ammoMultiplier": 0,
 		"fireInterval": 3,

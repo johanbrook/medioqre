@@ -23,7 +23,7 @@ public class Projectile extends Entity {
 	private AbstractWeapon owner;
 
 	private double distanceTravelled;
-
+	
 	/**
 	 * A enum for ranges.
 	 * 
@@ -231,5 +231,10 @@ public class Projectile extends Entity {
 		}
 		
 	}
-
+	
+	@Override
+	public int getTag() {
+		return super.getTag() | this.owner.getTag();
+	}
+	
 }
