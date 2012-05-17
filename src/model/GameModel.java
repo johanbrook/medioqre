@@ -270,7 +270,7 @@ public class GameModel implements IGameModel, IEventHandler, IMessageSender {
 		for (CollidableObject item : items) {
 			item.addReceiver(this);
 			//If spawn point is to close to player or inside a wall, set new randomly chosen position.
-			while (objectCollidesWithPlayer(item) && objectCollidesWithWall(item)){
+			while (objectCollidesWithPlayer(item) || objectCollidesWithWall(item)){
 				item.setPosition(getRandomPosition());
 			}
 		}
