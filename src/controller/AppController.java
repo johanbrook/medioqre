@@ -6,6 +6,8 @@
 
 package controller;
 
+import java.awt.Dimension;
+
 import org.json.JSONException;
 
 import tools.factory.Level;
@@ -68,7 +70,8 @@ public class AppController implements Runnable{
 		this.game = new GameModel();
 		this.navigation = new NavigationController();
 
-		new ViewController(this.navigation, 20 * 48, 12 * 48);
+		new ViewController(this.navigation, new Dimension(20 * 48, 12 * 48));
+		
 		this.ai = new AIController(48, 48, 48, 48);
 
 		this.navigation.addReceiver((IEventHandler) this.game);

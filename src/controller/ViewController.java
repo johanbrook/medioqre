@@ -116,13 +116,12 @@ public class ViewController
 	 * @param screenHeight
 	 *            The frame height
 	 */
-	public ViewController(KeyListener listener, int screenWidth,
-			int screenHeight) {
+	public ViewController(KeyListener listener, Dimension frameSize) {
 		EventBus.INSTANCE.register(this);
 
 		this.fpsmeter = new GraphicalFPSMeter();
 
-		this.screen = new GLScreen(0, 0, screenWidth, screenHeight);
+		this.screen = new GLScreen(0, 0, frameSize.width, frameSize.height);
 
 		// Creating the frame
 		GLProfile glP = GLProfile.getDefault();
@@ -140,7 +139,7 @@ public class ViewController
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 		frame.add(canvas);
-		frame.setPreferredSize(new Dimension(screenWidth, screenHeight));
+		frame.setPreferredSize(frameSize);
 		frame.pack();
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
