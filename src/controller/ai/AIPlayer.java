@@ -138,7 +138,7 @@ public class AIPlayer {
 	 */
 	public boolean inRange() {
 		double range = this.unit.getCurrentWeapon().getProjectile().getRange()
-				.getDistance();
+				.getDistance() + this.unit.getCollisionBox().height / 2;
 		return this.distance < range;
 	}
 	
