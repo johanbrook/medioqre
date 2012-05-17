@@ -3,12 +3,13 @@ package model.weapon;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 
-import tools.Logger;
 import model.CollidableObject;
 import model.ConcreteCollidableObject;
 import model.Entity;
 import model.character.AbstractCharacter;
 import model.character.Enemy;
+import model.character.Player;
+import tools.Logger;
 
 /**
  *	A projectile, with a damage, range and character owner.
@@ -30,7 +31,7 @@ public class Projectile extends Entity {
 	 * 
 	 */
 	public enum Range {
-		SHORT_RANGE(40), MEDIUM_RANGE(200), FAR_RANGE(1500);
+		NO_RANGE(0), SHORT_RANGE(40), MEDIUM_RANGE(200), FAR_RANGE(1500);
 
 		private final int distance;
 
