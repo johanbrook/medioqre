@@ -1,5 +1,6 @@
 package graphics.json;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -15,13 +16,13 @@ public interface JSONSerializable {
 	 * 
 	 * @return A JSON object representing the JSONSerializable.
 	 */
-	public JSONObject serialize();
+	public JSONObject serialize() throws JSONException;
 	/**
 	 * Restore the state from a JSON object.
 	 * 
 	 * @param o
 	 *            The JSON object to restore state from.
 	 */
-	public void deserialize(JSONObject o);
+	public void deserialize(JSONObject o) throws JSONException;
 
 }
