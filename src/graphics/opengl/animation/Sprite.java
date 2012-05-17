@@ -11,20 +11,37 @@ public class Sprite implements JSONSerializable {
 	private Rectangle rect;
 
 	// Constructors
+	/**
+	 * Creates an empty Sprite with no variables set.
+	 */
 	public Sprite() {
-
 	}
 
+	/**
+	 * Cretes a Sprite and deserializes it.
+	 * @param o The JSONObject to deserialize from
+	 * @throws JSONException If the JSONObject doesn't contain some of the required keys 
+	 */
 	public Sprite(JSONObject o) throws JSONException {
 		this.deserialize(o);
 	}
 
 	// Setters
+	/**
+	 * Set the rectangle used to decide what part of a texture should be drawn.
+	 *  
+	 * @param rectangle The rectangle
+	 */
 	public void setRectangle(Rectangle rectangle) {
 		this.rect = rectangle;
 	}
 
 	// Getters
+	/**
+	 * Get the rectangle.
+	 * 
+	 * @return The rectangle
+	 */
 	public Rectangle getRectangle() {
 		return this.rect;
 	}
