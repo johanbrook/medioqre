@@ -331,7 +331,7 @@ public class GameModel implements IGameModel, IEventHandler, IMessageSender {
 	 */
 	private boolean objectCollidesWithPlayer(CollidableObject o){
 		if(this.player == null) {
-			return false;
+			return true;
 		}
 		
 		// Get width of a single tile
@@ -341,10 +341,10 @@ public class GameModel implements IGameModel, IEventHandler, IMessageSender {
 		// If distance between the object and the player is less than 5 tiles, return false.
 		if (Math.abs((o.getPosition().x - this.player.getPosition().x)) + 
 						Math.abs(o.getPosition().y - this.player.getPosition().y) < 5*width) {
-			return false;
+			return true;
 		}
 		
-		return true;
+		return false;
 	}
 	
 	/**

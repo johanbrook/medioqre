@@ -86,38 +86,39 @@ public class PathFinder {
 			for (int l = 0; l < columns; l++) {
 				logicList[i][l].setH(stop);
 			}
-			openList = new ArrayList<AStarTile>();
-			ArrayList<AStarTile> path = new ArrayList<AStarTile>();
-			openList.add(start);
+		}
+		openList = new ArrayList<AStarTile>();
+		ArrayList<AStarTile> path = new ArrayList<AStarTile>();
+		openList.add(start);
 
-			while (!openList.isEmpty()) {
-				// Start by finding the tile in the open list with the best
-				// F-value
-				currentTile = openList.get(findBestTile());
+		while (!openList.isEmpty()) {
+			// Start by finding the tile in the open list with the best
+			// F-value
+			currentTile = openList.get(findBestTile());
 
-				// Algorithm complete and path found.
-				if (currentTile.equals(stop)) {
-					path.add(currentTile);
-					while (currentTile != start) {
-						path.add(currentTile.getParent());
-						currentTile = currentTile.getParent();
-					}
-					clear();
-					ArrayList <AStarTile> reversePath = new ArrayList<AStarTile>();
-					for (int k = 0; k <= path.size()-1; k++){
-						reversePath.add(path.get((path.size()-1)-k));
-					}
-					return convertPath(reversePath);
-
-					// The goal was not found in the openList
-				} else {
-					updateNeighbors(currentTile.getNeighbors());
-					currentTile.setClosed(true);
-					currentTile.setOpen(false);
-					removeFromOpen(currentTile);
+			// Algorithm complete and path found.
+			if (currentTile.equals(stop)) {
+				path.add(currentTile);
+				while (currentTile != start) {
+					path.add(currentTile.getParent());
+					currentTile = currentTile.getParent();
 				}
+				clear();
+				ArrayList <AStarTile> reversePath = new ArrayList<AStarTile>();
+				for (int k = 0; k <= path.size()-1; k++){
+					reversePath.add(path.get((path.size()-1)-k));
+				}
+				return convertPath(reversePath);
+
+				// The goal was not found in the openList
+			} else {
+				updateNeighbors(currentTile.getNeighbors());
+				currentTile.setClosed(true);
+				currentTile.setOpen(false);
+				removeFromOpen(currentTile);
 			}
 		}
+
 		clear();
 		return null;
 	}// end getPath()
@@ -188,12 +189,12 @@ public class PathFinder {
 
 				currentNeighbors.get(k).setOpen(true);
 				openList.add(currentNeighbors.get(k));
-				
+
 				currentNeighbors.get(k).setParent(currentTile);
 				currentNeighbors.get(k).setG(currentTile.isDiagonal(currentNeighbors.get(k)) ?
-						 currentTile.getG() + DIAGONALCOST :
-								 currentTile.getG() + 1);
-				
+						currentTile.getG() + DIAGONALCOST :
+							currentTile.getG() + 1);
+
 				// If the current path would have to change direction in order to reach the specific tile, add a small cost.
 				// The cost is 
 
