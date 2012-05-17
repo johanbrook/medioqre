@@ -331,7 +331,7 @@ public class GameModel implements IGameModel, IEventHandler, IMessageSender {
 	 */
 	private boolean objectCollidesWithPlayer(CollidableObject o){
 		if(this.player == null) {
-			return true;
+			return false;
 		}
 		
 		// Get width of a single tile
