@@ -19,12 +19,12 @@ import model.weapon.Projectile;
 public class AIPlayer {
 	private Enemy unit;
 	private List<Point> path;
-	private int iq, updateCount, distance;
+	private int intelligence, updateCount, distance;
 	private Point currentTile;
 
 	public AIPlayer(Enemy unit) {
 		this.unit = unit;
-		this.iq = 5;
+		this.intelligence = 5;
 		this.updateCount = 0;
 		this.distance = 100;
 
@@ -40,12 +40,12 @@ public class AIPlayer {
 	}
 
 	/**
-	 * get the IQ of this AIPlayer
+	 * get the intelligence of this AIPlayer
 	 * 
-	 * @return the IQ
+	 * @return the intelligence
 	 */
-	public int getIQ() {
-		return this.iq;
+	public int getIntelligence() {
+		return this.intelligence;
 	}
 
 	/**
@@ -138,7 +138,7 @@ public class AIPlayer {
 	 */
 	public boolean inRange() {
 		double range = this.unit.getCurrentWeapon().getProjectile().getRange()
-				.getDistance();
+				.getDistance() + this.unit.getCollisionBox().height / 2;
 		return this.distance < range;
 	}
 	
