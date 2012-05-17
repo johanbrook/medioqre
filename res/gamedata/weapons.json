@@ -61,7 +61,7 @@
 		"slot": 4,
 		"projectile": {
 			"damage": 0,
-			"range":  "SHORT_RANGE",
+			"range":  "NO_RANGE",
 			"speed": 100,
 			"bounds": {
 				"height": 20,
