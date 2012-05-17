@@ -116,7 +116,8 @@ public class ViewController
 	 * @param screenHeight
 	 *            The frame height
 	 */
-	public ViewController(KeyListener listener, Dimension frameSize) {
+	public ViewController(KeyListener listener, Dimension frameSize, ILoader callback) {
+		
 		EventBus.INSTANCE.register(this);
 
 		this.fpsmeter = new GraphicalFPSMeter();

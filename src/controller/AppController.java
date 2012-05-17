@@ -70,7 +70,24 @@ public class AppController implements Runnable{
 		this.game = new GameModel();
 		this.navigation = new NavigationController();
 
-		new ViewController(this.navigation, new Dimension(20 * 48, 12 * 48));
+		new ViewController(this.navigation, new Dimension(20 * 48, 12 * 48), new ILoader() {
+
+			@Override
+			public void complete() {
+				log("View loading was completed");
+			}
+
+			@Override
+			public void success() {
+				log("View loading succeeded");
+			}
+
+			@Override
+			public void error() {
+				log("View loading failed");
+			}
+			
+		});
 		
 		this.ai = new AIController(48, 48, 48, 48);
 
