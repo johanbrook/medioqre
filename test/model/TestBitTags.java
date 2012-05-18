@@ -24,9 +24,12 @@ import model.weapon.PortalGun.Mode;
 import model.weapon.Projectile;
 import model.weapon.Projectile.Range;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 
+import tools.datamanagement.ResourceLoader;
 import tools.factory.Level;
 import tools.factory.ObjectFactory;
 
@@ -140,7 +143,13 @@ public class TestBitTags {
 		// where '3' is the id of the weapon (Melee from JSON file)
 		// and '1' is the object type of projectile
 		
-		Projectile p = ObjectFactory.newEnemy().getCurrentWeapon().getProjectile();
+		AbstractWeapon w = ObjectFactory.newEnemy().getCurrentWeapon();
+		JSONArray weapons = ResourceLoader.parseJSONFromPath("gamedata/weapons.json")
+				.optJSONArray("weapons");
+		
+		JSONObject mgun = weapons.optJSONObject(0);
+		
+		Projectile p = ObjectFactory.newProjectile(w, mgun.optJSONObject("projectile"));
 		
 		assertEquals(0x00013021, p.getTag());
 	}
