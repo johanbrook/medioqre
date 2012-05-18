@@ -10,7 +10,8 @@ public class TestAnimation {
 	@Test
 	public void testConstructors() {
 		Animation a = new Animation();
-		assertNull(a.getSprites());
+		assertNotNull(a.getSprites());
+		assertEquals(0, a.getSprites().length);
 	}
 	@Test
 	public void testSetAnimationTag() {
