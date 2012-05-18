@@ -77,15 +77,15 @@ public class GLBitmapFont implements JSONSerializable, GLRenderableObject {
 
 		int i = 0;
 		for (char c : this.text.toCharArray()) {
-			GLRenderableObject renderable = this.letters.get(c);
+			GLLetter letter = this.letters.get(c);
 
-			if (renderable == null)
+			if (letter == null)
 				return;
 
 			Rectangle renderRect = new Rectangle(this.getBounds().getX() + i
 					* this.letterWidth, this.getBounds().getY(),
 					this.letterWidth, this.getBounds().getHeight());
-			renderable.render(renderRect, target, canvas, zIndex);
+			letter.render(renderRect, target, canvas, zIndex);
 			i++;
 		}
 	}

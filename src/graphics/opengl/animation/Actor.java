@@ -1,18 +1,35 @@
 package graphics.opengl.animation;
 
+import com.jogamp.opengl.util.texture.Texture;
+
+import javax.media.opengl.GL2;
+import javax.media.opengl.GLAutoDrawable;
+
 import graphics.json.JSONSerializable;
+import graphics.opengl.core.GLRenderableObject;
+import graphics.opengl.core.Rectangle;
+
+import model.CollidableObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Actor implements JSONSerializable {
+import tools.datamanagement.SharedTextures;
+
+public class Actor implements JSONSerializable, GLRenderableObject {
 
 	private String textureName;
 
 	// Animation
 	private Animation[] animations;
 	private Animation currentAnimation;
+
+	private Rectangle renderingSize;
+
+	private CollidableObject collidableObject;
+
+	private boolean showCollisionBox = false;
 
 	// Constructors
 	/**
@@ -130,6 +147,14 @@ public class Actor implements JSONSerializable {
 		return this.textureName;
 	}
 
+	public CollidableObject getCollidableObject() {
+		return this.collidableObject;
+	}
+
+	public boolean isShowingCollisionBox() {
+		return this.showCollisionBox;
+	}
+
 	// Interfaces
 	@Override
 	public JSONObject serialize() throws JSONException {
@@ -157,6 +182,62 @@ public class Actor implements JSONSerializable {
 		for (int i = 0; i < jsonAnimations.length(); i++) {
 			this.animations[i] = new Animation(jsonAnimations.getJSONObject(i));
 		}
+	}
+
+	@Override
+	public void render(Rectangle object, Rectangle target,
+			GLAutoDrawable canvas, float zIndex) {
+
+		if (this.currentAnimation == null
+				|| this.currentAnimation.getCurrentSprite() == null
+				|| this.currentAnimation.getCurrentSprite().getVertexPoints() == null
+				|| this.renderingSize == null) {
+			return;
+		}
+
+		Texture texture = SharedTextures.getSharedTextures().bindTexture(this.textureName, canvas);
+		GL2 gl = canvas.getGL().getGL2();
+		
+		
+		float[] renderingpoints = this.currentAnimation.getCurrentSprite()
+				.getVertexPoints();
+		float tx = renderingpoints[0] / (float) texture.getWidth();
+		float ty = renderingpoints[1] / (float) texture.getHeight();
+		float tw = renderingpoints[2] / (float) texture.getWidth();
+		float th = renderingpoints[3] / (float) texture.getHeight();
+		
+		// TODO Clear this if never used.
+		float tox = renderingpoints[4];
+		float toy = renderingpoints[5];
+		
+		float rx = this.renderingSize.getX() / target.getX();
+		float ry = this.renderingSize.getY() / target.getY();
+		float rw = this.renderingSize.getWidth() / target.getWidth();
+		float rh = this.renderingSize.getHeight() / target.getHeight();
+		
+		gl.glBegin(GL2.GL_QUADS);
+		gl.glTexCoord2f(tx, ty);
+		gl.glVertex3f(rx, ry, 0);
+		
+		gl.glTexCoord2f(tx + tw, ty);
+		gl.glVertex3f(rx + rw, ry, 0);
+		
+		gl.glTexCoord2f(tx + tw, ty + th);
+		gl.glVertex3f(rx + rw, ry + rh, 0);
+		
+		gl.glTexCoord2f(tx, ty + th);
+		gl.glVertex3f(rx, ry + rh, 0);
+		
+		gl.glEnd();
+		
+
+	}
+	@Override
+	public void update(double dt) {}
+
+	@Override
+	public Rectangle getBounds() {
+		return null;
 	}
 
 }

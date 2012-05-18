@@ -12,10 +12,11 @@ import graphics.opengl.animation.Sprite;
 import graphics.opengl.core.GLRenderableObject;
 import graphics.opengl.core.Rectangle;
 
-public class GLLetter implements GLRenderableObject, JSONSerializable {
+public class GLLetter implements JSONSerializable {
 
 	private char character;
 	private Sprite sprite;
+	private float[] color = {1f,1f,1f};
 
 	public GLLetter(Sprite sprite, char character) {
 		this.sprite = sprite;
@@ -29,7 +30,7 @@ public class GLLetter implements GLRenderableObject, JSONSerializable {
 
 	public void setColor(float r, float g, float b)
 	{
-		this.sprite.setColor(r, g, b);
+		this.color = new float[]{r,g,b};
 	}
 	// Getters
 	public Sprite getSprite() {
@@ -38,19 +39,6 @@ public class GLLetter implements GLRenderableObject, JSONSerializable {
 	public char getCharacter()
 	{
 		return this.character;
-	}
-
-	
-	@Override
-	public void render(Rectangle object, Rectangle target,
-			GLAutoDrawable canvas, float zIndex) {
-		this.sprite.render(object, target, canvas, zIndex);
-	}
-	@Override
-	public void update(double dt) {}
-	@Override
-	public Rectangle getBounds() {
-		return this.sprite.getBounds();
 	}
 
 	@Override
