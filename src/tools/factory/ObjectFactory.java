@@ -260,20 +260,17 @@ public class ObjectFactory {
 			en.setHealth(enemy.getInt("health"));
 			
 			JSONObject weaponObj = enemy.getJSONObject("weapon");
-
-			AbstractWeapon melee = createWeaponFromString(
-					weaponObj.getString("type"),
-					new Object[]{en, weaponObj.getInt("ammo"),
-							weaponObj.getDouble("ammoMultiplier"),
-							weaponObj.getDouble("fireInterval")});
-
-			Projectile projectile = newProjectile(melee, weaponObj);
+			AbstractWeapon melee = createWeaponFromJSON(en, weaponObj);
+			Projectile projectile = newProjectileFromJSON(melee, 
+							weaponObj.getJSONObject("projectile"));
+			
 
 			melee.setProjectile(projectile);
 			en.setCurrentWeapon(melee);
 			en.setBit(objectTypes.getInt("enemy"), 4);
 			
 			return en;
+			
 		} catch (JSONException e) {
 			err(e.getMessage());
 			e.printStackTrace();
@@ -299,27 +296,22 @@ public class ObjectFactory {
 		List<Enemy> enemies = new ArrayList<Enemy>();
 		int enemiesToAdd = tools.Math.fib(waveNumber);
 
-//		try {
 
-			for (int i = 0; i < enemiesToAdd; i++) {
+		for (int i = 0; i < enemiesToAdd; i++) {
 
-				Enemy e = newEnemy();
-				Random random = new Random();
+			Enemy e = newEnemy();
+			Random random = new Random();
 
-				int x = (int) (SPAWN_MARGIN + random.nextFloat()
-						* (tileMapInstance.getTileMapSize().getWidth()
-								* tileMapInstance.getTileSize().getWidth() - (2 * SPAWN_MARGIN)));
-				int y = (int) (SPAWN_MARGIN + random.nextFloat()
-						* (tileMapInstance.getTileMapSize().getHeight()
-								* tileMapInstance.getTileSize().getHeight() - (2 * SPAWN_MARGIN)));
+			int x = (int) (SPAWN_MARGIN + random.nextFloat()
+					* (tileMapInstance.getTileMapSize().getWidth()
+							* tileMapInstance.getTileSize().getWidth() - (2 * SPAWN_MARGIN)));
+			int y = (int) (SPAWN_MARGIN + random.nextFloat()
+					* (tileMapInstance.getTileMapSize().getHeight()
+							* tileMapInstance.getTileSize().getHeight() - (2 * SPAWN_MARGIN)));
 
-				e.setPosition(x, y);
-				enemies.add(e);
-			}
-//		} catch (JSONException e) {
-//			err(e.getMessage());
-//			e.printStackTrace();
-//		}
+			e.setPosition(x, y);
+			enemies.add(e);
+		}
 
 		return enemies;
 	}
@@ -348,11 +340,8 @@ public class ObjectFactory {
 								* tileMapInstance.getTileSize().getHeight() - (2 * SPAWN_MARGIN)));
 
 				JSONObject it = items.getJSONObject(i);
-				JSONObject bounds = it.getJSONObject("bounds");
-				CollidableObject item = createItemFromString(
-						it.getString("type"),
-						new Object[]{it.getInt("amount"), x, y,
-								bounds.getInt("width"), bounds.getInt("height")});
+				CollidableObject item = createItemFromJSON(it, x, y);
+						
 				if (item == null) {
 					continue;
 				}
@@ -392,13 +381,7 @@ public class ObjectFactory {
 							.getTileSize().getHeight()));
 
 					JSONObject it = items.getJSONObject(i);
-					JSONObject bounds = it.getJSONObject("bounds");
-
-					return createItemFromString(
-							it.getString("type"),
-							new Object[]{it.getInt("amount"), x, y,
-									bounds.getInt("width"),
-									bounds.getInt("height")});
+					return createItemFromJSON(it, x, y);
 
 				}
 			} catch (JSONException e) {
@@ -452,11 +435,7 @@ public class ObjectFactory {
 			for (int i = 0; i < weapons.length(); i++) {
 				JSONObject wp = weapons.getJSONObject(i);
 
-				AbstractWeapon weapon = createWeaponFromString(
-						wp.getString("type"),
-						new Object[]{owner, wp.getInt("ammo"),
-								wp.getDouble("ammoMultiplier"),
-								wp.getDouble("fireInterval")});
+				AbstractWeapon weapon = createWeaponFromJSON(owner, wp);
 
 				if (weapon == null) {
 					continue;
@@ -473,7 +452,8 @@ public class ObjectFactory {
 					}
 				}
 
-				weapon.setBit(objectTypes.getInt("weapon"));
+				weapon.setBit(objectTypes.getInt("weapon"), 4);
+				weapon.setBit(wp.getInt("id"), 3);
 				Projectile projectile = newProjectile(weapon, wp);
 				
 				weapon.setProjectile(projectile);
@@ -504,15 +484,10 @@ public class ObjectFactory {
 			JSONObject parent) {
 
 		try {
-			JSONObject projTemplate = parent.getJSONObject("projectile");
-
-			Projectile projectile = new Projectile(pwner, projTemplate
-					.getJSONObject("bounds").getInt("width"), projTemplate
-					.getJSONObject("bounds").getInt("height"),
-					projTemplate.getInt("damage"), Range.valueOf(projTemplate
-							.getString("range")), projTemplate.getInt("speed"));
-
-			projectile.setBit(objectTypes.getInt("projectile"), 4);
+			Projectile projectile = newProjectileFromJSON(pwner, parent.getJSONObject("projectile"));
+			
+			projectile.setBit(parent.getInt("id"), 3);
+			
 			return projectile;
 
 		} catch (JSONException e) {
@@ -520,6 +495,28 @@ public class ObjectFactory {
 			e.printStackTrace();
 		}
 
+		return null;
+	}
+	
+	public static Projectile newProjectileFromJSON(AbstractWeapon pwner, JSONObject obj) {
+		
+		try{
+			JSONObject bounds = obj.getJSONObject("bounds");
+			Projectile proj = new Projectile(pwner, 
+					bounds.getInt("width"), 
+					bounds.getInt("height"), 
+					obj.getInt("damage"), 
+					Range.valueOf(obj.getString("range")), 
+					obj.getInt("speed"));
+			
+			proj.setBit(objectTypes.getInt("projectile"), 4);
+			
+			return proj;
+		}
+		catch(JSONException e) {
+			e.printStackTrace();
+		}
+		
 		return null;
 	}
 
@@ -715,13 +712,41 @@ public class ObjectFactory {
 				new Class[]{AbstractCharacter.class, int.class, double.class,
 						double.class}, objectParams);
 
+		AbstractWeapon weapon = (AbstractWeapon) obj;
+		
 		try {
-			((AbstractWeapon) obj).setBit(objectTypes.getInt("weapon"));
+			weapon.setBit(objectTypes.getInt("weapon"), 4);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 		
-		return (AbstractWeapon) obj;
+		return weapon;
+	}
+	
+	// TODO Document!
+	/**
+	 *
+	 * @param owner
+	 * @param obj
+	 * @return
+	 */
+	public static AbstractWeapon createWeaponFromJSON(AbstractCharacter owner, JSONObject obj) {
+		
+		try {
+			Object[] params = new Object[]{owner, obj.getInt("ammo"),
+					obj.getDouble("ammoMultiplier"),
+					obj.getDouble("fireInterval")};
+			
+			AbstractWeapon w = createWeaponFromString(obj.getString("type"), params);
+			w.setBit(obj.getInt("id"), 3);
+			
+			return w;
+		}
+		catch(JSONException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 
 	/**
@@ -746,5 +771,29 @@ public class ObjectFactory {
 		}
 
 		return (CollidableObject) obj;
+	}
+	
+	// TODO Document!
+	/**
+	 * 
+	 * @param obj
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	public static CollidableObject createItemFromJSON(JSONObject obj, int x, int y) {
+		try {
+			JSONObject bounds = obj.getJSONObject("bounds");
+			Object[] params = new Object[]{obj.getInt("amount"), x, y,
+					bounds.getInt("width"), bounds.getInt("height")};
+			
+			CollidableObject item = createItemFromString(obj.getString("type"), params);
+			return item;
+		}
+		catch(JSONException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 }
