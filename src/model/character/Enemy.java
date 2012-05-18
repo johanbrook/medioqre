@@ -16,6 +16,7 @@ import event.EventBus;
  *	@author Johan
  */
 public class Enemy extends AbstractCharacter {
+	private boolean wasPushed;
 	
 	/**
 	 * Create a new enemy
@@ -28,6 +29,7 @@ public class Enemy extends AbstractCharacter {
 	 */
 	public Enemy(int movementSpeed, Rectangle collBox, Dimension size, int xoffset, int yoffset) {
 		super(movementSpeed, collBox, size, xoffset, yoffset);		
+		this.wasPushed = false;
 	}
 
 	/**
@@ -38,15 +40,24 @@ public class Enemy extends AbstractCharacter {
 	 * @param e The other enemy
 	 */
 	public void push(Enemy e){
-		if (!e.isMoving()){
-			Point currPos = this.getPosition();
+		if (!this.isMoving()){
+			Point currPos = e.getPosition();
 
-			int x = (int) Math.signum((e.getDirection().getXRatio()));
-			int y = (int) Math.signum((e.getDirection().getYRatio()));
+			int x = (int) Math.signum((this.getDirection().getXRatio()));
+			int y = (int) Math.signum((this.getDirection().getYRatio()));
 
-			this.setPosition(currPos.x + x, currPos.y + y);
-			EventBus.INSTANCE.publish(new Event(Property.DID_MOVE, this));
+			e.setPosition(currPos.x + x, currPos.y + y);
+			EventBus.INSTANCE.publish(new Event(Property.DID_MOVE, e));
+			e.setPushed(true);
 		}
+	}
+	
+	public void setPushed(boolean value){
+		this.wasPushed = value;
+	}
+	
+	public boolean wasPushed(){
+		return this.wasPushed;
 	}
 
 	@Override

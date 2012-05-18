@@ -109,16 +109,18 @@ public class AIController implements IMessageSender, IEventHandler {
 
 			handleAttack(aiPlayer, dt);
 
-			//If no path is set, or if the player is not left in the set path, calculate new path.
+			//If no path is set, the player is no longer at the end of the path, the enemy was teleported or pushed, calculate new path.
 			if (aiPlayer.getPath() == null || 
 					!aiPlayer.getPath().get(aiPlayer.getPath().size()-1).equals(playerTile) ||
-					aiPlayer.getEnemy().isPortalVictim()){
+					aiPlayer.getEnemy().isPortalVictim() ||
+					aiPlayer.getEnemy().wasPushed()){
 				aiPlayer.setCurrentTile(calculateTile(aiPlayer.getMidPos()));
 				
 				//Update more often if closer to player. No need for enemies far away to update each frame.
 				if (aiPlayer.getCount() > aiPlayer.getDistance()/this.width){
 					getNewPath(aiPlayer);
 					aiPlayer.resetCount();
+					aiPlayer.getEnemy().setPushed(false);
 				}else {
 					aiPlayer.updateCount();
 				}
