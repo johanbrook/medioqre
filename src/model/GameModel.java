@@ -466,9 +466,6 @@ public class GameModel implements IGameModel, IEventHandler, IMessageSender {
 	private void moveEntities(double dt) {
 		for (CollidableObject t : this.objects) {
 			
-			if(t instanceof Player)	
-				log("TAG: "+Integer.toHexString(t.getTag())+ "\tOBJ: Player");
-			
 			
 			if (t instanceof Entity) {
 				Entity temp = (Entity) t;
@@ -481,8 +478,6 @@ public class GameModel implements IGameModel, IEventHandler, IMessageSender {
 				Point oldPos = temp.getPosition();
 				
 				// .. move and check eventual collisions
-			
-				
 				checkCollisions(temp);
 				temp.move(dt);
 				
