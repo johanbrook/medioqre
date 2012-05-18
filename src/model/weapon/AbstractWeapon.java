@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import event.Event;
 import event.Event.Property;
 import event.EventBus;
+import graphics.ITaggable;
 import model.character.AbstractCharacter;
 
 /**
@@ -12,7 +13,7 @@ import model.character.AbstractCharacter;
  * 
  * @author Johan
  */
-public abstract class AbstractWeapon {
+public abstract class AbstractWeapon implements ITaggable{
 
 	private int ammo;
 	private AbstractCharacter owner;
@@ -197,8 +198,8 @@ public abstract class AbstractWeapon {
 		return this.tag;
 	}
 	
-	public void setBit(int weaponType, int position) {
-		this.tag |= (weaponType << 4*position);
+	public void setBit(int bit, int position) {
+		this.tag |= (bit << 4*position);
 	}
 
 }

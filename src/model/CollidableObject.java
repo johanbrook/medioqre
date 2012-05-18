@@ -17,6 +17,7 @@ import event.IMessageListener;
 import event.Event.Property;
 import event.IMessageSender;
 import event.Messager;
+import graphics.ITaggable;
 
 /**
  * The collidable object super class.
@@ -31,7 +32,7 @@ import event.Messager;
  * @author Johan
  * 
  */
-public abstract class CollidableObject implements IMessageSender {
+public abstract class CollidableObject implements IMessageSender, ITaggable {
 
 	private Rectangle collisionBox;
 	private Dimension size;
@@ -303,7 +304,7 @@ public abstract class CollidableObject implements IMessageSender {
 		return this.tag;
 	}
 	
-	public void setBit(int type, int position) {
-		this.tag |= (type << position*4);
+	public void setBit(int bit, int position) {
+		this.tag |= (bit << position*4);
 	}
 }

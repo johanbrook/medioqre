@@ -8,6 +8,8 @@ package model;
 
 import static org.junit.Assert.*;
 
+import graphics.ITaggable;
+
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -90,12 +92,12 @@ public class TestBitTags {
 		assertEquals(0, this.entity.getTag() & 0x00000100);
 		
 		// Assign '1' to a weapon
-		AbstractWeapon w = new MachineGun(entity, 100, 1.0, 1.0);
+		ITaggable w = new MachineGun(entity, 100, 1.0, 1.0);
 		w.setBit(1, 4);
 		assertEquals(0x00010000, w.getTag());
 		
 		// .. and assign the weapon to the character
-		this.entity.setCurrentWeapon(w);
+		this.entity.setCurrentWeapon((AbstractWeapon)w);
 		
 		// And ensure that the 3rd position of the character tag
 		// (weapon type) is '1'.
@@ -113,11 +115,11 @@ public class TestBitTags {
 		// and '1' (1st pos) signals moving
 		
 		// The object type on 5th position:
-		AbstractWeapon w = new MachineGun(entity, 100, 1.0, 1.0);
+		ITaggable w = new MachineGun(entity, 100, 1.0, 1.0);
 		w.setBit(7, 4); 	// Type for weapons
 		w.setBit(1, 3);		// ID for machine gun
 		
-		Projectile p = new Projectile(w, 10, 10, 10, Range.FAR_RANGE, 10);
+		Projectile p = new Projectile((AbstractWeapon)w, 10, 10, 10, Range.FAR_RANGE, 10);
 		p.setBit(1, 4); 	// Set type for projectile
 		
 		// The projectile should now include its owner's id on 
@@ -143,13 +145,13 @@ public class TestBitTags {
 		// where '3' is the id of the weapon (Melee from JSON file)
 		// and '1' is the object type of projectile
 		
-		AbstractWeapon w = ObjectFactory.newEnemy().getCurrentWeapon();
+		ITaggable w = ObjectFactory.newEnemy().getCurrentWeapon();
 		JSONArray weapons = ResourceLoader.parseJSONFromPath("gamedata/weapons.json")
 				.optJSONArray("weapons");
 		
 		JSONObject mgun = weapons.optJSONObject(0);
 		
-		Projectile p = ObjectFactory.newProjectile(w, mgun.optJSONObject("projectile"));
+		Projectile p = ObjectFactory.newProjectile((AbstractWeapon) w, mgun.optJSONObject("projectile"));
 		
 		assertEquals(0x00013021, p.getTag());
 	}
@@ -161,7 +163,7 @@ public class TestBitTags {
 		// where '1' is for BLUE portal mode
 		// where '' is for Portal's object type
 		
-		Portal p = new Portal(Mode.BLUE, new Rectangle(), new Dimension(), 0, 0);
+		ITaggable p = new Portal(Mode.BLUE, new Rectangle(), new Dimension(), 0, 0);
 		p.setBit(4, 4);
 		
 		assertEquals(0x00140000, p.getTag());
@@ -175,7 +177,7 @@ public class TestBitTags {
 		// Desired bit pattern: 0014 0000
 		// where '4' is the portal object type
 		// where '1' is a BLUE portal
-		Portal p = ObjectFactory.newPortal(Mode.BLUE, new Point(0,0));
+		ITaggable p = ObjectFactory.newPortal(Mode.BLUE, new Point(0,0));
 		
 		assertEquals(0x00140000, p.getTag());
 	}
@@ -187,8 +189,8 @@ public class TestBitTags {
 		// Desired bit pattern: 0005 0000 for MedPack
 		// where '6' and '5' are the object types
 		
-		CollidableObject c = ObjectFactory.newItem("AmmoCrate");
-		CollidableObject m = ObjectFactory.newItem("MedPack");
+		ITaggable c = ObjectFactory.newItem("AmmoCrate");
+		ITaggable m = ObjectFactory.newItem("MedPack");
 		
 		assertEquals(0x00060000, c.getTag());
 		assertEquals(0x00050000, m.getTag());
@@ -201,7 +203,7 @@ public class TestBitTags {
 		// Desired bit pattern: 0003 0000
 		// where '3' is the enemy object type
 		
-		Enemy e = ObjectFactory.newEnemy();
+		ITaggable e = ObjectFactory.newEnemy();
 		
 		assertEquals(0x00030000, e.getTag() & 0x00030000);
 	}
@@ -212,8 +214,7 @@ public class TestBitTags {
 		// Desired bit pattern: 0002 0000
 		// where '2' is the player object type
 		
-		Player p = ObjectFactory.newPlayer();
-		int weaponTag = p.getCurrentWeapon().getTag();
+		ITaggable p = ObjectFactory.newPlayer();
 		
 		assertEquals(0x00020000, p.getTag() & 0x00020000);
 	}
