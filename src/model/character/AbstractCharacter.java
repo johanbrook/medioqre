@@ -2,6 +2,9 @@ package model.character;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
+
+import org.json.JSONObject;
+
 import static tools.Logger.log;
 
 
@@ -38,6 +41,13 @@ public abstract class AbstractCharacter extends Entity {
 			Dimension size, int xoffset, int yoffset) {
 		super(collBox, size, xoffset, yoffset, movementSpeed);
 		this.health = this.maxHealth = 100;
+		this.setDirection(Direction.SOUTH);
+	}
+	
+	public AbstractCharacter(JSONObject obj) {
+		super(obj);
+		
+		this.health = obj.optInt("health");
 		this.setDirection(Direction.SOUTH);
 	}
 

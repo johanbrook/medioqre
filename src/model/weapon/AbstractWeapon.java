@@ -1,5 +1,7 @@
 package model.weapon;
 
+import org.json.JSONObject;
+
 import event.Event;
 import event.Event.Property;
 import event.EventBus;
@@ -34,6 +36,10 @@ public abstract class AbstractWeapon {
 		this.ammoMultiplier = ammoMultiplier;
 		this.fireInterval = fireInterval;
 		this.cooldown = 0;
+	}
+	
+	public AbstractWeapon(AbstractCharacter owner, JSONObject obj) {
+		this(owner, obj.optInt("ammo"), obj.optInt("ammoMultiplier"), obj.optInt("fireInterval"));
 	}
 
 	/**

@@ -16,4 +16,11 @@ public interface ICollectableItem {
 	 *            The player
 	 */
 	public void pickedUpBy(Player source);
+	
+	/**
+	 * The amount of this item.
+	 * 
+	 * @return The amount
+	 */
+	public int getAmount();
 }

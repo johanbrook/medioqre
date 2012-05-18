@@ -3,6 +3,8 @@ package model.item;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 
+import org.json.JSONObject;
+
 import event.Event;
 import event.EventBus;
 import event.Event.Property;
@@ -35,6 +37,12 @@ public class AmmoCrate extends CollidableObject implements ICollectableItem {
 
 		this.amount = amount;
 	}
+	
+	public AmmoCrate(int x, int y, JSONObject obj) {
+		this(obj.optInt("amount"), x, y, 
+				obj.optJSONObject("bounds").optInt("width"), 
+				obj.optJSONObject("bounds").optInt("width"));
+	}
 
 	/**
 	 * A Player picked up this AmmoCrate.
@@ -58,6 +66,11 @@ public class AmmoCrate extends CollidableObject implements ICollectableItem {
 			this.pickedUpBy((Player) w);
 		}
 		
+	}
+
+	@Override
+	public int getAmount() {
+		return this.amount;
 	}
 
 }

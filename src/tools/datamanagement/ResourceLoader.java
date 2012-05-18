@@ -78,7 +78,7 @@ public class ResourceLoader {
 	 */
 	public static String loadJSONStringFromStream(InputStream s) {
 		if (s == null) {
-			throw new IllegalArgumentException("Input stream can't be null");
+			throw new IllegalArgumentException("File doesn't exist");
 		}
 
 		try {

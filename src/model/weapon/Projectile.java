@@ -3,6 +3,9 @@ package model.weapon;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 
+import org.json.JSONObject;
+
+import tools.Logger;
 import model.CollidableObject;
 import model.ConcreteCollidableObject;
 import model.Entity;
@@ -121,6 +124,14 @@ public class Projectile extends Entity {
 		setDirection(p.getDirection());
 
 		Logger.log("Projectile created: " + this.toString());
+	}
+	
+	public Projectile(AbstractWeapon owner, JSONObject obj) {
+		this(owner, obj.optJSONObject("bounds").optInt("width"), 
+					obj.optJSONObject("bounds").optInt("width"), 
+					obj.optInt("damage"),
+					Range.valueOf(obj.optString("range")), 
+					obj.optInt("speed"));
 	}
 	
 	/**

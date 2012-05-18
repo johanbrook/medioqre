@@ -3,6 +3,9 @@ package model.character;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.util.List;
+
+import org.json.JSONObject;
+
 import model.CollidableObject;
 import model.weapon.*;
 
@@ -27,6 +30,10 @@ public class Player extends AbstractCharacter {
 	public Player(int speed, Rectangle box, Dimension size, int offsetX,
 			int offsetY) {
 		super(speed, box, size, offsetX, offsetY);
+	}
+	
+	public Player(JSONObject obj) {
+		super(obj);
 	}
 
 	/**

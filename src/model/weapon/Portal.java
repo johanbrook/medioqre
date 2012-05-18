@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+import org.json.JSONObject;
+
 import model.CollidableObject;
 import model.Entity;
 import model.weapon.PortalGun.Mode;
@@ -32,6 +34,11 @@ public class Portal extends CollidableObject {
 		this.mode = mode;
 	}
 
+	public Portal(Mode mode, JSONObject obj) {
+		super(obj);
+		this.mode = mode;
+	}
+	
 	/**
 	 * Center this portal around a given position.
 	 * 
