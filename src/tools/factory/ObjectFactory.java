@@ -202,13 +202,7 @@ public class ObjectFactory {
 	public static Player newPlayer() {
 		try {
 
-			JSONObject bounds = player.getJSONObject("bounds");
-
-			Player p = new Player(player.getInt("speed"), new Rectangle(
-					bounds.getInt("boxWidth"), bounds.getInt("boxHeight")),
-					new Dimension(bounds.getInt("width"), bounds
-							.getInt("height")), bounds.getInt("offsetX"),
-					bounds.getInt("offsetY"));
+			Player p = new Player(player);
 
 			p.setPosition(player.getJSONObject("position").getInt("x"), player
 					.getJSONObject("position").getInt("y"));
@@ -245,18 +239,13 @@ public class ObjectFactory {
 	public static Enemy newEnemy() {
 
 		try {
-			JSONObject bounds = enemy.getJSONObject("bounds");
-			Enemy en = new Enemy(enemy.getInt("speed"), new Rectangle(
-					bounds.getInt("boxWidth"), bounds.getInt("boxHeight")),
-					new Dimension(bounds.getInt("width"), bounds
-							.getInt("height")), bounds.getInt("offsetX"),
-					bounds.getInt("offsetY"));
+			Enemy en = new Enemy(enemy);
 
 			en.setHealth(enemy.getInt("health"));
 			
 			JSONObject weaponObj = enemy.getJSONObject("weapon");
 			AbstractWeapon melee = createWeaponFromJSON(en, weaponObj);
-			Projectile projectile = newProjectileFromJSON(melee, 
+			Projectile projectile = newProjectile(melee, 
 							weaponObj.getJSONObject("projectile"));
 			
 
@@ -318,7 +307,7 @@ public class ObjectFactory {
 	 *            The current wave
 	 * @return A list of items with randomized positions
 	 */
-	public static List<CollidableObject> newItemsForWave(int waveNumber) {
+	public static List<CollidableObject> newItems() {
 
 		List<CollidableObject> itemList = new ArrayList<CollidableObject>();
 		Random random = new Random();
@@ -449,7 +438,7 @@ public class ObjectFactory {
 
 				weapon.setBit(objectTypes.getInt("weapon"), 4);
 				weapon.setBit(wp.getInt("id"), 3);
-				Projectile projectile = newProjectile(weapon, wp);
+				Projectile projectile = newProjectile(weapon, wp.getJSONObject("projectile"));
 				
 				weapon.setProjectile(projectile);
 				weaponsList.add(weapon);
@@ -464,32 +453,6 @@ public class ObjectFactory {
 		return weaponsList;
 	}
 
-	/**
-	 * Create a new projectile from an <code>AbstractWeapon</code> and a
-	 * <code>JSONObject</code> parent.
-	 * 
-	 * @param pwner
-	 *            The owning weapon
-	 * @param parent
-	 *            The parent JSON object (typically a weapon specified in the
-	 *            config file)
-	 * @return A Projectile
-	 */
-	public static Projectile newProjectile(AbstractWeapon pwner,
-			JSONObject parent) {
-
-		try {
-			Projectile projectile = newProjectileFromJSON(pwner, parent.getJSONObject("projectile"));
-			
-			return projectile;
-
-		} catch (JSONException e) {
-			err(e.getMessage());
-			e.printStackTrace();
-		}
-
-		return null;
-	}
 	
 	/**
 	 * Create a new projectile from a JSON object.
@@ -500,17 +463,10 @@ public class ObjectFactory {
 	 * @param obj The JSON object
 	 * @return The Projectile
 	 */
-	public static Projectile newProjectileFromJSON(AbstractWeapon pwner, JSONObject obj) {
+	public static Projectile newProjectile(AbstractWeapon pwner, JSONObject obj) {
 		
 		try{
-			JSONObject bounds = obj.getJSONObject("bounds");
-			Projectile proj = new Projectile(pwner, 
-					bounds.getInt("width"), 
-					bounds.getInt("height"), 
-					obj.getInt("damage"), 
-					Range.valueOf(obj.getString("range")), 
-					obj.getInt("speed"));
-			
+			Projectile proj = new Projectile(pwner, obj);
 			proj.setBit(objectTypes.getInt("projectile"), 4);
 			
 			return proj;
@@ -534,13 +490,7 @@ public class ObjectFactory {
 	public static Portal newPortal(Mode mode, Point position) {
 		try {
 			JSONObject portal = config.getJSONObject("portal");
-			JSONObject bounds = portal.getJSONObject("bounds");
-
-			Portal p = new Portal(mode, new Rectangle(position.x, position.y,
-					bounds.getInt("boxWidth"), bounds.getInt("boxHeight")),
-					new Dimension(bounds.getInt("width"), bounds
-							.getInt("height")), bounds.getInt("offsetX"),
-					bounds.getInt("offsetY"));
+			Portal p = new Portal(mode, portal);
 			
 			p.setBit(objectTypes.getInt("portal"), 4);
 			

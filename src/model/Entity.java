@@ -2,6 +2,8 @@ package model;
 
 import java.awt.Point;
 
+import org.json.JSONObject;
+
 import event.Event;
 import event.Event.Property;
 import event.EventBus;
@@ -40,6 +42,15 @@ public abstract class Entity extends CollidableObject {
 		this.portalVictim = false;
 	}
 
+	public Entity(JSONObject obj) {
+		super(obj);
+		
+		this.movementSpeed = obj.optInt("speed");
+		this.direction = Direction.ORIGIN;
+		this.isMoving = true;
+		this.portalVictim = false;
+	}
+	
 	/**
 	 * Move in a the set direction.
 	 * 

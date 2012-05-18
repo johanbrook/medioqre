@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+import org.json.JSONObject;
+
 import model.CollidableObject;
 
 import event.Event;
@@ -28,6 +30,10 @@ public class Enemy extends AbstractCharacter {
 	 */
 	public Enemy(int movementSpeed, Rectangle collBox, Dimension size, int xoffset, int yoffset) {
 		super(movementSpeed, collBox, size, xoffset, yoffset);		
+	}
+	
+	public Enemy(JSONObject obj) {
+		super(obj);
 	}
 
 	/**

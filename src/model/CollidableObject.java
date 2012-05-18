@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+import org.json.JSONObject;
+
 import model.character.Player;
 
 import tools.Logger;
@@ -77,6 +79,19 @@ public abstract class CollidableObject implements IMessageSender {
 
 		this.collisionBox.x += this.xoffset;
 		this.collisionBox.y += this.yoffset;
+	}
+	
+	
+	public CollidableObject(JSONObject obj) {
+		this(
+				new Rectangle(obj.optJSONObject("bounds").optInt("boxWidth"), 
+						obj.optJSONObject("bounds").optInt("boxHeight")),
+				new Dimension(obj.optJSONObject("bounds").optInt("width"), 
+						obj.optJSONObject("bounds").optInt("height")),
+				obj.optJSONObject("bounds").optInt("offsetX"),
+				obj.optJSONObject("bounds").optInt("offsetY")
+		);
+		
 	}
 
 	@Override

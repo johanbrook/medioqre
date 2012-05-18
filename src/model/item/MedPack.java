@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+import org.json.JSONObject;
+
 import event.Event;
 import event.EventBus;
 import event.Event.Property;
@@ -35,6 +37,12 @@ public class MedPack extends CollidableObject implements ICollectableItem {
 		this.amount = amount;
 	}
 	
+	public MedPack(int x, int y, JSONObject obj) {
+		this(obj.optInt("amount"), x, y, 
+				obj.optJSONObject("bounds").optInt("width"), 
+				obj.optJSONObject("bounds").optInt("width"));
+	}
+	
 	/**
 	 * A player picked up this MedPack.
 	 * 
@@ -56,6 +64,11 @@ public class MedPack extends CollidableObject implements ICollectableItem {
 			this.pickedUpBy((Player) w);
 		}
 		
+	}
+
+	@Override
+	public int getAmount() {
+		return this.amount;
 	}
 
 }

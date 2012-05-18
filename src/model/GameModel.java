@@ -263,8 +263,7 @@ public class GameModel implements IGameModel, IEventHandler, IMessageSender {
 	 * relevant listeners.
 	 */
 	private void addItems() {
-		List<CollidableObject> items = ObjectFactory
-				.newItemsForWave(this.currentWave);
+		List<CollidableObject> items = ObjectFactory.newItems();
 
 		log("Items received");
 
