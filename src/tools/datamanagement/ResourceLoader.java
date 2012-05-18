@@ -11,9 +11,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import static tools.Logger.*;
+
 import javax.imageio.ImageIO;
 
 import org.apache.commons.io.IOUtils;
@@ -143,6 +145,50 @@ public class ResourceLoader {
 
 		return jsonString;
 	}
+	
+	
+	
+	/**
+	 * Traverses the input JSON object and parses any values to keys ending with "Config" or "config".
+	 * 
+	 * @param object
+	 * @return A JSON object containg a JSON tree with keys and values
+	 */
+	public static JSONObject parseNestedConfigFiles(JSONObject object) {
+		if(object == null) {
+			throw new IllegalArgumentException("Input JSON object can't be null");
+		}
+		
+		JSONObject output = new JSONObject();
+
+		Iterator<String> it = object.keys();
+		while (it.hasNext()) {
+			String configKey = it.next();
+				
+				try {
+					Object configValue;
+					
+					if(configKey.endsWith("Config") || configKey.endsWith("config")) {
+					
+						configValue = ResourceLoader.parseJSONFromPath(object.getString(configKey));
+					}
+					else {
+						configValue = object.get(configKey);
+					}
+					
+					output.put(configKey, configValue);
+					
+				} catch (JSONException e) {
+					err("Couldn't parse nested JSON from path "+configKey);
+					e.printStackTrace();
+				}
+		}
+		
+		return output;
+
+	}
+	
+	
 
 	/**
 	 * Loads a tilemap from an absolute file path. NOTE: No tilesheet is

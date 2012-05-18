@@ -14,6 +14,9 @@ import model.item.AmmoCrate;
 import model.item.MedPack;
 import model.weapon.AbstractWeapon;
 import model.weapon.MachineGun;
+import model.weapon.Portal;
+import model.weapon.PortalGun.Mode;
+import model.weapon.Projectile.Range;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -66,6 +69,16 @@ public class TestJSON {
 		
 		assertEquals(medpack.optInt("amount"), m.getAmount());
 		assertEquals(ammocrate.optInt("amount"), a.getAmount());
+	}
+	
+	
+	@Test
+	public void testCreatePortalFromJSON() {
+		JSONObject portal = ResourceLoader.parseJSONFromPath("gamedata/config.json").optJSONObject("portal");
+		Portal p = new Portal(Mode.BLUE, portal);
+		
+		assertNotNull(p);
+		assertEquals(Mode.BLUE, p.getMode());
 	}
 
 }

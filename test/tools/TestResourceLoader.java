@@ -28,4 +28,25 @@ public class TestResourceLoader {
 		
 		assertNotNull(json);
 	}
+	
+	@Test
+	public void testParseNestedObjects() {
+		JSONObject json = ResourceLoader.parseJSONFromPath("gamedata/config.json");
+		JSONObject obj = ResourceLoader.parseNestedConfigFiles(json);
+		
+		assertNotNull(obj);
+		
+		// Traverse down the file ..
+		assertNotNull(obj.optJSONObject("playerConfig"));
+		assertNotNull(obj.optJSONObject("playerConfig").optJSONObject("bounds"));
+		
+		// and check some values
+		JSONObject player = ResourceLoader.parseJSONFromPath("gamedata/player.json");
+		assertEquals(player.optInt("speed"), obj.optJSONObject("playerConfig").optInt("speed"));
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void testParseNullObject() {
+		ResourceLoader.parseNestedConfigFiles(null);
+	}
 }

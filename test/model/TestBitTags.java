@@ -91,19 +91,19 @@ public class TestBitTags {
 		// Make sure no weapon is set on init:
 		assertEquals(0, this.entity.getTag() & 0x00000100);
 		
-		// Assign '1' to a weapon
+		// Assign '2' to a weapon
 		ITaggable w = new MachineGun(entity, 100, 1.0, 1.0);
-		w.setBit(1, 4);
-		assertEquals(0x00010000, w.getTag());
+		w.setBit(2, 4);
+		assertEquals(0x00020000, w.getTag());
 		
 		// .. and assign the weapon to the character
 		this.entity.setCurrentWeapon((AbstractWeapon)w);
 		
 		// And ensure that the 3rd position of the character tag
-		// (weapon type) is '1'.
+		// (weapon type) is '2'.
 		
 		// Desired bit pattern: 0000 0100
-		assertEquals(0x00000100, this.entity.getTag() & 0x00000100);
+		assertEquals(0x00000200, this.entity.getTag() & 0x00000200);
 		assertEquals(0, this.obj.getTag() & 0x00000100);
 	}
 	
@@ -161,7 +161,7 @@ public class TestBitTags {
 		
 		// Desired bit pattern: 0014 0000
 		// where '1' is for BLUE portal mode
-		// where '' is for Portal's object type
+		// where '4' is for Portal's object type
 		
 		ITaggable p = new Portal(Mode.BLUE, new Rectangle(), new Dimension(), 0, 0);
 		p.setBit(4, 4);

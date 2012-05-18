@@ -47,50 +47,10 @@ public class Level {
 		this.config = new JSONObject();
 		this.configFiles = new HashMap<String, String>();
 
-		JSONObject configFile = ResourceLoader
-				.parseJSONFromPath(this.defaultConfigPath);
-		parseNestedConfigFiles(configFile);
+		JSONObject configFile = ResourceLoader.parseJSONFromPath(this.defaultConfigPath);
+		this.config = ResourceLoader.parseNestedConfigFiles(configFile);
 	}
 	
-	/**
-	 * Traverses the input JSON object and parses any values to keys ending with "Config" or "config".
-	 * 
-	 * <p>Puts all parsed objects in the <code>config</code> variable, which in the end would contain
-	 * a complete JSON config.</p>
-	 * 
-	 * @param configFile
-	 */
-	private void parseNestedConfigFiles(JSONObject configFile) {
-		if(configFile == null) {
-			throw new IllegalArgumentException("Input config file can't be null");
-		}
-
-		Iterator<String> it = configFile.keys();
-		while (it.hasNext()) {
-			String configKey = it.next();
-				
-				try {
-					Object configValue;
-					
-					if(configKey.endsWith("Config") || configKey.endsWith("config")) {
-					
-						this.configFiles.put(configKey, configFile.getString(configKey));
-						configValue = ResourceLoader.parseJSONFromPath(configFile.getString(configKey));
-						log("Loading "+configKey+ " file from "+configFile.get(configKey)+" ...");
-					}
-					else {
-						configValue = configFile.get(configKey);
-					}
-					
-					this.config.put(configKey, configValue);
-					
-				} catch (JSONException e) {
-					err("Couldn't parse nested JSON from path "+configKey);
-					e.printStackTrace();
-				}
-		}
-
-	}
 
 	// Getters
 	
