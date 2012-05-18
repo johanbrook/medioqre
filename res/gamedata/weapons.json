@@ -46,7 +46,6 @@
 		"fireInterval": 5,
 		"slot": 3,
 		"projectile": {
-			"objectType": 2,
 			"damage": 100,
 			"range":  "SHORT_RANGE",
 			"speed": 100,

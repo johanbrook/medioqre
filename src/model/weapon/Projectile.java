@@ -234,7 +234,13 @@ public class Projectile extends Entity {
 	
 	@Override
 	public int getTag() {
-		return super.getTag() | this.owner.getTag();
+		int id = this.owner.getTag() & 0x0000f000;
+		
+//		System.out.println("Owner:" +Integer.toHexString(this.owner.getTag()));
+//		System.out.println("Super tag: " +Integer.toHexString(super.getTag()));
+//		System.out.println("Type: "+Integer.toHexString(id));
+		
+		return super.getTag() | id;
 	}
 	
 }

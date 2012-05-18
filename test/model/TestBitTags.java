@@ -88,7 +88,7 @@ public class TestBitTags {
 		
 		// Assign '1' to a weapon
 		AbstractWeapon w = new MachineGun(entity, 100, 1.0, 1.0);
-		w.setBit(1);
+		w.setBit(1, 4);
 		assertEquals(0x00010000, w.getTag());
 		
 		// .. and assign the weapon to the character
@@ -103,32 +103,46 @@ public class TestBitTags {
 	}
 	
 	@Test
-	public void testProjectileTag() {
+	public void testProjectile() {
 		
 		// Desired bit pattern: 0001 0001
 		// where '1' (5th pos) is the weapon's object type
 		// and '1' (1st pos) signals moving
-		int objectType = 2;
 		
 		// The object type on 5th position:
 		AbstractWeapon w = new MachineGun(entity, 100, 1.0, 1.0);
-		w.setBit(objectType);
+		w.setBit(7, 4); 	// Type for weapons
+		w.setBit(1, 3);		// ID for machine gun
 		
 		Projectile p = new Projectile(w, 10, 10, 10, Range.FAR_RANGE, 10);
+		p.setBit(1, 4); 	// Set type for projectile
 		
-		// The projectile should now include its owner's type on 
-		// the 5th position:
-		int weaponTag = w.getTag() & 0x00010000;
-		int projTag = p.getTag() & 0x00010000;
-		
+		// The projectile should now include its owner's id on 
+		// the 4th position:
+		int weaponTag = w.getTag() & 0x00001000;
+		int projTag = p.getTag() & 0x00001000;
 		
 		assertEquals(weaponTag, projTag);
 		
-		// Desired bit pattern: 0002 0000
+		// Desired bit pattern: 0001 1000
 		// where the last '0' signals not moving
+		// where '1' is the weapon ID
+		// where '1' is the projectile object type
 		
 		p.stop();
-		assertEquals(0x00020000, p.getTag() & 0x00020001);
+		assertEquals(0x0011000, p.getTag() & 0x00011001);
+	}
+	
+	@Test
+	public void testProjectileFromFactory() {
+
+		// Desired bit pattern: 0001 3021
+		// where '3' is the id of the weapon (Melee from JSON file)
+		// and '1' is the object type of projectile
+		
+		Projectile p = ObjectFactory.newEnemy().getCurrentWeapon().getProjectile();
+		
+		assertEquals(0x00013021, p.getTag());
 	}
 	
 	@Test
@@ -190,8 +204,8 @@ public class TestBitTags {
 		// where '2' is the player object type
 		
 		Player p = ObjectFactory.newPlayer();
+		int weaponTag = p.getCurrentWeapon().getTag();
 		
-		System.out.println(Integer.toHexString(p.getTag()));
 		assertEquals(0x00020000, p.getTag() & 0x00020000);
 	}
 }

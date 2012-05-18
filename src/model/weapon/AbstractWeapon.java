@@ -191,8 +191,8 @@ public abstract class AbstractWeapon {
 		return this.tag;
 	}
 	
-	public void setBit(int weaponType) {
-		this.tag |= (weaponType << 4*4);
+	public void setBit(int weaponType, int position) {
+		this.tag |= (weaponType << 4*position);
 	}
 
 }

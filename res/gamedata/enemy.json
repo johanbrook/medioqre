@@ -3,6 +3,7 @@
 	"health": 100,
 	"weapon": {
 		"type": "Melee",
+		"id": 3,
 		"ammo": -1,
 		"ammoMultiplier": 0,
 		"fireInterval": 5,
