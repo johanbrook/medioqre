@@ -195,6 +195,8 @@ public class ObjectFactory {
 	/**
 	 * Creates a new Player.
 	 * 
+	 * <p>Sets the object type to Player for the returned object.</p>
+	 * 
 	 * @return A new Player
 	 */
 	public static Player newPlayer() {
@@ -234,7 +236,9 @@ public class ObjectFactory {
 	}
 
 	/**
-	 * Create a new enemy
+	 * Create a new enemy.
+	 * 
+	 * <p>Sets the object type to Enemy for the returned object.</p>
 	 * 
 	 * @return The enemy
 	 */
@@ -477,8 +481,6 @@ public class ObjectFactory {
 		try {
 			Projectile projectile = newProjectileFromJSON(pwner, parent.getJSONObject("projectile"));
 			
-			projectile.setBit(parent.getInt("id"), 3);
-			
 			return projectile;
 
 		} catch (JSONException e) {
@@ -489,6 +491,15 @@ public class ObjectFactory {
 		return null;
 	}
 	
+	/**
+	 * Create a new projectile from a JSON object.
+	 * 
+	 * <p>Sets the object type to Projectile for the returned object.</p>
+	 * 
+	 * @param pwner The weapon owner
+	 * @param obj The JSON object
+	 * @return The Projectile
+	 */
 	public static Projectile newProjectileFromJSON(AbstractWeapon pwner, JSONObject obj) {
 		
 		try{
@@ -704,12 +715,15 @@ public class ObjectFactory {
 		return weapon;
 	}
 	
-	// TODO Document!
 	/**
+	 * Create a weapon from a JSON object.
+	 * 
+	 * <p>The kind of weapon (Melee, MachineGun ..) must be specified in the 'type'
+	 * parameter in the JSON object. </p>
 	 *
-	 * @param owner
-	 * @param obj
-	 * @return
+	 * @param owner The weapon's owner
+	 * @param obj The JSON object
+	 * @return An AbstractWeapon from the JSON parameters specified
 	 */
 	public static AbstractWeapon createWeaponFromJSON(AbstractCharacter owner, JSONObject obj) {
 		
@@ -754,13 +768,16 @@ public class ObjectFactory {
 		return (CollidableObject) obj;
 	}
 	
-	// TODO Document!
 	/**
+	 * Create an item from a JSON object.
 	 * 
-	 * @param obj
-	 * @param x
-	 * @param y
-	 * @return
+	 * <p>The kind of item (MedPack, AmmoCrate ..) should be specified in the
+	 * 'type' key in the JSON object.</p>
+	 * 
+	 * @param obj The JSON object
+	 * @param x The x position
+	 * @param y The y position
+	 * @return An item with the type CollidableObject
 	 */
 	public static CollidableObject createItemFromJSON(JSONObject obj, int x, int y) {
 		try {
