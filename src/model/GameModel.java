@@ -372,8 +372,8 @@ public class GameModel implements IGameModel, IEventHandler, IMessageSender {
 	private Point getRandomPosition(){
 		TileMap tilemap = ObjectFactory.getTileMap();
 		
-		int rows = (int) tilemap.getTileMapSize().getWidth();
-		int columns = (int) tilemap.getTileMapSize().getHeight();
+		int rows = (int) tilemap.getTileMapSize().getWidth() - 1;
+		int columns = (int) tilemap.getTileMapSize().getHeight() - 1;
 		int width = (int) tilemap.getTileSize().getWidth();
 		int height = (int) tilemap.getTileSize().getHeight();
 		
