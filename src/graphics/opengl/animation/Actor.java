@@ -2,6 +2,7 @@ package graphics.opengl.animation;
 
 import com.jogamp.opengl.util.texture.Texture;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
@@ -253,6 +254,7 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	public void render(Rectangle object, Rectangle target,
 			GLAutoDrawable canvas, float zIndex) {
 
+		this.renderingSize = object;
 		if (this.currentAnimation == null
 				|| this.currentAnimation.getCurrentSprite() == null
 				|| this.currentAnimation.getCurrentSprite().getVertexPoints() == null
@@ -260,9 +262,15 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 			return;
 		}
 
+		
 		Texture texture = SharedTextures.getSharedTextures().bindTexture(this.textureName, canvas);
 		GL2 gl = canvas.getGL().getGL2();
 		
+		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER,
+				GL.GL_NEAREST);
+
+		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER,
+				GL.GL_NEAREST);
 		
 		float[] renderingpoints = this.currentAnimation.getCurrentSprite()
 				.getVertexPoints();
@@ -275,8 +283,8 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 		float tox = renderingpoints[4];
 		float toy = renderingpoints[5];
 		
-		float rx = this.renderingSize.getX() / target.getX();
-		float ry = this.renderingSize.getY() / target.getY();
+		float rx = this.renderingSize.getX() / target.getWidth();
+		float ry = this.renderingSize.getY() / target.getHeight();
 		float rw = this.renderingSize.getWidth() / target.getWidth();
 		float rh = this.renderingSize.getHeight() / target.getHeight();
 		
@@ -284,18 +292,15 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 		gl.glTexCoord2f(tx, ty);
 		gl.glVertex3f(rx, ry, 0);
 		
-		gl.glTexCoord2f(tx + tw, ty);
-		gl.glVertex3f(rx + rw, ry, 0);
+		gl.glTexCoord2f(tx, ty + th);
+		gl.glVertex3f(rx, ry + rh, 0);
 		
 		gl.glTexCoord2f(tx + tw, ty + th);
 		gl.glVertex3f(rx + rw, ry + rh, 0);
 		
-		gl.glTexCoord2f(tx, ty + th);
-		gl.glVertex3f(rx, ry + rh, 0);
-		
-		gl.glEnd();
-		
-
+		gl.glTexCoord2f(tx + tw, ty);
+		gl.glVertex3f(rx + rw, ry, 0);
+		gl.glEnd();		
 	}
 	@Override
 	public void update(double dt) {}
