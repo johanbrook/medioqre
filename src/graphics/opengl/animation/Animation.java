@@ -140,11 +140,11 @@ public class Animation implements JSONSerializable {
 		int dt = (int) (timeThisFrame - this.timeLastFrame);
 		this.timePassed += dt;
 		this.timeLastFrame = timeThisFrame;
-
+		
 		if (this.timePassed < this.duration) {
-			if (this.sprites != null) return null;
-			
-			return this.sprites[(int) ((int) ((float) this.timePassed / (float) duration) * (float) (this.sprites.length - 1))];
+			if (this.sprites == null) return null;
+					
+			return this.sprites[((int)  (((float) this.timePassed / (float) duration) * (float) (this.sprites.length)))];
 		} else {
 			if (this.looping) {
 				this.startAnimation();
