@@ -99,6 +99,11 @@ public class AppController implements Runnable{
 
 		this.audio = AudioController.getInstance();
 		audio.setGame(game);
+		
+		// Logging format
+		
+		String loggingFormat = ObjectFactory.getConfigString("loggingFormat");
+		tools.Logger.getInstance().setTimestampFormat(loggingFormat);
 	}
 	
 	

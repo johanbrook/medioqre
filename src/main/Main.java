@@ -50,10 +50,6 @@ public class Main {
 			new AppController().init();
 		}
 		
-		// Logging format
-		
-		String loggingFormat = ObjectFactory.getConfigString("loggingFormat");
-		tools.Logger.getInstance().setTimestampFormat(loggingFormat);
 	}
 
 	private static void OSXOptions() {
