@@ -3,6 +3,8 @@ package gui.actorcreator;
 import graphics.opengl.animation.Actor;
 import graphics.opengl.animation.Animation;
 import graphics.opengl.animation.Sprite;
+import graphics.opengl.core.Position;
+import graphics.opengl.core.Rectangle;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -35,6 +37,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.InputEvent;
 import java.io.File;
@@ -58,9 +62,14 @@ import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.border.LineBorder;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 public class ActorCreatorMainView implements GLEventListener {
 
@@ -68,6 +77,10 @@ public class ActorCreatorMainView implements GLEventListener {
 		new ActorCreatorMainView();
 	}
 
+	// Constants
+	private final float START_Y = 0.5f;
+	
+	
 	private File currentFilePath;
 	private File currentFile;
 	private Actor currentActor;
@@ -77,7 +90,7 @@ public class ActorCreatorMainView implements GLEventListener {
 	private boolean changedSpriteFile = false;
 
 	private Sprite currentSprite;
-	
+
 	private JFrame frame;
 
 	// Other functionality
@@ -105,8 +118,10 @@ public class ActorCreatorMainView implements GLEventListener {
 	}
 
 	public void removeAnimation() {
-		if (this.currentActor != null && this.currentActor.getCurrentAnimation() != null) {
-			this.currentActor.removeAnimation(this.currentActor.getCurrentAnimation());
+		if (this.currentActor != null
+				&& this.currentActor.getCurrentAnimation() != null) {
+			this.currentActor.removeAnimation(this.currentActor
+					.getCurrentAnimation());
 			this.updateGui();
 			System.out.println("Remove animation!");
 		}
@@ -122,8 +137,10 @@ public class ActorCreatorMainView implements GLEventListener {
 		}
 	}
 	public void selectSprite(Sprite s) {
-		if (this.currentActor != null && this.currentActor.getCurrentAnimation() != null) {
-			for (int i = 0; i < this.currentActor.getCurrentAnimation().getSprites().length; i++) {
+		if (this.currentActor != null
+				&& this.currentActor.getCurrentAnimation() != null) {
+			for (int i = 0; i < this.currentActor.getCurrentAnimation()
+					.getSprites().length; i++) {
 				if (this.currentActor.getCurrentAnimation().getSprites()[i] == s) {
 					this.currentSprite = s;
 					this.updateGui();
@@ -152,6 +169,17 @@ public class ActorCreatorMainView implements GLEventListener {
 							"Enter new animation duration")));
 			this.updateGui();
 		}
+	}
+
+	public void saveSprite() {
+		if (this.currentSprite == null)
+			return;
+
+		this.currentSprite.setRectangle(new Rectangle(Float.valueOf(tfX
+				.getText()), Float.valueOf(tfY.getText()), Float.valueOf(tfW
+				.getText()), Float.valueOf(tfH.getText())));
+		this.currentSprite.setOffset(new Position(
+				Float.valueOf(tfOX.getText()), Float.valueOf(tfOY.getText())));
 	}
 
 	// GUI functionality
@@ -185,60 +213,68 @@ public class ActorCreatorMainView implements GLEventListener {
 		});
 		this.liAnimations.validate();
 		this.liAnimations.setCellRenderer(new ListCellRenderer() {
-			
+
 			@Override
-			public Component getListCellRendererComponent(JList arg0, Object arg1,
-					int arg2, boolean arg3, boolean arg4) {
+			public Component getListCellRendererComponent(JList arg0,
+					Object arg1, int arg2, boolean arg3, boolean arg4) {
 				JPanel p = new JPanel();
 				p.setLayout(new BorderLayout());
-				JLabel title = new JLabel("Tag: "+((Animation) arg1).getAnimationTag());
+				JLabel title = new JLabel("Tag: "
+						+ Integer.toHexString(((Animation) arg1)
+								.getAnimationTag()));
 				p.add(title, BorderLayout.WEST);
-					
-				p.setBackground(arg4 ? Color.BLUE : Color.WHITE);
+
+				p.setBackground(arg4 ? new Color(180, 180, 255) : Color.WHITE);
 				return p;
 			}
 		});
 
 		this.liSprites.setModel(new ListModel() {
-			
+
 			@Override
-			public void removeListDataListener(ListDataListener arg0) {}
-			
+			public void removeListDataListener(ListDataListener arg0) {
+			}
+
 			@Override
 			public int getSize() {
-				if (currentActor == null || currentActor.getCurrentAnimation() == null || currentActor.getCurrentAnimation().getSprites() == null) {
+				if (currentActor == null
+						|| currentActor.getCurrentAnimation() == null
+						|| currentActor.getCurrentAnimation().getSprites() == null) {
 					return 0;
 				}
 				return currentActor.getCurrentAnimation().getSprites().length;
 			}
-			
+
 			@Override
 			public Object getElementAt(int arg0) {
-				if (currentActor == null || currentActor.getCurrentAnimation() == null || currentActor.getCurrentAnimation().getSprites() == null) {
+				if (currentActor == null
+						|| currentActor.getCurrentAnimation() == null
+						|| currentActor.getCurrentAnimation().getSprites() == null) {
 					return null;
 				}
 				return currentActor.getCurrentAnimation().getSprites()[arg0];
 			}
-			
+
 			@Override
-			public void addListDataListener(ListDataListener arg0) {}
+			public void addListDataListener(ListDataListener arg0) {
+			}
 		});
 		this.liSprites.setCellRenderer(new ListCellRenderer() {
-			
+
 			@Override
-			public Component getListCellRendererComponent(JList arg0, Object arg1,
-					int arg2, boolean arg3, boolean arg4) {
+			public Component getListCellRendererComponent(JList arg0,
+					Object arg1, int arg2, boolean arg3, boolean arg4) {
 				JPanel p = new JPanel();
 				p.setLayout(new BorderLayout());
-				JLabel title = new JLabel(""+arg2);
+				JLabel title = new JLabel("" + arg2);
 				p.add(title, BorderLayout.WEST);
-					
-				p.setBackground(arg4 ? Color.BLUE : Color.WHITE);
+
+				p.setBackground(arg4 ? new Color(180, 180, 255) : Color.WHITE);
 				return p;
 			}
 		});
 		this.liSprites.validate();
-		
+
 		if (this.currentActor != null
 				&& this.currentActor.getCurrentAnimation() != null) {
 			this.lblAnimationtag.setText("AnimationTag: "
@@ -248,9 +284,26 @@ public class ActorCreatorMainView implements GLEventListener {
 					+ this.currentActor.getCurrentAnimation()
 							.getAnimationDuration());
 		}
+
+		if (this.currentSprite != null) {
+			this.tfX.setText("" + this.currentSprite.getRectangle().getX());
+			this.tfY.setText("" + this.currentSprite.getRectangle().getY());
+			this.tfW.setText("" + this.currentSprite.getRectangle().getWidth());
+			this.tfH.setText("" + this.currentSprite.getRectangle().getHeight());
+			this.tfOX.setText("" + this.currentSprite.getOffset().getX());
+			this.tfOY.setText("" + this.currentSprite.getOffset().getY());
+		} else {
+			this.tfX.setText("N/A");
+			this.tfY.setText("N/A");
+			this.tfW.setText("N/A");
+			this.tfH.setText("N/A");
+			this.tfOX.setText("N/A");
+			this.tfOY.setText("N/A");
+		}
+
 		System.out.println("Updating GUI");
 	}
-
+	
 	// Menu actions
 	public void newActor() {
 		this.currentFile = null;
@@ -272,6 +325,7 @@ public class ActorCreatorMainView implements GLEventListener {
 						ResourceLoader
 								.loadJSONStringFromStream(new FileInputStream(
 										this.currentFile))));
+				this.currentActor.setAnimation(this.currentActor.getAnimations() == null && this.currentActor.getAnimations().length <= 0 ? 0 : this.currentActor.getAnimations()[0].getAnimationTag());
 				System.out.println("Actor: " + this.currentActor);
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
@@ -350,6 +404,12 @@ public class ActorCreatorMainView implements GLEventListener {
 	private JLabel lblTexture;
 	private JLabel lblAnimationtag;
 	private JLabel lblAnimationDuration;
+	private JTextField tfX;
+	private JTextField tfY;
+	private JTextField tfOX;
+	private JTextField tfOY;
+	private JTextField tfW;
+	private JTextField tfH;
 
 	public ActorCreatorMainView() {
 		this.frame = new JFrame("ActorCreator 0.1 - Made by JBarberU");
@@ -359,6 +419,7 @@ public class ActorCreatorMainView implements GLEventListener {
 		GLProfile glP = GLProfile.getDefault();
 		GLCapabilities glC = new GLCapabilities(glP);
 		GLCanvas canvas = new GLCanvas(glC);
+		canvas.setPreferredSize(new Dimension(500,500));
 
 		canvas.addGLEventListener(this);
 		new FPSAnimator(canvas, 30).start();
@@ -413,7 +474,6 @@ public class ActorCreatorMainView implements GLEventListener {
 		panel_2.add(btnRemoveAnimation);
 
 		this.liAnimations = new JList();
-		this.liAnimations.setBackground(Color.MAGENTA);
 		this.liAnimations.addListSelectionListener(new ListSelectionListener() {
 
 			@Override
@@ -434,14 +494,17 @@ public class ActorCreatorMainView implements GLEventListener {
 		this.lblTexture = new JLabel("Texture:");
 		panel_7.add(lblTexture, BorderLayout.WEST);
 
+		JPanel panel_14 = new JPanel();
+		panel_7.add(panel_14, BorderLayout.EAST);
+
 		JButton btnChangeTexture = new JButton("...");
+		panel_14.add(btnChangeTexture);
 		btnChangeTexture.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				loadSpriteSheet();
 			}
 		});
 		btnChangeTexture.setPreferredSize(new Dimension(20, 20));
-		panel_7.add(btnChangeTexture, BorderLayout.EAST);
 
 		JSplitPane splitPane_2 = new JSplitPane();
 		splitPane_2.setOrientation(JSplitPane.VERTICAL_SPLIT);
@@ -489,9 +552,8 @@ public class ActorCreatorMainView implements GLEventListener {
 		panel_5.add(btnRemoveSprite);
 
 		this.liSprites = new JList();
-		this.liSprites.setBackground(Color.CYAN);
 		this.liSprites.addListSelectionListener(new ListSelectionListener() {
-			
+
 			@Override
 			public void valueChanged(ListSelectionEvent arg0) {
 				JList l = (JList) arg0.getSource();
@@ -518,7 +580,11 @@ public class ActorCreatorMainView implements GLEventListener {
 		this.lblAnimationDuration = new JLabel("Duration: ");
 		panel_11.add(this.lblAnimationDuration, BorderLayout.WEST);
 
+		JPanel panel_13 = new JPanel();
+		panel_11.add(panel_13, BorderLayout.EAST);
+
 		JButton btnEditDuration = new JButton("...");
+		panel_13.add(btnEditDuration);
 		btnEditDuration.setPreferredSize(new Dimension(20, 20));
 		btnEditDuration.addActionListener(new ActionListener() {
 
@@ -527,13 +593,111 @@ public class ActorCreatorMainView implements GLEventListener {
 				editDuration();
 			}
 		});
-		panel_11.add(btnEditDuration, BorderLayout.EAST);
 
 		lblAnimationtag = new JLabel("AnimationTag: ");
 		panel_9.add(lblAnimationtag, BorderLayout.WEST);
 
+		JPanel panel_12 = new JPanel();
+		panel_9.add(panel_12, BorderLayout.EAST);
+
 		JButton btnAnimationTag = new JButton("...");
+		panel_12.add(btnAnimationTag);
 		btnAnimationTag.setPreferredSize(new Dimension(20, 20));
+
+		JPanel panel_15 = new JPanel();
+		panel_15.setPreferredSize(new Dimension(100, 200));
+		splitPane_2.setRightComponent(panel_15);
+		panel_15.setLayout(null);
+
+		JLabel lblSprite = new JLabel("Sprite");
+		lblSprite.setBounds(6, 6, 61, 16);
+		panel_15.add(lblSprite);
+
+		JPanel panel_16 = new JPanel();
+		panel_16.setBorder(new LineBorder(new Color(128, 128, 128), 1, true));
+		panel_16.setBackground(new Color(211, 211, 211));
+		panel_16.setBounds(6, 34, 389, 145);
+		panel_15.add(panel_16);
+		panel_16.setLayout(null);
+
+		JLabel lblX = new JLabel("X:");
+		lblX.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblX.setBounds(6, 12, 61, 16);
+		panel_16.add(lblX);
+
+		FocusListener focusListener = new FocusListener() {
+
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				saveSprite();
+			}
+
+			@Override
+			public void focusGained(FocusEvent arg0) {
+			}
+		};
+
+		tfX = new JTextField();
+		tfX.setBounds(79, 6, 61, 28);
+		panel_16.add(tfX);
+		tfX.setColumns(10);
+		tfX.addFocusListener(focusListener);
+
+		JLabel lblY = new JLabel("Y:");
+		lblY.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblY.setBounds(6, 46, 61, 16);
+		panel_16.add(lblY);
+
+		tfY = new JTextField();
+		tfY.setColumns(10);
+		tfY.setBounds(79, 40, 61, 28);
+		panel_16.add(tfY);
+		tfY.addFocusListener(focusListener);
+
+		JLabel lblOffsx = new JLabel("OffsX:");
+		lblOffsx.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblOffsx.setBounds(6, 86, 61, 16);
+		panel_16.add(lblOffsx);
+
+		tfOX = new JTextField();
+		tfOX.setColumns(10);
+		tfOX.setBounds(79, 80, 61, 28);
+		panel_16.add(tfOX);
+		tfOX.addFocusListener(focusListener);
+
+		JLabel lblWidth = new JLabel("Width:");
+		lblWidth.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblWidth.setBounds(152, 12, 61, 16);
+		panel_16.add(lblWidth);
+
+		tfW = new JTextField();
+		tfW.setColumns(10);
+		tfW.setBounds(225, 6, 61, 28);
+		panel_16.add(tfW);
+		tfW.addFocusListener(focusListener);
+
+		JLabel lblHeight = new JLabel("Height:");
+		lblHeight.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblHeight.setBounds(152, 46, 61, 16);
+		panel_16.add(lblHeight);
+
+		tfH = new JTextField();
+		tfH.setColumns(10);
+		tfH.setBounds(225, 40, 61, 28);
+		panel_16.add(tfH);
+		tfH.addFocusListener(focusListener);
+
+		JLabel lblOffsy = new JLabel("OffsY:");
+		lblOffsy.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblOffsy.setBounds(152, 86, 61, 16);
+		panel_16.add(lblOffsy);
+
+		tfOY = new JTextField();
+		tfOY.setColumns(10);
+		tfOY.setBounds(225, 80, 61, 28);
+		panel_16.add(tfOY);
+		tfOY.addFocusListener(focusListener);
+
 		btnAnimationTag.addActionListener(new ActionListener() {
 
 			@Override
@@ -541,7 +705,6 @@ public class ActorCreatorMainView implements GLEventListener {
 				editAnimationTag();
 			}
 		});
-		panel_9.add(btnAnimationTag, BorderLayout.EAST);
 
 		splitPane.setLeftComponent(canvas);
 
@@ -616,6 +779,7 @@ public class ActorCreatorMainView implements GLEventListener {
 
 		this.frame.validate();
 		this.frame.setVisible(true);
+		this.updateGui();
 	}
 
 	@Override
@@ -630,7 +794,14 @@ public class ActorCreatorMainView implements GLEventListener {
 	@Override
 	public void display(GLAutoDrawable drawable) {
 		GL2 gl = drawable.getGL().getGL2();
-
+		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
+		
+		if (this.currentActor != null) {
+			System.out.println("2");
+			this.currentActor.render(new Rectangle(-50,-50,25,50), new Rectangle(0,0,100,100), drawable, 0);
+		}
+		System.out.println("1");
+		
 		if (this.changedSpriteFile && this.spriteSheetFile != null) {
 			try {
 				this.spriteSheet = TextureIO.newTexture(this.spriteSheetFile,
@@ -644,28 +815,69 @@ public class ActorCreatorMainView implements GLEventListener {
 		}
 		if (this.spriteSheet != null) {
 			this.spriteSheet.bind(gl);
+		} else {
+			return;
 		}
-		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
+		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER,
+				GL.GL_NEAREST);
 
-		gl.glBegin(GL2.GL_QUADS);
-		gl.glTexCoord2f(0f, 0f);
-		gl.glVertex2f(-1f, -0.5f);
+		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER,
+				GL.GL_NEAREST);		
+		
+//		gl.glBegin(GL2.GL_QUADS);
+//		gl.glTexCoord2f(0f, 0f);
+//		gl.glVertex2f(-1f, -this.START_Y);
+//
+//		gl.glTexCoord2f(0f, 1f);
+//		gl.glVertex2f(-1f, 1f);
+//
+//		
+//		gl.glTexCoord2f(1f, 1f);
+//		gl.glVertex2f(1f, 1f);
+//
+//		
+//		gl.glTexCoord2f(1f, 0f);
+//		gl.glVertex2f(1f,-this.START_Y);
+//
+//		gl.glEnd();
 
-		gl.glTexCoord2f(0f, 1f);
-		gl.glVertex2f(-1f, 1f);
+		if (this.currentActor != null
+				&& this.currentActor.getCurrentAnimation() != null
+				&& this.currentActor.getCurrentAnimation().getSprites() != null && this.spriteSheet != null) {
+			Sprite s = null;
+			
+			gl.glDisable(GL.GL_TEXTURE_2D);
+			for (int i = 0; i < this.currentActor.getCurrentAnimation()
+					.getSprites().length; i++) {
+				s = this.currentActor.getCurrentAnimation().getSprites()[i];
+				if (s == null)
+					continue;
 
-		gl.glTexCoord2f(1f, 1f);
-		gl.glVertex2f(1f, 1f);
+				float[] points = s.getVertexPoints();
+				float vx1 = (2 * points[0] - this.spriteSheet.getWidth()) / this.spriteSheet.getWidth();
+				float vx2 = (2 * (points[0] + points[2]) - this.spriteSheet.getWidth()) / this.spriteSheet.getWidth();
+				float vy1 = ((1 + START_Y) * points[1]) / this.spriteSheet.getHeight() - START_Y;
+				float vy2 = (1 + START_Y) * (points[1] + points[3]) / this.spriteSheet.getHeight() - START_Y
+						;
+				
+//				gl.glBegin(GL2.GL_QUADS);
+//				gl.glColor3f(0.5f + 0.5f / (float)this.currentActor.getCurrentAnimation().getSprites().length * (float)i, 0f, 0f);
+//				
+//				gl.glVertex2f(vx1, vy1);
+//				gl.glVertex2f(vx1, vy2);
+//				gl.glVertex2f(vx2, vy2);
+//				gl.glVertex2f(vx2, vy1);
+//
+//				gl.glEnd();
 
-		gl.glTexCoord2f(1f, 0f);
-		gl.glVertex2f(1f, -0.5f);
-
-		gl.glEnd();
-
+			}
+			gl.glEnable(GL.GL_TEXTURE_2D);
+			gl.glColor3f(1f, 1f, 1f);	
+		}
+		
 	}
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
 			int height) {
 	}
-
 }
