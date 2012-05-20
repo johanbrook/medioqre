@@ -32,6 +32,11 @@ public class Player extends AbstractCharacter {
 		super(speed, box, size, offsetX, offsetY);
 	}
 	
+	/**
+	 * Create a Player from a JSON object.
+	 * 
+	 * @param obj The JSON object
+	 */
 	public Player(JSONObject obj) {
 		super(obj);
 	}

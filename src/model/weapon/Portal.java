@@ -34,12 +34,28 @@ public class Portal extends CollidableObject {
 		this.mode = mode;
 	}
 	
+	/**
+	 * Create a new portal from a JSON object at a position.
+	 * 
+	 * @param mode The current mode
+	 * @param position The position
+	 * @param obj The JSON object
+	 */
 	public Portal(Mode mode, Point position, JSONObject obj) {
 		super(obj);
 		this.mode = mode;
 		this.setPosition(position);
 	}
 
+	/**
+	 * Create a new portal from a JSON object.
+	 * 
+	 * <p>Note that the current position will be what's set as bounding
+	 * rectangle in the JSON data.</p>
+	 * 
+	 * @param mode The current mode
+	 * @param obj The JSON object
+	 */
 	public Portal(Mode mode, JSONObject obj) {
 		super(obj);
 		this.mode = mode;
