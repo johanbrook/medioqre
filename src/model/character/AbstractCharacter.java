@@ -47,7 +47,7 @@ public abstract class AbstractCharacter extends Entity {
 	public AbstractCharacter(JSONObject obj) {
 		super(obj);
 		
-		this.health = obj.optInt("health");
+		this.health = this.maxHealth = obj.optInt("health");
 		this.setDirection(Direction.SOUTH);
 	}
 
