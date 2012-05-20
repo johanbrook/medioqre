@@ -41,7 +41,7 @@ public class AmmoCrate extends CollidableObject implements ICollectableItem {
 	public AmmoCrate(int x, int y, JSONObject obj) {
 		this(obj.optInt("amount"), x, y, 
 				obj.optJSONObject("bounds").optInt("width"), 
-				obj.optJSONObject("bounds").optInt("width"));
+				obj.optJSONObject("bounds").optInt("height"));
 	}
 
 	/**

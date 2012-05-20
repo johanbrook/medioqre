@@ -40,7 +40,7 @@ public class MedPack extends CollidableObject implements ICollectableItem {
 	public MedPack(int x, int y, JSONObject obj) {
 		this(obj.optInt("amount"), x, y, 
 				obj.optJSONObject("bounds").optInt("width"), 
-				obj.optJSONObject("bounds").optInt("width"));
+				obj.optJSONObject("bounds").optInt("height"));
 	}
 	
 	/**
