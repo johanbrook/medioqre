@@ -66,7 +66,7 @@ public class Sprite implements JSONSerializable {
 	 * @return
 	 */
 	public float[] getVertexPoints() {
-		float[] points = new float[4];
+		float[] points = new float[6];
 		
 		points[0] = this.textureRectangle.getX();
 		points[1] = this.textureRectangle.getY();

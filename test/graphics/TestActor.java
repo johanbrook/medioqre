@@ -76,7 +76,7 @@ public class TestActor {
 	}
 	
 	@Test
-	public void testSetAnimation() {
+	public void testSetAnimations() {
 		
 		Actor a = new Actor();
 		Animation an1 = new Animation();
@@ -91,6 +91,11 @@ public class TestActor {
 		a.setAnimations(new Animation[]{an1, an2, an3});
 		
 		assertNotNull(a.getAnimations());
+	}
+	
+	@Test
+	public void testSetAnimation() {
+		
 	}
 	
 	@Test

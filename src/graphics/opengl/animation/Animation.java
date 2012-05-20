@@ -58,6 +58,10 @@ public class Animation implements JSONSerializable {
 	}
 
 	// Setters
+	public void setAnimationDuration(int duration) {
+		this.duration = duration;
+	}
+	
 	/**
 	 * Set the animationTag.
 	 * 
@@ -102,6 +106,10 @@ public class Animation implements JSONSerializable {
 	}
 
 	// Getters
+	public int getAnimationDuration() {
+		return this.duration;
+	}
+	
 	/**
 	 * Get the animationTag.
 	 * 
@@ -154,6 +162,7 @@ public class Animation implements JSONSerializable {
 		this.timePassed = 0;
 	}
 
+	// Overrides	
 	@Override
 	public JSONObject serialize() throws JSONException {
 		JSONObject retObj = new JSONObject();

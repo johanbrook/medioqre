@@ -23,6 +23,7 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 
 	// Animation
 	private Animation[] animations;
+	
 	private Animation currentAnimation;
 
 	private Rectangle renderingSize;
@@ -94,6 +95,30 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 		this.animations = tempAnimations;
 	}
 
+	public void removeAnimation(Animation animation) {
+		
+		Animation[] newAnimations = new Animation[this.animations.length - 1];
+		
+		int removeIndex = -1;
+		for (int i = 0; i < newAnimations.length; i++) {
+			if (this.animations[i] == animation) {
+				removeIndex = i;
+			}
+		}
+		if (removeIndex == -1)
+			return;
+		
+		
+		for (int i = 0; i < newAnimations.length; i++) {
+			if (i < removeIndex)
+				newAnimations[i] = this.animations[i];
+			else if (i > removeIndex)
+				newAnimations[i] = this.animations[i + 1];
+		}
+		
+		this.animations = newAnimations;
+	}
+	
 	/**
 	 * Set the name of the texture that this actor uses for its animations.
 	 * 
@@ -109,6 +134,21 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 		this.textureName = textureName;
 	}
 
+	/**
+	 * Set the active Animation for this actor to the one specified by 
+	 * animationTag. If no animation corresponding to animationTag, a null 
+	 * animation is set which means that getCurrentAnimationWillReturn null.
+	 * 
+	 * @param animationTag The animationTag corresponding to the Animation to use
+	 */
+	public void setAnimation(int animationTag) {
+		this.currentAnimation = null;
+		for (Animation a : this.animations) {
+			if (a != null && a.getAnimationTag() == animationTag)
+				this.currentAnimation = a;
+		}
+	}
+	
 	// Getters
 	/**
 	 * Get the a pointer to the animations of this Actor.
@@ -139,6 +179,15 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 	}
 
 	/**
+	 * Returns the currently set Animation.
+	 * 
+	 * @return The current Animation
+	 */
+	public Animation getCurrentAnimation() {
+		return this.currentAnimation;
+	}
+	
+	/**
 	 * Get the name of the texture used by this Actor.
 	 * 
 	 * @return The name of the resource to load (without any file extension)
@@ -147,26 +196,42 @@ public class Actor implements JSONSerializable, GLRenderableObject {
 		return this.textureName;
 	}
 
+	/**
+	 * Get the collidable object of this Actor. May be null if the actor 
+	 * doesn't follow any collidableObject.
+	 * 
+	 * @return The collidable object that the Actor is following 
+	 */
 	public CollidableObject getCollidableObject() {
 		return this.collidableObject;
 	}
 
+	/**
+	 * Get whether or not to show the collision box of this Actors collidableObject.
+	 * 
+	 * @return Whether or not to show the collision box
+	 */
 	public boolean isShowingCollisionBox() {
 		return this.showCollisionBox;
 	}
 
-	// Interfaces
+	// Overrides
+	
+	public String toString() {
+		return ("Actor: [texturename: "+this.getTextureName()+""+"]");
+	}
+	
 	@Override
 	public JSONObject serialize() throws JSONException {
 
 		JSONObject retObj = new JSONObject();
 		JSONArray jsonAnimations = new JSONArray();
 
-		for (Animation a : this.animations) {
-			jsonAnimations.put(a.serialize());
+		for (int i = 0; i < (this.animations == null ? 0 : this.animations.length); i++) {
+			jsonAnimations.put(this.animations[i].serialize());
 		}
 
-		retObj.put("textureName", this.textureName);
+		retObj.put("textureName", (this.textureName == null ? "N/A" : this.textureName));
 		retObj.put("animations", jsonAnimations);
 
 		return retObj;
