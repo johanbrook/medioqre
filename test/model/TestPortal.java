@@ -35,6 +35,11 @@ public class TestPortal {
 	public void testPosition() {
 		assertEquals(new Point(20, 20), this.portal.getPosition());
 	}
+	
+	@Test
+	public void testGetCenter() {
+		assertEquals(new Point(30,30), this.portal.getCenter());
+	}
 
 	@Test
 	public void testCenter() {
@@ -45,8 +50,8 @@ public class TestPortal {
 
 	@Test
 	public void testPositionFromCenter() {
-		this.portal.setPositionFromCenter(new Point(30, 30));
-		assertEquals(new Point(20, 20), this.portal.getPosition());
+		this.portal.setPositionFromCenter(new Point(60, 60));
+		assertEquals(new Point(50, 50), this.portal.getPosition());
 	}
 	
 	@Test

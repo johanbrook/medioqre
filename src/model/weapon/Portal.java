@@ -51,8 +51,8 @@ public class Portal extends CollidableObject {
 	 * @param pos The position
 	 */
 	public void setPositionFromCenter(Point pos) {
-		int x = pos.x - this.getCenter().x;
-		int y = pos.y - this.getCenter().y;
+		int x = pos.x - this.getCollisionBox().width / 2;
+		int y = pos.y - this.getCollisionBox().height / 2;
 
 		this.setPosition(x, y);
 	}
@@ -63,8 +63,10 @@ public class Portal extends CollidableObject {
 	 * @return The center as a position
 	 */
 	public Point getCenter() {
-		Point p = new Point(this.getSize().width / 2, this.getSize().height / 2);
-		return p;
+		int x = this.getPosition().x + this.getCollisionBox().width / 2;
+		int y = this.getPosition().y + this.getCollisionBox().height / 2;
+		
+		return new Point(x, y);
 	}
 
 	/**
