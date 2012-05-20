@@ -4,13 +4,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import graphics.json.JSONSerializable;
+import graphics.opengl.core.Position;
 import graphics.opengl.core.Rectangle;
 import graphics.opengl.core.Size;
 
 public class Sprite implements JSONSerializable {
 
 	private Rectangle textureRectangle;
-	private Size offset;
+	private Position offset;
 
 	// Constructors
 	/**
@@ -18,7 +19,7 @@ public class Sprite implements JSONSerializable {
 	 */
 	public Sprite() {
 		this.textureRectangle = new Rectangle(0, 0, 0, 0);
-		this.offset = new Size(0, 0);
+		this.offset = new Position(0, 0);
 	}
 
 	/**
@@ -41,6 +42,12 @@ public class Sprite implements JSONSerializable {
 		this.textureRectangle = rectangle;
 	}
 
+	public void setOffset(Position p) {
+		if (p == null) throw new IllegalArgumentException();
+		
+		this.offset = p;
+	}
+	
 	// Getters
 	/**
 	 * Get the rectangle.
@@ -49,6 +56,10 @@ public class Sprite implements JSONSerializable {
 	 */
 	public Rectangle getRectangle() {
 		return this.textureRectangle;
+	}
+	
+	public Position getOffset() {
+		return this.offset;
 	}
 	
 	// Methods
@@ -72,8 +83,8 @@ public class Sprite implements JSONSerializable {
 		points[1] = this.textureRectangle.getY();
 		points[2] = this.textureRectangle.getWidth();
 		points[3] = this.textureRectangle.getHeight();
-		points[4] = this.offset.getWidth();
-		points[5] = this.offset.getHeight();
+		points[4] = this.offset.getX();
+		points[5] = this.offset.getY();
 		
 		return points;
 	}
@@ -89,8 +100,8 @@ public class Sprite implements JSONSerializable {
 			jsonRect.put("y", this.textureRectangle.getY());
 			jsonRect.put("width", this.textureRectangle.getWidth());
 			jsonRect.put("height", this.textureRectangle.getHeight());
-			jsonRect.put("offsX", this.offset.getWidth());
-			jsonRect.put("offsY", this.offset.getHeight());
+			jsonRect.put("offsX", this.offset.getX());
+			jsonRect.put("offsY", this.offset.getY());
 
 			retObj.put("rect", jsonRect);
 		}
@@ -107,7 +118,7 @@ public class Sprite implements JSONSerializable {
 		int offsX = jsonRect.getInt("offsX");
 		int offsY = jsonRect.getInt("offsY");
 		this.textureRectangle = new Rectangle(x, y, width, height);
-		this.offset = new Size(offsX, offsY);
+		this.offset = new Position(offsX, offsY);
 	}
 
 }
