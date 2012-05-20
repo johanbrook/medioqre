@@ -33,6 +33,12 @@ public class Portal extends CollidableObject {
 		super(collBox, size, xoffset, yoffset);
 		this.mode = mode;
 	}
+	
+	public Portal(Mode mode, Point position, JSONObject obj) {
+		super(obj);
+		this.mode = mode;
+		this.setPosition(position);
+	}
 
 	public Portal(Mode mode, JSONObject obj) {
 		super(obj);

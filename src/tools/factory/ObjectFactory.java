@@ -499,7 +499,7 @@ public class ObjectFactory {
 	public static Portal newPortal(Mode mode, Point position) {
 		try {
 			JSONObject portal = config.getJSONObject("portal");
-			Portal p = new Portal(mode, portal);
+			Portal p = new Portal(mode, position, portal);
 			
 			p.setBit(objectTypes.getInt("portal"), 4);
 			

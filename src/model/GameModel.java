@@ -402,8 +402,8 @@ public class GameModel implements IGameModel, IEventHandler, IMessageSender {
 			if (this.portals[i] == null) {
 				Portal p = ObjectFactory.newPortal(mode, position);
 				p.center();
-				EventBus.INSTANCE
-				.publish(new Event(Property.PORTAL_CREATED, p));
+				
+				EventBus.INSTANCE.publish(new Event(Property.PORTAL_CREATED, p));
 				this.objects.add(p);
 				this.portals[i] = p;
 
@@ -415,6 +415,7 @@ public class GameModel implements IGameModel, IEventHandler, IMessageSender {
 				return;
 			} else if (this.portals[i].getMode() == mode) {
 				this.portals[i].setPositionFromCenter(position);
+				
 				return;
 			}
 		}
