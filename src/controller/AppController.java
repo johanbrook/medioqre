@@ -64,9 +64,11 @@ public class AppController implements Runnable{
 	 */
 	public AppController(){
 		String mode = (isDebugMode()) ? "debug" : "production";
-		System.out.println("Initializing main controller in " + mode
-				+ " mode ...");
+		System.out.println("Initializing main controller in " + mode + " mode ...");
 
+		Level lev = new Level("gamedata/config.json");
+		ObjectFactory.setLevel(lev);
+		
 		this.game = new GameModel();
 		this.navigation = new NavigationController();
 
@@ -104,17 +106,6 @@ public class AppController implements Runnable{
 	 * Initialize a new game.
 	 */
 	public void init() {
-		Level lev = new Level("gamedata/config.json");
-		ObjectFactory.setLevel(lev);
-
-		try {
-			String loggingFormat = lev.getConfig().getString("loggingFormat");
-			tools.Logger.getInstance().setTimestampFormat(loggingFormat);
-
-		} catch (JSONException e) {
-			err("Couldn't load timestamp format from file! " + e.getMessage());
-		}
-
 		this.game.newGame();
 		this.game.newWave();
 		Thread loop = new Thread(this);

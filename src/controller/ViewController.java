@@ -131,7 +131,7 @@ public class ViewController
 		GLCanvas canvas = new GLCanvas(glC);
 
 		// Creating the frame
-		JFrame frame = new JFrame("Frank The Tank");
+		JFrame frame = new JFrame(ObjectFactory.getConfigString("appName"));
 		canvas.setFocusable(true);
 		canvas.requestFocusInWindow();
 		canvas.addKeyListener(listener);

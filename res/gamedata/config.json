@@ -21,6 +21,7 @@
 		"weapon": 7
 	},
 	
+	"appName": 			"Frank the Tank",
 	"loggingFormat": 	"H:m:s",
 	"itemSpawnChance": 	10,
 	"playerConfig": 	"gamedata/player.json",

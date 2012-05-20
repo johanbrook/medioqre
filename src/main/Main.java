@@ -8,6 +8,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import tools.Logger;
+import tools.factory.ObjectFactory;
 
 import controller.AppController;
 
@@ -48,6 +49,11 @@ public class Main {
 		} else {
 			new AppController().init();
 		}
+		
+		// Logging format
+		
+		String loggingFormat = ObjectFactory.getConfigString("loggingFormat");
+		tools.Logger.getInstance().setTimestampFormat(loggingFormat);
 	}
 
 	private static void OSXOptions() {
