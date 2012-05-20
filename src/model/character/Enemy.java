@@ -39,7 +39,7 @@ public class Enemy extends AbstractCharacter {
 	}
 
 	/**
-	 * Called when this enemy should be pushed by another enemy.
+	 * Called when this enemy should push another enemy.
 	 * 
 	 * <p>Sends a <code>DID_MOVE</code> event with the value <code>this</code></p>.
 	 * 
@@ -58,10 +58,18 @@ public class Enemy extends AbstractCharacter {
 		}
 	}
 	
+	/**
+	 * Specify whether or not this unit has recently been pushed away.
+	 * @param value
+	 */
 	public void setPushed(boolean value){
 		this.wasPushed = value;
 	}
 	
+	/**
+	 * get whether or not this unit was pushed away recently. 
+	 * @return True if this unit was recently pushed.
+	 */
 	public boolean wasPushed(){
 		return this.wasPushed;
 	}
