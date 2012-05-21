@@ -8,7 +8,7 @@ import event.Event.Property;
 import tools.Logger;
 
 /**
- * EventBus.java
+ * The Event Bus singleton.
  * 
  * @author Joachim von Hacht
  * @modified Johan Brook, 2012-03-26
