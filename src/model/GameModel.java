@@ -152,7 +152,7 @@ public class GameModel implements IGameModel, IEventHandler, IMessageSender {
 			switchPortalGunMode();
 			break;
 			
-		case PAUSE_GAME :
+		case TOGGLE_PAUSE :
 			
 			AppController.togglePaused();
 			

@@ -18,6 +18,7 @@ import static tools.Logger.*;
 import controller.ai.AIController;
 import controller.navigation.NavigationController;
 import event.Event;
+import event.Event.Property;
 import event.EventBus;
 import event.IEventHandler;
 import event.IMessageListener;
@@ -54,7 +55,7 @@ public class AppController implements Runnable{
 	private AudioController audio;
 	private NavigationController navigation;
 	
-	public static boolean paused = false;
+	private static boolean paused = false;
 		
 	/**
 	 * New AppController. 
@@ -127,6 +128,14 @@ public class AppController implements Runnable{
 	 */
 	public static void togglePaused() {
 		paused = !paused;
+		
+		if(paused) {
+			EventBus.INSTANCE.publish(new Event(Property.PAUSE_GAME));
+		}
+		else {
+			EventBus.INSTANCE.publish(new Event(Property.UNPAUSE_GAME));
+		}
+		
 		log("Paused: "+paused);
 	}
 	

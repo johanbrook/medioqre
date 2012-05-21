@@ -120,9 +120,7 @@ public class NavigationController implements KeyListener, IMessageSender {
 			
 			@Override
 			public void on() {
-				Event evt = new Event(Property.PAUSE_GAME);
-				messager.sendMessage(evt);
-				EventBus.INSTANCE.publish(evt);
+				messager.sendMessage(new Event(Property.TOGGLE_PAUSE));
 			}
 			
 			@Override
