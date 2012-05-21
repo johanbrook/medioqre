@@ -4,7 +4,9 @@ package main;
 import gui.Launcher;
 
 import java.awt.Dimension;
+import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -16,6 +18,7 @@ import controller.AppController;
 
 import static tools.Logger.*;
 
+import org.lwjgl.LWJGLUtil;
 import org.simplericity.macify.eawt.*;
 
 
@@ -38,6 +41,8 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 
+		setAudioNativeDir();
+		
 		if (args.length > 0 && "--debug".equals(args[0])) {
 			MODE = DEBUG;
 		}
@@ -45,6 +50,9 @@ public class Main {
 		String os = System.getProperty("os.name").toLowerCase();
 		if (os.indexOf("mac") != -1)
 			OSXOptions();
+
+		if (os.indexOf("windows") != -1)
+			windowsOptions();
 
 		if (MODE == PRODUCTION) {
 			new Launcher();
@@ -55,7 +63,7 @@ public class Main {
 			f.setVisible(true);
 			new AppController(f).init();
 		}
-		
+
 	}
 
 	private static void OSXOptions() {
@@ -70,6 +78,7 @@ public class Main {
 			Logger.log("Couldn't load dock icon!");
 			e.printStackTrace();
 		}
+
 	}
 
 	private static void windowsOptions() {
@@ -79,4 +88,21 @@ public class Main {
 	private static void linuxOptions() {
 
 	}
+
+	private static void setAudioNativeDir(){
+		System.setProperty( "java.library.path", new File(new File(System.getProperty("user.dir"), "libs/lwjgl/native"), LWJGLUtil.getPlatformName()).getAbsolutePath()) ;
+
+		// Field borrowed from http://blog.cedarsoft.com/2010/11/setting-java-library-path-programmatically/
+		Field field;
+		try {
+			field = ClassLoader.class.getDeclaredField( "sys_paths" );
+			field.setAccessible( true );
+			field.set( null, null );
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
 }
