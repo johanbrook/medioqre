@@ -85,7 +85,7 @@ public class ViewController
 	private GLScreen screen;
 
 	// Overlay
-	private List<GLRenderableObject> overlayObjects = new CopyOnWriteArrayList<GLRenderableObject>();
+	private List<GLRenderableObject> overlayObjects = new LinkedList<GLRenderableObject>();
 	private GLBitmapFont ammoMeter;
 	private GLBitmapFont scoreMeter;
 	
@@ -169,12 +169,17 @@ public class ViewController
 			this.gamePausedText.setBounds(new Rectangle(this.screen.getBounds().getWidth() / 2 - width / 2, this.screen.getBounds().getHeight() / 2 - 100, width, height));
 			this.gamePausedText.setLetterWidth(width / 11);
 			
+			this.statusHud = ObjectFactory.newActor(1);
+			this.statusHud.setX(this.screen.getBounds().getWidth()-this.statusHud.getWidth());
+			this.statusHud.setY(this.screen.getBounds().getHeight()-this.statusHud.getHeight());
+			
 			this.overlayObjects.add(this.hpMeter);
 			this.overlayObjects.add(this.fpsMeter);
 			this.overlayObjects.add(this.waveMeter);
 			this.overlayObjects.add(this.scoreMeter);
 			this.overlayObjects.add(this.ammoMeter);
 			this.overlayObjects.add(this.gamePausedText);
+			this.overlayObjects.add(this.statusHud);
 			
 			this.fpsMeter.setColor(1f, 0f, 0f);
 			this.hpMeter.setColor(0f, 1f, 0f);
@@ -216,10 +221,7 @@ public class ViewController
 			this.screen.addDrawableToLayer(this.player, 1);
 
 			this.player.setColor(1f, 1f, 1f);
-			this.statusHud = ObjectFactory.newActor(1);
-			this.statusHud.setX(this.screen.getBounds().getWidth()-this.statusHud.getWidth());
-			this.statusHud.setY(this.screen.getBounds().getHeight()-this.statusHud.getHeight());
-			this.overlayObjects.add(this.statusHud);
+			
 			this.doneLoading = true;
 			
 		} else if (evt.getProperty() == Event.Property.NEW_WAVE) {
