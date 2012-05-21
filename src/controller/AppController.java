@@ -120,12 +120,24 @@ public class AppController implements Runnable{
 		EventBus.INSTANCE.publish(new Event(Event.Property.INIT_MODEL, this.game));
 	}
 
+	/**
+	 * Toggled paused mode.
+	 * 
+	 * <p>When paused, the main game thread is stopped.</p>
+	 */
 	public static void togglePaused() {
 		paused = !paused;
 		log("Paused: "+paused);
 	}
 	
-	
+	/**
+	 * Get the paused status.
+	 * 
+	 * @return True if the game is currently paused, otherwise paused
+	 */
+	public static boolean isPaused() {
+		return paused;
+	}
 	
 	/**
 	 * If the app is in debug mode or not.
