@@ -11,7 +11,6 @@ import paulscode.sound.SoundSystemException;
 import paulscode.sound.codecs.CodecJOrbis;
 import paulscode.sound.codecs.CodecWav;
 import paulscode.sound.libraries.LibraryLWJGLOpenAL;
-import paulscode.sound.libraries.LibraryJavaSound;
 import tools.datamanagement.PreferenceLoader;
 import audio.AudioConstants;
 import audio.SoundLibrary;
@@ -173,9 +172,9 @@ public class AudioController implements IEventHandler {
 		if (evt.getProperty() == Event.Property.UNPAUSE_GAME) {
 			unPause();
 		}
-		
+
 		//
-		if (evt.getProperty() == Event.Property.NEW_GAME){
+		if (evt.getProperty() == Event.Property.NEW_GAME) {
 			pitchBGM();
 		}
 
