@@ -92,13 +92,15 @@ public class LauncherMainPanel extends JPanel implements ActionListener {
 		optionsButton.setBounds(300, 320, 239, 26);
 		optionsButton.setContentAreaFilled(false);
 		add(optionsButton);
-
+		
 		startButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				launcher.dispose();
-
+				launcher.getContentPane().removeAll();
+				launcher.getContentPane().validate();
+				launcher.getContentPane().repaint();
+				
 				// Create main game
-				AppController game = new AppController();
+				AppController game = new AppController(launcher);
 				game.init();
 			}
 		});

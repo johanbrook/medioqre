@@ -6,6 +6,7 @@ import gui.Launcher;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.JFrame;
 
 import tools.Logger;
 import tools.factory.ObjectFactory;
@@ -47,7 +48,9 @@ public class Main {
 		if (MODE == PRODUCTION) {
 			new Launcher();
 		} else {
-			new AppController().init();
+			JFrame f = new JFrame();
+			f.setVisible(true);
+			new AppController(f).init();
 		}
 		
 	}

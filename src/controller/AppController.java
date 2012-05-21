@@ -6,7 +6,10 @@
 
 package controller;
 
+import java.awt.Container;
 import java.awt.Dimension;
+
+import javax.swing.JFrame;
 
 import org.json.JSONException;
 
@@ -63,7 +66,7 @@ public class AppController implements Runnable, IEventHandler {
 	 * <p>Initializes the game model, navigation controller, view controller, audio controller and AI controller,
 	 * as well as relevant listeners.</p>
 	 */
-	public AppController(){
+	public AppController(JFrame frame){
 		String mode = (isDebugMode()) ? "debug" : "production";
 		System.out.println("Initializing main controller in " + mode + " mode ...");
 
@@ -75,7 +78,8 @@ public class AppController implements Runnable, IEventHandler {
 		this.game = new GameModel();
 		this.navigation = new NavigationController();
 
-		new ViewController(this.navigation, new Dimension(20 * 48, 12 * 48));
+		frame.setPreferredSize(new Dimension(20 * 48, 12 * 48));
+		new ViewController(this.navigation, frame);
 		
 		this.ai = new AIController(48, 48, 48, 48);
 
