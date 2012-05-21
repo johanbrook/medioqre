@@ -47,6 +47,15 @@ public class AIPlayer {
 	public int getIntelligence() {
 		return this.intelligence;
 	}
+	
+	/**
+	 * set the intelligence of this AIPlayer. The Intelligence can be used to sort enemies, 
+	 * some behaviors will depend on having a high enough intelligence.
+	 * @param intelligence
+	 */
+	public void setIntelligence(int intelligence){
+		this.intelligence = intelligence;
+	}
 
 	/**
 	 * Increment the updatecount.
