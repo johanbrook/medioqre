@@ -243,18 +243,25 @@ public class AudioController implements IEventHandler {
 		}
 	}
 
-
-
 	private void pause() {
 		soundSys.pause("BGM");
+		soundSys.newSource(true,"pause", lib.getFXSound("pause"), lib.getFXId("pause"),
+				false, 1f, 1f, 1f, SoundSystemConfig.ATTENUATION_NONE, 0.5f);
+		soundSys.setVolume("pause", PreferenceLoader.getFloat("FX_VOLUME", 0.5f));
+		soundSys.play("pause");
 
 	}
 
 	private void unPause() {
-		soundSys.play("BGM");
+		soundSys.newSource(true,"unPause", lib.getFXSound("unPause"), lib.getFXId("unPause"),
+				false, 1f, 1f, 1f, SoundSystemConfig.ATTENUATION_NONE, 0.5f);
+		soundSys.setVolume("unPause", PreferenceLoader.getFloat("FX_VOLUME", 0.5f));
+		soundSys.play("unPause");
 		
+		soundSys.play("BGM");
+
 	}
-	
+
 	/**
 	 * Plays background music
 	 */
