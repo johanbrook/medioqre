@@ -26,7 +26,7 @@ import event.IMessageSender;
 import model.GameModel;
 import model.IGameModel;
 
-public class AppController implements Runnable{
+public class AppController implements Runnable, IEventHandler {
 	
 	/**
 	 * Desired refresh rate
@@ -67,6 +67,8 @@ public class AppController implements Runnable{
 		String mode = (isDebugMode()) ? "debug" : "production";
 		System.out.println("Initializing main controller in " + mode + " mode ...");
 
+		EventBus.INSTANCE.register(this);
+		
 		Level lev = new Level("gamedata/config.json");
 		ObjectFactory.setLevel(lev);
 		
@@ -95,13 +97,31 @@ public class AppController implements Runnable{
 	 * Initialize a new game.
 	 */
 	public void init() {
-		this.game.newGame();
-		this.game.newWave();
+		this.initNewGame();
 		Thread loop = new Thread(this);
 		loop.setName("Game-loop");
 		loop.start();
 
 		EventBus.INSTANCE.publish(new Event(Event.Property.INIT_MODEL, this.game));
+	}
+	
+	
+	public void initNewGame() {
+		log("Initializing new game and wave ...");
+		this.game.newGame();
+		this.game.newWave();
+	}
+	
+	@Override
+	public void onEvent(Event evt) {
+		switch(evt.getProperty()) {
+		
+		case GAME_OVER: 
+			
+			this.initNewGame();
+			
+			break;
+		}
 	}
 
 	/**
