@@ -119,7 +119,6 @@ public class GameModel implements IGameModel, IEventHandler, IMessageSender {
 
 			} else if (evt.getValue() instanceof Player) {
 				gameOver();
-				newGame();
 			}
 
 			log(evt.getValue().getClass().getSimpleName()
@@ -224,8 +223,8 @@ public class GameModel implements IGameModel, IEventHandler, IMessageSender {
 	 */
 	public void gameOver() {
 		log("Noob, game over");
-		EventBus.INSTANCE.publish(new Event(Event.Property.GAME_OVER, this));
 		this.objects.clear();
+		EventBus.INSTANCE.publish(new Event(Event.Property.GAME_OVER));
 	}
 
 	/**
