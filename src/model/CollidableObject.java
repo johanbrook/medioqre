@@ -201,7 +201,9 @@ public abstract class CollidableObject implements IMessageSender, ITaggable {
 	 * @return True if the objects are colliding, false otherwise
 	 */
 	public boolean isColliding(CollidableObject obj) {
-
+		if (this == obj){
+			return false;
+		}
 		return this.collisionBox.intersects(obj.getCollisionBox());
 	}
 
