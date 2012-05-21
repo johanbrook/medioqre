@@ -10,6 +10,7 @@ import java.util.IdentityHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
@@ -83,7 +84,7 @@ public class ViewController
 	private GLScreen screen;
 
 	// Overlay
-	private List<GLRenderableObject> overlayObjects = new LinkedList<GLRenderableObject>();
+	private List<GLRenderableObject> overlayObjects = new CopyOnWriteArrayList<GLRenderableObject>();
 	private GLBitmapFont ammoMeter;
 	private GLBitmapFont scoreMeter;
 	
@@ -181,7 +182,6 @@ public class ViewController
 			this.gamePausedText.setColor(1f, 1f, 1f);
 			
 		} catch (JSONException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
