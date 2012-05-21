@@ -173,6 +173,11 @@ public class AudioController implements IEventHandler {
 		if (evt.getProperty() == Event.Property.UNPAUSE_GAME) {
 			unPause();
 		}
+		
+		//
+		if (evt.getProperty() == Event.Property.NEW_GAME){
+			pitchBGM();
+		}
 
 		// Entities
 		if (evt.getValue() instanceof Entity) {
