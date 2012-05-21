@@ -179,6 +179,11 @@ public class Animation implements JSONSerializable, GLRenderableObject {
 				}
 			}
 		}
+		
+		if (this.timePassed == -1)
+			return;
+		else
+			this.currentSprite = this.frames[(int) ((this.timePassed / this.durationMillis) * (double) (this.frames.length))];
 	}
 
 	// ************* Other *************
@@ -191,12 +196,8 @@ public class Animation implements JSONSerializable, GLRenderableObject {
 	public void render(Rectangle object, Rectangle target,
 			GLAutoDrawable canvas, float zIndex) {
 
-		if (this.timePassed == -1)
-			return;
-		else
-			this.currentSprite = this.frames[(int) ((this.timePassed / this.durationMillis) * (double) (this.frames.length))];
-		
-		this.currentSprite.render(object, target, canvas, zIndex);
+		if (this.currentSprite != null)
+			this.currentSprite.render(object, target, canvas, zIndex);
 	}
 
 	@Override
