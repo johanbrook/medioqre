@@ -10,7 +10,7 @@ import paulscode.sound.SoundSystemConfig;
 import paulscode.sound.SoundSystemException;
 import paulscode.sound.codecs.CodecJOrbis;
 import paulscode.sound.codecs.CodecWav;
-import paulscode.sound.libraries.LibraryJOAL;
+import paulscode.sound.libraries.LibraryLWJGLOpenAL;
 import paulscode.sound.libraries.LibraryJavaSound;
 import tools.datamanagement.PreferenceLoader;
 import audio.AudioConstants;
@@ -60,8 +60,8 @@ public class AudioController implements IEventHandler {
 			Class<?> lib;
 
 			// Use JOAL if Compatible
-			if (SoundSystem.libraryCompatible(LibraryJOAL.class)) {
-				lib = LibraryJOAL.class;
+			if (SoundSystem.libraryCompatible(LibraryLWJGLOpenAL.class)) {
+				lib = LibraryLWJGLOpenAL.class;
 			} else {
 				// Use JavaSound
 				lib = LibraryJavaSound.class;
