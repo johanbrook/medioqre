@@ -3,6 +3,7 @@ package main;
 
 import gui.Launcher;
 
+import java.awt.Dimension;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -49,6 +50,8 @@ public class Main {
 			new Launcher();
 		} else {
 			JFrame f = new JFrame();
+			f.setPreferredSize(new Dimension(20 * 48, 12 * 48));
+			f.pack();
 			f.setVisible(true);
 			new AppController(f).init();
 		}
