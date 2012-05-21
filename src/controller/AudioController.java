@@ -166,6 +166,12 @@ public class AudioController implements IEventHandler {
 				playBGM();
 			}
 		}
+		
+		//Pause
+		if (evt.getProperty() == Event.Property.PAUSE_GAME){
+			pause();
+		}
+		
 
 		// Entities
 		if (evt.getValue() instanceof Entity) {
@@ -231,6 +237,16 @@ public class AudioController implements IEventHandler {
 		if (evt.getProperty() == Event.Property.PICKED_UP_ITEM) {
 			pitchBGM();
 		}
+	}
+
+	private void pause() {
+		if (!AppController.isPaused()){
+//TODO add pause/unpaused sound
+			soundSys.play("BGM");
+		} else {
+			soundSys.pause("BGM");
+		}
+		
 	}
 
 	/**
