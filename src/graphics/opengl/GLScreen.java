@@ -131,6 +131,10 @@ public class GLScreen implements GLRenderableObject {
 		return retVal;
 	}
 
+	public void removeAll() {
+		this.layers = null;
+	}
+	
 	/**
 	 * Set the viewport of the screen a given point.
 	 * 
