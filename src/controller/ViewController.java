@@ -42,6 +42,7 @@ import event.IEventHandler;
 
 import model.CollidableObject;
 import model.GameModel;
+import model.character.Enemy;
 import model.character.Player;
 import model.weapon.AbstractWeapon;
 import model.weapon.Grenade;
@@ -203,6 +204,7 @@ public class ViewController
 		if (evt.getProperty() == Event.Property.NEW_GAME) {
 			GameModel gm = (GameModel) evt.getValue();
 
+			this.actors.clear();
 			this.screen.removeAll();
 			
 			this.tilemap = ObjectFactory.newTileMap();
@@ -228,8 +230,10 @@ public class ViewController
 
 			GameModel gm = (GameModel) evt.getValue();
 
-			if (this.waveMeter != null)
+			if (this.waveMeter != null){
 				this.waveMeter.setText("Wave:" + gm.getCurrentWaveCount());
+			}
+				
 			List<CollidableObject> entities = (List<CollidableObject>) gm.getObjects();
 
 			for (CollidableObject e : entities) {
@@ -246,7 +250,6 @@ public class ViewController
 				Actor newA = ObjectFactory.newActor(cObj);
 				this.actors.put(cObj, newA);
 				this.screen.addDrawableToLayer(newA, 1);
-				System.out.println("Creating projectile!");
 			}
 		} else if (evt.getProperty() == Event.Property.PORTAL_CREATED) {
 			Portal p = (Portal) evt.getValue();

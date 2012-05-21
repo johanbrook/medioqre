@@ -4,9 +4,11 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-import org.json.JSONObject;
-
 import model.CollidableObject;
+import model.Entity;
+import model.weapon.Projectile;
+
+import org.json.JSONObject;
 
 import event.Event;
 import event.Event.Property;
@@ -81,10 +83,9 @@ public class Enemy extends AbstractCharacter {
 
 	@Override
 	public void didCollide(CollidableObject w) {
-
-		// Make enemies push each other if they collide
-		if (w instanceof Enemy) {
-			((Enemy) w).push(this);
+		//Reset position when colliding with Player. 
+		if (w instanceof Player){
+			this.setPosition(this.getRememberedPosition());
 		}
 	}
 

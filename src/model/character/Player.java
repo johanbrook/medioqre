@@ -7,6 +7,7 @@ import java.util.List;
 import org.json.JSONObject;
 
 import model.CollidableObject;
+import model.Entity;
 import model.weapon.*;
 
 /**
@@ -101,6 +102,8 @@ public class Player extends AbstractCharacter {
 
 	@Override
 	public void didCollide(CollidableObject w) {
-		
+		if (w instanceof Entity && w.getClass() != Projectile.class){
+			this.setPosition(this.getRememberedPosition());
+		}
 	}
 }

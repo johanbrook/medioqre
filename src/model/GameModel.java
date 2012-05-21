@@ -52,8 +52,6 @@ public class GameModel implements IGameModel, IEventHandler, IMessageSender {
 	 * 
 	 */
 	public GameModel() {
-		this.currentWave = 0;
-
 		// Use CopyOnWriteArrayList since we do concurrent reads/writes, and
 		// need them to be synchronized behind the scenes. Slightly more costly,
 		// but negligible since
@@ -121,7 +119,6 @@ public class GameModel implements IGameModel, IEventHandler, IMessageSender {
 
 			} else if (evt.getValue() instanceof Player) {
 				gameOver();
-				newGame();
 			}
 
 			log(evt.getValue().getClass().getSimpleName()
@@ -137,17 +134,17 @@ public class GameModel implements IGameModel, IEventHandler, IMessageSender {
 		case CHANGED_WEAPON :
 			int slot = (Integer) evt.getValue();
 			int portalGunPosition = this.player.getWeaponBelt().indexOf(PortalGun.class);
-			
+
 			if (this.player.getCurrentWeapon() instanceof PortalGun && 
 					slot == portalGunPosition) {
-				
+
 				switchPortalGunMode();
 			} else {
 				this.player.setCurrentWeapon(slot);
 			}
 
 			break;
-			
+
 		case PORTALGUN_SWITCHED_MODE :
 			switchPortalGunMode();
 			break;
@@ -155,12 +152,12 @@ public class GameModel implements IGameModel, IEventHandler, IMessageSender {
 		case TOGGLE_PAUSE :
 			
 			AppController.togglePaused();
-			
+
 			break;
 		}
 	}
-	
-	
+
+
 	private void switchPortalGunMode() {
 		((PortalGun) this.player.getWeaponBelt().get(PortalGun.class)).switchMode();
 	}
@@ -213,6 +210,7 @@ public class GameModel implements IGameModel, IEventHandler, IMessageSender {
 	 */
 	public void newGame() {
 		log("Initializing new game ...");
+		this.currentWave = 0;
 		initPlayer();
 		initWalls();
 		Event evt = new Event(Event.Property.NEW_GAME, this);
@@ -225,8 +223,8 @@ public class GameModel implements IGameModel, IEventHandler, IMessageSender {
 	 */
 	public void gameOver() {
 		log("Noob, game over");
-		EventBus.INSTANCE.publish(new Event(Event.Property.GAME_OVER, this));
 		this.objects.clear();
+		EventBus.INSTANCE.publish(new Event(Event.Property.GAME_OVER));
 	}
 
 	/**
@@ -258,7 +256,7 @@ public class GameModel implements IGameModel, IEventHandler, IMessageSender {
 			this.objects.add(co);
 		}
 	}
-	
+
 	/**
 	 * Add relevant items to the game world from the factory. Sets up
 	 * relevant listeners.
@@ -322,7 +320,7 @@ public class GameModel implements IGameModel, IEventHandler, IMessageSender {
 		this.objects.add(this.player);
 		this.player.addReceiver(this);
 	}
-	
+
 	/**
 	 * Check if the specified object is colliding with a wall.
 	 * 
@@ -334,20 +332,20 @@ public class GameModel implements IGameModel, IEventHandler, IMessageSender {
 		if(this.player == null) {
 			return false;
 		}
-		
+
 		// Get width of a single tile
 		TileMap tileMap = ObjectFactory.getTileMap();
 		int width = (int) tileMap.getTileSize().getWidth();
-		
+
 		// If distance between the object and the player is less than 5 tiles, return false.
 		if (Math.abs((o.getPosition().x - this.player.getPosition().x)) + 
-						Math.abs(o.getPosition().y - this.player.getPosition().y) < 5*width) {
+				Math.abs(o.getPosition().y - this.player.getPosition().y) < 5*width) {
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * Check if the specified object is colliding with a wall in the game.
 	 * 
@@ -356,33 +354,33 @@ public class GameModel implements IGameModel, IEventHandler, IMessageSender {
 	 */
 	private boolean objectCollidesWithWall(CollidableObject o) {
 		// If the collidable collides with a wall, return true
-		
+
 		for (CollidableObject obj : this.objects){
 			if (obj instanceof ConcreteCollidableObject && obj.isColliding(o)){
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * get a randomly chosen point on the map.
 	 * @return a randomly chosen point on the map.
 	 */
 	private Point getRandomPosition(){
 		TileMap tilemap = ObjectFactory.getTileMap();
-		
+
 		int rows = (int) tilemap.getTileMapSize().getWidth() - 1;
 		int columns = (int) tilemap.getTileMapSize().getHeight() - 1;
 		int width = (int) tilemap.getTileSize().getWidth();
 		int height = (int) tilemap.getTileSize().getHeight();
-		
+
 		Random random = new Random();
-		
+
 		int x = random.nextInt(width*rows);
 		int y = random.nextInt(height*columns);
-		
+
 		return new Point (x,y);
 	}
 
@@ -403,7 +401,7 @@ public class GameModel implements IGameModel, IEventHandler, IMessageSender {
 			if (this.portals[i] == null) {
 				Portal p = ObjectFactory.newPortal(mode, position);
 				p.center();
-				
+
 				EventBus.INSTANCE.publish(new Event(Property.PORTAL_CREATED, p));
 				this.objects.add(p);
 				this.portals[i] = p;
@@ -416,7 +414,7 @@ public class GameModel implements IGameModel, IEventHandler, IMessageSender {
 				return;
 			} else if (this.portals[i].getMode() == mode) {
 				this.portals[i].setPositionFromCenter(position);
-				
+
 				return;
 			}
 		}
@@ -465,47 +463,42 @@ public class GameModel implements IGameModel, IEventHandler, IMessageSender {
 	 * 
 	 * @param dt The delta time
 	 */
-	private void moveEntities(double dt) {
+	private void moveEntitys(double dt){
 		for (CollidableObject t : this.objects) {
-			
-			
+
 			if (t instanceof Entity) {
 				Entity temp = (Entity) t;
 
 				if (t instanceof AbstractCharacter) {
 					((AbstractCharacter) t).update(dt);
 				}
-
-				// Save the old position of the entity .. 
-				Point oldPos = temp.getPosition();
-				
-				// .. move and check eventual collisions
-				checkCollisions(temp);
-				temp.move(dt);
-				
-				// .. and nudge the entity back to the old position
-				// if it collides with a wall
-				boolean canMove = true;
-				for (CollidableObject o : this.objects) {
-					if (o instanceof ConcreteCollidableObject)
-						if (o.isColliding(temp)){
-							canMove = false;
-							
-							//Manually tell projectiles they collided with a wall, they are the only 
-							//kind of entity that have an actual behavior related to wall-collisions.
-							temp.didCollide(o);
-						}
-				}
-				if (!canMove){
-					temp.setPosition(oldPos);
-				}
-
+				((Entity) t).setRememberedPosition(t.getPosition());
+				((Entity) t).move(dt);
 				checkIfLeftPortal(temp);
 			}
-
-
+			
 		}
+		solveCollisions();
+	}
 
+	/**
+	 * For each Collidable object in the GameModel, search for any occurring collisions. For any collision between a AbstractCharactar and a wall
+	 * will reset the AbstractCharacter to it's last position. All other triggered events triggered by collision will be handled by the objects themselves.
+	 */
+	private void solveCollisions() {
+		for (CollidableObject t : this.objects){
+			for (CollidableObject w : this.objects){
+				
+				if (t.isColliding(w)){
+					//Characters colliding with walls reset their positions.
+					if (t instanceof AbstractCharacter && w instanceof ConcreteCollidableObject){
+						t.setPosition(((AbstractCharacter)t).getRememberedPosition());
+					}
+					w.didCollide(t);
+				}
+			}
+		}
+		
 	}
 
 	/**
@@ -521,121 +514,10 @@ public class GameModel implements IGameModel, IEventHandler, IMessageSender {
 				isVictim = true;
 			}	
 		}
-
 		if (!isVictim)
 			temp.setPortalVictim(isVictim);
 	}
 
-	
-	/**
-	 * Check collisions for an entity.
-	 * 
-	 * @param t The entity
-	 */
-	private void checkCollisions(Entity t) {
-		
-		for (CollidableObject w : this.objects) {
-			
-			if (t != w && t.isColliding(w)) {
-				
-				// If the given entity (t) is colliding with another
-				// object, call both object's collision callbacks and 
-				// stop t if it's direction is blocked by w.
-				w.didCollide(t);
-				t.didCollide(w);
-				stopIfBlocked(t, w);
-			}
-		}
-	}
-
-	/**
-	 * Stop an entity if its path is blocked by another collidable.
-	 * 
-	 * <p>Doesn't stop the entity if the collidable is an instance of
-	 * <code>ICollectableItem</code> or <code>Portal</code> (which entities
-	 * should be able to move through.</p>
-	 * 
-	 * @param t The entity to manipulate
-	 * @param w The collidable object the entity may collide with
-	 */
-	private void stopIfBlocked (Entity t, CollidableObject w){
-		Direction currentDirection = t.getDirection();
-		Direction blockedDirection = t.getDirectionOfObject(w);
-
-		if (!(w instanceof ICollectableItem) && !(w instanceof Portal)) {
-			if (directionIsBlocked(currentDirection, blockedDirection)) {
-
-				t.stop();
-
-			}
-		}
-	}
-
-	/**
-	 * Check if an entity with a given direction will be blocked by another entity.
-	 * 
-	 * @param currentDirection The given, current, direction
-	 * @param blockedDirection The other (potentially) blocking object's direction
-	 * @return
-	 */
-	private boolean directionIsBlocked(Direction currentDirection, Direction blockedDirection) {
-		
-		boolean stop = false;
-
-		if (currentDirection == Direction.EAST
-				&& (blockedDirection == Direction.NORTH_EAST || blockedDirection == Direction.SOUTH_EAST)) {
-
-			stop = true;
-		}
-
-		if (currentDirection == Direction.SOUTH_EAST
-				&& (blockedDirection == Direction.NORTH_EAST || blockedDirection == Direction.SOUTH_WEST)) {
-
-			stop = true;
-		}
-
-		if (currentDirection == Direction.NORTH_EAST
-				&& (blockedDirection == Direction.SOUTH_EAST || blockedDirection == Direction.NORTH_WEST)) {
-
-			stop = true;
-		}
-
-		if (currentDirection == Direction.WEST
-				&& (blockedDirection == Direction.NORTH_WEST || blockedDirection == Direction.SOUTH_WEST)) {
-
-			stop = true;
-		}
-
-		if (currentDirection == Direction.SOUTH_WEST
-				&& (blockedDirection == Direction.NORTH_WEST || blockedDirection == Direction.SOUTH_EAST)) {
-
-			stop = true;
-		}
-
-		if (currentDirection == Direction.NORTH_WEST
-				&& (blockedDirection == Direction.SOUTH_WEST || blockedDirection == Direction.NORTH_EAST)) {
-
-			stop = true;
-		}
-
-		if (currentDirection == Direction.NORTH
-				&& (blockedDirection == Direction.NORTH_EAST || blockedDirection == Direction.NORTH_WEST)) {
-
-			stop = true;
-		}
-
-		if (currentDirection == Direction.SOUTH
-				&& (blockedDirection == Direction.SOUTH_EAST || blockedDirection == Direction.SOUTH_WEST)) {
-
-			stop = true;
-		}
-
-		if (blockedDirection == currentDirection) {
-			stop = true;
-		}
-
-		return stop;
-	}
 
 	/**
 	 * Updates the game model.
@@ -645,7 +527,7 @@ public class GameModel implements IGameModel, IEventHandler, IMessageSender {
 	 */
 	public void update(double dt) {
 
-		moveEntities(dt);
+		moveEntitys(dt);
 	}
 
 
