@@ -14,10 +14,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import tools.Logger;
-import tools.timer.CounterObject;
-import tools.timer.CounterTool;
 
-
+/**
+ * A classed used for rendering text with OpenGL
+ * 
+ * @author John Barbero Unenge
+ */
 public class GLBitmapFont implements JSONSerializable, GLRenderableObject {
 
 	private Map<Character, GLLetter> letters;
@@ -25,6 +27,16 @@ public class GLBitmapFont implements JSONSerializable, GLRenderableObject {
 	private Rectangle rectangle;
 	private int letterWidth;
 
+	/**
+	 * Creates a GLBitmapFont from the given parameters.
+	 * 
+	 * @param text The text to display
+	 * @param bounds The bounds (currently only respects the x coordinate, y 
+	 * coordinate and the height. Width is omitted and letter width is used instead)   
+	 * @param letters The letters to use
+	 * @param letterWidth The width of each letter (used instead of 
+	 * the width in the bounds)
+	 */
 	public GLBitmapFont(String text, Rectangle bounds,
 			Map<Character, GLLetter> letters, int letterWidth) {
 		this.text = text;
@@ -32,10 +44,21 @@ public class GLBitmapFont implements JSONSerializable, GLRenderableObject {
 		this.letters = letters;
 		this.letterWidth = letterWidth;
 	}
+	/**
+	 * Creates a GLBitmapFont from a JSON object.
+	 * 
+	 * @param o The JSON object to create the GLBitmapFont from
+	 */
 	public GLBitmapFont(JSONObject o) {
 		this.deserialize(o);
 	}
 
+	/**
+	 * Add a letter to the GLBitmapFont.
+	 * 
+	 * @param l The GLLetter to add
+	 * @return Whether or not the GLLetter could be added
+	 */
 	public boolean addLetter(GLLetter l) {
 
 		if (this.letters.get(l.getCharacter()) == null) {
@@ -46,14 +69,33 @@ public class GLBitmapFont implements JSONSerializable, GLRenderableObject {
 	}
 
 	// Setters
+	/**
+	 * Set the text of the GLBitmapFont.
+	 * 
+	 * @param text The text
+	 */
 	public void setText(String text) {
 		this.text = text;
 	}
 
+	/**
+	 * Set the bounds for the GLBitmapFont.
+	 * 
+	 * @param bounds The new bounds
+	 */
 	public void setBounds(Rectangle bounds) {
 		this.rectangle = bounds;
 	}
 
+	/**
+	 * Set the color used as a mask for the GLBitmapFont.
+	 * 
+	 * All values should be floating point values between 0 and 1.
+	 * 
+	 * @param r Red
+	 * @param g Green
+	 * @param b Blue
+	 */
 	public void setColor(float r, float g, float b) {
 		for (GLLetter letter : this.letters.values()) {
 			letter.setColor(r, g, b);
@@ -61,13 +103,15 @@ public class GLBitmapFont implements JSONSerializable, GLRenderableObject {
 		
 	}
 	
+	/**
+	 * Set the letter width for the GLBitmapFont.
+	 * 
+	 * @param letterWidth The letter width
+	 */
 	public void setLetterWidth(int letterWidth) {
 		this.letterWidth = letterWidth;
 	}
 	
-	// Getters
-
-	// ---
 
 	// Interface methods
 

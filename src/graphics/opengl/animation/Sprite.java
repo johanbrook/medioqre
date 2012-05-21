@@ -135,6 +135,15 @@ public class Sprite implements JSONSerializable, GLRenderableObject {
 		this.rectangle = r;
 	}
 
+	/**
+	 * Set the color used as a mask for the Sprite.
+	 * 
+	 * All values should be floating point values between 0 and 1.
+	 * 
+	 * @param r Red
+	 * @param g Green
+	 * @param b Blue
+	 */
 	public void setColor(float r, float g, float b) {
 		this.color = new float[]{r, g, b};
 	}

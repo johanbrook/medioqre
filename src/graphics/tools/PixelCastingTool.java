@@ -5,8 +5,23 @@ import java.awt.image.DataBufferByte;
 import java.awt.image.DataBufferInt;
 import java.awt.image.Raster;
 
+/**
+ * A helper class used for manipulating arrays of integers, such as pixels in 
+ * images.
+ * 
+ * @author John Barbero Unenge
+ *
+ */
 public class PixelCastingTool {
 
+	/**
+	 * Convert a one dimensional integer array into a two dimensional one.
+	 * 
+	 * @param width The width of the array to create
+	 * @param height The height of the array to create
+	 * @param pixels The one dimensional integer array
+	 * @return The two dimensional integer array
+	 */
 	public static int[][] get2dTileMatrixFromPixelArray(int width, int height,
 			int[] pixels) {
 		int[][] tiles = new int[width][height];
@@ -20,6 +35,17 @@ public class PixelCastingTool {
 		return tiles;
 	}
 
+	/** 
+	 * Get a one dimensional integer array from a raster.
+	 * 
+	 * This is used for getter the individual pixels from an Image such 
+	 * as BufferedImage.
+	 * 
+	 * @param raster The raster
+	 * @param imageWidth The image width
+	 * @param imageHeight The image height
+	 * @return The one dimensional integer array
+	 */
 	public static int[] getARGBarrayFromDataBuffer(Raster raster,
 			int imageWidth, int imageHeight) {
 		DataBuffer buffer = raster.getDataBuffer();

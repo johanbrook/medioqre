@@ -121,17 +121,36 @@ public class Animation implements JSONSerializable, GLRenderableObject {
 		this.frames = frames;
 	}
 
+	/**
+	 * Set the color used as a mask for the Animation.
+	 * 
+	 * All values should be floating point values between 0 and 1.
+	 * 
+	 * @param r Red
+	 * @param g Green
+	 * @param b Blue
+	 */
 	public void setColor(float r, float g, float b) {
 		for (Sprite s : this.frames) {
 			s.setColor(r, g, b);
 		}
 	}
 
+	/**
+	 * Set whether to repeat the animation or not.
+	 * 
+	 * @param shouldRepeat Whether to repeat the animation or not
+	 */
 	public void setShouldRepeat(boolean shouldRepeat) {
 		this.shouldRepeat = shouldRepeat;
 	}
 
 	// AnimationListeners
+	/**
+	 * Adds the given animationListener.
+	 * 
+	 * @param l The animationListener
+	 */
 	public void addAnimationListener(AnimationListener l) {
 		if (this.animationListeners == null)
 			this.animationListeners = new LinkedList<AnimationListener>();
@@ -139,6 +158,11 @@ public class Animation implements JSONSerializable, GLRenderableObject {
 		this.animationListeners.add(l);
 	}
 
+	/**
+	 * Removes the given animationListener
+	 * 
+	 * @param l The animationListener to remove
+	 */
 	public void removeAnimationListener(AnimationListener l) {
 		if (this.animationListeners == null)
 			return;

@@ -1,16 +1,11 @@
 package controller;
 
-import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.event.KeyListener;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.HashMap;
+
 import java.util.IdentityHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
@@ -19,17 +14,13 @@ import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLCanvas;
-import javax.swing.JFileChooser;
+
 import javax.swing.JFrame;
-import javax.swing.WindowConstants;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.jogamp.opengl.util.FPSAnimator;
-import com.jogamp.opengl.util.gl2.GLUT;
-
-
 
 import tools.datamanagement.PreferenceLoader;
 import tools.datamanagement.ResourceLoader;
@@ -42,7 +33,6 @@ import event.IEventHandler;
 
 import model.CollidableObject;
 import model.GameModel;
-import model.character.Enemy;
 import model.character.Player;
 import model.weapon.AbstractWeapon;
 import model.weapon.Grenade;
@@ -51,14 +41,11 @@ import model.weapon.Melee;
 import model.weapon.Portal;
 import model.weapon.PortalGun;
 import model.weapon.Projectile;
-import model.weapon.Sword;
 
 import graphics.opengl.GLScreen;
 import graphics.opengl.animation.Actor;
 import graphics.opengl.animation.AnimationListener;
-import graphics.opengl.animation.Sprite;
 import graphics.opengl.bitmapfont.GLBitmapFont;
-import graphics.opengl.bitmapfont.GLLetter;
 import graphics.opengl.core.GLRenderableObject;
 import graphics.opengl.core.Rectangle;
 import graphics.opengl.tilemap.TileMap;
