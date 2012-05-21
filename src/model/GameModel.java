@@ -52,8 +52,6 @@ public class GameModel implements IGameModel, IEventHandler, IMessageSender {
 	 * 
 	 */
 	public GameModel() {
-		this.currentWave = 0;
-
 		// Use CopyOnWriteArrayList since we do concurrent reads/writes, and
 		// need them to be synchronized behind the scenes. Slightly more costly,
 		// but negligible since
@@ -213,6 +211,7 @@ public class GameModel implements IGameModel, IEventHandler, IMessageSender {
 	 */
 	public void newGame() {
 		log("Initializing new game ...");
+		this.currentWave = 0;
 		initPlayer();
 		initWalls();
 		Event evt = new Event(Event.Property.NEW_GAME, this);
