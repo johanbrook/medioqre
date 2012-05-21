@@ -3,14 +3,13 @@ package model.weapon;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 
-import org.json.JSONObject;
-
 import model.CollidableObject;
 import model.ConcreteCollidableObject;
 import model.Entity;
 import model.character.AbstractCharacter;
-import model.character.Enemy;
-import model.character.Player;
+
+import org.json.JSONObject;
+
 import tools.Logger;
 
 /**
@@ -91,7 +90,6 @@ public class Projectile extends Entity {
 				break;
 			case NORTH :
 				x += (int) p.getSize().width / 2;
-				y -= p.getCollisionBox().height;
 				break;
 			case EAST :
 				x += (int) p.getSize().width;
@@ -103,10 +101,11 @@ public class Projectile extends Entity {
 				break;
 			case NORTH_EAST :
 				x += (int) p.getSize().width;
+				y += p.getCollisionBox().height / 2;
 				break;
 			case NORTH_WEST :
-				x -= p.getCollisionBox().width;
-				y -= p.getCollisionBox().height;
+				y += p.getCollisionBox().height / 2;
+				
 				break;
 			case SOUTH_EAST :
 				x += (int) p.getSize().width;
@@ -224,7 +223,7 @@ public class Projectile extends Entity {
 	@Override
 	public void didCollide(CollidableObject w) {
 		// Projectiles fired by enemies shouldn't hurt other enemies
-		if (!(this.getOwner().getOwner() instanceof Enemy && w instanceof Enemy)){
+		if (this.getOwner().getOwner().getClass() != w.getClass()){
 			
 			// If this projectile hits a character or wall, destroy itself
 		
@@ -234,12 +233,9 @@ public class Projectile extends Entity {
 				if (w instanceof AbstractCharacter){
 					((AbstractCharacter)w).takeDamage(this.getDamage());
 				}
-				
 				this.destroy();
 			}
-			
 		}
-		
 	}
 	
 	@Override
