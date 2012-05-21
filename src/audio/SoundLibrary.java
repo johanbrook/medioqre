@@ -80,6 +80,14 @@ public class SoundLibrary {
 		return fxSoundLibrary.get(code);
 	}
 
+	/**
+	 * Gets filename identifier for a given FX Sound
+	 * 
+	 * @param type
+	 *            key value
+	 * @return String with filename
+	 */
+	
 	public String getFXId(String code) {
 		return fxSoundLibrary.get(code).toString().substring(9);
 	}

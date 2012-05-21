@@ -77,6 +77,11 @@ public class AudioController implements IEventHandler {
 
 	}
 
+	/**
+	 * Sets the game to get player and enemy data from
+	 * @param game the game
+	 */
+	
 	public void setGame(IGameModel game) {
 		this.game = game;
 	}
@@ -243,6 +248,10 @@ public class AudioController implements IEventHandler {
 		}
 	}
 
+	/**
+	 * Pauses background music
+	 */
+	
 	private void pause() {
 		soundSys.pause("BGM");
 		soundSys.newSource(true, "pause", lib.getFXSound("pause"),
@@ -254,6 +263,10 @@ public class AudioController implements IEventHandler {
 
 	}
 
+	/**
+	 * Unpauses background music
+	 */
+	
 	private void unPause() {
 		soundSys.newSource(true, "unPause", lib.getFXSound("unPause"),
 				lib.getFXId("unPause"), false, 1f, 1f, 1f,
@@ -325,6 +338,9 @@ public class AudioController implements IEventHandler {
 		return "sc_" + e.hashCode();
 	}
 
+	/**
+	 * Pitches background music based on player health
+	 */
 	private void pitchBGM() {
 
 		if (PreferenceLoader.getBoolean("PITCH_D_BGM_WHEN_HURT", false)) {
