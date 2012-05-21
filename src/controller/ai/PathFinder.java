@@ -20,10 +20,10 @@ public class PathFinder {
 	private List<AStarTile> openList;
 	private AStarTile[][] logicList;
 	private AStarTile currentTile, stop;
-	// Using a approx value of sqrt(2) for diagonalcost, in order to save time.
+	// Using a approximation of the square root of 2 for diagonalcost, in order to save time.
 	private final double DIAGONALCOST = 1.41421356;
 
-	// This cost is added to the G-value of a tile, if the current path would change direction to reach it.
+	// This cost is added to the G-value (path-length) of a tile, if the current path would change direction to reach it.
 	// The cost is small enough that it won't chose a longer path over a shorter, but will ensure that out of a
 	// number of paths of the same length, the one with the fewest turns will be chosen.
 	private final double TURNCOST = 0.0002;
@@ -37,6 +37,11 @@ public class PathFinder {
 		this.setInitiated(false);
 	}
 
+	/**
+	 * Initiate the pathfinder, constructing AStarTiles for representing the gameboard state. 
+	 * Using a boolean [] [] from the object factory, the AStarTiles representing walls will 
+	 * be set to solid. Also makes sure that tiles generates neighbors.
+	 */
 	public void init() {
 		boolean [][] walls = ObjectFactory.getCollidables();
 		logicList = new AStarTile[rows][columns];
@@ -91,7 +96,7 @@ public class PathFinder {
 		while (!openList.isEmpty()) {
 			// Start by finding the tile in the open list with the best
 			// F-value
-			currentTile = openList.get(findBestTile());
+			currentTile = findBestTile();
 
 			// Algorithm complete and path found.
 			if (currentTile.equals(stop)) {
@@ -101,10 +106,13 @@ public class PathFinder {
 					currentTile = currentTile.getParent();
 				}
 				clear();
+				// The path is saved from player to enemy, but we want to return the path from enemy to player, hence, we reverse the order of the tiles saved
 				ArrayList <AStarTile> reversePath = new ArrayList<AStarTile>();
 				for (int k = 0; k <= path.size()-1; k++){
 					reversePath.add(path.get((path.size()-1)-k));
 				}
+				
+				// Convert path from AStarTiles to points, each point representing a tile in the gameworld.
 				return convertPath(reversePath);
 
 				// The goal was not found in the openList
@@ -136,8 +144,10 @@ public class PathFinder {
 		return convertedPath;
 	}
 
-	/* Returns the index of the tile in the open list with the lowest f-value */
-	private int findBestTile() {
+	/**
+	 *  Returns the tile in the open list most likely to be the goal (the one with the lowest f-value) 
+	*/
+	private AStarTile findBestTile() {
 		int pointer = 0;
 		double currentF = openList.get(0).getF();
 		for (int i = 0; i < openList.size(); i++) {
@@ -146,7 +156,7 @@ public class PathFinder {
 				currentF = openList.get(i).getF();
 			}
 		}
-		return pointer;
+		return openList.get(pointer);
 	}
 
 	/**

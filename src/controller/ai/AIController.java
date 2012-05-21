@@ -220,6 +220,10 @@ public class AIController implements IMessageSender, IEventHandler {
 
 	}
 
+	/**
+	 * get the middle point of the players collision box.
+	 * @return the mid point of the players collision box.
+	 */
 	private Point getMidOfPlayerPos() {
 		return new Point ((int)this.player.getCollisionBox().getCenterX(),(int) this.player.getCollisionBox().getCenterY());
 	}

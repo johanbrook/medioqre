@@ -151,14 +151,26 @@ public class AIPlayer {
 		return this.distance < range;
 	}
 	
+	/**
+	 * get the center of the collision box of the unit this AIPlayer is controlling.
+	 * @return
+	 */
 	public Point getMidPos(){
 		return new Point ((int) this.unit.getCollisionBox().getCenterX(),(int) this.unit.getCollisionBox().getCenterY());
 	}
 
+	/**
+	 * get the currently set tile.
+	 * @return the currently set tile.
+	 */
 	public Point getCurrentTile() {
 		return currentTile;
 	}
 
+	/**
+	 * Specify what tile the unit controlled by this AIPlayer is currently standing on
+	 * @param currentTile
+	 */
 	public void setCurrentTile(Point currentTile) {
 		this.currentTile = currentTile;
 	}

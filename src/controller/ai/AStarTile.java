@@ -15,7 +15,8 @@ public class AStarTile {
 	// The parent of this AStarTile is the tile before this one in the currently
 	// considered path.
 	private AStarTile parent;
-	// The neighbors are simply the AStarTile adjacent to this one. Won't keep
+	
+	// The neighbors are simply the AStarTiles adjacent to this one. Won't keep
 	// walls or tiles that cannot be reached with one "move" as neighbors.
 	private List<AStarTile> neighbors;
 
@@ -65,7 +66,7 @@ public class AStarTile {
 	}
 
 	/**
-	 * get the G-value of this AStarTile
+	 * get the G-value of this AStarTile. The G-value is the length of the shortest path found between the start and this tile.
 	 * 
 	 * @return the G-value of this AStarTile
 	 */
@@ -85,7 +86,7 @@ public class AStarTile {
 	/**
 	 * 
 	 * @return true if this AStarTile is set as a open candidate for
-	 *         consideration
+	 *  consideration
 	 */
 	public boolean isOpen() {
 		return this.open;
@@ -117,6 +118,10 @@ public class AStarTile {
 		this.open = value;
 	}
 
+	/**
+	 * Specify whether this AStarTile has already been considered as a candidate.
+	 * @param value
+	 */
 	public void setClosed(boolean value) {
 		this.closed = value;
 	}
@@ -147,8 +152,8 @@ public class AStarTile {
 	 * Set the H-value of this tile. The value simply represents a "guess" of
 	 * the distance between this tile and the specified tile (usually the
 	 * player). That is, how long the path would be from this tile, if there
-	 * were no walls in the gameboard. Not needed for pathfinding, but will
-	 * increase the speed.
+	 * were no walls in the gameboard. Not "needed" for pathfinding, but will often
+	 * increase the speed of the algorithm.
 	 * 
 	 * @param stop
 	 */
