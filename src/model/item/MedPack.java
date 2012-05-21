@@ -1,7 +1,6 @@
 package model.item;
 
 import java.awt.Dimension;
-import java.awt.Point;
 import java.awt.Rectangle;
 
 import org.json.JSONObject;

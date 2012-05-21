@@ -1,7 +1,6 @@
 package model.weapon;
 
 import model.character.AbstractCharacter;
-import model.weapon.Projectile.Range;
 
 /**
  *	A melee weapon.

@@ -1,19 +1,12 @@
 package tools.factory;
 
-import graphics.json.JSONSerializable;
-
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import tools.datamanagement.ResourceLoader;
-
-import static tools.Logger.*;
 
 /**
  * A class used to package all resources used in one level.

@@ -5,8 +5,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 import model.CollidableObject;
-import model.Entity;
-import model.weapon.Projectile;
 
 import org.json.JSONObject;
 

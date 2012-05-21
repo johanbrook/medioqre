@@ -10,8 +10,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import model.character.AbstractCharacter;
 import model.character.Enemy;
 import model.character.Player;
-import model.item.ICollectableItem;
-import model.weapon.AbstractWeapon;
 import model.weapon.Grenade;
 import model.weapon.Portal;
 import model.weapon.PortalGun;

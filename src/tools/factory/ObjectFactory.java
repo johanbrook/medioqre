@@ -18,7 +18,6 @@ import static tools.Logger.*;
 
 import model.CollidableObject;
 import model.ConcreteCollidableObject;
-import model.Direction;
 import model.character.AbstractCharacter;
 import model.character.Enemy;
 import model.character.Player;
@@ -30,7 +29,6 @@ import model.weapon.Portal;
 import model.weapon.WeaponBelt;
 import model.weapon.PortalGun.Mode;
 import model.weapon.Projectile;
-import model.weapon.Projectile.Range;
 
 import org.json.JSONArray;
 import org.json.JSONException;

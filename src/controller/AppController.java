@@ -6,13 +6,8 @@
 
 package controller;
 
-import java.awt.Container;
 import java.awt.Dimension;
-
 import javax.swing.JFrame;
-
-import org.json.JSONException;
-
 import tools.factory.Level;
 import tools.factory.ObjectFactory;
 
@@ -24,7 +19,6 @@ import event.Event;
 import event.Event.Property;
 import event.EventBus;
 import event.IEventHandler;
-import event.IMessageListener;
 import event.IMessageSender;
 import model.GameModel;
 import model.IGameModel;

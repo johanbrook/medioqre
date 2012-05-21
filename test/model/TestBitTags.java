@@ -15,9 +15,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 import model.character.AbstractCharacter;
-import model.character.Enemy;
 import model.character.Player;
-import model.item.AmmoCrate;
 import model.weapon.AbstractWeapon;
 import model.weapon.MachineGun;
 import model.weapon.Melee;

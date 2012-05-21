@@ -11,8 +11,6 @@ import static org.junit.Assert.*;
 import java.util.List;
 
 import model.CollidableObject;
-import model.ConcreteCollidableObject;
-import model.character.AbstractCharacter;
 import model.character.Enemy;
 import model.character.Player;
 import model.item.ICollectableItem;

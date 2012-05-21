@@ -12,11 +12,8 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 import tools.Logger;
-import tools.factory.ObjectFactory;
 
 import controller.AppController;
-
-import static tools.Logger.*;
 
 import org.lwjgl.LWJGLUtil;
 import org.simplericity.macify.eawt.*;

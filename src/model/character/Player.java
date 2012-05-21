@@ -2,7 +2,6 @@ package model.character;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
-import java.util.List;
 
 import org.json.JSONObject;
 

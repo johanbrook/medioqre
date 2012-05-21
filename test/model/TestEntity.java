@@ -13,8 +13,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 import model.character.Player;
-import model.weapon.Portal;
-import model.weapon.PortalGun.Mode;
 
 import org.junit.Before;
 import org.junit.Test;
