@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
 import model.CollidableObject;
@@ -20,7 +19,6 @@ import model.item.ICollectableItem;
 import model.item.MedPack;
 import model.weapon.Portal;
 import model.weapon.PortalGun;
-import model.weapon.Projectile;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -132,6 +130,11 @@ public class Actor implements JSONSerializable, GLRenderableObject, AnimationLis
 		return this.object;
 	}
 
+	/**
+	 * Get whethter the collisionbox should be shown or not.
+	 * 
+	 * @return Whether the collision box should be shown or not.
+	 */
 	public boolean isShowingCollisionBox() {
 		return this.showCollisionBox;
 	}
@@ -220,16 +223,36 @@ public class Actor implements JSONSerializable, GLRenderableObject, AnimationLis
 		this.object = o;
 	}
 
+	/**
+	 * Set whether to show the collision box or not.
+	 * @param showCollisionBox Whether to show the collision box or not.
+	 */
 	public void setShowCollisionBox(boolean showCollisionBox) {
 		this.showCollisionBox = showCollisionBox;
 	}
 
+	
+	/**
+	 * Set the color used as a mask for the Actor.
+	 * 
+	 * All values should be floating point values between 0 and 1.
+	 * 
+	 * @param r Red
+	 * @param g Green
+	 * @param b Blue
+	 */
 	public void setColor(float r, float g, float b) {
 		for (Animation a : this.animations.values()) {
 			a.setColor(r, g, b);
 		}
 	}
 
+	
+	/**
+	 * Add an animationListener.
+	 * 
+	 * @param l The animationListener
+	 */
 	public void addAnimationListener(AnimationListener l) {
 
 		if (this.animations == null)
@@ -244,6 +267,11 @@ public class Actor implements JSONSerializable, GLRenderableObject, AnimationLis
 		this.animationListeners.add(l);
 	}
 
+	/**
+	 * Remove an animationListener.
+	 * 
+	 * @param l The animationListener
+	 */
 	public void removeAnimationListener(AnimationListener l) {
 		if (this.animations == null)
 			return;
@@ -254,6 +282,11 @@ public class Actor implements JSONSerializable, GLRenderableObject, AnimationLis
 		this.animationListeners.remove(l);
 	}
 
+	/**
+	 * Set whether the animation should repeat or not.
+	 * 
+	 * @param shouldRepeat Whether the animation should repeat or not
+	 */
 	public void setShouldRepeat(boolean shouldRepeat) {
 		if (this.animations == null)
 			return;
@@ -315,10 +348,7 @@ public class Actor implements JSONSerializable, GLRenderableObject, AnimationLis
 						animation = entity.isMoving() ? "moveSE" : "stopSE";
 						break;
 				}
-			} else if (entity instanceof Projectile) {
-				Projectile p = (Projectile) this.object;
-				animation = "default";
-			}
+			} 
 		} else if (this.object instanceof Portal) {
 			Portal p = (Portal) this.object;
 

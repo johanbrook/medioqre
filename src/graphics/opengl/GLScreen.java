@@ -5,15 +5,10 @@ import graphics.opengl.core.GLRenderableObject;
 import graphics.opengl.core.Rectangle;
 
 import java.awt.Point;
-import java.util.Collection;
-import java.util.LinkedList;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
-import javax.media.opengl.GLDrawable;
-
-import tools.factory.ObjectFactory;
 
 /**
  * A class used for drawing on screen.
@@ -30,9 +25,6 @@ public class GLScreen implements GLRenderableObject {
 	private Rectangle screenSize;
 	private Rectangle renderRect;
 	private Point screenOffset;
-
-	// TODO Remove this!
-	private float angle = 0;
 
 	/**
 	 * Creates a screen with the given screensize.
@@ -130,6 +122,9 @@ public class GLScreen implements GLRenderableObject {
 		return retVal;
 	}
 
+	/**
+	 * Remove all objects from the GLScreen.
+	 */
 	public void removeAll() {
 		this.layers = null;
 	}

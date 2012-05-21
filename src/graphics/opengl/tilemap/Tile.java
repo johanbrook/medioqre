@@ -17,7 +17,7 @@ import org.json.JSONObject;
  * @author John Barbero Unenge
  * 
  */
-public class Tile implements JSONSerializable, GLRenderableObject, Comparable {
+public class Tile implements JSONSerializable, GLRenderableObject, Comparable<Object> {
 
 	private Sprite sprite;
 	private int type;
@@ -60,6 +60,11 @@ public class Tile implements JSONSerializable, GLRenderableObject, Comparable {
 		this.collidable = collidable;
 	}
 
+	/**
+	 * Set the tileType
+	 * 
+	 * @param type The tileType
+	 */
 	public void setType(int type) {
 		this.type = type;
 	}

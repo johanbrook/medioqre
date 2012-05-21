@@ -1,14 +1,11 @@
 package tools.datamanagement;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.IdentityHashMap;
-import java.util.Map;
 import java.util.TreeMap;
 
 import javax.media.opengl.GLAutoDrawable;
-import javax.media.opengl.GLContext;
 import javax.media.opengl.GLException;
 
 import com.jogamp.opengl.util.texture.Texture;
