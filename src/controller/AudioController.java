@@ -57,14 +57,13 @@ public class AudioController implements IEventHandler {
 
 		// Link to system sound
 		try {
-			Class<?> lib;
 
-			// Use JOAL if Compatible
+			// Use LWJGLOpenAL if Compatible
 			if (SoundSystem.libraryCompatible(LibraryLWJGLOpenAL.class)) {
-				lib = LibraryLWJGLOpenAL.class;
+				soundSys = new SoundSystem(LibraryLWJGLOpenAL.class);
 			} else {
-				// Use JavaSound
-				lib = LibraryJavaSound.class;
+				// Do not use Sound
+				soundSys = new SoundSystem();
 			}
 
 			// Link to Wav Codec
@@ -72,9 +71,6 @@ public class AudioController implements IEventHandler {
 
 			// Link to JOgg
 			SoundSystemConfig.setCodec("ogg", CodecJOrbis.class);
-
-			// Initialize Sound Engine
-			soundSys = new SoundSystem(lib);
 
 		} catch (SoundSystemException e) {
 			e.printStackTrace();
@@ -245,19 +241,23 @@ public class AudioController implements IEventHandler {
 
 	private void pause() {
 		soundSys.pause("BGM");
-		soundSys.newSource(true,"pause", lib.getFXSound("pause"), lib.getFXId("pause"),
-				false, 1f, 1f, 1f, SoundSystemConfig.ATTENUATION_NONE, 0.5f);
-		soundSys.setVolume("pause", PreferenceLoader.getFloat("FX_VOLUME", 0.5f));
+		soundSys.newSource(true, "pause", lib.getFXSound("pause"),
+				lib.getFXId("pause"), false, 1f, 1f, 1f,
+				SoundSystemConfig.ATTENUATION_NONE, 0.5f);
+		soundSys.setVolume("pause",
+				PreferenceLoader.getFloat("FX_VOLUME", 0.5f));
 		soundSys.play("pause");
 
 	}
 
 	private void unPause() {
-		soundSys.newSource(true,"unPause", lib.getFXSound("unPause"), lib.getFXId("unPause"),
-				false, 1f, 1f, 1f, SoundSystemConfig.ATTENUATION_NONE, 0.5f);
-		soundSys.setVolume("unPause", PreferenceLoader.getFloat("FX_VOLUME", 0.5f));
+		soundSys.newSource(true, "unPause", lib.getFXSound("unPause"),
+				lib.getFXId("unPause"), false, 1f, 1f, 1f,
+				SoundSystemConfig.ATTENUATION_NONE, 0.5f);
+		soundSys.setVolume("unPause",
+				PreferenceLoader.getFloat("FX_VOLUME", 0.5f));
 		soundSys.play("unPause");
-		
+
 		soundSys.play("BGM");
 
 	}
