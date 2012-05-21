@@ -77,6 +77,7 @@ public class ViewController
 
 	// State
 	private boolean doneLoading = false;
+	private boolean gamePaused = false;
 
 	// Screen
 	private GLScreen screen;
@@ -92,6 +93,7 @@ public class ViewController
 	private GLBitmapFont waveMeter;
 	private Actor statusHud;
 
+	private GLBitmapFont gamePausedText;
 	// Map
 	private TileMap tilemap;
 
@@ -159,16 +161,24 @@ public class ViewController
 			this.scoreMeter.setBounds(new Rectangle(this.screen.getBounds().getWidth()-70, this.screen.getBounds().getHeight() - 87, 60, 20));
 			this.scoreMeter.setLetterWidth(10);
 			
+			this.gamePausedText = new GLBitmapFont(new JSONObject(ResourceLoader.loadJSONStringFromResources("spritesheets/json/font.bmf")));
+			int width = 300;
+			int height = 80;
+			this.gamePausedText.setBounds(new Rectangle(this.screen.getBounds().getWidth() / 2 - width / 2, this.screen.getBounds().getHeight() / 2 - 100, width, height));
+			this.gamePausedText.setLetterWidth(width / 11);
+			
 			this.overlayObjects.add(this.hpMeter);
 			this.overlayObjects.add(this.fpsMeter);
 			this.overlayObjects.add(this.waveMeter);
 			this.overlayObjects.add(this.scoreMeter);
 			this.overlayObjects.add(this.ammoMeter);
+			this.overlayObjects.add(this.gamePausedText);
 			
 			this.fpsMeter.setColor(1f, 0f, 0f);
 			this.hpMeter.setColor(0f, 1f, 0f);
 			this.waveMeter.setColor(1f, 0f, 1f);
 			this.ammoMeter.setColor(0.8f, 0.8f, 0.8f);
+			this.gamePausedText.setColor(1f, 1f, 1f);
 			
 		} catch (JSONException e1) {
 			// TODO Auto-generated catch block
@@ -260,6 +270,12 @@ public class ViewController
 					this.screen.addDrawableToLayer(explosion, 1);
 				}
 			}
+		} else if (evt.getProperty() == Event.Property.PAUSE_GAME) {
+			this.gamePaused = true;
+			this.gamePausedText.setText("Game Paused");
+		} else if (evt.getProperty() == Event.Property.UNPAUSE_GAME) {
+			this.gamePaused = false;
+			this.gamePausedText.setText(" ");
 		}
 	}
 
@@ -278,6 +294,9 @@ public class ViewController
 				gl.glPushMatrix();
 				this.rotationAngle += 1;
 				gl.glRotated(this.rotationAngle, 0, 0, 1);
+			}
+			if (!this.gamePaused) {
+				this.screen.update(0);
 			}
 			this.screen.setViewPort(this.player.getCollidableObject()
 					.getPosition());
@@ -321,6 +340,7 @@ public class ViewController
 			gl.glPushMatrix();
 			gl.glLoadIdentity();
 			for (GLRenderableObject ro : this.overlayObjects) {
+				ro.update(16);
 				ro.render(ro.getBounds(), this.screen.getBounds(), arg0,
 						(20 + this.tilemap.getTileMapSize().getHeight()
 								* this.tilemap.getTileSize().getHeight()));
