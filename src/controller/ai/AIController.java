@@ -1,9 +1,7 @@
 package controller.ai;
 
 import java.awt.Point;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import model.Direction;
@@ -12,7 +10,6 @@ import model.character.Enemy;
 import model.character.Player;
 import model.weapon.Projectile;
 import event.Event;
-import event.IEventHandler;
 import event.IEventHandler;
 import event.IMessageSender;
 import event.Messager;
@@ -31,7 +28,6 @@ public class AIController implements IMessageSender, IEventHandler {
 	private PathFinder pathfinder;
 
 	private int width, height;
-	private int rows, columns;
 
 	private Point playerPos, playerTile;
 	private Player player;
@@ -43,13 +39,10 @@ public class AIController implements IMessageSender, IEventHandler {
 		this.pathfinder = new PathFinder(rows, columns);
 		this.width = width;
 		this.height = height;
-		this.rows = rows;
-		this.columns = columns;
 		this.enemies = new CopyOnWriteArrayList<AIPlayer>();
 
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void onEvent(Event evt) {
 
@@ -231,43 +224,6 @@ public class AIController implements IMessageSender, IEventHandler {
 		return new Point ((int)this.player.getCollisionBox().getCenterX(),(int) this.player.getCollisionBox().getCenterY());
 	}
 
-	/**
-	 * Returns a randomly selected direction
-	 * 
-	 * @return
-	 */
-	private Direction randomDir() {
-		Random rand = new Random();
-		int r = rand.nextInt(8);
-		Direction d = Direction.ORIGIN;
-		switch (r) {
-		case 0 :
-			d = Direction.EAST;
-			break;
-		case 1 :
-			d = Direction.NORTH;
-			break;
-		case 2 :
-			d = Direction.NORTH_EAST;
-			break;
-		case 3 :
-			d = Direction.NORTH_WEST;
-			break;
-		case 4 :
-			d = Direction.SOUTH;
-			break;
-		case 5 :
-			d = Direction.SOUTH_EAST;
-			break;
-		case 6 :
-			d = Direction.SOUTH_WEST;
-			break;
-		case 7 :
-			d = Direction.WEST;
-			break;
-		}
-		return d;
-	}
 
 	/**
 	 * Replace the current list of enemies with a new one.
