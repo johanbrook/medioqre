@@ -96,7 +96,6 @@ public class Projectile extends Entity {
 				y += (int) p.getSize().height / 2;
 				break;
 			case WEST :
-				x -= p.getCollisionBox().width;
 				y += (int) p.getSize().height / 2;
 				break;
 			case NORTH_EAST :
