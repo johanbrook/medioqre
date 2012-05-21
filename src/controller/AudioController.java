@@ -58,32 +58,28 @@ public class AudioController implements IEventHandler {
 		// Link to system sound
 		try {
 			Class<?> lib;
-			
-			//Use JOAL if Compatible
-			if (SoundSystem.libraryCompatible( LibraryJOAL.class )){
+
+			// Use JOAL if Compatible
+			if (SoundSystem.libraryCompatible(LibraryJOAL.class)) {
 				lib = LibraryJOAL.class;
-			} else{
-				//Use JavaSound
+			} else {
+				// Use JavaSound
 				lib = LibraryJavaSound.class;
 			}
-			
-			
-			
 
 			// Link to Wav Codec
 			SoundSystemConfig.setCodec("wav", CodecWav.class);
-			
-			//Link to JOgg
+
+			// Link to JOgg
 			SoundSystemConfig.setCodec("ogg", CodecJOrbis.class);
 
 			// Initialize Sound Engine
 			soundSys = new SoundSystem(lib);
-			
+
 		} catch (SoundSystemException e) {
 			e.printStackTrace();
 		}
 
-		
 	}
 
 	public void setGame(IGameModel game) {
@@ -102,7 +98,8 @@ public class AudioController implements IEventHandler {
 		soundSys.newSource(false, "playerWalk", lib.getFXSound("walk"),
 				"walk.wav", false, 1f, 1f, 1.0f,
 				SoundSystemConfig.ATTENUATION_NONE, 0.5f);
-		soundSys.setVolume("playerWalk", PreferenceLoader.getFloat("FX_VOLUME",AudioConstants.standardFXVolume));
+		soundSys.setVolume("playerWalk", PreferenceLoader.getFloat("FX_VOLUME",
+				AudioConstants.standardFXVolume));
 		soundSys.play("playerWalk");
 	}
 
@@ -131,21 +128,25 @@ public class AudioController implements IEventHandler {
 
 	}
 
-
-	
 	/**
 	 * Plays sound effects for weapons given their class.
 	 * 
 	 */
 	public void playPlayerWeaponSound() {
-		if (PreferenceLoader.getFloat("FX_VOLUME",AudioConstants.standardFXVolume) != 0.0) {
-			
-			soundSys.newSource(false, "playerWeaponSound",
-					lib.getWeaponSound(game.getPlayer().getCurrentWeapon().getClass()), lib.getWeaponId(game.getPlayer().getCurrentWeapon().getClass()), false,
-					1f, 1f, 1.0f, SoundSystemConfig.ATTENUATION_NONE, 0.0f);
+		if (PreferenceLoader.getFloat("FX_VOLUME",
+				AudioConstants.standardFXVolume) != 0.0) {
 
-			soundSys.setVolume("playerWeaponSound",
-					PreferenceLoader.getFloat("FX_VOLUME",AudioConstants.standardFXVolume));
+			soundSys.newSource(
+					false,
+					"playerWeaponSound",
+					lib.getWeaponSound(game.getPlayer().getCurrentWeapon()
+							.getClass()),
+					lib.getWeaponId(game.getPlayer().getCurrentWeapon()
+							.getClass()), false, 1f, 1f, 1.0f,
+					SoundSystemConfig.ATTENUATION_NONE, 0.0f);
+
+			soundSys.setVolume("playerWeaponSound", PreferenceLoader.getFloat(
+					"FX_VOLUME", AudioConstants.standardFXVolume));
 
 			soundSys.play("playerWeaponSound");
 		}
@@ -166,12 +167,16 @@ public class AudioController implements IEventHandler {
 				playBGM();
 			}
 		}
-		
-		//Pause
-		if (evt.getProperty() == Event.Property.PAUSE_GAME){
+
+		// Pause
+		if (evt.getProperty() == Event.Property.PAUSE_GAME) {
 			pause();
 		}
-		
+
+		// unPause
+		if (evt.getProperty() == Event.Property.UNPAUSE_GAME) {
+			unPause();
+		}
 
 		// Entities
 		if (evt.getValue() instanceof Entity) {
@@ -194,7 +199,6 @@ public class AudioController implements IEventHandler {
 				if (evt.getProperty() == Event.Property.WAS_DAMAGED) {
 					pitchBGM();
 				}
-				
 
 			}
 
@@ -224,7 +228,7 @@ public class AudioController implements IEventHandler {
 			if (evt.getValue() instanceof Projectile) {
 
 				Projectile p = ((Projectile) evt.getValue());
-				
+
 				if (!(p.getOwner() instanceof Melee)) {
 					playPlayerWeaponSound();
 				}
@@ -239,23 +243,26 @@ public class AudioController implements IEventHandler {
 		}
 	}
 
+
+
 	private void pause() {
-		if (!AppController.isPaused()){
-//TODO add pause/unpaused sound
-			soundSys.play("BGM");
-		} else {
-			soundSys.pause("BGM");
-		}
-		
+		soundSys.pause("BGM");
+
 	}
 
+	private void unPause() {
+		soundSys.play("BGM");
+		
+	}
+	
 	/**
 	 * Plays background music
 	 */
 	private void playBGM() {
 		soundSys.backgroundMusic("BGM", lib.getBGMURL(bgmID),
 				lib.getBGMId(bgmID), true);
-		soundSys.setVolume("BGM", PreferenceLoader.getFloat("BGM_VOLUME",AudioConstants.standardBGMVolume));
+		soundSys.setVolume("BGM", PreferenceLoader.getFloat("BGM_VOLUME",
+				AudioConstants.standardBGMVolume));
 		soundSys.play("BGM");
 	}
 
@@ -306,10 +313,10 @@ public class AudioController implements IEventHandler {
 	public String soundCode(Entity e) {
 		return "sc_" + e.hashCode();
 	}
-	
-	private void pitchBGM(){
-		
-		if (PreferenceLoader.getBoolean("PITCH_D_BGM_WHEN_HURT", false)){
+
+	private void pitchBGM() {
+
+		if (PreferenceLoader.getBoolean("PITCH_D_BGM_WHEN_HURT", false)) {
 			float f = (float) (game.getPlayer().getHealth() / playerMaxHealth);
 			f = (float) (f * 0.5 + 0.5);
 
@@ -324,8 +331,7 @@ public class AudioController implements IEventHandler {
 	 * Plays start up sound. Used only by launcher.
 	 */
 	public void playStartUpSound() {
-		soundSys.backgroundMusic("BGM", lib.getBGMURL(1),
-				lib.getBGMId(1), true);
+		soundSys.backgroundMusic("BGM", lib.getBGMURL(1), lib.getBGMId(1), true);
 		soundSys.setVolume("BGM", 0.3f);
 		soundSys.play("BGM");
 	}
