@@ -4,11 +4,11 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-import org.json.JSONObject;
-
 import model.CollidableObject;
 import model.Entity;
 import model.weapon.PortalGun.Mode;
+
+import org.json.JSONObject;
 
 /**
  *	A portal. Have a reference to another portal and a given mode.

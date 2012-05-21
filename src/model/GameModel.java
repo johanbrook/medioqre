@@ -492,6 +492,7 @@ public class GameModel implements IGameModel, IEventHandler, IMessageSender {
 			for (CollidableObject w : this.objects){
 				
 				if (t.isColliding(w)){
+					//Characters colliding with walls reset their positions.
 					if (t instanceof AbstractCharacter && w instanceof ConcreteCollidableObject){
 						t.setPosition(((AbstractCharacter)t).getRememberedPosition());
 					}
@@ -515,102 +516,10 @@ public class GameModel implements IGameModel, IEventHandler, IMessageSender {
 				isVictim = true;
 			}	
 		}
-
 		if (!isVictim)
 			temp.setPortalVictim(isVictim);
 	}
 
-
-
-
-	/**
-	 * Stop an entity if its path is blocked by another collidable.
-	 * 
-	 * <p>Doesn't stop the entity if the collidable is an instance of
-	 * <code>ICollectableItem</code> or <code>Portal</code> (which entities
-	 * should be able to move through.</p>
-	 * 
-	 * @param t The entity to manipulate
-	 * @param w The collidable object the entity may collide with
-	 */
-	private void stopIfBlocked (Entity t, CollidableObject w){
-		Direction currentDirection = t.getDirection();
-		Direction blockedDirection = t.getDirectionOfObject(w);
-
-		if (!(w instanceof ICollectableItem) && !(w instanceof Portal)) {
-			if (directionIsBlocked(currentDirection, blockedDirection)) {
-
-				t.stop();
-
-			}
-		}
-	}
-
-	/**
-	 * Check if an entity with a given direction will be blocked by another entity.
-	 * 
-	 * @param currentDirection The given, current, direction
-	 * @param blockedDirection The other (potentially) blocking object's direction
-	 * @return
-	 */
-	private boolean directionIsBlocked(Direction currentDirection, Direction blockedDirection) {
-
-		boolean stop = false;
-
-		if (currentDirection == Direction.EAST
-				&& (blockedDirection == Direction.NORTH_EAST || blockedDirection == Direction.SOUTH_EAST)) {
-
-			stop = true;
-		}
-
-		if (currentDirection == Direction.SOUTH_EAST
-				&& (blockedDirection == Direction.NORTH_EAST || blockedDirection == Direction.SOUTH_WEST)) {
-
-			stop = true;
-		}
-
-		if (currentDirection == Direction.NORTH_EAST
-				&& (blockedDirection == Direction.SOUTH_EAST || blockedDirection == Direction.NORTH_WEST)) {
-
-			stop = true;
-		}
-
-		if (currentDirection == Direction.WEST
-				&& (blockedDirection == Direction.NORTH_WEST || blockedDirection == Direction.SOUTH_WEST)) {
-
-			stop = true;
-		}
-
-		if (currentDirection == Direction.SOUTH_WEST
-				&& (blockedDirection == Direction.NORTH_WEST || blockedDirection == Direction.SOUTH_EAST)) {
-
-			stop = true;
-		}
-
-		if (currentDirection == Direction.NORTH_WEST
-				&& (blockedDirection == Direction.SOUTH_WEST || blockedDirection == Direction.NORTH_EAST)) {
-
-			stop = true;
-		}
-
-		if (currentDirection == Direction.NORTH
-				&& (blockedDirection == Direction.NORTH_EAST || blockedDirection == Direction.NORTH_WEST)) {
-
-			stop = true;
-		}
-
-		if (currentDirection == Direction.SOUTH
-				&& (blockedDirection == Direction.SOUTH_EAST || blockedDirection == Direction.SOUTH_WEST)) {
-
-			stop = true;
-		}
-
-		if (blockedDirection == currentDirection) {
-			stop = true;
-		}
-
-		return stop;
-	}
 
 	/**
 	 * Updates the game model.
