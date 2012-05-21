@@ -190,9 +190,11 @@ public class ViewController
 
 	@Override
 	public void onEvent(Event evt) {
-		if (evt.getProperty() == Event.Property.INIT_MODEL) {
+		if (evt.getProperty() == Event.Property.NEW_GAME) {
 			GameModel gm = (GameModel) evt.getValue();
 
+			this.screen.removeAll();
+			
 			this.tilemap = ObjectFactory.newTileMap();
 
 			this.screen.addDrawableToLayer(this.tilemap, 0);
