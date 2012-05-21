@@ -21,6 +21,7 @@ public abstract class Entity extends CollidableObject {
 	private boolean isMoving;
 	private Direction direction;
 	private boolean portalVictim;
+	private Point rememberedPosition;
 	
 	/**
 	 * Create a new Entity.
@@ -184,5 +185,21 @@ public abstract class Entity extends CollidableObject {
 		int intIsMoving = isMoving ? 1 : 0;
 		int intDirection = this.direction.ordinal();
 		return super.getTag() | intIsMoving | (intDirection << 4);
+	}
+
+	/**
+	 * get the position this entity is currently saving
+	 * @return the remebered position
+	 */
+	public Point getRememberedPosition() {
+		return rememberedPosition;
+	}
+
+	/**
+	 * Set a position for this entity to remember. Entity can only remember one position at a time.
+	 * @param rememberedPosition
+	 */
+	public void setRememberedPosition(Point rememberedPosition) {
+		this.rememberedPosition = rememberedPosition;
 	}
 }
