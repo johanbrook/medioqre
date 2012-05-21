@@ -116,7 +116,7 @@ public class ViewController
 	 * @param screenHeight
 	 *            The frame height
 	 */
-	public ViewController(KeyListener listener, Dimension frameSize, ILoader callback) {
+	public ViewController(KeyListener listener, Dimension frameSize) {
 		
 		EventBus.INSTANCE.register(this);
 
