@@ -44,6 +44,14 @@ public abstract class AbstractCharacter extends Entity {
 		this.setDirection(Direction.SOUTH);
 	}
 	
+	/**
+	 * A game character from a JSON object.
+	 * 
+	 * <p>See key specifications for <code>Entity</code>. AbstractCharacter
+	 * also need a <code>health</code> key set in the JSON object.</p>
+	 * 
+	 * @param obj The JSON object.
+	 */
 	public AbstractCharacter(JSONObject obj) {
 		super(obj);
 		

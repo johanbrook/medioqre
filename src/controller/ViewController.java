@@ -1,5 +1,6 @@
 package controller;
 
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.KeyListener;
 import java.io.FileWriter;
@@ -116,13 +117,13 @@ public class ViewController
 	 * @param screenHeight
 	 *            The frame height
 	 */
-	public ViewController(KeyListener listener, Dimension frameSize, ILoader callback) {
+	public ViewController(KeyListener listener, JFrame parent) {
 		
 		EventBus.INSTANCE.register(this);
 
 		this.fpsmeter = new GraphicalFPSMeter();
 
-		this.screen = new GLScreen(0, 0, frameSize.width, frameSize.height);
+		this.screen = new GLScreen(0, 0, parent.getWidth(), parent.getHeight());
 
 		// Creating the frame
 		GLProfile glP = GLProfile.getDefault();
@@ -131,19 +132,11 @@ public class ViewController
 		GLCanvas canvas = new GLCanvas(glC);
 
 		// Creating the frame
-		JFrame frame = new JFrame(ObjectFactory.getConfigString("appName"));
+		parent.setTitle(ObjectFactory.getConfigString("appName"));
 		canvas.setFocusable(true);
-		canvas.requestFocusInWindow();
+		
 		canvas.addKeyListener(listener);
 		canvas.addGLEventListener(this);
-
-		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-		frame.add(canvas);
-		frame.setPreferredSize(frameSize);
-		frame.pack();
-		frame.setVisible(true);
-		frame.setLocationRelativeTo(null);
 		
 		try {
 			this.hpMeter = new GLBitmapFont(new JSONObject(ResourceLoader.loadJSONStringFromResources("spritesheets/json/font.bmf")));
@@ -184,15 +177,24 @@ public class ViewController
 		
 		this.isInLSDMode = PreferenceLoader.getBoolean("LSD_MODE", false);
 
+		parent.getContentPane().add(canvas);
+		
+		parent.setResizable(true);
+		
+		parent.getContentPane().validate();
+		canvas.requestFocusInWindow();
+		
 		FPSAnimator anim = new FPSAnimator(canvas, 60);
 		anim.start();
 	}
 
 	@Override
 	public void onEvent(Event evt) {
-		if (evt.getProperty() == Event.Property.INIT_MODEL) {
+		if (evt.getProperty() == Event.Property.NEW_GAME) {
 			GameModel gm = (GameModel) evt.getValue();
 
+			this.screen.removeAll();
+			
 			this.tilemap = ObjectFactory.newTileMap();
 
 			this.screen.addDrawableToLayer(this.tilemap, 0);

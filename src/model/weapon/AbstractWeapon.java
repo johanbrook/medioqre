@@ -39,6 +39,15 @@ public abstract class AbstractWeapon implements ITaggable{
 		this.cooldown = 0;
 	}
 	
+	/**
+	 * A weapon from a JSON object.
+	 * 
+	 * <p>The JSON object must contain the keys <code>ammo</code>, <code>ammoMultiplier</code>,
+	 * and <code>fireInterval</code>.
+	 * 
+	 * @param owner The character owner
+	 * @param obj The JSON object
+	 */
 	public AbstractWeapon(AbstractCharacter owner, JSONObject obj) {
 		this(owner, obj.optInt("ammo"), obj.optInt("ammoMultiplier"), obj.optInt("fireInterval"));
 	}

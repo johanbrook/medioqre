@@ -37,10 +37,20 @@ public class MedPack extends CollidableObject implements ICollectableItem {
 		this.amount = amount;
 	}
 	
+	/**
+	 * Create a Medpack from a JSON object.
+	 * 
+	 * <p>The JSON object must contain a key <code>bounds</code> which
+	 * should include the keys <code>width</code> and <code>height</code>.</p>
+	 * 
+	 * @param x The x position
+	 * @param y The y position
+	 * @param obj The JSON object
+	 */
 	public MedPack(int x, int y, JSONObject obj) {
 		this(obj.optInt("amount"), x, y, 
 				obj.optJSONObject("bounds").optInt("width"), 
-				obj.optJSONObject("bounds").optInt("width"));
+				obj.optJSONObject("bounds").optInt("height"));
 	}
 	
 	/**

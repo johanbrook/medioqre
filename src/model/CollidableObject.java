@@ -83,6 +83,26 @@ public abstract class CollidableObject implements IMessageSender, ITaggable {
 	}
 	
 	
+	/**
+	 * A collidable object from a JSON object.
+	 * 
+	 * <p>the JSON object must contain a key <code>bounds</code>
+	 * with the following keys:</p>
+	 * 
+	 * <ul>
+	 * <li>bounds: {</li>
+	 * <li><ul>
+	 * 	<li>boxWidth: Rectangle.width</li>
+	 * 	<li>boxHeight: Rectangle.height</li>
+	 * 	<li>width: Dimension.width</li>
+	 * 	<li>height: Dimension.height</li>
+	 * 	<li>offsetX: xoffset</li>
+	 * 	<li>offsetY: yoffset</li>
+	 * </ul>}</li>
+	 * </ul>
+	 * 
+	 * @param obj
+	 */
 	public CollidableObject(JSONObject obj) {
 		this(
 				new Rectangle(obj.optJSONObject("bounds").optInt("boxWidth"), 

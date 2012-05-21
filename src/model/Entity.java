@@ -43,6 +43,15 @@ public abstract class Entity extends CollidableObject {
 		this.portalVictim = false;
 	}
 
+	
+	/**
+	 * An Entity from a JSON object.
+	 * 
+	 * <p>The JSON object must contain required keys of <code>CollidableObject</code>'s
+	 * constructor, and also a <code>speed</code> key for <code>Entity</code>'s constructor.</p>
+	 * 
+	 * @param obj The JSON object
+	 */
 	public Entity(JSONObject obj) {
 		super(obj);
 		

@@ -6,7 +6,10 @@
 
 package controller;
 
+import java.awt.Container;
 import java.awt.Dimension;
+
+import javax.swing.JFrame;
 
 import org.json.JSONException;
 
@@ -18,6 +21,7 @@ import static tools.Logger.*;
 import controller.ai.AIController;
 import controller.navigation.NavigationController;
 import event.Event;
+import event.Event.Property;
 import event.EventBus;
 import event.IEventHandler;
 import event.IMessageListener;
@@ -25,7 +29,7 @@ import event.IMessageSender;
 import model.GameModel;
 import model.IGameModel;
 
-public class AppController implements Runnable{
+public class AppController implements Runnable, IEventHandler {
 	
 	/**
 	 * Desired refresh rate
@@ -54,7 +58,7 @@ public class AppController implements Runnable{
 	private AudioController audio;
 	private NavigationController navigation;
 	
-	public static boolean paused = false;
+	private static boolean paused = false;
 		
 	/**
 	 * New AppController. 
@@ -62,34 +66,20 @@ public class AppController implements Runnable{
 	 * <p>Initializes the game model, navigation controller, view controller, audio controller and AI controller,
 	 * as well as relevant listeners.</p>
 	 */
-	public AppController(){
+	public AppController(JFrame frame){
 		String mode = (isDebugMode()) ? "debug" : "production";
 		System.out.println("Initializing main controller in " + mode + " mode ...");
 
+		EventBus.INSTANCE.register(this);
+		
 		Level lev = new Level("gamedata/config.json");
 		ObjectFactory.setLevel(lev);
 		
 		this.game = new GameModel();
 		this.navigation = new NavigationController();
 
-		new ViewController(this.navigation, new Dimension(20 * 48, 12 * 48), new ILoader() {
-
-			@Override
-			public void complete() {
-				log("View loading was completed");
-			}
-
-			@Override
-			public void success() {
-				log("View loading succeeded");
-			}
-
-			@Override
-			public void error() {
-				log("View loading failed");
-			}
-			
-		});
+		frame.setPreferredSize(new Dimension(20 * 48, 12 * 48));
+		new ViewController(this.navigation, frame);
 		
 		this.ai = new AIController(48, 48, 48, 48);
 
@@ -111,21 +101,59 @@ public class AppController implements Runnable{
 	 * Initialize a new game.
 	 */
 	public void init() {
-		this.game.newGame();
-		this.game.newWave();
+		this.initNewGame();
 		Thread loop = new Thread(this);
 		loop.setName("Game-loop");
 		loop.start();
 
 		EventBus.INSTANCE.publish(new Event(Event.Property.INIT_MODEL, this.game));
 	}
+	
+	
+	public void initNewGame() {
+		log("Initializing new game and wave ...");
+		this.game.newGame();
+		this.game.newWave();
+	}
+	
+	@Override
+	public void onEvent(Event evt) {
+		switch(evt.getProperty()) {
+		
+		case GAME_OVER: 
+			
+			this.initNewGame();
+			
+			break;
+		}
+	}
 
+	/**
+	 * Toggled paused mode.
+	 * 
+	 * <p>When paused, the main game thread is stopped.</p>
+	 */
 	public static void togglePaused() {
 		paused = !paused;
+		
+		if(paused) {
+			EventBus.INSTANCE.publish(new Event(Property.PAUSE_GAME));
+		}
+		else {
+			EventBus.INSTANCE.publish(new Event(Property.UNPAUSE_GAME));
+		}
+		
 		log("Paused: "+paused);
 	}
 	
-	
+	/**
+	 * Get the paused status.
+	 * 
+	 * @return True if the game is currently paused, otherwise paused
+	 */
+	public static boolean isPaused() {
+		return paused;
+	}
 	
 	/**
 	 * If the app is in debug mode or not.

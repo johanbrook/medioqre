@@ -3,9 +3,11 @@ package main;
 
 import gui.Launcher;
 
+import java.awt.Dimension;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.JFrame;
 
 import tools.Logger;
 import tools.factory.ObjectFactory;
@@ -47,7 +49,11 @@ public class Main {
 		if (MODE == PRODUCTION) {
 			new Launcher();
 		} else {
-			new AppController().init();
+			JFrame f = new JFrame();
+			f.setPreferredSize(new Dimension(20 * 48, 12 * 48));
+			f.pack();
+			f.setVisible(true);
+			new AppController(f).init();
 		}
 		
 	}

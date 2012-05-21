@@ -36,6 +36,11 @@ public class Enemy extends AbstractCharacter {
 		this.wasPushed = false;
 	}
 	
+	/**
+	 * Create an enemy from a JSON object.
+	 * 
+	 * @param obj The JSON object
+	 */
 	public Enemy(JSONObject obj) {
 		super(obj);
 	}

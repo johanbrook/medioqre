@@ -29,6 +29,8 @@ public class SoundLibrary {
 
 		fx.put("walk", c.getResource("sounds/fx/walk.wav"));
 		fx.put("startUpSound", c.getResource("sounds/fx/walk.wav"));
+		fx.put("pause", c.getResource("sounds/fx/pause.wav"));
+		fx.put("unPause", c.getResource("sounds/fx/unpause.wav"));
 
 		return Collections.unmodifiableMap(fx);
 	}
@@ -78,6 +80,10 @@ public class SoundLibrary {
 		return fxSoundLibrary.get(code);
 	}
 
+	public String getFXId(String code) {
+		return fxSoundLibrary.get(code).toString().substring(9);
+	}
+	
 	/**
 	 * Gets URL for a given Weapon Sound
 	 * 

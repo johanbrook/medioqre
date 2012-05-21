@@ -151,9 +151,9 @@ public class GameModel implements IGameModel, IEventHandler, IMessageSender {
 		case PORTALGUN_SWITCHED_MODE :
 			switchPortalGunMode();
 			break;
-
-		case PAUSE_GAME :
-
+			
+		case TOGGLE_PAUSE :
+			
 			AppController.togglePaused();
 
 			break;
@@ -212,6 +212,7 @@ public class GameModel implements IGameModel, IEventHandler, IMessageSender {
 	 * <code>this</code>.</p>
 	 */
 	public void newGame() {
+		log("Initializing new game ...");
 		initPlayer();
 		initWalls();
 		Event evt = new Event(Event.Property.NEW_GAME, this);
