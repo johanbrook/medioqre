@@ -12,15 +12,11 @@ import model.character.Enemy;
 import model.character.Player;
 import model.item.AmmoCrate;
 import model.item.MedPack;
-import model.weapon.AbstractWeapon;
-import model.weapon.MachineGun;
 import model.weapon.Portal;
 import model.weapon.PortalGun.Mode;
-import model.weapon.Projectile.Range;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.junit.Before;
 import org.junit.Test;
 
 import tools.datamanagement.ResourceLoader;

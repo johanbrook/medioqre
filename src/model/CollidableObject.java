@@ -3,17 +3,10 @@ package model;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
-
 import org.json.JSONObject;
-
-import model.character.Player;
-
-import tools.Logger;
-
 import event.Event;
 import event.EventBus;
 import event.IEventHandler;
-import event.IMessageListener;
 import event.Event.Property;
 import event.IMessageSender;
 import event.Messager;

@@ -14,10 +14,7 @@ import java.util.Arrays;
 
 import model.character.Player;
 import model.weapon.AbstractWeapon;
-import model.weapon.Grenade;
-import model.weapon.MachineGun;
 import model.weapon.Melee;
-import model.weapon.Sword;
 import model.weapon.WeaponBelt;
 
 import org.junit.After;

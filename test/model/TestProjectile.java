@@ -9,7 +9,6 @@ package model;
 import static org.junit.Assert.*;
 
 import java.awt.Dimension;
-import java.awt.Point;
 import java.awt.Rectangle;
 
 import model.character.AbstractCharacter;

@@ -9,20 +9,14 @@ package model;
 import static org.junit.Assert.*;
 
 import java.awt.Dimension;
-import java.awt.Point;
 import java.awt.Rectangle;
-import java.sql.Savepoint;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import event.Event;
 import event.EventBus;
 import event.IEventHandler;
-
-import tools.Logger;
-
 
 import model.CollidableObject;
 import model.character.AbstractCharacter;

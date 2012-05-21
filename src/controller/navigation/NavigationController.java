@@ -10,7 +10,6 @@ import model.Direction;
 import event.Event;
 import event.EventBus;
 import event.IEventHandler;
-import event.IMessageListener;
 import event.IMessageSender;
 import event.Event.Property;
 import event.Messager;

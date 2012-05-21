@@ -23,8 +23,6 @@ import event.Event;
 import event.EventBus;
 import event.IEventHandler;
 
-import tools.factory.ObjectFactory;
-
 
 public class TestPlayer implements IEventHandler {
 
