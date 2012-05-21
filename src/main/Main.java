@@ -34,7 +34,7 @@ import static controller.AppController.DEBUG;
  */
 public class Main {
 
-	public static final String VERSION = "0.7";
+	public static final String VERSION = "0.8";
 
 	/**
 	 * @param args
