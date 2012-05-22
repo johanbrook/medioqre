@@ -294,14 +294,15 @@ public class ViewController
 			if (!this.gamePaused) {
 				this.screen.update(0);
 			}
-			this.screen.setViewPort(this.player.getCollidableObject()
-					.getPosition());
-			this.screen.render(this.screen.getBounds(),
-					this.screen.getBounds(), arg0, 0);
-			if (this.isInLSDMode)
-				gl.glPopMatrix();
 
 			if (this.player != null) {
+				this.screen.setViewPort(this.player.getCollidableObject()
+						.getPosition());
+				this.screen.render(this.screen.getBounds(),
+						this.screen.getBounds(), arg0, 0);
+				if (this.isInLSDMode)
+					gl.glPopMatrix();
+				
 				Player p = (Player) this.player.getCollidableObject();
 				if (p != null && this.hpMeter != null) {
 					this.hpMeter.setText("HP: " + p.getHealth());
