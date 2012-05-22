@@ -21,7 +21,12 @@ public class Math {
 		return fib(n - 1) + fib(n - 2);
 	}
 	
-	// TODO Write docs and tests for these guys.
+	/**
+	 * Get the nth prime number.
+	 * 
+	 * @param n A number
+	 * @return The nth prime number
+	 */
 	public static int prime(int n) {
 		int counter = 0;
 		int number = 1;
@@ -41,7 +46,12 @@ public class Math {
 		return number;
 	}
 	
-	
+	/**
+	 * Check if a given number is a prime number
+	 * 
+	 * @param number The number to check
+	 * @return True if number is prime number, otherwise false
+	 */
 	public static boolean isPrime(int number) {
 		
 		if(number % 2 == 0)
