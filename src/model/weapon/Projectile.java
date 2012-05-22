@@ -207,6 +207,16 @@ public class Projectile extends Entity {
 		Projectile p = (Projectile) o;
 		return this.owner.equals(p.owner) && this.damage == p.damage && this.range == p.range;
 	}
+	
+	@Override
+	public int hashCode() {
+		int hash = 1;
+		hash = hash * 17 + this.owner.hashCode();
+		hash = hash * 13 + this.damage;
+		hash = hash * 31 + this.range.hashCode();
+		
+		return hash;
+	}
 
 	@Override
 	public void move(double dt) {
@@ -240,10 +250,6 @@ public class Projectile extends Entity {
 	@Override
 	public int getTag() {
 		int id = this.owner.getTag() & 0x0000f000;
-		
-//		System.out.println("Owner:" +Integer.toHexString(this.owner.getTag()));
-//		System.out.println("Super tag: " +Integer.toHexString(super.getTag()));
-//		System.out.println("Type: "+Integer.toHexString(id));
 		
 		return super.getTag() | id;
 	}
