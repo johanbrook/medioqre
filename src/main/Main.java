@@ -54,12 +54,7 @@ public class Main {
 		if (MODE == PRODUCTION) {
 			new Launcher();
 		} else {
-			JFrame f = new JFrame();
-			f.setPreferredSize(new Dimension(20 * 48, 12 * 48));
-			f.pack();
-			f.setVisible(true);
-			f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			new AppController(f).init();
+			new AppController().init();
 		}
 
 	}
