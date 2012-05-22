@@ -24,11 +24,11 @@
 		"radius": 70,
 		"ammoMultiplier": 0.1,
 		"fireInterval": 5,
-		"splashDamageFactor": 2,
+		"splashDamageFactor": 2.0,
 		"ammo": 4,
 		"slot": 2,
 		"projectile": {
-			"damage": 75,
+			"damage": 100,
 			"range": "MEDIUM_RANGE",
 			"speed": 30,
 			"bounds": {

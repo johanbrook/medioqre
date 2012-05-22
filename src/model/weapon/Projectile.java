@@ -32,7 +32,7 @@ public class Projectile extends Entity {
 	 * 
 	 */
 	public enum Range {
-		NO_RANGE(0), SHORT_RANGE(40), MEDIUM_RANGE(200), FAR_RANGE(1500);
+		NO_RANGE(0), SHORT_RANGE(40), MEDIUM_RANGE(250), FAR_RANGE(1500);
 
 		private final int distance;
 

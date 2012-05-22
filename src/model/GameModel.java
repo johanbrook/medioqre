@@ -456,7 +456,13 @@ public class GameModel implements IGameModel, IEventHandler, IMessageSender {
 			for (Enemy e : this.enemies) {
 				distance = Math.abs(e.getPosition().x - p.getPosition().x)
 						+ Math.abs(e.getPosition().y - p.getPosition().y);
-				if (distance < radius) {
+				
+				//If close to detonation, the grenade deals full damage
+				if (distance < radius/grenade.getSplashDamageFactor()){
+					e.takeDamage(p.getDamage());
+				}
+				//If in range of detonation, the grenade deals damage depending on its splash damage factor.
+				else if (distance < radius) {
 					e.takeDamage(p.getDamage()
 							/ grenade.getSplashDamageFactor());
 					log("Enemy was hit by Grenade splash! Took "
