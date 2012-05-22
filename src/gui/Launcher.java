@@ -1,26 +1,13 @@
 package gui;
 
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Image;
-import java.awt.LayoutManager;
 import java.awt.Toolkit;
 
-import javax.swing.BorderFactory;
 import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import controller.AppController;
 import controller.AudioController;
 
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.BorderLayout;
-import javax.swing.JLabel;
-import java.awt.Component;
 
 /**
  * 
@@ -44,6 +31,7 @@ public class Launcher extends JFrame {
 		setTitle("Frank the Tank");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
+		//Center Frame on Main Screen
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		Dimension launcherSize = new Dimension(640, 422);
 		setBounds((screenSize.width / 2) - (launcherSize.width / 2),
