@@ -33,7 +33,7 @@ public class AIController implements IMessageSender, IEventHandler {
 	private Player player;
 
 	private Messager messager = new Messager();
-	
+
 
 	public AIController(int rows, int columns, int width, int height) {
 		this.pathfinder = new PathFinder(rows, columns);
@@ -70,17 +70,8 @@ public class AIController implements IMessageSender, IEventHandler {
 	public void updateAI(double dt) {
 		this.playerPos = getMidOfPlayerPos();
 		playerTile = calculateTile(playerPos);
-
-		if (playerTile.x >= 0 && playerTile.y >= 0 && playerTile.x < 48
-				&& playerTile.y < 48) {
-
-			if (enemies.size() > 0) {
-
-				for (AIPlayer ai : enemies) {
-					updateEnemy(ai, dt);
-					ai.getEnemy().start();
-				}
-			}
+		for (AIPlayer ai : enemies) {
+			updateEnemy(ai, dt);
 		}
 	}// end updateAI
 
@@ -96,6 +87,8 @@ public class AIController implements IMessageSender, IEventHandler {
 	 */
 	private void updateEnemy(AIPlayer aiPlayer, double dt) {
 		if (this.pathfinder.isInitiated()){
+			
+			Direction orgdir = aiPlayer.getEnemy().getDirection();
 
 			aiPlayer.setDistance(Math.abs(aiPlayer.getMidPos().x - getMidOfPlayerPos().x) +
 					Math.abs(aiPlayer.getMidPos().y - getMidOfPlayerPos().y));
@@ -108,7 +101,7 @@ public class AIController implements IMessageSender, IEventHandler {
 					aiPlayer.getEnemy().isPortalVictim() ||
 					aiPlayer.getEnemy().wasPushed()){
 				aiPlayer.setCurrentTile(calculateTile(aiPlayer.getMidPos()));
-				
+
 				//Update more often if closer to player. No need for enemies far away to update each frame.
 				if (aiPlayer.getCount() > aiPlayer.getDistance()/this.width){
 					getNewPath(aiPlayer);
@@ -126,6 +119,10 @@ public class AIController implements IMessageSender, IEventHandler {
 			} else {
 				aiPlayer.updateEnemy(findLineToPlayer(aiPlayer));
 				getNewPath(aiPlayer);
+			}
+			
+			if (aiPlayer.getEnemy().getDirection() != orgdir){
+				tools.Logger.log("CHANGED DIRECTION OF ENEMY! NEW DIRECTION: " + aiPlayer.getEnemy().getDirection());
 			}
 		}
 	}
@@ -215,9 +212,7 @@ public class AIController implements IMessageSender, IEventHandler {
 	 * @return
 	 */
 	private Direction findLineToPlayer(AIPlayer aiPlayer) {
-
 		return calculateDirection(aiPlayer.getMidPos(), getMidOfPlayerPos());
-
 	}
 
 	/**
@@ -274,15 +269,9 @@ public class AIController implements IMessageSender, IEventHandler {
 	 * @return
 	 */
 	public Direction calculateDirection(Point start, Point stop) {
-		// Compare enemy position with next calculated position in path.
-
-
-
 		int dx = (int) Math.signum(stop.x - start.x);
 		int dy = (int) Math.signum(stop.y - start.y);
 
-
-		// Return direction depending on the values of dx and dy.
 		switch (dx) {
 		case 1 :
 			if (dy == -1)
@@ -315,8 +304,7 @@ public class AIController implements IMessageSender, IEventHandler {
 			}
 		}// Should never reach this point since dx will always be 1,0 or -1
 		return null;
-
-	}
+	}//End calculateDirection
 
 	/**
 	 * Given a point representing a position in the gameworld, will return the
