@@ -15,6 +15,7 @@ import model.weapon.Grenade;
 import model.weapon.MachineGun;
 import model.weapon.Melee;
 import model.weapon.PortalGun;
+import model.weapon.Sword;
 import model.weapon.WeaponBelt;
 
 import org.junit.Before;
@@ -52,13 +53,19 @@ public class TestWeaponbelt {
 	@Test
 	public void testGetWeaponFromSlot() {
 		assertNotNull(this.belt.get(0));
-		assertEquals(new MachineGun(null, 300, 1, 0), this.belt.get(0));
 	}
 	
 	@Test
 	public void testGetSpecificWeapon() {
+		AbstractWeapon machinegun = new MachineGun(null, 300, 1, 0);
 		
-		assertEquals(new MachineGun(null, 300, 1, 0), this.belt.get(MachineGun.class));
+		assertEquals(machinegun, this.belt.get(0));
+		assertEquals(machinegun, this.belt.get(MachineGun.class));
+	}
+	
+	@Test
+	public void testGetNonExistingWeapon() {
+		assertNull(this.belt.get(Sword.class));
 	}
 	
 	@Test(expected=IndexOutOfBoundsException.class)

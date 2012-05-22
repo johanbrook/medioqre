@@ -210,14 +210,5 @@ public abstract class AbstractWeapon implements ITaggable{
 	public void setBit(int bit, int position) {
 		this.tag |= (bit << 4*position);
 	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		if(this == obj) 
-			return true;
-		if(obj == null || this.getClass() != obj.getClass())
-			return false;
-		
-		return true;
-	}
+
 }

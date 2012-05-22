@@ -83,11 +83,6 @@ public class Key {
 		Key other = (Key) o;
 		return this.key.equals(other.key);
 	}
-	
-	@Override
-	public int hashCode() {
-		return this.key.hashCode();
-	}
 }
 
 /**
@@ -133,11 +128,5 @@ class NavigationKey extends Key {
 	public boolean equals(Object o) {
 		return super.equals(o)
 				&& this.direction == ((NavigationKey) o).direction;
-	}
-	
-	@Override
-	public int hashCode() {
-		int hash = super.hashCode() * 17;
-		return hash + this.direction.hashCode();
 	}
 }

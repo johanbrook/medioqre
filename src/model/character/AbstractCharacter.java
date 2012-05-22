@@ -176,26 +176,4 @@ public abstract class AbstractCharacter extends Entity {
 	public int getTag() {
 		return super.getTag() | (this.currentWeapon.getTag() >> 8 );
 	}
-	
-	@Override
-	public boolean equals(Object o) {
-		if(this == o) {
-			return true;
-		}
-		if(o == null || this.getClass() != o.getClass()) {
-			return false;
-		}
-		
-		AbstractCharacter a = (AbstractCharacter) o;
-		return this.maxHealth == a.maxHealth && this.currentWeapon.equals(a.getCurrentWeapon());
-	}
-	
-	@Override
-	public int hashCode() {
-		int hash = 1;
-		hash = hash * 17 + this.maxHealth;
-		hash = hash * 13 + this.currentWeapon.hashCode();
-		
-		return hash;
-	}
 }

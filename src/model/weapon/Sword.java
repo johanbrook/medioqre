@@ -17,6 +17,12 @@ public class Sword extends AbstractWeapon {
 		super(owner, ammo, ammoMultiplier, fireInterval);
 	}
 
+	public boolean equals(Object o) {
+		if (o == null || getClass() != o.getClass())
+			return false;
+
+		return true;
+	}
 
 	@Override
 	public Projectile createProjectile() {

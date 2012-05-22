@@ -23,6 +23,13 @@ public class MachineGun extends AbstractWeapon {
 		super(owner, ammo, ammoMultiplier, fireInterval);
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (o == null || getClass() != o.getClass())
+			return false;
+
+		return true;
+	}
 
 	@Override
 	public Projectile getProjectile() {
