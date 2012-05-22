@@ -17,11 +17,17 @@ public class Sword extends AbstractWeapon {
 		super(owner, ammo, ammoMultiplier, fireInterval);
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (o == null || getClass() != o.getClass())
 			return false;
 
 		return true;
+	}
+	
+	@Override
+	public int hashCode() {
+		return 42;
 	}
 
 	@Override

@@ -30,6 +30,11 @@ public class MachineGun extends AbstractWeapon {
 
 		return true;
 	}
+	
+	@Override
+	public int hashCode() {
+		return 42;
+	}
 
 	@Override
 	public Projectile getProjectile() {

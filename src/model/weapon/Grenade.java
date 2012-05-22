@@ -24,7 +24,8 @@ public class Grenade extends AbstractWeapon {
 	public Grenade(AbstractCharacter owner, int ammo, double ammoMultiplier, double fireInterval) {
 		super(owner, ammo, ammoMultiplier, fireInterval);
 	}
-
+	
+	@Override
 	public boolean equals(Object o) {
 		if (o == null || getClass() != o.getClass())
 			return false;
@@ -32,7 +33,10 @@ public class Grenade extends AbstractWeapon {
 		return true;
 	}
 	
-
+	@Override
+	public int hashCode() {
+		return 42;
+	}
 
 	@Override
 	public Projectile createProjectile() {
