@@ -49,7 +49,6 @@ public class AppController implements Runnable, IEventHandler {
 
 	private IGameModel game;
 	private AIController ai;
-	private AudioController audio;
 	private NavigationController navigation;
 	
 	private static boolean paused = false;
@@ -81,8 +80,7 @@ public class AppController implements Runnable, IEventHandler {
 		this.ai.addReceiver((IEventHandler) this.game);
 		((IMessageSender) this.game).addReceiver((IEventHandler) this.ai);
 
-		this.audio = AudioController.getInstance();
-		audio.setGame(game);
+		AudioController.getInstance().setGame(game);
 		
 		// Logging format
 		
@@ -185,7 +183,7 @@ public class AppController implements Runnable, IEventHandler {
 			
 			this.ai.updateAI(dt);
 			this.game.update(dt);
-			audio.update();
+//			audio.update();
 		}
 	}
 
