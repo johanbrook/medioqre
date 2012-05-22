@@ -26,6 +26,7 @@ import org.json.JSONObject;
 
 import com.jogamp.opengl.util.FPSAnimator;
 
+import sun.java2d.d3d.D3DGraphicsDevice;
 import tools.datamanagement.PreferenceLoader;
 import tools.datamanagement.ResourceLoader;
 import tools.factory.ObjectFactory;
@@ -184,13 +185,21 @@ public class ViewController
 		JFrame f = new JFrame();
 		
 		f.getContentPane().add(canvas);		
-		f.setUndecorated(true);
-		f.setVisible(true);
+		
+		if (AppController.isDebugMode()) {
+			f.setPreferredSize(new Dimension(size.width, size.height));
+			f.pack();
+		} else {
+			f.setUndecorated(true);
+			GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().setFullScreenWindow(f);
+		}
+		
+		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		BufferedImage i = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
 	    Cursor noCursor = java.awt.Toolkit.getDefaultToolkit().createCustomCursor(i, new java.awt.Point(0,0), "none");
-		GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().setFullScreenWindow(f);
 		canvas.requestFocusInWindow();
 		f.setCursor(noCursor);
+		f.setVisible(true);
 		
 		FPSAnimator anim = new FPSAnimator(canvas, 60);
 		anim.start();
