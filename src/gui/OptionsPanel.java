@@ -22,6 +22,13 @@ import tools.datamanagement.PreferenceLoader;
 
 import audio.AudioConstants;
 
+/**
+ * Options panel
+ * 
+ * @author chrisnordqvist
+ *
+ */
+
 public class OptionsPanel extends JPanel {
 
 	/**

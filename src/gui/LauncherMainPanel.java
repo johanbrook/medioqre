@@ -14,6 +14,13 @@ import javax.swing.Timer;
 
 import controller.AppController;
 
+/**
+ * Main launcher panel
+ * 
+ * @author chrisnordqvist
+ *
+ */
+
 public class LauncherMainPanel extends JPanel implements ActionListener {
 
 	/**
