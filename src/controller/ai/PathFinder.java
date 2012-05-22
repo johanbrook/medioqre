@@ -345,8 +345,8 @@ public class PathFinder {
 	}
 
 	/**
-	 * Removes any closed/open-status of each tile in the logicList, 
-	 * sets the G-value to 0 in every tile. Clears the open list
+	 * Removes any closed/open-status of each tile in the logicList and
+	 * clears the open list
 	 */
 	public void clear() {
 		for (int i = 0; i < logicList.length; i++) {
