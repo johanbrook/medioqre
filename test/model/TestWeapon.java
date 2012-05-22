@@ -2,6 +2,7 @@
  *	TestWeapon.java
  *
  *	@author Johan
+ *	@author jesperpersson
  */
 
 package model;

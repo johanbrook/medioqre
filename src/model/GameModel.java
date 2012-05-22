@@ -29,6 +29,7 @@ import graphics.opengl.tilemap.TileMap;
  * Model for a game.
  * 
  * @author Johan
+ * @author jesperpersson
  * 
  */
 public class GameModel implements IGameModel, IEventHandler, IMessageSender {

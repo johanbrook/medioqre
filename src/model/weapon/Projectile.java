@@ -16,6 +16,7 @@ import tools.Logger;
  *	A projectile, with a damage, range and character owner.
  *
  *	@author Johan
+ *	@author jesperpersson
  */
 public class Projectile extends Entity {
 

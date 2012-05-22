@@ -14,6 +14,7 @@ import org.json.JSONObject;
  *	A portal. Have a reference to another portal and a given mode.
  *
  *	@author Johan
+ *	@author jesperpersson
  */
 public class Portal extends CollidableObject {
 

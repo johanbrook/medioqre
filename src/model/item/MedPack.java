@@ -15,7 +15,8 @@ import model.character.Player;
 /**
  * A medical kit.
  * 
- * @author Johan
+ * @author Johan 
+ * @author jesperpersson
  */
 public class MedPack extends CollidableObject implements ICollectableItem {
 

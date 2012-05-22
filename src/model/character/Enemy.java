@@ -16,6 +16,7 @@ import event.EventBus;
  *	An enemy.
  *
  *	@author Johan
+ *	@author jesperpersson
  */
 public class Enemy extends AbstractCharacter {
 	private boolean wasPushed;
