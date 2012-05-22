@@ -185,6 +185,7 @@ public class GameModel implements IGameModel, IEventHandler, IMessageSender {
 		CollidableObject item = ObjectFactory.newItem("AmmoCrate");
 		item.addReceiver(this);
 		this.objects.add(item);
+		setAtLegalPosition(item);
 		log("** Ammo Crate created **");
 	}
 
@@ -196,6 +197,8 @@ public class GameModel implements IGameModel, IEventHandler, IMessageSender {
 		CollidableObject item = ObjectFactory.newItem("MedPack");
 		item.addReceiver(this);
 		this.objects.add(item);
+		
+		setAtLegalPosition(item);
 		log("** MedPack created **");
 
 	}
@@ -267,9 +270,7 @@ public class GameModel implements IGameModel, IEventHandler, IMessageSender {
 		for (CollidableObject item : items) {
 			item.addReceiver(this);
 			//If spawn point is to close to player or inside a wall, set new randomly chosen position.
-			while (objectCollidesWithPlayer(item) || objectCollidesWithWall(item)){
-				item.setPosition(getRandomPosition());
-			}
+			setAtLegalPosition(item);
 		}
 
 		this.objects.addAll(items);
@@ -298,9 +299,7 @@ public class GameModel implements IGameModel, IEventHandler, IMessageSender {
 		for (Enemy temp : tempEnemies) {
 			temp.addReceiver(this);
 			// If spawn point is to close to player or inside a wall, set new randomly chosen position.
-			while (objectCollidesWithPlayer(temp) || objectCollidesWithWall(temp)){
-				temp.setPosition(getRandomPosition());
-			}
+			setAtLegalPosition(temp);
 		}
 
 		this.enemies.addAll(tempEnemies);
@@ -319,6 +318,8 @@ public class GameModel implements IGameModel, IEventHandler, IMessageSender {
 		this.player.addReceiver(this);
 	}
 
+	
+	
 	/**
 	 * Check if the specified object is colliding with a wall.
 	 * 
@@ -354,12 +355,25 @@ public class GameModel implements IGameModel, IEventHandler, IMessageSender {
 		// If the collidable collides with a wall, return true
 
 		for (CollidableObject obj : this.objects){
-			if (obj instanceof ConcreteCollidableObject && obj.isColliding(o)){
-				return true;
+			if (obj instanceof ConcreteCollidableObject){
+				if (o.isColliding(obj)){
+					return true;
+				}
 			}
 		}
 
 		return false;
+	}
+	
+	/**
+	 * Given a Collidable object, will set the position of the object at random, until a position is found
+	 * that doesn't collide with a wall or the player.
+	 * @param object
+	 */
+	private void setAtLegalPosition(CollidableObject object){
+		while (objectCollidesWithPlayer(object) || objectCollidesWithWall(object)){
+			object.setPosition(getRandomPosition());
+		}
 	}
 
 	/**
