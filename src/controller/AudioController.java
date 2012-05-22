@@ -2,7 +2,6 @@ package controller;
 
 import model.Entity;
 import model.IGameModel;
-import model.character.Enemy;
 import model.weapon.Melee;
 import model.weapon.Projectile;
 import paulscode.sound.SoundSystem;
@@ -79,9 +78,11 @@ public class AudioController implements IEventHandler {
 
 	/**
 	 * Sets the game to get player and enemy data from
-	 * @param game the game
+	 * 
+	 * @param game
+	 *            the game
 	 */
-	
+
 	public void setGame(IGameModel game) {
 		this.game = game;
 	}
@@ -178,7 +179,7 @@ public class AudioController implements IEventHandler {
 			unPause();
 		}
 
-		//
+		// new Game
 		if (evt.getProperty() == Event.Property.NEW_GAME) {
 			pitchBGM();
 		}
@@ -209,10 +210,8 @@ public class AudioController implements IEventHandler {
 
 			// Enemies
 			if (p instanceof model.character.Enemy) {
-				Enemy e = (Enemy) evt.getValue();
 
-				if (evt.getProperty() == Event.Property.DID_MOVE
-						&& !soundSys.playing(soundCode(e))) {
+				if (evt.getProperty() == Event.Property.DID_MOVE) {
 
 				}
 
@@ -221,7 +220,6 @@ public class AudioController implements IEventHandler {
 				}
 
 				if (evt.getProperty() == Event.Property.DID_STOP) {
-
 				}
 			}
 
@@ -251,7 +249,6 @@ public class AudioController implements IEventHandler {
 	/**
 	 * Pauses background music
 	 */
-	
 	private void pause() {
 		soundSys.pause("BGM");
 		soundSys.newSource(true, "pause", lib.getFXSound("pause"),
@@ -266,7 +263,6 @@ public class AudioController implements IEventHandler {
 	/**
 	 * Unpauses background music
 	 */
-	
 	private void unPause() {
 		soundSys.newSource(true, "unPause", lib.getFXSound("unPause"),
 				lib.getFXId("unPause"), false, 1f, 1f, 1f,
@@ -288,54 +284,6 @@ public class AudioController implements IEventHandler {
 		soundSys.setVolume("BGM", PreferenceLoader.getFloat("BGM_VOLUME",
 				AudioConstants.standardBGMVolume));
 		soundSys.play("BGM");
-	}
-
-	/**
-	 * Plays walk sound effect for Enemies
-	 * 
-	 * @param e
-	 *            Enemy
-	 */
-	private void playEnemyWalk(Enemy e) {
-
-		soundSys.newSource(true, soundCode(e), lib.getFXSound("walk"),
-				"walk.wav", true, (float) 1, (float) 1, (float) 1,
-				SoundSystemConfig.ATTENUATION_ROLLOFF, 0.5f);
-
-		soundSys.play(soundCode(e));
-
-	}
-
-	/**
-	 * Stops walk sounds for a given Enemy
-	 * 
-	 * @param e
-	 *            Enemy
-	 */
-
-	private void stopEnemyWalk(Enemy e) {
-		soundSys.stop(soundCode(e));
-	}
-
-	/**
-	 * Removes the sound system source for Enemies destroyed
-	 * 
-	 * @param e
-	 *            Enemy
-	 */
-	private void removeEnemySounds(Enemy e) {
-		soundSys.removeSource(soundCode(e));
-	}
-
-	/**
-	 * Generates a code for sound sources based on hashCode
-	 * 
-	 * @param e
-	 *            Entity to create code for
-	 * @return Soundcode for e
-	 */
-	public String soundCode(Entity e) {
-		return "sc_" + e.hashCode();
 	}
 
 	/**
