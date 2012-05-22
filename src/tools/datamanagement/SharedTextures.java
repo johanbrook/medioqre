@@ -74,15 +74,14 @@ public class SharedTextures {
 						+ ".png"), false);
 				threadTextures.put(textureName, t);
 			} catch (GLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-
-		t.bind(arg0.getGL());
+		
+		if (t != null)
+			t.bind(arg0.getGL());
 
 		return t;
 	}
