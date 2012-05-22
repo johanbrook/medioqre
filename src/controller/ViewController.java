@@ -132,28 +132,29 @@ public class ViewController
 		canvas.addKeyListener(listener);
 		canvas.addGLEventListener(this);
 		
-		try {
-			this.hpMeter = new GLBitmapFont(new JSONObject(ResourceLoader.loadJSONStringFromResources("spritesheets/json/font.bmf")));
-			this.hpMeter.setBounds(new Rectangle(10, 20, 100, 10));
+			JSONObject jsonFont = ResourceLoader.parseJSONFromPath("spritesheets/json/font.bmf");
+			
+			this.hpMeter = new GLBitmapFont(jsonFont);
+			this.hpMeter.setBounds(new Rectangle(10, this.screen.getBounds().getHeight() - 80, 250, 20));
 			this.hpMeter.setLetterWidth(10);
 			
-			this.fpsMeter = new GLBitmapFont(new JSONObject(ResourceLoader.loadJSONStringFromResources("spritesheets/json/font.bmf")));
+			this.fpsMeter = new GLBitmapFont(jsonFont);
 			this.fpsMeter.setBounds(new Rectangle(10, 10, 100,10));
 			this.fpsMeter.setLetterWidth(10);
 			
-			this.waveMeter = new GLBitmapFont(new JSONObject(ResourceLoader.loadJSONStringFromResources("spritesheets/json/font.bmf")));
+			this.waveMeter = new GLBitmapFont(jsonFont);
 			this.waveMeter.setBounds(new Rectangle(10, this.screen.getBounds().getHeight() - 40, 60, 10));
 			this.waveMeter.setLetterWidth(10);
 			
-			this.ammoMeter = new GLBitmapFont(new JSONObject(ResourceLoader.loadJSONStringFromResources("spritesheets/json/font.bmf")));
+			this.ammoMeter = new GLBitmapFont(jsonFont);
 			this.ammoMeter.setBounds(new Rectangle(this.screen.getBounds().getWidth()-70, this.screen.getBounds().getHeight() - 50, 60, 40));
 			this.ammoMeter.setLetterWidth(20);
 			
-			this.scoreMeter = new GLBitmapFont(new JSONObject(ResourceLoader.loadJSONStringFromResources("spritesheets/json/font.bmf")));
+			this.scoreMeter = new GLBitmapFont(jsonFont);
 			this.scoreMeter.setBounds(new Rectangle(this.screen.getBounds().getWidth()-70, this.screen.getBounds().getHeight() - 87, 60, 20));
 			this.scoreMeter.setLetterWidth(10);
 			
-			this.gamePausedText = new GLBitmapFont(new JSONObject(ResourceLoader.loadJSONStringFromResources("spritesheets/json/font.bmf")));
+			this.gamePausedText = new GLBitmapFont(jsonFont);
 			int width = 300;
 			int height = 80;
 			this.gamePausedText.setBounds(new Rectangle(this.screen.getBounds().getWidth() / 2 - width / 2, this.screen.getBounds().getHeight() / 2 - 100, width, height));
@@ -171,15 +172,12 @@ public class ViewController
 			this.overlayObjects.add(this.gamePausedText);
 			this.overlayObjects.add(this.statusHud);
 			
-			this.fpsMeter.setColor(1f, 0f, 0f);
-			this.hpMeter.setColor(0f, 1f, 0f);
-			this.waveMeter.setColor(1f, 0f, 1f);
+			this.fpsMeter.setColor(1f, 0f, 1f);
+			this.hpMeter.setColor(1f, 0f, 0.1f);
+			this.waveMeter.setColor(1f, 0f, 0f);
 			this.ammoMeter.setColor(0.8f, 0.8f, 0.8f);
 			this.gamePausedText.setColor(1f, 1f, 1f);
 			
-		} catch (JSONException e1) {
-			e1.printStackTrace();
-		}
 		
 		this.isInLSDMode = PreferenceLoader.getBoolean("LSD_MODE", false);
 
