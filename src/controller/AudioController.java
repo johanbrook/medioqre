@@ -254,8 +254,9 @@ public class AudioController implements IEventHandler {
 			if (evt.getValue() instanceof Projectile) {
 				Projectile p = ((Projectile) evt.getValue());
 				if (p.getOwner().getCurrentAmmo() == 0) {
+					if(!soundSys.playing("noAmmo"))
 					playFX("noAmmo");
-				}
+				} 
 				
 			}
 		}
