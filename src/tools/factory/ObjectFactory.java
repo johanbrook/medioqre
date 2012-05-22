@@ -285,7 +285,7 @@ public class ObjectFactory {
 	public static List<Enemy> newEnemiesForWave(int waveNumber) {
 
 		List<Enemy> enemies = new ArrayList<Enemy>();
-		int enemiesToAdd = tools.Math.fib(waveNumber);
+		int enemiesToAdd = tools.Math.prime(waveNumber);
 
 
 		for (int i = 0; i < enemiesToAdd; i++) {

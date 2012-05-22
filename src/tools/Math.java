@@ -20,6 +20,41 @@ public class Math {
 		}
 		return fib(n - 1) + fib(n - 2);
 	}
+	
+	// TODO Write docs and tests for these guys.
+	public static int prime(int n) {
+		int counter = 0;
+		int number = 1;
+		
+		while(counter < n) {
+			if(isPrime(number)) {
+				counter++;
+				
+				if(counter == n) {
+					return number;
+				}
+			}
+
+			number++;
+		}
+		
+		return number;
+	}
+	
+	
+	public static boolean isPrime(int number) {
+		
+		if(number % 2 == 0)
+			return false;
+		
+		for(int i = 3; i*i <= number; i+=2) {
+			if(number % i == 0) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
 
 	/**
 	 * Returns an integer from a hexadecimal string.
