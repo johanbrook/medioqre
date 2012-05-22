@@ -182,7 +182,7 @@ public class AppController implements Runnable, IEventHandler {
 			
 			this.ai.updateAI(dt);
 			this.game.update(dt);
-//			audio.update();
+			AudioController.getInstance().update();
 		}
 	}
 
