@@ -87,7 +87,7 @@ public class AppController implements Runnable, IEventHandler {
 		// Logging format
 		
 		String loggingFormat = ObjectFactory.getConfigString("loggingFormat");
-		tools.Logger.getInstance().setTimestampFormat(loggingFormat);
+		tools.Logger.setTimestampFormat(loggingFormat);
 	}
 	
 	
