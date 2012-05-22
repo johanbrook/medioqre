@@ -7,7 +7,6 @@
 package controller;
 
 import java.awt.Dimension;
-import javax.swing.JFrame;
 import tools.factory.Level;
 import tools.factory.ObjectFactory;
 
@@ -182,7 +181,6 @@ public class AppController implements Runnable, IEventHandler {
 			
 			this.ai.updateAI(dt);
 			this.game.update(dt);
-//			AudioController.getInstance().update();
 		}
 	}
 
