@@ -3,13 +3,11 @@ package main;
 
 import gui.Launcher;
 
-import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 
 import javax.imageio.ImageIO;
-import javax.swing.JFrame;
 
 import tools.Logger;
 
@@ -31,7 +29,7 @@ import static controller.AppController.DEBUG;
  */
 public class Main {
 
-	public static final String VERSION = "0.9";
+	public static final String VERSION = "1.0";
 
 	/**
 	 * @param args
@@ -47,9 +45,6 @@ public class Main {
 		String os = System.getProperty("os.name").toLowerCase();
 		if (os.indexOf("mac") != -1)
 			OSXOptions();
-
-		if (os.indexOf("windows") != -1)
-			windowsOptions();
 
 		if (MODE == PRODUCTION) {
 			new Launcher();
@@ -74,13 +69,6 @@ public class Main {
 
 	}
 
-	private static void windowsOptions() {
-
-	}
-
-	private static void linuxOptions() {
-
-	}
 
 	private static void setAudioNativeDir(){
 		System.setProperty( "java.library.path", new File(new File(System.getProperty("user.dir"), "libs/lwjgl/native"), LWJGLUtil.getPlatformName()).getAbsolutePath()) ;
