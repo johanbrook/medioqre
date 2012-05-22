@@ -253,9 +253,10 @@ public class AudioController implements IEventHandler {
 
 			if (evt.getValue() instanceof Projectile) {
 				Projectile p = ((Projectile) evt.getValue());
-				if (!(p.getOwner() instanceof model.weapon.Melee)) {
+				if (p.getOwner().getCurrentAmmo() == 0) {
 					playFX("noAmmo");
 				}
+				
 			}
 		}
 
