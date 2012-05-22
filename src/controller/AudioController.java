@@ -237,8 +237,8 @@ public class AudioController implements IEventHandler {
 				}
 			}
 		}
-		
-		if (evt.getProperty() == Event.Property.WAS_DESTROYED){
+
+		if (evt.getProperty() == Event.Property.WAS_DESTROYED) {
 			if (evt.getValue() instanceof Projectile) {
 
 				Projectile p = ((Projectile) evt.getValue());
@@ -250,7 +250,13 @@ public class AudioController implements IEventHandler {
 		}
 
 		if (evt.getProperty() == Event.Property.FIRED_WEAPON_FAIL) {
-			playFX("noAmmo");
+
+			if (evt.getValue() instanceof Projectile) {
+				Projectile p = ((Projectile) evt.getValue());
+				if (!(p.getOwner() instanceof model.weapon.Melee)) {
+					playFX("noAmmo");
+				}
+			}
 		}
 
 		// FX
@@ -262,11 +268,9 @@ public class AudioController implements IEventHandler {
 	}
 
 	private void playFX(String id) {
-		soundSys.newSource(false, id, lib.getFXSound(id),
-				lib.getFXId(id), false, 1, 1, 1,
-				SoundSystemConfig.ATTENUATION_NONE, 1);
-		soundSys.setVolume(id,
-				PreferenceLoader.getFloat("FX_VOLUME", 0.5f));
+		soundSys.newSource(false, id, lib.getFXSound(id), lib.getFXId(id),
+				false, 1, 1, 1, SoundSystemConfig.ATTENUATION_NONE, 1);
+		soundSys.setVolume(id, PreferenceLoader.getFloat("FX_VOLUME", 0.5f));
 		soundSys.play(id);
 	}
 
