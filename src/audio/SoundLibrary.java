@@ -31,6 +31,8 @@ public class SoundLibrary {
 		fx.put("startUpSound", c.getResource("sounds/fx/walk.wav"));
 		fx.put("pause", c.getResource("sounds/fx/pause.wav"));
 		fx.put("unPause", c.getResource("sounds/fx/unpause.wav"));
+		fx.put("noAmmo", c.getResource("sounds/fx/noAmmo.wav"));
+		fx.put("grenadeExplode", c.getResource("sounds/fx/grenadeExplode.wav"));
 
 		return Collections.unmodifiableMap(fx);
 	}
