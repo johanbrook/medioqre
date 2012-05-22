@@ -8,7 +8,6 @@ import javax.swing.JPanel;
 
 import controller.AudioController;
 
-
 /**
  * 
  * Launcher for Frank the Tank
@@ -31,7 +30,7 @@ public class Launcher extends JFrame {
 		setTitle("Frank the Tank");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-		//Center Frame on Main Screen
+		// Center Frame on Main Screen
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		Dimension launcherSize = new Dimension(640, 422);
 		setBounds((screenSize.width / 2) - (launcherSize.width / 2),
@@ -49,6 +48,13 @@ public class Launcher extends JFrame {
 		setVisible(true);
 
 		AudioController.getInstance().playStartUpSound();
+
+		//Shutdown Audio on System Exit
+		Runtime.getRuntime().addShutdownHook(new Thread() {
+			public void run() {
+				AudioController.getInstance().shutdown();
+			}
+		});
 
 	}
 
