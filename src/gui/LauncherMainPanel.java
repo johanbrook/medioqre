@@ -14,6 +14,13 @@ import javax.swing.Timer;
 
 import controller.AppController;
 
+/**
+ * Main launcher panel
+ * 
+ * @author chrisnordqvist
+ *
+ */
+
 public class LauncherMainPanel extends JPanel implements ActionListener {
 
 	/**
@@ -30,13 +37,12 @@ public class LauncherMainPanel extends JPanel implements ActionListener {
 
 	private Launcher launcher;
 
-	public LauncherMainPanel(int rows, int cols, int width, int height,
+	public LauncherMainPanel(int rows, int cols,
 			Launcher container) {
-		setBounds(new Rectangle(0, 0, 640, 400));
+		setBounds(new Rectangle(0, 0, container.getWidth(), container.getHeight()));
 		launcher = container;
 		setLayout(null);
 
-		setBounds(0, 0, 790, 509);
 
 		this.rows = rows;
 		this.cols = cols;
@@ -95,12 +101,10 @@ public class LauncherMainPanel extends JPanel implements ActionListener {
 		
 		startButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				launcher.getContentPane().removeAll();
-				launcher.getContentPane().validate();
-				launcher.getContentPane().repaint();
+				launcher.dispose();
 				
 				// Create main game
-				AppController game = new AppController(launcher);
+				AppController game = new AppController();
 				game.init();
 			}
 		});

@@ -40,7 +40,7 @@ public class AudioController implements IEventHandler {
 	 * 
 	 * @return AudioController instance.
 	 */
-	public static AudioController getInstance() {
+	public synchronized static AudioController getInstance() {
 		if (sharedInstance == null) {
 			sharedInstance = new AudioController();
 			EventBus.INSTANCE.register(sharedInstance);

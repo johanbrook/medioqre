@@ -60,7 +60,7 @@ public class TestObjectFactory {
 	public void testEnemyWave() {
 		// For wave:
 		int wave = 3;
-		int nbrOfEnemies = tools.Math.fib(wave);
+		int nbrOfEnemies = tools.Math.prime(wave);
 		
 		List<Enemy> enemies = ObjectFactory.newEnemiesForWave(wave);
 		assertNotNull(enemies);

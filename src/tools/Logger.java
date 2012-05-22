@@ -17,7 +17,7 @@ public final class Logger {
 	private Logger() {
 	}
 
-	public void setTimestampFormat(String format) {
+	public static void setTimestampFormat(String format) {
 		logFormat = format;
 	}
 

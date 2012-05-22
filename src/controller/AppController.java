@@ -49,7 +49,6 @@ public class AppController implements Runnable, IEventHandler {
 
 	private IGameModel game;
 	private AIController ai;
-	private AudioController audio;
 	private NavigationController navigation;
 	
 	private static boolean paused = false;
@@ -60,7 +59,7 @@ public class AppController implements Runnable, IEventHandler {
 	 * <p>Initializes the game model, navigation controller, view controller, audio controller and AI controller,
 	 * as well as relevant listeners.</p>
 	 */
-	public AppController(JFrame frame){
+	public AppController(){
 		String mode = (isDebugMode()) ? "debug" : "production";
 		System.out.println("Initializing main controller in " + mode + " mode ...");
 
@@ -72,8 +71,7 @@ public class AppController implements Runnable, IEventHandler {
 		this.game = new GameModel();
 		this.navigation = new NavigationController();
 
-		frame.setPreferredSize(new Dimension(20 * 48, 12 * 48));
-		new ViewController(this.navigation, frame);
+		new ViewController(this.navigation, new Dimension(20 * 48, 12 * 48));
 		
 		this.ai = new AIController(48, 48, 48, 48);
 
@@ -81,13 +79,12 @@ public class AppController implements Runnable, IEventHandler {
 		this.ai.addReceiver((IEventHandler) this.game);
 		((IMessageSender) this.game).addReceiver((IEventHandler) this.ai);
 
-		this.audio = AudioController.getInstance();
-		audio.setGame(game);
+		AudioController.getInstance().setGame(game);
 		
 		// Logging format
 		
 		String loggingFormat = ObjectFactory.getConfigString("loggingFormat");
-		tools.Logger.getInstance().setTimestampFormat(loggingFormat);
+		tools.Logger.setTimestampFormat(loggingFormat);
 	}
 	
 	
@@ -185,7 +182,7 @@ public class AppController implements Runnable, IEventHandler {
 			
 			this.ai.updateAI(dt);
 			this.game.update(dt);
-			audio.update();
+//			audio.update();
 		}
 	}
 
