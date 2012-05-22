@@ -3,7 +3,7 @@ package tools.datamanagement;
 import java.util.prefs.*;
 
 /**
- * Loads User Preferences
+ * Loads User Preferences stored in host platform preferences storage.
  * 
  * @author chrisnordqvist
  * 
