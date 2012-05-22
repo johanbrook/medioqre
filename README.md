@@ -26,6 +26,12 @@ The project should be compilable and runnable out of the box from a fresh clone.
 - When making changes to non-source code files, i.e. external JSON data for instance: remember to clean the project before building and running (`Project -> Clean` in Eclipse).
 - Native OpenGL bindings are located in the `libs/jogamp-all-platforms` directory (structured in directories for each platform).
 
+## Running on Windows
+
+The application needs the following VM arguments passed when running on Windows:
+
+	-Dsun.java2d.noddraw=true
+
 ## We are
 
 - [John Barbero Unenge](http://github.com/JBarberU)
