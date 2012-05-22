@@ -21,12 +21,10 @@ import javax.media.opengl.awt.GLCanvas;
 
 import javax.swing.JFrame;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.jogamp.opengl.util.FPSAnimator;
 
-import sun.java2d.d3d.D3DGraphicsDevice;
 import tools.datamanagement.PreferenceLoader;
 import tools.datamanagement.ResourceLoader;
 import tools.factory.ObjectFactory;
@@ -79,7 +77,6 @@ public class ViewController
 	// Overlay
 	private List<GLRenderableObject> overlayObjects = new LinkedList<GLRenderableObject>();
 	private GLBitmapFont ammoMeter;
-	private GLBitmapFont scoreMeter;
 	
 	private GLBitmapFont hpMeter;
 	private GLBitmapFont fpsMeter;
@@ -136,24 +133,20 @@ public class ViewController
 			JSONObject jsonFont = ResourceLoader.parseJSONFromPath("spritesheets/json/font.bmf");
 			
 			this.hpMeter = new GLBitmapFont(jsonFont);
-			this.hpMeter.setBounds(new Rectangle(10, this.screen.getBounds().getHeight() - 80, 250, 20));
+			this.hpMeter.setBounds(new Rectangle(10, 10, 250, 20));
 			this.hpMeter.setLetterWidth(10);
 			
 			this.fpsMeter = new GLBitmapFont(jsonFont);
-			this.fpsMeter.setBounds(new Rectangle(10, 10, 100,10));
-			this.fpsMeter.setLetterWidth(10);
-			
-			this.waveMeter = new GLBitmapFont(jsonFont);
-			this.waveMeter.setBounds(new Rectangle(10, this.screen.getBounds().getHeight() - 40, 60, 10));
-			this.waveMeter.setLetterWidth(10);
+			this.fpsMeter.setBounds(new Rectangle(10, this.screen.getBounds().getHeight()-20, 100,10));
+			this.fpsMeter.setLetterWidth(10);			
 			
 			this.ammoMeter = new GLBitmapFont(jsonFont);
 			this.ammoMeter.setBounds(new Rectangle(this.screen.getBounds().getWidth()-70, this.screen.getBounds().getHeight() - 50, 60, 40));
 			this.ammoMeter.setLetterWidth(20);
 			
-			this.scoreMeter = new GLBitmapFont(jsonFont);
-			this.scoreMeter.setBounds(new Rectangle(this.screen.getBounds().getWidth()-70, this.screen.getBounds().getHeight() - 87, 60, 20));
-			this.scoreMeter.setLetterWidth(10);
+			this.waveMeter = new GLBitmapFont(jsonFont);
+			this.waveMeter.setBounds(new Rectangle(this.screen.getBounds().getWidth()-70, this.screen.getBounds().getHeight() - 87, 60, 20));
+			this.waveMeter.setLetterWidth(7);
 			
 			this.gamePausedText = new GLBitmapFont(jsonFont);
 			int width = 300;
@@ -168,14 +161,13 @@ public class ViewController
 			this.overlayObjects.add(this.hpMeter);
 			this.overlayObjects.add(this.fpsMeter);
 			this.overlayObjects.add(this.waveMeter);
-			this.overlayObjects.add(this.scoreMeter);
 			this.overlayObjects.add(this.ammoMeter);
 			this.overlayObjects.add(this.gamePausedText);
 			this.overlayObjects.add(this.statusHud);
 			
 			this.fpsMeter.setColor(1f, 0f, 1f);
 			this.hpMeter.setColor(1f, 0f, 0.1f);
-			this.waveMeter.setColor(1f, 0f, 0f);
+			this.waveMeter.setColor(0.8f, 0.8f, 0.8f);
 			this.ammoMeter.setColor(0.8f, 0.8f, 0.8f);
 			this.gamePausedText.setColor(1f, 1f, 1f);
 			
@@ -264,7 +256,6 @@ public class ViewController
 				CollidableObject cObj = (CollidableObject) evt.getValue();
 
 				this.screen.removeDrawableFromLayer(this.actors.remove(cObj));
-				// this.actors.remove(cObj);
 
 				if (cObj instanceof Projectile && ((Projectile) cObj).getOwner() instanceof Grenade) {
 					Actor explosion = ObjectFactory.newActor(0);
@@ -294,7 +285,6 @@ public class ViewController
 		gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
 		gl.glClear(GL2.GL_ALPHA_BITS);
 
-		// TimerTool.start("GL-Screen");
 		if (doneLoading) {
 			if (this.isInLSDMode) {
 				gl.glPushMatrix();
@@ -336,9 +326,7 @@ public class ViewController
 								this.statusHud.setCurrentAnimation("portal_orange");
 								break;
 						}
-					}
-					
-					this.scoreMeter.setText(""+1337);
+					}					
 				}
 			}
 
@@ -348,13 +336,13 @@ public class ViewController
 			for (GLRenderableObject ro : this.overlayObjects) {
 				ro.update(16);
 				ro.render(ro.getBounds(), this.screen.getBounds(), arg0,
-						(20 + this.tilemap.getTileMapSize().getHeight()
-								* this.tilemap.getTileSize().getHeight()));
+						(this.tilemap.getTileMapSize().getHeight()
+								* this.tilemap.getTileSize().getHeight()) + ro.getBounds().getHeight());
 			}
+			
 			gl.glPopMatrix();
 		}
 		gl.glFlush();
-		// TimerTool.stop();
 	}
 
 	@Override
