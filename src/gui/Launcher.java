@@ -60,8 +60,7 @@ public class Launcher extends JFrame {
 		getContentPane().add(optionsPanel);
 		setVisible(true);
 
-		AudioController audio = AudioController.getInstance();
-		audio.playStartUpSound();
+		AudioController.getInstance().playStartUpSound();
 
 	}
 
