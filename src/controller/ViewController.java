@@ -1,6 +1,10 @@
 package controller;
 
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
 
 import java.util.IdentityHashMap;
 import java.util.LinkedList;
@@ -108,13 +112,13 @@ public class ViewController
 	 * @param screenHeight
 	 *            The frame height
 	 */
-	public ViewController(KeyListener listener, JFrame parent) {
+	public ViewController(KeyListener listener, Dimension size) {
 		
 		EventBus.INSTANCE.register(this);
 
 		this.fpsmeter = new GraphicalFPSMeter();
 
-		this.screen = new GLScreen(0, 0, parent.getWidth(), parent.getHeight());
+		this.screen = new GLScreen(0, 0, size.width, size.height);
 
 		// Creating the frame
 		GLProfile glP = GLProfile.getDefault();
@@ -123,7 +127,6 @@ public class ViewController
 		GLCanvas canvas = new GLCanvas(glC);
 
 		// Creating the frame
-		parent.setTitle(ObjectFactory.getConfigString("appName"));
 		canvas.setFocusable(true);
 		
 		canvas.addKeyListener(listener);
@@ -180,12 +183,16 @@ public class ViewController
 		
 		this.isInLSDMode = PreferenceLoader.getBoolean("LSD_MODE", false);
 
-		parent.getContentPane().add(canvas);
+		JFrame f = new JFrame();
 		
-		parent.setResizable(true);
-		
-		parent.getContentPane().validate();
+		f.getContentPane().add(canvas);		
+		f.setUndecorated(true);
+		f.setVisible(true);
+		BufferedImage i = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+	    Cursor noCursor = java.awt.Toolkit.getDefaultToolkit().createCustomCursor(i, new java.awt.Point(0,0), "none");
+		GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().setFullScreenWindow(f);
 		canvas.requestFocusInWindow();
+		f.setCursor(noCursor);
 		
 		FPSAnimator anim = new FPSAnimator(canvas, 60);
 		anim.start();
