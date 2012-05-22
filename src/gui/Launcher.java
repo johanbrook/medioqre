@@ -50,7 +50,7 @@ public class Launcher extends JFrame {
 				(screenSize.height / 2) - (launcherSize.height / 2),
 				launcherSize.width, launcherSize.height);
 
-		mainPanel = new LauncherMainPanel(16, 10, 640, 400, this);
+		mainPanel = new LauncherMainPanel(16, 10, this);
 		mainPanel.setVisible(true);
 
 		optionsPanel = new OptionsPanel(this);

@@ -30,13 +30,12 @@ public class LauncherMainPanel extends JPanel implements ActionListener {
 
 	private Launcher launcher;
 
-	public LauncherMainPanel(int rows, int cols, int width, int height,
+	public LauncherMainPanel(int rows, int cols,
 			Launcher container) {
-		setBounds(new Rectangle(0, 0, 640, 400));
+		setBounds(new Rectangle(0, 0, container.getWidth(), container.getHeight()));
 		launcher = container;
 		setLayout(null);
 
-		setBounds(0, 0, 790, 509);
 
 		this.rows = rows;
 		this.cols = cols;
