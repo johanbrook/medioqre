@@ -32,6 +32,12 @@ The application needs the following VM arguments passed when running on Windows:
 
 	-Dsun.java2d.noddraw=true
 
+The application may be slow to start on Windows - just hang in there.
+
+## For the graders
+
+- The bit tag functionality present in the model (see the ITaggable interface) is not used in the 1.0 release. We have delayed a view refactor until 1.1, where the bit tagging functionality will be used along with restructured rendering techniques.
+
 ## We are
 
 - [John Barbero Unenge](http://github.com/JBarberU)

@@ -226,6 +226,7 @@ public class GameModel implements IGameModel, IEventHandler, IMessageSender {
 	public void gameOver() {
 		log("Noob, game over");
 		this.objects.clear();
+		this.portals = new Portal[2];
 		EventBus.INSTANCE.publish(new Event(Event.Property.GAME_OVER));
 	}
 
